@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace HotSpringProject.Controllers
 {
-    public class Repo_Goods_StockController : Controller
+    public class RepoGoodsStockController : Controller
     {
         /* 商品库存表控制器
          * 裴晨旭
