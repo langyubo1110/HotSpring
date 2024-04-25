@@ -10,7 +10,7 @@ namespace HotSpringProject.Entity
 {
     public class HotSpringDbContext:DbContext
     {
-        public HotSpringDbContext() : base("HS")
+        public HotSpringDbContext() : base("HotSpringString")
         {
 
         }
