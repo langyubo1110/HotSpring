@@ -1,5 +1,4 @@
-﻿using DotNet.Utilities;
-using HotSpringProject.Entity;
+﻿using HotSpringProject.Entity;
 using HotSpringProjectRepository.Interface;
 using System;
 using System.Collections.Generic;
@@ -9,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectRepository
 {
-    public class SystemLogsRepository : ISystemLogsRepository
+    public class EmployEmpRepository : IEmployEmpRepository
     {
         private readonly HotSpringDbContext _db;
 
-        public SystemLogsRepository(HotSpringDbContext hotSpringDbContext)
+        public EmployEmpRepository(HotSpringDbContext hotSpringDbContext)
         {
             _db = hotSpringDbContext;
         }
-        public int Add(SystemLogs movie)
+        public int Add(EmployEmp employemp)
         {
             throw new NotImplementedException();
         }
@@ -27,17 +26,17 @@ namespace HotSpringProjectRepository
             throw new NotImplementedException();
         }
 
-        public List<SystemLogs> GetList()
+        public List<EmployEmp> GetList()
         {
-            return _db.SystemLogs.ToList();
+            return _db.EmployEmps.ToList();
         }
 
-        public SystemLogs GetModel(int id)
+        public EmployEmp GetModel(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(SystemLogs movie)
+        public bool Update(EmployEmp employemp)
         {
             throw new NotImplementedException();
         }

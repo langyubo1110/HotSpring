@@ -8,5 +8,6 @@ namespace HotSpringProjectService.Interface
 {
     public interface IRepo_Goods_StockService
     {
+
     }
 }

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectRepository.Interface
 {
-    public interface ISystemLogsRepository
+    public interface IEmployEmpRepository
     {
-        List<SystemLogs> GetList();
-        int Add(SystemLogs movie);
-        bool Update(SystemLogs movie);
+        List<EmployEmp> GetList();
+        int Add(EmployEmp employemp);
+        bool Update(EmployEmp employemp);
         bool Delete(int id);
-        SystemLogs GetModel(int id);
+        EmployEmp GetModel(int id);
     }
 }

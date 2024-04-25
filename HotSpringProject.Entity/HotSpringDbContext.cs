@@ -15,7 +15,8 @@ namespace HotSpringProject.Entity
 
         }
 
-        //public DbSet<Movies> Movies { get; set; }
+        public DbSet<SystemLogs> SystemLogs { get; set; }
+        public DbSet<EmployEmp> EmployEmps { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
