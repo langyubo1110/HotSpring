@@ -3,6 +3,7 @@ using HotSpringProject.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 
 namespace OA_AutoWork.App_Start
@@ -11,7 +12,7 @@ namespace OA_AutoWork.App_Start
     {
         public AutoMapperProfile()
         {
-            //CreateMap<Movies, MoviesVO>();
+            //CreateMap<Module, ModuleVO>();
         }
     }
 }

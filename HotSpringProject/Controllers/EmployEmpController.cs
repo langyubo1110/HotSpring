@@ -13,7 +13,7 @@ namespace HotSpringProject.Controllers
          * 2024-04-25
          */
         // GET: EmployEmp
-        public ActionResult Index()
+        public ActionResult EmployManager()
         {
             return View();
         }
