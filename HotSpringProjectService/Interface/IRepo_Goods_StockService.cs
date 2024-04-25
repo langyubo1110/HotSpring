@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HotSpringProjectRepository.Interface
+namespace HotSpringProjectService.Interface
 {
-    public interface IRepo_Goods_Stock
+    public interface IRepo_Goods_StockService
     {
-
     }
 }

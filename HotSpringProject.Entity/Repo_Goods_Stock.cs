@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HotSpringProject.Entity
 {
+    /*
+     * 
+     */
     public class Repo_Goods_Stock
     {
         public  int id { get; set; }
