@@ -1,4 +1,5 @@
-﻿using DotNet.Utilities;
+﻿
+using HotSpringProject.Entity;
 using HotSpringProjectRepository.Interface;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,9 @@ namespace HotSpringProjectRepository
 {
     public class SystemLogsRepository:ISystemLogsRepository
     {
-        
+        public SystemLogsRepository(HotSpringDbContext hotSpringDb)
+        {
+            List<RepoGoodsStock> list = hotSpringDb.Repo_Goods_Stock.ToList();
+        }
     }
 }

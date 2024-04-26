@@ -1,0 +1,136 @@
+﻿@model List<HotSpringProject.Entity.RepoGoodsStock>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>自定义响应式表格</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="table_basic.html#">选项1</a>
+                            </li>
+                            <li>
+                                <a href="table_basic.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" name="goods_name" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"> 搜索</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+
+                        <table id="demo" lay-filter="test"></table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--js模版表头工具栏-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+    </div>
+</script>
+<!--操作单元格-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script>
+    layui.use(['table', 'util', 'layer'], function () {
+        var table = layui.table;
+        var util = layui.util;
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //表格渲染
+        table.render({
+            elem: '#demo'
+            , height: 312
+            , url: '/repogoodsstock/getlist' //数据接口
+            , page: true//开启分页
+            , toolbar: '#toolbarDemo'
+            , cols: [[ //表头
+                { field: 'id', title: '主键', sort: true, fixed: 'left' }
+                , { field: 'goods_name', title: '商品名称', }
+                , { field: 'goods_number', title: '商品数量', sort: true }
+                , { field: 'threshold', title: '阈值' }
+                , { field: 'factory', title: '工厂', }
+                , { field: 'picture', title: '图片', }
+                , { field: 'create_time', title: '创建时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
+                , { title: '操作', toolbar: '#barDemo' }
+            ]]
+        });
+        //行单击事件
+        table.on('tool(test)', function (obj) {
+            var id = obj.data.id;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    $.post('/repogoodsstock/delete', { id: id }, function (res) {
+                        if (res.code = 200) {
+                            layer.msg(res.msg)
+                            obj.del();
+                        }
+                        else {
+                            layer.msg(e.msg)
+                        }
+                    })
+                    layer.close(index)
+                });
+            }
+            else {
+                layer.open({
+                    title: '商品编辑',
+                    type: 2,
+                    area: ['500px', '600px'],
+                    content: '/repogoodsstock/detail/' + id
+                    //end: function () {
+                    //    //table.reload('demo')//table重载
+                    //}
+                })
+            }
+        });
+        table.on('toolbar(test)', function (obj) {
+            layer.open({
+                title: '商品添加',
+                type: 2,
+                area: ['500px', '600px'],
+                content: '/repogoodsstock/detail/'
+                //end: function () {
+                //    //table.reload('demo')//table重载
+                //}
+            })
+        })
+    })
+</script>
+
+
+

@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>Detail</h3>
+<form class="layui-form" lay-filter="editform">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="id"/>
+                <input type="text" name="goods_name" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">商品数量</label>
+            <div class="layui-input-inline">
+                <input type="text" name="goods_number" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="threshold" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">厂家</label>
+            <div class="layui-input-inline">
+                <input type="text" name="factory" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">图片</label>
+            <div class="layui-input-inline">
+                <input type="text" name="picture" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="create_time"  lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'util'], function (){
+        var form = layui.form;
+        var util = layui.util;
+        var $ = layui.jquery;
+        var id =@ViewBag.id;
+        $.post("/repogoodsstock/getmodel", { id: id }, function (res) {
+            if (res.code == 200) {
+                res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
+                form.val('editform', res.data);
+            }
+        })
+        form.on('submit(demo1)', function (data) {
+            if (id == 0) {
+                $.post("/repogoodsstock/add", { repoGoodsStock: data.field }, function (res) {
+                    if (res.code == 200)
+                    {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.layer.table.reload("demo");
+                        parent.layui.layer.msg(res.msg);
+                    }
+                })
+            }
+            else
+            {
+                $.post("/repogoodsstock/update", { repoGoodsStock: data.field }, function (res) {
+                    console.log(res)
+                    if (res.code == 200) {
+                        //找到父页面的自己  拿到index 让父页面关掉自己
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.layui.table.reload("demo");//子窗体让父窗体table重载
+                        parent.layer.msg(res.msg)
+                    }
+                })
+            }
+            return false;
+        })
+    })
+</script>
