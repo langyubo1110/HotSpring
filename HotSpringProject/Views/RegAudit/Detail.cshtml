@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detail</h2>
+
+
+<form class="layui-form" action="" lay-filter="movieForm">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">立案表ID</label>
+            <div class="layui-input-inline">
+                <input type="text" name="reg_equip_reaearch_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">复核人ID</label>
+            <div class="layui-input-inline">
+                <input type="text" name="recheck_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div><div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">复核意见</label>
+            <div class="layui-input-inline">
+                <input type="text" name="recheck_opin" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="create_time" id="input_create_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="layui-input-block">
+        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+</form>
+
+
+
+
+<script>
+    layui.use(['form', 'laydate', 'util'], function () {
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var util = layui.util;
+        var id=@ViewBag.Id
+        //常规用法
+        laydate.render({
+            elem: '#input_create_time' //指定元素
+            , value: '2024-01-01'
+        });
+        //提交事件
+        $.post("/reraudit/getmodel", { id: id }, function (res) {
+            if (res.code == 200) {
+                res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
+                form.val('editform', res.data);
+            }
+        })
+        form.on('submit(demo1)', function (data) {
+            console.log(data);
+            let obj = data.field;
+            if (id == 0) {
+                $.post("/regaudit/insert", { obj: obj }, function (res) {
+                    if (res.code == 200) {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        //方案2  当关闭后让父页面的table重载
+                        parent.layui.table.reload('demo');
+                    }
+                })
+            }
+            else {
+                obj.id = id;//把id的值赋给obj  或者用隐藏控件存id
+                $.post("/layui/edit", { movie: obj }, function (res) {
+                    if (res.code == 200) {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.layui.table.reload('demo');
+                    }
+                })
+            }
+
+            return false;
+        });
+        //console.log(id);
+        $.post("/layui/getmovie", {id:id}, function (res) {
+            if (res.code == 200) {
+                console.log(res.data);
+                res.data.create_time = util.toDateString(formatDateString(res.data, "create_time"), "yyyy-MM-dd");
+                form.val('movieForm', res.data);
+            }
+        })
+    })
+</script>
+
+
