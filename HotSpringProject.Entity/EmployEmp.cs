@@ -23,7 +23,5 @@ namespace HotSpringProject.Entity
         public int role_id { get; set; }
         public string job_number { get; set; }
 
-
-
     }
 }

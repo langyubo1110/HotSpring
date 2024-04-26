@@ -17,5 +17,6 @@ namespace HotSpringProjectService.Interface
         ResMessage Add(EmployEmp movies);
         ResMessage Delete(int Id);
         ResMessage Update(EmployEmp movies);
+        ResMessage getModel(int id);
     }
 }

@@ -2,6 +2,7 @@
 using HotSpringProjectRepository.Interface;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +19,20 @@ namespace HotSpringProjectRepository
         }
         public int Add(EmployEmp employemp)
         {
-            throw new NotImplementedException();
+            if (employemp != null)
+            _db.Entry(employemp).State = EntityState.Added;
+            int flag = _db.SaveChanges();
+            return flag;
         }
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            EmployEmp employEmp = _db.EmployEmps.Find(id);
+            if (employEmp != null)
+            _db.Entry(employEmp).State = EntityState.Deleted;
+            int flag = _db.SaveChanges();
+            return flag > 0 ? true : false;
+
         }
 
         public List<EmployEmp> GetList()
@@ -33,12 +42,16 @@ namespace HotSpringProjectRepository
 
         public EmployEmp GetModel(int id)
         {
-            throw new NotImplementedException();
+            return _db.EmployEmps.Find(id);
         }
 
         public bool Update(EmployEmp employemp)
         {
-            throw new NotImplementedException();
+            if (employemp != null)
+                _db.Entry(employemp).State = EntityState.Modified;
+            int flag = _db.SaveChanges();
+            return flag > 0 ? true : false;
+
         }
     }
 }

@@ -20,7 +20,9 @@ namespace HotSpringProjectService
         }
         public ResMessage Add(EmployEmp employemp)
         {
+            employemp.onboarding_time = DateTime.Now;
             employemp.create_time = DateTime.Now;
+            employemp.account_status = 1;
             int flag = _EmployEmpRepository.Add(employemp);
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
@@ -43,12 +45,20 @@ namespace HotSpringProjectService
         /// <returns></returns>
         public ResMessage GetListByPager(int page, int limit)
         {
+            List<EmployEmp> list1 = _EmployEmpRepository.GetList();
             //对仓储层数据业务加工
             //分页业务：对仓储层的数据加工
-            List<EmployEmp> list = _EmployEmpRepository.GetList().OrderByDescending(x => x.create_time).Skip((page - 1) * limit).Take(limit).ToList();
+            List <EmployEmp> list = _EmployEmpRepository.GetList().OrderByDescending(x => x.create_time).Skip((page - 1) * limit).Take(limit).ToList();
             //{data code msg count}
-            return ResMessage.Success(list, list.Count);
+            return ResMessage.Success(list, list1.Count);
         }
+
+        public ResMessage getModel(int id)
+        {
+            EmployEmp model = _EmployEmpRepository.GetModel(id);
+            return model!=null ? ResMessage.Success(model) : ResMessage.Fail();
+        }
+
         public ResMessage Update(EmployEmp employemp)
         {
             bool flag = _EmployEmpRepository.Update(employemp);
