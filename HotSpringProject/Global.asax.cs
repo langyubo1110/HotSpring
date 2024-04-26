@@ -22,8 +22,9 @@ namespace HotSpringProject
             AutofacRegister();
             //AutoMapper×¢²á
             AutoMapperConfig.Config();
+            
         }
-        private void AutofacRegister()
+        public static void AutofacRegister()
         {
             //ÈÝÆ÷×¢²á
             var builder = new ContainerBuilder();

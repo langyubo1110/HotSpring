@@ -6,9 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using HotSpringProjectService;
-using HotSpringProjectService.Interface;
 using System.Reflection;
-
+using HotSpringProjectService.Interface;
 namespace HotSpringProject.Controllers
 {
     public class DefaultController : Controller
@@ -20,6 +19,7 @@ namespace HotSpringProject.Controllers
             _dbService = systemModuleService;
         }
         // GET: Default
+        #region 页面
         public ActionResult Index()
         {
             List<SystemModule> list = _dbService.GetList();
@@ -29,5 +29,6 @@ namespace HotSpringProject.Controllers
         {
             return View();
         }
+        #endregion
     }
 }

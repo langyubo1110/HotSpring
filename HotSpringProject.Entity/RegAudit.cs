@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 
 namespace HotSpringProject.Entity
 {
-    [Table("System_Logs")]
-    public class SystemLogs
+    [Table("Reg_Audit")]
+    public class RegAudit
     {
         [Key]
         //
         public int id { get; set; }
-        public string events { get; set; }
-        public int emp_id { get; set; }
-        public string opetate { get; set; }
-        public DateTime? create_time { get; set; }
+        public int reg_equip_reaearch_id { get; set; }
+        
+        public int recheck_id { get; set; }
+        public int recheck_opin { get; set; }
+        public DateTime create_time { get; set; }
     }
 }
