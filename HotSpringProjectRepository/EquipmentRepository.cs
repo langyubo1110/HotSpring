@@ -36,12 +36,10 @@ namespace HotSpringProjectRepository
             return false;
         }
         //查全表
-        public List<Equipment> GetListByPager()
+        public IEnumerable<Equipment> GetListByPager()
         {
-            List<Equipment> list =_db.Equipment.ToList();
+            IEnumerable<Equipment> list =_db.Equipment;
             return list;
-            //IQueryable<Equipment> queryable= _db.Equipment;
-            //return queryable;
         }
 
         //查实体

@@ -42,15 +42,39 @@ namespace HotSpringProjectService
            else return ResMessage.Fail();
         }
         //分页
-        public ResMessage GetListByPager(int page,int limit)
+        public ResMessage GetListByPager(EquipmentFilter filter)
         {
-            List<Equipment> list1 = _equipmentRepository.GetListByPager();
-            List<Equipment> list2 = list1.OrderBy(x => x.id).Skip((page - 1) * limit).Take(limit).ToList();
-            //{data code msg count}
-            return ResMessage.Success(list2, list1.Count);
-            //对仓储层进行数据业务加工  分页展示
-            //获得全表数据
+            IEnumerable<Equipment> list = _equipmentRepository.GetListByPager();
+            int count = 0;
+            list = MakeQuery(list, filter, out count);
+            return ResMessage.Success(list, count);
         }
+        /// <summary>
+        /// 条件筛查
+        /// </summary>
+        /// <param name="list">全表数据</param>
+        /// <param name="filter">过滤条件</param>
+        /// <returns></returns>
+        public List<Equipment> MakeQuery(IEnumerable<Equipment> list, EquipmentFilter filter, out int count)
+        {
+            if (!string.IsNullOrEmpty(filter.name))
+            {
+                list = list.Where(x => x.name.Contains(filter.name));
+            }
+            //类型筛选
+            //if (filter.type != 0 && filter.type != null)
+            //{
+            //    list = list.Where(x => x.type == filter.type);
+            //}
+            count = list.Count();
+            //开启分页
+            if (filter.page != 0 && filter.limit != 0)
+            {
+                list = list.OrderByDescending(x => x.id).Skip((filter.page - 1) * filter.limit).Take(filter.limit);
+            }
+            return list.ToList();
+        }
+
         //更新
         public ResMessage Update(Equipment equipment)
         {

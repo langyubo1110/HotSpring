@@ -18,6 +18,9 @@ namespace HotSpringProject.Controllers
     {
         private readonly IEquipmentService _equipmentService;
 
+        //多个表注入
+        //private readonly IMovieTypeService _movieTypeService;
+
         //构造函数注入
         public EquipmentController (IEquipmentService equipmentService)
         {
@@ -31,7 +34,6 @@ namespace HotSpringProject.Controllers
         }
         public ActionResult detail(int id=0)
         {
-            //ViewBag.equipment = _equipmentService.GetModel(id);
             ViewBag.Id = id;
             return View();
         }
@@ -39,9 +41,9 @@ namespace HotSpringProject.Controllers
         
         
         #region 接口
-        public JsonResult Query(int page, int limit )
+        public JsonResult Query(EquipmentFilter filter)
         {
-            return Json(_equipmentService.GetListByPager(page, limit), JsonRequestBehavior.AllowGet);
+            return Json(_equipmentService.GetListByPager(filter), JsonRequestBehavior.AllowGet);
         }
 
         //删除
@@ -59,9 +61,9 @@ namespace HotSpringProject.Controllers
         //表单赋值
         public JsonResult getequip(int id)
         {
-            
             return Json(_equipmentService.GetModel(id),JsonRequestBehavior.AllowGet);
         }
+
         //编辑
         public JsonResult edit(Equipment equipment)
         {
