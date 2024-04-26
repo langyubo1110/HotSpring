@@ -31,18 +31,15 @@ namespace HotSpringProject.Controllers
             ViewBag.id = id;
             return View();
         }
-        public JsonResult Employ(int page, int limit) 
+        public JsonResult Employ(EmployEmpFilter filter) 
         {
-            ResMessage res = _dbService.GetListByPager(page, limit);
+            ResMessage res = _dbService.GetListByPager(filter);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult Insert(EmployEmp employEmp)
         {
-            employEmp.onboarding_time = DateTime.Now;
-            employEmp.create_time = DateTime.Now;
-            employEmp.account_status = 1;
-            employEmp.last_log_time = DateTime.Now;
+
             ResMessage result = _dbService.Add(employEmp);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -65,6 +62,10 @@ namespace HotSpringProject.Controllers
         public JsonResult getEmp(int id)
         {
             return Json(_dbService.getModel(id), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Query(EmployEmpFilter filter)
+        {
+            return Json(_dbService.GetListByPager(filter), JsonRequestBehavior.AllowGet);
         }
     }
 }

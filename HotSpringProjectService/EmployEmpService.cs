@@ -2,7 +2,9 @@
 using HotSpringProject.Entity;
 using HotSpringProjectRepository.Interface;
 using HotSpringProjectService.Interface;
+using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectService
 {
-    public class EmployEmpService:IEmployEmpService
+    public class EmployEmpService : IEmployEmpService
     {
         private readonly IEmployEmpRepository _EmployEmpRepository;
 
@@ -33,7 +35,7 @@ namespace HotSpringProjectService
             return flag ? ResMessage.Success() : ResMessage.Fail();
         }
 
-        public List<EmployEmp> GetList()
+        public IEnumerable<EmployEmp> GetList()
         {
             return _EmployEmpRepository.GetList();
         }
@@ -43,20 +45,36 @@ namespace HotSpringProjectService
         /// <param name="page"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public ResMessage GetListByPager(int page, int limit)
+        public ResMessage GetListByPager(EmployEmpFilter filter)
         {
-            List<EmployEmp> list1 = _EmployEmpRepository.GetList();
-            //对仓储层数据业务加工
-            //分页业务：对仓储层的数据加工
-            List <EmployEmp> list = _EmployEmpRepository.GetList().OrderByDescending(x => x.create_time).Skip((page - 1) * limit).Take(limit).ToList();
-            //{data code msg count}
-            return ResMessage.Success(list, list1.Count);
+            IEnumerable<EmployEmp> list = _EmployEmpRepository.GetList();
+            int count = 0;
+            list = MakeQuery(list, filter, out count);
+            return ResMessage.Success(list, count);
+        }
+        public IEnumerable<EmployEmp> MakeQuery(IEnumerable<EmployEmp> list, EmployEmpFilter filter, out int count)
+        {
+            if (!string.IsNullOrEmpty(filter.name))
+            {
+                list = list.Where(x => x.name.Contains(filter.name));
+            }
+            if (filter.role_id != 0)
+            {
+                list = list.Where(x => x.role_id == filter.role_id);
+            }
+            count = list.Count();
+            //开启分页
+            if (filter.page != 0 && filter.limit != 0)
+            {
+                list = list.OrderByDescending(x => x.create_time).Skip((filter.page - 1) * filter.limit).Take(filter.limit);
+            }
+            return list.ToList();
         }
 
         public ResMessage getModel(int id)
         {
             EmployEmp model = _EmployEmpRepository.GetModel(id);
-            return model!=null ? ResMessage.Success(model) : ResMessage.Fail();
+            return model != null ? ResMessage.Success(model) : ResMessage.Fail();
         }
 
         public ResMessage Update(EmployEmp employemp)

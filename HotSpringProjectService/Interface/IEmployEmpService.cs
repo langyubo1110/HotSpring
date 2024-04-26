@@ -10,9 +10,9 @@ namespace HotSpringProjectService.Interface
 {
     public interface IEmployEmpService
     {
-        List<EmployEmp> GetList();
+        IEnumerable<EmployEmp> GetList();
 
-        ResMessage GetListByPager(int page, int limit);
+        ResMessage GetListByPager(EmployEmpFilter filter);
 
         ResMessage Add(EmployEmp movies);
         ResMessage Delete(int Id);
