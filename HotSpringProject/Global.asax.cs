@@ -18,27 +18,28 @@ namespace HotSpringProject
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            //ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½
+            //ÈÝÆ÷×¢²á
             AutofacRegister();
-            //AutoMapper×¢ï¿½ï¿½
+            //AutoMapper×¢²á
             AutoMapperConfig.Config();
+            
         }
         public static void AutofacRegister()
         {
-            //ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½
+            //ÈÝÆ÷×¢²á
             var builder = new ContainerBuilder();
-            //1.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½
+            //1.µ¥¸öÒÀÀµ×¢Èë
             builder.RegisterType<HotSpringDbContext>();
-            //2.ï¿½ï¿½ï¿½ï¿½×¢ï¿½ëµ±Ç°Ó¦ï¿½Ã³ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½Controller
-            builder.RegisterControllers(typeof(MvcApplication).Assembly).PropertiesAutowired();//Ö¸ï¿½ï¿½×¢ï¿½ë·½Ê½Îªï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½
-            //3.ï¿½ï¿½ï¿½ï¿½×¢ï¿½ë°´ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½
+            //2.ÒÀÀµ×¢Èëµ±Ç°Ó¦ÓÃ³ÌÐòÏÂµÄËùÓÐController
+            builder.RegisterControllers(typeof(MvcApplication).Assembly).PropertiesAutowired();//Ö¸¶¨×¢Èë·½Ê½ÎªÊôÐÔ×¢Èë
+            //3.ÒÀÀµ×¢Èë°´³ÌÐò¼¯×¢Èë
             Assembly asmService = Assembly.Load("HotSpringProjectService");
             builder.RegisterAssemblyTypes(asmService).Where(t => !t.IsAbstract).AsImplementedInterfaces().PropertiesAutowired();
             Assembly asmRepository = Assembly.Load("HotSpringProjectRepository");
             builder.RegisterAssemblyTypes(asmRepository).Where(t => !t.IsAbstract).AsImplementedInterfaces().PropertiesAutowired();
-            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            //ÈÝÆ÷¹¹½¨
             var container = builder.Build();
-            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ»»
+            //½âÎöÆ÷Ìæ»»
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
     }

@@ -6,14 +6,14 @@ using System.Web.Mvc;
 
 namespace HotSpringProject.Controllers
 {
-    public class SystemLogsController : Controller
+    public class EmployEmpController : Controller
     {
-        /* 系统日志控制器
+        /*员工表的控制器
          * 刘星宇
          * 2024-04-25
          */
-        // GET: SystemLogs
-        public ActionResult Index()
+        // GET: EmployEmp
+        public ActionResult EmployManager()
         {
             return View();
         }
