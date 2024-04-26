@@ -38,13 +38,13 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _repoGoodsStockService.Delete(id);
             return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetList(int page,int limit)
+        public JsonResult GetList(int page, int limit)
         {
-            int count1=0;
+            int count1 = 0;
             IQueryable<RepoGoodsStock> list = _repoGoodsStockService.GetList();
             count1 = list.Count();
-            List<RepoGoodsStock> result=list.OrderBy(x=>x.id).Skip((page-1)*limit).Take(limit).ToList();
-            return Json(new { code=0,message="请求成功",count= count1,data= result }, JsonRequestBehavior.AllowGet);
+            List<RepoGoodsStock> result = list.OrderBy(x => x.id).Skip((page - 1) * limit).Take(limit).ToList();
+            return Json(new { code = 0, message = "请求成功", count = count1, data = result }, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetModel(int id=0)
         {
@@ -52,30 +52,30 @@ namespace HotSpringProject.Controllers
             {
                 return Json(new { code = 500, message = "主键不能为空" });
             }
-            RepoGoodsStock repoGoodsStock  = _repoGoodsStockService.GetModel(id);
+            RepoGoodsStock repoGoodsStock = _repoGoodsStockService.GetModel(id);
             if (repoGoodsStock == null)
             {
                 return Json(new { code = 500, message = "通过该主键获取的实体为空" });
             }
-            return Json(new { code = 200, message = "成功", data = repoGoodsStock },JsonRequestBehavior.AllowGet);
+            return Json(new { code = 200, message = "成功", data = repoGoodsStock }, JsonRequestBehavior.AllowGet);
         }
         public JsonResult Add(RepoGoodsStock repoGoodsStock)
         {
             bool result = _repoGoodsStockService.Add(repoGoodsStock);
-            if (result) 
+            if (result)
             {
                 return Json(new { code = 200, msg = "添加成功" });
             }
-            return Json(new { code = 500, msg = "添加失败"});
+            return Json(new { code = 500, msg = "添加失败" });
         }
         public JsonResult Update(RepoGoodsStock repoGoodsStock)
         {
-            bool result =  _repoGoodsStockService.Update(repoGoodsStock);
+            bool result = _repoGoodsStockService.Update(repoGoodsStock);
             if (result)
             {
                 return Json(new { code = 200, msg = "更新成功" });
             }
-            return Json(new { code = 500, msg = "更新失败"});
+            return Json(new { code = 500, msg = "更新失败" });
         }
         #endregion
     }

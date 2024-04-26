@@ -12,7 +12,7 @@ namespace HotSpringProjectService.Interface
     public interface IRegAuditService
     {
         List<RegAudit> GetList();
-        ResMessage GetListByPager(int page, int limit);
+        ResMessage GetListByPager(RegAuditFilter filter);
         ResMessage Add(RegAudit movie);
         ResMessage Update(RegAudit movie);
         ResMessage Delete(int id);
