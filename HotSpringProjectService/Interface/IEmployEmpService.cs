@@ -1,4 +1,5 @@
-﻿using DotNet.Utilities;
+﻿
+using DotNet.Utilities;
 using HotSpringProject.Entity;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,6 @@ namespace HotSpringProjectService.Interface
         List<EmployEmp> GetList();
 
         ResMessage GetListByPager(int page, int limit);
-
         ResMessage Add(EmployEmp movies);
         ResMessage Delete(int Id);
         ResMessage Update(EmployEmp movies);
