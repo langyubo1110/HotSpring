@@ -35,12 +35,8 @@ namespace HotSpringProject.Controllers
 
         #region 接口
         public JsonResult Delete(int id) {
-            int flag = _repoGoodsStockService.Delete(id);
-            if (flag > 0) 
-            { 
-            return Json(new { code= 200 , msg = "删除成功" },JsonRequestBehavior.AllowGet);
-            }
-            return Json(new { code = 500 , msg = "删除失败" }, JsonRequestBehavior.AllowGet);
+            ResMessage resMessage = _repoGoodsStockService.Delete(id);
+            return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetList(int page,int limit)
         {
@@ -50,7 +46,7 @@ namespace HotSpringProject.Controllers
             List<RepoGoodsStock> result=list.OrderBy(x=>x.id).Skip((page-1)*limit).Take(limit).ToList();
             return Json(new { code=0,message="请求成功",count= count1,data= result }, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetModel(int id)
+        public JsonResult GetModel(int id=0)
         {
             if (id == 0)
             {

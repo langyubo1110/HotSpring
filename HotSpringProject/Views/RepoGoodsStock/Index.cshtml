@@ -74,7 +74,7 @@
         //表格渲染
         table.render({
             elem: '#demo'
-            , height: 312
+            , height: 525
             , url: '/repogoodsstock/getlist' //数据接口
             , page: true//开启分页
             , toolbar: '#toolbarDemo'
@@ -88,6 +88,14 @@
                 , { field: 'create_time', title: '创建时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
                 , { title: '操作', toolbar: '#barDemo' }
             ]]
+            , parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
         });
         //行单击事件
         table.on('tool(test)', function (obj) {
@@ -98,6 +106,7 @@
                         if (res.code = 200) {
                             layer.msg(res.msg)
                             obj.del();
+                            table.reload('demo')
                         }
                         else {
                             layer.msg(e.msg)

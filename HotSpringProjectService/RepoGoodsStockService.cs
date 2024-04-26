@@ -22,10 +22,10 @@ namespace HotSpringProjectService
             return _repoGoodsStockRepository.Add(repoGoodsStock);
         }
 
-        public int Delete(int id)
+        public ResMessage Delete(int id)
         {
             int flag = _repoGoodsStockRepository.Delete(id);
-            return flag;
+            return flag>0 ? ResMessage.Success("删除成功",null,flag):ResMessage.Fail("删除失败");
         }
 
         public IQueryable<RepoGoodsStock> GetList()
