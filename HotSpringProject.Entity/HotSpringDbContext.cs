@@ -10,12 +10,12 @@ namespace HotSpringProject.Entity
 {
     public class HotSpringDbContext:DbContext
     {
-        public HotSpringDbContext() : base("HotSpringString")
+        public HotSpringDbContext() : base("HS")
         {
 
         }
 
-        //public DbSet<Movies> Movies { get; set; }
+        public DbSet<Equipment> Equipment { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
