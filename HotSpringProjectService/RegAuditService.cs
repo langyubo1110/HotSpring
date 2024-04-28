@@ -1,4 +1,5 @@
-﻿using DotNet.Utilities;
+﻿
+using DotNet.Utilities;
 using HotSpringProject.Entity;
 using HotSpringProjectRepository;
 using HotSpringProjectRepository.Interface;
@@ -36,20 +37,35 @@ namespace HotSpringProjectService
 
         public List<RegAudit> GetList()
         {
-            return _regAuditRepository.GetList();
+            return _regAuditRepository.GetList().ToList();
         }
-        public ResMessage GetListByPager(int page, int limit)
+        public ResMessage GetListByPager(RegAuditFilter filter)
         {
             //对仓储层数据业务加工
             //分页业务：对仓储层的数据加工
-            List<RegAudit> list = _regAuditRepository.GetList().OrderBy(x => x.id).Skip((page - 1) * limit).Take(limit).ToList();
-            //{data code msg count}
-            return ResMessage.Success(list, list.Count);
+            IEnumerable<RegAudit> list = _regAuditRepository.GetList();
+            //List<RegAudit> list = _regAuditRepository.GetList().OrderBy(x => x.id).Skip((page - 1) * limit).Take(limit).ToList();
+            int count = 0;
+            list = MakeQuery(list, filter, out count);
+            return ResMessage.Success(list, count);
+        }
+        public List<RegAudit> MakeQuery(IEnumerable<RegAudit> list, RegAuditFilter filter, out int count)
+        {
+            if (filter.recheckid != 0 && filter.recheckid != null)
+            {
+                list = list.Where(x => x.recheck_id == filter.recheckid);
+            }
+            count = list.Count();
+            if (filter.page != 0 && filter.limit != 0)
+            {
+                list = list.OrderBy(x => x.id).Skip((filter.page - 1) * filter.limit).Take(filter.limit);
+            }
+            return list.ToList();
         }
 
         public RegAudit GetModel(int id)
         {
-            throw new NotImplementedException();
+            return _regAuditRepository.GetModel(id);
         }
 
         public ResMessage Update(RegAudit regAudit)

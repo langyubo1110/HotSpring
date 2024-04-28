@@ -4,25 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-<script src="~/assets/hplus/js/jquery.min.js"></script>
-<html>
-
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-    <title>H+ 后台主题UI框架 - 基础表格</title>
-    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
-    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
-
-    
-
-</head>
-
-<body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
         
         <div class="row">
@@ -73,33 +54,19 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
-                                <div class="input-group">
-                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button>
-                                    </span>
+
+                            <form class="layui-form" >
+                                <div class="col-sm-3">
+                                    <div class="input-group">
+                                        <input type="text" name="txtRecheckID" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                            
+                                        <input type="submit" lay-submit="" lay-filter="btnSearch" class="btn btn-sm btn-primary" value="搜索" />
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
+                            
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                @*<thead>
-                    <tr>
-
-                        <th></th>
-                        <th>主键</th>
-                        <th>立案表ID</th>
-                        <th>复核人ID</th>
-                        <th>复核意见</th>
-                        <th>创建时间</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-
-                </tbody>*@
-                            </table>
                             <table class="table table-striped" id="demo" lay-filter="test"></table>
                         </div>
                         <!--表头工具栏-->
@@ -164,8 +131,14 @@
                                     if (obj.event === 'del') {
                                         layer.confirm('真的删除行么', function (index) {
                                             //console.log(data.id)
-                                            $.post("/layui/delete", { id: data.id }, function (res) {
-                                                alert(res.message);
+                                            $.post("/regaudit/delete", { id: data.id }, function (res) {
+                                                if (res.code = 200) {
+                                                    layer.msg(res.msg)
+                                                    obj.del();
+                                                }
+                                                else {
+                                                    layer.msg(e.msg)
+                                                }
                                             });
                                             obj.del();
                                             layer.close(index);
@@ -175,12 +148,12 @@
                                         layer.open({
                                             title: '编辑',
                                             type: 2,
-                                            content: "/layui/detail/" + data.id,
+                                            content: "/regaudit/detail/" + data.id,
                                             area: ['500px', '400px'],
                                         });
                                     }
                                 });
-                                // 工具栏事件
+                                // 工具栏事件 添加
                                 table.on('toolbar(test)', function (obj) {
                                     
                                     if (obj.event == 'add')
@@ -204,8 +177,8 @@
                                     console.log(data);
                                     table.reload("demo", {
                                         where: {
-                                            name: data.field.txtMovieName,
-                                            type: data.field.txtMovieType
+                                            recheckid: data.field.txtRecheckID,
+                                            
                                         }
                                     })
                                     return false;
@@ -221,30 +194,4 @@
 
    
 
-
-
-    <!-- Peity -->
-    <script src="/assets/hplus/js/plugins/peity/jquery.peity.min.js"></script>
-
-  
-
-
-    <!-- iCheck -->
-    <script src="/assets/hplus/js/plugins/iCheck/icheck.min.js"></script>
-
-    <!-- Peity -->
-    <script src="/assets/hplus/js/demo/peity-demo.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $('.i-checks').iCheck({
-                checkboxClass: 'icheckbox_square-green',
-                radioClass: 'iradio_square-green',
-            });
-        });
-    </script>
-
-</body>
-
-</html>
 

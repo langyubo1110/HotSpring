@@ -7,7 +7,7 @@
 <h2>Detail</h2>
 
 
-<form class="layui-form" action="" lay-filter="movieForm">
+<form class="layui-form" action="" lay-filter="editform">
 
     <div class="layui-form-item">
         <div class="layui-inline">
@@ -63,7 +63,7 @@
             , value: '2024-01-01'
         });
         //提交事件
-        $.post("/reraudit/getmodel", { id: id }, function (res) {
+        $.post("/regaudit/getmodel", { id: id }, function (res) {
             if (res.code == 200) {
                 res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
                 form.val('editform', res.data);
@@ -73,7 +73,7 @@
             console.log(data);
             let obj = data.field;
             if (id == 0) {
-                $.post("/regaudit/insert", { obj: obj }, function (res) {
+                $.post("/regaudit/insert", { regAudit: obj }, function (res) {
                     if (res.code == 200) {
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
@@ -84,7 +84,7 @@
             }
             else {
                 obj.id = id;//把id的值赋给obj  或者用隐藏控件存id
-                $.post("/layui/edit", { movie: obj }, function (res) {
+                $.post("/regaudit/edit", { regAudit: obj }, function (res) {
                     if (res.code == 200) {
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
