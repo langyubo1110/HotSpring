@@ -81,7 +81,7 @@
             , cols: [[ //表头
                 { field: 'id', title: '主键', sort: true, fixed: 'left' }
                 , { field: 'goods_name', title: '商品名称', }
-                , { field: 'goods_number', title: '商品数量', sort: true }
+                , { field: 'goods_number', title: '商品数量'}
                 , { field: 'threshold', title: '阈值' }
                 , { field: 'factory', title: '工厂', }
                 , { field: 'picture', title: '图片', }
@@ -119,7 +119,7 @@
                 layer.open({
                     title: '商品编辑',
                     type: 2,
-                    area: ['500px', '600px'],
+                    area: ['800px', '290px'],
                     content: '/repogoodsstock/detail/' + id
                     //end: function () {
                     //    //table.reload('demo')//table重载
@@ -131,7 +131,7 @@
             layer.open({
                 title: '商品添加',
                 type: 2,
-                area: ['500px', '600px'],
+                area: ['800px', '290px'],
                 content: '/repogoodsstock/detail/'
                 //end: function () {
                 //    //table.reload('demo')//table重载

@@ -10,11 +10,11 @@ namespace HotSpringProjectService.Interface
 {
     public interface IRepoGoodsStockService
     {
-        IQueryable<RepoGoodsStock> GetList();
+        ResMessage GetList(int page,int limit);
         ResMessage Delete(int id);
-        bool Update(RepoGoodsStock repoGoodsStock);
-        bool Add(RepoGoodsStock repoGoodsStock);
-        RepoGoodsStock GetModel(int id);
+        ResMessage Update(RepoGoodsStock repoGoodsStock);
+        ResMessage Add(RepoGoodsStock repoGoodsStock);
+        ResMessage GetModel(int id);
 
     }
 }

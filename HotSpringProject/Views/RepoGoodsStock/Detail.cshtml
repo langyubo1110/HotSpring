@@ -3,64 +3,44 @@
     ViewBag.Title = "Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h3>Detail</h3>
-<form class="layui-form" lay-filter="editform">
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">商品名称</label>
-            <div class="layui-input-inline">
-                <input type="hidden" name="id"/>
-                <input type="text" name="goods_name" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form role="form" class="layui-form form-inline"  lay-filter="editform">
+            <div class="form-group">
+                <input type="hidden" name="id" />
+                商品名称：<input type="text" name="goods_name" lay-verify="required" placeholder="请输入商品名称" class="form-control">
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">商品数量</label>
-            <div class="layui-input-inline">
-                <input type="text" name="goods_number" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            &nbsp;&nbsp;&nbsp;
+            <div class="form-group">
+                图片：<input type="text" name="picture" placeholder="请输入图片名" class="form-control">
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">阈值</label>
-            <div class="layui-input-inline">
-                <input type="text" name="threshold" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            <br /> <br />
+            <div class="form-group">
+                商品数量：<input type="text" name="goods_number" lay-verify="required" placeholder="请输入商品数量" class="form-control">
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">厂家</label>
-            <div class="layui-input-inline">
-                <input type="text" name="factory" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            &nbsp;&nbsp;&nbsp;
+            <div class="form-group">
+                厂家：<input type="text" name="factory" placeholder="请输入厂家" class="form-control">
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">图片</label>
-            <div class="layui-input-inline">
-                <input type="text" name="picture" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            <br /> <br />
+            <div class="form-group">
+                创建时间：<input type="text" name="create_time" lay-verify="required" placeholder="请输入创建时间" class="form-control">
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">创建时间</label>
-            <div class="layui-input-inline">
-                <input type="text" name="create_time"  lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            &nbsp;&nbsp;&nbsp;
+            <div class="form-group">
+                阈值：<input type="text" name="threshold" placeholder="请输入阈值" class="form-control">
             </div>
-        </div>
+            <br /> <br />
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-filter="demo1">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
-    </div>
-</form>
+</div>
+
 <script>
     layui.use(['form', 'util'], function (){
         var form = layui.form;
@@ -69,7 +49,9 @@
         var id =@ViewBag.id;
         $.post("/repogoodsstock/getmodel", { id: id }, function (res) {
             if (res.code == 200) {
+                console.log(1)
                 res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
+                  console.log(res.data)
                 form.val('editform', res.data);
             }
         })
