@@ -19,7 +19,7 @@ namespace HotSpringProject
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             //ÈÝÆ÷×¢²á
-            //AutofacRegister();
+            AutofacRegister();
             //AutoMapper×¢²á
             AutoMapperConfig.Config();
         }

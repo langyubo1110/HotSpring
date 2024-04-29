@@ -10,13 +10,17 @@ namespace HotSpringProject.Entity
 {
     public class HotSpringDbContext:DbContext
     {
-        public HotSpringDbContext() : base("HotSpringString")
+        public readonly object Equipment;
+
+        public HotSpringDbContext() : base("HS")
         {
 
         }
 
-        public DbSet<SystemLogs> SystemLogs { get; set; }
-        public DbSet<EmployEmp> EmployEmps { get; set; }
+        //public DbSet<SystemLogs> SystemLogs { get; set; }
+        //public DbSet<EmployEmp> EmployEmps { get; set; }
+        public DbSet<RepaieTaskReport> RepaieTaskReports { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

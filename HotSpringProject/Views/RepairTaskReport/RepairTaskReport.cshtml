@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "RepairTaskReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/assets/layui/css/modules/laydate/default/laydate.css" rel="stylesheet" />
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label" >输入框</label>
+        <div class="layui-input-block">
+            <input type="text" name="title"  required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">设备名称</label>
+        <div class="layui-input-block">
+            <select name="city" lay-verify="required">
+                <option value="">设备1</option>
+                <option value="0">设备2</option>
+                <option value="1">设备3</option>
+                <option value="2">设备4</option>
+                <option value="3">设备5</option>
+                <option value="4">设备6</option>
+
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">故障内容</label>
+        <div class="layui-input-block">
+          
+            <textarea id="demo" style="display: none;"></textarea>
+
+        </div>
+    </div>
+    <div class="layui-form-item">
+
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    //Demo
+    layui.use(['form','layedit'], function () {
+        var form = layui.form;
+        var layedit = layui.layedit;
+        layedit.build('demo'); //建立编辑器
+        //提交
+        form.on('submit(formDemo)', function (data) {
+            $.post("/repairtaskreport/add", { repaieTaskReport: obj }, function (res) {
+                
+            })
+
+            return false;
+        });
+    });
+</script>
+<script>
+    layui.use(['dropdown', 'util', 'layer', 'table'], function () {
+        var dropdown = layui.dropdown
+            , util = layui.util
+            , layer = layui.layer
+            , table = layui.table
+            , $ = layui.jquery;
+        //下拉框
+        dropdown.render({
+            elem: '#demo2'
+            , data: [{
+                title: 'menu item 1'
+                , id: 101
+            }, {
+                title: 'menu item 2'
+                , id: 102
+            }
+            ]
+            , click: function (obj) {
+                this.elem.val(obj.title);
+            }
+            , style: 'width: 235px;'
+        });
+        //用户点击提交
+        form.on('submit(demo1)', function (data) {
+            $.post("/repairtaskreport/updatestatus", {}, function (res) {
+             
+
+            })
+
+        }) 
+    
+        
+    })
+</script>
