@@ -1,45 +1,46 @@
-﻿@model List<HotSpringProject.Entity.RepoGoodsStock>
+﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "GoodsStock";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>自定义响应式表格</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li>
-                                <a href="table_basic.html#">选项1</a>
-                            </li>
-                            <li>
-                                <a href="table_basic.html#">选项2</a>
-                            </li>
-                        </ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
                 <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <input type="text" name="goods_name" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-sm btn-primary"> 搜索</button>
-                                </span>
-                            </div>
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <form class="layui-form" action="" lay-filter="searchForm">
+                                <div class="layui-form-item">
+                                    <div class="layui-form-item layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="txtSName" placeholder="请输入商品名称" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="txtSThreshold" placeholder="请输入阈值" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="txtSFactory" placeholder="请输入厂家名称" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-inline">
+                                        <button class="layui-btn" lay-submit="" lay-filter="btnSearch">
+                                            <i class="layui-icon layui-icon-search"></i>
+                                            查询
+                                        </button>
+                                        <button type="reset" class="layui-btn">
+                                            <i class="layui-icon layui-icon-refresh"></i>
+                                            重置
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -66,10 +67,11 @@
 
 
 <script>
-    layui.use(['table', 'util', 'layer'], function () {
+    layui.use(['table', 'form', 'util', 'layer'], function () {
         var table = layui.table;
         var util = layui.util;
         var layer = layui.layer;
+        var form = layui.form;
         var $ = layui.jquery;
         //表格渲染
         table.render({
@@ -81,7 +83,7 @@
             , cols: [[ //表头
                 { field: 'id', title: '主键', sort: true, fixed: 'left' }
                 , { field: 'goods_name', title: '商品名称', }
-                , { field: 'goods_number', title: '商品数量'}
+                , { field: 'goods_number', title: '商品数量' }
                 , { field: 'threshold', title: '阈值' }
                 , { field: 'factory', title: '工厂', }
                 , { field: 'picture', title: '图片', }
@@ -119,25 +121,35 @@
                 layer.open({
                     title: '商品编辑',
                     type: 2,
-                    area: ['800px', '290px'],
+                    area: ['800px', '300px'],
                     content: '/repogoodsstock/detail/' + id
-                    //end: function () {
-                    //    //table.reload('demo')//table重载
-                    //}
                 })
             }
         });
         table.on('toolbar(test)', function (obj) {
-            layer.open({
-                title: '商品添加',
-                type: 2,
-                area: ['800px', '290px'],
-                content: '/repogoodsstock/detail/'
-                //end: function () {
-                //    //table.reload('demo')//table重载
-                //}
-            })
+            if (obj.event == "add")
+            {
+                layer.open({
+                    title: '商品添加',
+                    type: 2,
+                    area: ['800px', '300px'],
+                    content: '/repogoodsstock/detail/'
+                })
+            }
         })
+        //搜索工具栏
+        form.on('submit(btnSearch)', function (data) {
+            //表格重载 where 再加一个参数name
+            console.log(data)
+            table.reload('demo', {
+                where: {
+                    goods_name: data.field.txtSName,
+                    threshold: data.field.txtSThreshold,
+                    factory: data.field.txtSFactory
+                }
+            })
+             return false;
+        });
     })
 </script>
 

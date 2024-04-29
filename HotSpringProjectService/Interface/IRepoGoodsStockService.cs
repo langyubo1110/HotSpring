@@ -1,6 +1,7 @@
 ﻿
 using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace HotSpringProjectService.Interface
 {
     public interface IRepoGoodsStockService
     {
-        ResMessage GetList(int page,int limit);
+        ResMessage GetList(int page,int limit,RepoGoodsStockFilter repoGoodsStockFilter);
         ResMessage Delete(int id);
         ResMessage Update(RepoGoodsStock repoGoodsStock);
         ResMessage Add(RepoGoodsStock repoGoodsStock);

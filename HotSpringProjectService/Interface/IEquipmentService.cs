@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using DotNet.Utilities;
 
-
 namespace HotSpringProjectService.Interface
 {
     public interface IEquipmentService

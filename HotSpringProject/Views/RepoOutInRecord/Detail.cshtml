@@ -13,23 +13,22 @@
             </div>
             &emsp;&emsp;&emsp;  &emsp;&emsp;
             <div class="form-group">
-                图片：<input type="text" name="picture" placeholder="请输入图片名" class="form-control layui-input">
+                单价：<input type="text" name="price" placeholder="请输入商品单价" class="form-control layui-input">
             </div>
             <br /> <br />
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
-                商品数量：<input type="text" name="goods_number" lay-verify="required" placeholder="请输入商品数量" class="form-control">
+                入库数量：<input type="text" name="goods_number" lay-verify="required" placeholder="请输入入库数量" class="form-control">
             </div>
             &emsp;&emsp;&emsp;  &emsp;&emsp;
             <div class="form-group">
-                厂家：<input type="text" name="factory" placeholder="请输入厂家" class="form-control">
+                阈值：<input type="text" name="outin_person_id" placeholder="请输入阈值" class="form-control">
             </div>
             <br /> <br />
-                   <div class="form-group">
-                       &emsp;&emsp;&emsp;  &emsp;&emsp;
-                       阈值：  &emsp;&nbsp;&nbsp;&nbsp;<input type="text" name="threshold" placeholder="请输入阈值" class="form-control">
-                   </div>
-            <br /> <br />
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                库存数量：<input type="text" name="goods_number" lay-verify="required" placeholder="请输入入库数量" class="form-control">
+            </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;
@@ -47,7 +46,7 @@
         var util = layui.util;
         var $ = layui.jquery;
         var id =@ViewBag.id;
-        $.post("/repogoodsstock/getmodel", { id: id }, function (res) {
+        $.post("/repooutinrecord/getmodel", { id: id }, function (res) {
             if (res.code == 200) {
                 res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
                 form.val('editform', res.data);
@@ -55,7 +54,7 @@
         })
         form.on('submit(demo1)', function (data) {
             if (id == 0) {
-                $.post("/repogoodsstock/add", { repoGoodsStock: data.field }, function (res) {
+                $.post("/repooutinrecord/add", { repoOutInRecord: data.field }, function (res) {
                     console.log(res)
                     if (res.code == 200)
                     {
@@ -68,7 +67,7 @@
             }
             else
             {
-                $.post("/repogoodsstock/update", { repoGoodsStock: data.field }, function (res) {
+                $.post("/repooutinrecord/update", { repoOutInRecord: data.field }, function (res) {
                     console.log(res)
                     if (res.code == 200) {
                         //找到父页面的自己  拿到index 让父页面关掉自己
