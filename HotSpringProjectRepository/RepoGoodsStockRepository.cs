@@ -29,14 +29,14 @@ namespace HotSpringProjectRepository
         //删除
         public int Delete(int id)
         {
-            RepoGoodsStock repoGoodsStock = _Db.Repo_Goods_Stock.Find(id);
+            RepoGoodsStock repoGoodsStock = _Db.RepoGoodsStock.Find(id);
             _Db.Entry(repoGoodsStock).State = System.Data.Entity.EntityState.Deleted;
             int flag = _Db.SaveChanges();
             return flag;
         }
         //查全表
         public IQueryable<RepoGoodsStock> GetList() {
-            IQueryable<RepoGoodsStock> list = _Db.Repo_Goods_Stock;
+            IQueryable<RepoGoodsStock> list = _Db.RepoGoodsStock;
             return list;
         }
         //更新
@@ -51,7 +51,7 @@ namespace HotSpringProjectRepository
         //获得实体
         public RepoGoodsStock GetModel(int id)
         {
-            RepoGoodsStock repoGoodsStock = _Db.Repo_Goods_Stock.Find(id);
+            RepoGoodsStock repoGoodsStock = _Db.RepoGoodsStock.Find(id);
             return repoGoodsStock;
         }
     }

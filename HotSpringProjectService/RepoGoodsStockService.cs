@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DotNet.Utilities;
+using HotSpringProject.Entity.VO;
 namespace HotSpringProjectService
 {
     public class RepoGoodsStockService: IRepoGoodsStockService
@@ -19,6 +20,7 @@ namespace HotSpringProjectService
 
         public ResMessage Add(RepoGoodsStock repoGoodsStock)
         {
+            repoGoodsStock.create_time = DateTime.Now;
             bool result = _repoGoodsStockRepository.Add(repoGoodsStock);
             if (result)
             {
@@ -33,9 +35,21 @@ namespace HotSpringProjectService
             return flag>0 ? ResMessage.Success("删除成功",null,flag):ResMessage.Fail("删除失败");
         }
 
-        public ResMessage GetList(int page,int limit)
+        public ResMessage GetList(int page,int limit,RepoGoodsStockFilter filter)
         {
             IQueryable<RepoGoodsStock> list = _repoGoodsStockRepository.GetList();
+            if (!String.IsNullOrEmpty(filter.goods_name)) 
+            {
+                list = list.Where(x => x.goods_name.Contains(filter.goods_name));
+            }
+            if (!String.IsNullOrEmpty(filter.threshold)) 
+            {
+                list = list.Where(x => x.threshold.Contains(filter.threshold));
+            }
+            if (!String.IsNullOrEmpty(filter.factory))
+            {
+                list = list.Where(x => x.factory.Contains(filter.factory));
+            }
             int count = list.Count();
             List<RepoGoodsStock> result = list.OrderBy(x => x.id).Skip((page - 1) * limit).Take(limit).ToList();
             return result!=null?ResMessage.Success(result,count):ResMessage.Fail();
@@ -56,6 +70,7 @@ namespace HotSpringProjectService
 
         public ResMessage Update(RepoGoodsStock repoGoodsStock)
         {
+            repoGoodsStock.create_time = DateTime.Now;
             bool result = _repoGoodsStockRepository.Update(repoGoodsStock);
             if (result)
             {
