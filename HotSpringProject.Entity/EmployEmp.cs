@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HotSpringProject.Entity
 {
+    [Table("Employ_Emp")]
     public class EmployEmp
     {
         public int id {  get; set; }
@@ -20,8 +22,6 @@ namespace HotSpringProject.Entity
         public DateTime create_time { get; set; }
         public int role_id { get; set; }
         public string job_number { get; set; }
-
-
 
     }
 }

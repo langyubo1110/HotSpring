@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectRepository
 {
-    public class SystemLogsRepository : ISystemLogsRepository
+    public class SystemLogsRepository:ISystemLogsRepository
     {
         private readonly HotSpringDbContext _db;
 

@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewBag.Title = "detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form class="layui-form" action="" lay-filter="movieForm">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">设备名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">位置</label>
+            <div class="layui-input-inline">
+                <input type="text" name="location" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-inline">
+                <input type="text" name="status" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">功率</label>
+            <div class="layui-input-inline">
+                <input type="text" name="power" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">投入时长</label>
+            <div class="layui-input-inline">
+                <input type="text" name="used_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">设备类型</label>
+            <div class="layui-input-inline">
+                <input type="text" name="equ_type" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="create_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+        //注册from组件
+        layui.use(['form', 'util'], function () {
+        //实例化
+        var form = layui.form;
+        var util = layui.util;
+        //form加载
+        var id =@ViewBag.Id;
+            //表单赋值
+        $.post("/equipment/getequip", { id: id }, function (res) {
+             if (res.code == 200) {
+                    res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
+                    //赋值
+                    form.val('movieForm', res.data);
+             }
+        })
+        //提交事件
+        form.on('submit(demo1)', function (data) {
+            let obj = data.field
+        //修改
+        if (id == 0) {
+            //ajax请求添加
+            $.post("/equipment/add", { equipment: obj }, function (res) {
+                if (res.code == 200) {
+                    //插入成功，关闭layer
+                    //找到父页面的自己  拿到index 让父页面关掉自己
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                }
+            })
+        }
+        else {
+            obj.id = id
+            $.post("/equipment/edit", { equipment: obj }, function (res) {
+                    if (res.code == 200) {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    }
+                })
+            }
+        return false;
+        });
+
+    })
+
+</script>
+

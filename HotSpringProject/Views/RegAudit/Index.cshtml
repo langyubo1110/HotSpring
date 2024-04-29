@@ -1,0 +1,197 @@
+﻿@*@model List<HotSpringProject.Entity.RegAudit>*@
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>自定义响应式表格</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li>
+                                    <a href="table_basic.html#">选项1</a>
+                                </li>
+                                <li>
+                                    <a href="table_basic.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-5 m-b-xs">
+                                <select class="input-sm form-control input-s-sm inline">
+                                    <option value="0">请选择</option>
+                                    <option value="1">选项1</option>
+                                    <option value="2">选项2</option>
+                                    <option value="3">选项3</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4 m-b-xs">
+                                <div data-toggle="buttons" class="btn-group">
+                                    <label class="btn btn-sm btn-white">
+                                        <input type="radio" id="option1" name="options">天
+                                    </label>
+                                    <label class="btn btn-sm btn-white active">
+                                        <input type="radio" id="option2" name="options">周
+                                    </label>
+                                    <label class="btn btn-sm btn-white">
+                                        <input type="radio" id="option3" name="options">月
+                                    </label>
+                                </div>
+                            </div>
+
+                            <form class="layui-form" >
+                                <div class="col-sm-3">
+                                    <div class="input-group">
+                                        <input type="text" name="txtRecheckID" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                            
+                                        <input type="submit" lay-submit="" lay-filter="btnSearch" class="btn btn-sm btn-primary" value="搜索" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                        </div>
+                            <table class="table table-striped" id="demo" lay-filter="test"></table>
+                        </div>
+                        <!--表头工具栏-->
+                        <script type="text/html" id="toolbarDemo">
+                            <div class="layui-btn-container">
+                                <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+
+                            </div>
+                        </script>
+                        <!--js模板行单元格-->
+                        <script type="text/html" id="barDemo">
+                            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                        </script>
+                        <script>
+                            layui.use(['table', 'util', 'layer', 'form', 'tree'], function () {
+                                var table = layui.table;
+                                var util = layui.util;
+                                var layer = layui.layer;
+                                var form = layui.form;
+                                var tree = layui.tree;
+                                //展示已知数据
+                                table.render({
+                                    elem: '#demo'
+                                    //分页
+                                    , response: {
+                                        statusName: 'code' //规定数据状态的字段名称，默认：code
+                                        , statusCode: 200 //规定成功的状态码，默认：0
+                                        , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                                        , countName: 'count' //规定数据总数的字段名称，默认：count
+                                        , dataName: 'data' //规定数据列表的字段名称，默认：data
+                                    }
+                                    , page: {
+                                        page: 1,
+                                        limit: 4
+                                    }
+                                    , toolbar: '#toolbarDemo' //开启表格工具栏
+                                    , cols: [[ //标题栏
+                                        { field: 'id', title: '主键', width: 80, sort: true }
+                                        , { field: 'reg_equip_reaearch_id', title: '立案表ID', width: 120 }
+                                        , { field: 'recheck_id', title: '复核人ID', minWidth: 150 }
+                                        , { field: 'recheck_opin', title: '复核人意见', minWidth: 150 }
+                                        , {
+                                            field: 'create_time', title: '创建时间'
+                                            , templet: function (d) {
+                                                return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                                            }
+                                        }
+                                        , { title: '操作', toolbar: "#barDemo" }
+                                    ]]
+                                    , url: '/regaudit/regauditlist'
+                                    , skin: 'line' //表格风格
+                                    //, even: true
+                                    //,page: true //是否显示分页
+                                    //,limits: [5, 7, 10]
+                                    //,limit: 5 //每页默认显示的数量
+                                });
+                                //单元格监听事件
+                                table.on('tool(test)', function (obj) { // 双击 toolDouble
+                                    var data = obj.data;
+                                    //console.log(obj)
+                                    if (obj.event === 'del') {
+                                        layer.confirm('真的删除行么', function (index) {
+                                            //console.log(data.id)
+                                            $.post("/regaudit/delete", { id: data.id }, function (res) {
+                                                if (res.code = 200) {
+                                                    layer.msg(res.msg)
+                                                    obj.del();
+                                                }
+                                                else {
+                                                    layer.msg(e.msg)
+                                                }
+                                            });
+                                            obj.del();
+                                            layer.close(index);
+                                        });
+                                    } else if (obj.event == 'edit') {
+                                        //console.log(obj.event);
+                                        layer.open({
+                                            title: '编辑',
+                                            type: 2,
+                                            content: "/regaudit/detail/" + data.id,
+                                            area: ['500px', '400px'],
+                                        });
+                                    }
+                                });
+                                // 工具栏事件 添加
+                                table.on('toolbar(test)', function (obj) {
+                                    
+                                    if (obj.event == 'add')
+                                    //添加 弹出层
+                                    {
+                                        console.log(obj)
+                                        let index = layer.open({
+                                            type: 2,
+                                            content: "/regaudit/detail",
+                                            area: ['500px', '500px'],
+                                            //方案一 当弹出层关闭就重载
+                                            //end: function () {
+                                            //    table.reload("demo")
+                                            //}
+                                            
+                                        })
+                                    }
+                                });
+                                //搜索框
+                                form.on('submit(btnSearch)', function (data) {
+                                    console.log(data);
+                                    table.reload("demo", {
+                                        where: {
+                                            recheckid: data.field.txtRecheckID,
+                                            
+                                        }
+                                    })
+                                    return false;
+                                })
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+   
+
+

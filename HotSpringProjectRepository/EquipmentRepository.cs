@@ -12,9 +12,9 @@ namespace HotSpringProjectRepository
     {
         private readonly HotSpringDbContext _db;
         //构造函数注入
-        public EquipmentRepository(HotSpringDbContext HotSpringDbContext)
+        public EquipmentRepository(HotSpringDbContext HotSpringDbContext) 
         {
-            _db = HotSpringDbContext;
+            _db= HotSpringDbContext;
         }
         //增
         public int Add(Equipment equ)
@@ -26,7 +26,7 @@ namespace HotSpringProjectRepository
         //删
         public bool Delete(int id)
         {
-            Equipment equipment = _db.Equipment.Find(id);
+            Equipment equipment=_db.Equipment.Find(id);
             if (equipment != null)
             {
                 _db.Entry(equipment).State = System.Data.Entity.EntityState.Deleted;
@@ -38,7 +38,7 @@ namespace HotSpringProjectRepository
         //查全表
         public IEnumerable<Equipment> GetListByPager()
         {
-            IEnumerable<Equipment> list = _db.Equipment;
+            IEnumerable<Equipment> list =_db.Equipment;
             return list;
         }
 
@@ -52,7 +52,7 @@ namespace HotSpringProjectRepository
         public int Update(Equipment equ)
         {
             _db.Entry(equ).State = System.Data.Entity.EntityState.Modified;
-            int flag = _db.SaveChanges();
+            int flag= _db.SaveChanges();
             return flag;
         }
     }
