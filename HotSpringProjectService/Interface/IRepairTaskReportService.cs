@@ -9,11 +9,12 @@ namespace HotSpringProjectService.Interface
 {
     public interface IRepairTaskReportService
     { 
-        ResMessage getlist(int page,int limit);
-        bool delete(int id);
-        ResMessage update(RepaieTaskReport repaieTaskReport);
+        ResMessage GetList(int page,int limit);
+        bool Delete(int id);
+        ResMessage UpDate(RepaieTaskReport repaieTaskReport);
 
-        ResMessage add(RepaieTaskReport repaieTaskReport);
-        ResMessage getmodel(int id);
+        ResMessage Add(RepaieTaskReport repaieTaskReport);
+        ResMessage GetModel(int id);
+        ResMessage GetEqumentName(int id);
     }
 }

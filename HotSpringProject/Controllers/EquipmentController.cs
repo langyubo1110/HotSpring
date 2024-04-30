@@ -43,7 +43,7 @@ namespace HotSpringProject.Controllers
         #region 接口
         public JsonResult Query(EquipmentFilter filter)
         {
-            return Json(_equipmentService.GetListByPager(filter), JsonRequestBehavior.AllowGet);
+            return Json(_equipmentService.GetList(filter), JsonRequestBehavior.AllowGet);
         }
 
         //删除

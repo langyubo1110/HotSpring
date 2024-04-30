@@ -10,11 +10,11 @@ namespace HotSpringProjectRepository
     public class RepairTaskReportRepository:IRepairTaskReportRepository
     {
         private readonly HotSpringDbContext _Db;
-
+        
         public RepairTaskReportRepository(HotSpringDbContext hotSpringDbContext) { 
-        _Db= hotSpringDbContext;
+        _Db = hotSpringDbContext;
         }
-
+       
         public int add(RepaieTaskReport repaieTaskReport)
         {
             _Db.Entry<RepaieTaskReport>(repaieTaskReport).State=System.Data.Entity.EntityState.Added;
@@ -35,6 +35,7 @@ namespace HotSpringProjectRepository
           IQueryable<RepaieTaskReport> list =_Db.RepaieTaskReports;
             return list;
         }
+       
 
         public RepaieTaskReport getmodel(int id)
         {
@@ -47,5 +48,11 @@ namespace HotSpringProjectRepository
             int flag=_Db.SaveChanges();
             return flag;
         }
+        public IEnumerable<string> GetAllEquipmentNames()
+        {
+            IEnumerable<string> names = _Db.Equipment.Select(e => e.name);
+            return names;
+        }
+
     }
 }

@@ -7,29 +7,31 @@ using DotNet.Utilities;
 using HotSpringProject.Entity;
 using HotSpringProjectService.Interface;
 using HotSpringProjectRepository.Interface;
+using System.Runtime.Remoting.Messaging;
 namespace HotSpringProjectService
 {
     public class RepairTaskReportService:IRepairTaskReportService
     {
         private readonly IRepairTaskReportRepository _repairTaskReportRepository;
+        private readonly IEquipmentRepository _equipmentRepository;
 
-        public RepairTaskReportService(IRepairTaskReportRepository repairTaskReportRepository) {
+        public RepairTaskReportService(IRepairTaskReportRepository repairTaskReportRepository,IEquipmentRepository equipmentRepository) {
             _repairTaskReportRepository = repairTaskReportRepository;
-
+            _equipmentRepository = equipmentRepository;
         }
-
-        public ResMessage add(RepaieTaskReport repaieTaskReport)
+        
+        public ResMessage Add(RepaieTaskReport repaieTaskReport)
         {
             return _repairTaskReportRepository.add(repaieTaskReport)>  0 ? ResMessage.Success():ResMessage.Fail(); 
         }
 
-        public bool delete(int id)
+        public bool Delete(int id)
         {   
             return _repairTaskReportRepository.delete(id)>0? true: false;
           
         }
 
-        public ResMessage getlist(int page,int limit)
+        public ResMessage GetList(int page,int limit)
         {
             IQueryable<RepaieTaskReport> list=_repairTaskReportRepository.getlist();
             int count = list.Count();
@@ -37,23 +39,34 @@ namespace HotSpringProjectService
             return list == null ? ResMessage.Fail() : ResMessage.Success(list1,count);
         }
 
-        public ResMessage getmodel(int id)
+        public ResMessage GetModel(int id)
         {
             RepaieTaskReport repaieTaskReport=_repairTaskReportRepository.getmodel(id);
             return repaieTaskReport!=null? ResMessage.Success(repaieTaskReport) : ResMessage.Fail();
         }
 
-        public ResMessage update(RepaieTaskReport repaieTaskReport)
+        public ResMessage UpDate(RepaieTaskReport repaieTaskReport)
         {
 
             return _repairTaskReportRepository.update(repaieTaskReport) > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
         //更新设备表的设备状态为停用
-       // public ResMessage updatestatus(Equipment equipment)
-       //{
-           // int id=equipment.id;
-          //  Equipment existingEquipment =_  // 获取设备对象
+       
+        //public int UpdateEquipmentStatus(int equipmentId)
+        //{
+        //    return _equipmentRepository.UpdateStatus(equipmentId);
+        //}
 
-       // }
+        //public ResMessage GetEquipName()
+        //{
+        //    List<string> EquipmentName = _equipmentRepository.GetList().Select(x => x.name).ToList();
+        //    return ResMessage.Success(EquipmentName);
+        //}
+
+        public ResMessage GetEqumentName()
+        {
+            List<string> EquipmentName = _equipmentRepository.GetList().Select(x => x.name).ToList();
+            return ResMessage.Success(EquipmentName); 
+        }
     }
 }

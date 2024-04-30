@@ -36,7 +36,7 @@ namespace HotSpringProjectRepository
             return false;
         }
         //查全表
-        public IEnumerable<Equipment> GetListByPager()
+        public IEnumerable<Equipment> GetList()
         {
             IEnumerable<Equipment> list =_db.Equipment;
             return list;
@@ -54,6 +54,20 @@ namespace HotSpringProjectRepository
             _db.Entry(equ).State = System.Data.Entity.EntityState.Modified;
             int flag= _db.SaveChanges();
             return flag;
+        }
+        //更新设备状态
+       public int UpdateStatus(int id)
+        {
+            Equipment equipment = _db.Equipment.Find(id);
+
+            if (equipment != null)
+            {
+                equipment.status = "停用";
+                _db.Entry(equipment).State = System.Data.Entity.EntityState.Modified;
+                return _db.SaveChanges();
+            }
+
+            return 0;
         }
     }
 }

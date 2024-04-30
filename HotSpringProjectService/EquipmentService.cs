@@ -37,13 +37,13 @@ namespace HotSpringProjectService
         {
            Equipment equipment=_equipmentRepository.GetModel(id);
            if (equipment != null)
-                return ResMessage.Success(equipment);
+           return ResMessage.Success(equipment);
            else return ResMessage.Fail();
         }
         //分页
-        public ResMessage GetListByPager(EquipmentFilter filter)
+        public ResMessage GetList(EquipmentFilter filter)
         {
-            IEnumerable<Equipment> list = _equipmentRepository.GetListByPager();
+            IEnumerable<Equipment> list = _equipmentRepository.GetList();
             int count = 0;
             list = MakeQuery(list, filter, out count);
             return ResMessage.Success(list, count);

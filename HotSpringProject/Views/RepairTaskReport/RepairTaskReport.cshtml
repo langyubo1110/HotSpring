@@ -12,21 +12,19 @@
             <input type="text" name="title"  required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
         </div>
     </div>
-    
+   
     <div class="layui-form-item">
         <label class="layui-form-label">设备名称</label>
         <div class="layui-input-block">
             <select name="city" lay-verify="required">
-                <option value="">设备1</option>
-                <option value="0">设备2</option>
-                <option value="1">设备3</option>
-                <option value="2">设备4</option>
-                <option value="3">设备5</option>
-                <option value="4">设备6</option>
+                @foreach (var item in ViewBag.equipmentNames)
+                {
+                    <option value="@item.id">@item.name</option>
+                }
             </select>
         </div>
     </div>
-
+   
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">故障内容</label>
         <div class="layui-input-block">
@@ -63,37 +61,17 @@
     });
 </script>
 <script>
-    layui.use(['dropdown', 'util', 'layer', 'table'], function () {
+    layui.use(['dropdown', 'util'], function () {
         var dropdown = layui.dropdown
-            , util = layui.util
-            , layer = layui.layer
-            , table = layui.table
+            , util = layui.util        
             , $ = layui.jquery;
-        //下拉框
-        dropdown.render({
-            elem: '#demo2'
-            , data: [{
-                title: 'menu item 1'
-                , id: 101
-            }, {
-                title: 'menu item 2'
-                , id: 102
-            }
-            ]
-            , click: function (obj) {
-                this.elem.val(obj.title);
-            }
-            , style: 'width: 235px;'
-        });
+                       
+       
         //用户点击提交
         form.on('submit(demo1)', function (data) {
             $.post("/repairtaskreport/updatestatus", {}, function (res) {
-             
-
             })
 
         }) 
-    
-        
     })
 </script>
