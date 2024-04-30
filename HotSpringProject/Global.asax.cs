@@ -22,7 +22,7 @@ namespace HotSpringProject
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             //ÈÝÆ÷×¢²á
             AutofacRegister();
-            GlobalFilters.Filters.Add(new AuthorizationFilter());
+            //GlobalFilters.Filters.Add(new AuthorizationFilter());
             AutoMapperConfig.Config();
             
         }

@@ -55,7 +55,6 @@ namespace HotSpringProject.Filter
                         }
                         else
                         {
-                            // 如果页面状态不为 1，则重定向到登录页面或其他错误页面
                             filterContext.Result = new RedirectResult("/Default/Login");
                         }
                     }
