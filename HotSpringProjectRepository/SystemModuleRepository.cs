@@ -18,9 +18,9 @@ namespace HotSpringProjectRepository
         }
 
 
-        public List<SystemModule> GetList()
+        public IEnumerable<SystemModule> GetList()
         {
-            return _db.SystemModules.ToList();
+            return _db.SystemModules;
         }
 
     }

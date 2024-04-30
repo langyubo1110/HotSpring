@@ -1,15 +1,16 @@
-﻿@model List<HotSpringProject.Entity.EmployEmp>
+﻿
 @{
-    ViewBag.Title = "EmployManager";
+    ViewBag.Title = "PagesManager";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<form class="layui-form" name="movieform">
+
+<form class="layui-form" name="Pagesform">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>员工管理</h5>
+                        <h5>页面管理</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -68,6 +69,7 @@
 <!--js模板行单元格-->
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
 <script>
@@ -81,7 +83,7 @@
         //3.渲染一个表格实例
         table.render({
             elem: '#demo'
-            , url: '/EmployEmp/Employ'
+            , url: '/SystemPages/Pages'
             , response: {
                 statusName: 'code' //规定数据状态的字段名称，默认：code
                 , statusCode: 200 //规定成功的状态码，默认：0
@@ -96,30 +98,8 @@
             , toolbar: '#toolbarDemo'
             , cols: [[
                 { field: 'id', title: '主键', sort: true, fixed: 'left' }
-                , { field: 'name', title: '姓名' }
-                , {
-                    field: 'gendar', title: '性别', templet: function (d) {
-                        return d.gendar === 0 ? '男' : '女';
-                    }
-                }
-                , { field: 'identity_card', title: '身份证' }
-                , { field: 'avator', title: '头像' }
-                , {
-                    field: 'onboarding_time', title: '入职时间', templet: function (d) {
-                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                    }
-                }
-                , {
-                    field: 'account_status', title: '账号状态', templet: function (d) {
-                        return d.gendar === 0 ? '已注销' : '未注销';
-                    }
-                }
-                , { field: 'log_count', title: '登录次数' }
-                , {
-                    field: 'last_log_time', title: '最后登陆时间', templet: function (d) {
-                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                    }
-                }
+                , { field: 'page_name', title: '页面名' }
+                , { field: 'icon', title: '图标' }
                 , {
                     field: 'create_time', title: '创建时间'
                     , templet: function (d) {
@@ -127,10 +107,11 @@
                     }
                 }
                 , {
-                    field: 'role_id', title: '角色ID', templet: function (d) {
-                        return d.gendar === 0 ? '员工' : '管理员'
-                    }}
-                , { field: 'job_number', title: '工号' }
+                    field: 'module_id', title: '模块ID'  
+                }
+                , {
+                    field: 'module_name', title: '模块名称'
+                }
                 , { title: '操作', toolbar: "#barDemo" }
             ]]
         });
@@ -139,7 +120,7 @@
             var id = obj.data.id;
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (EmployManager) {
-                    $.post("/EmployEmp/del?id=" + id, function (res) {
+                    $.post("/SystemPages/del?id=" + id, function (res) {
                         if (res.code === 200) {
                             layer.msg('删除成功');
                             obj.del();
@@ -154,18 +135,18 @@
                 layer.open({
                     title: '员工xi',
                     type: 2,
-                    content: "/EmployEmp/detail?id=" + id,
-                    area: ['500px', '600px']
+                    content: "/SystemPages/detail?id=" + id,
+                    area: ['500px', '550px']
                 });
             }
         })
         // 工具栏事件
         table.on('toolbar(test)', function (obj) {
             layer.open({
-                title: '员工添加',
+                title: '页面添加',
                 type: 2,
-                area: ['500px', '600px'],
-                content: '/EmployEmp/detail/'
+                area: ['500px', '550px'],
+                content: '/SystemPages/detail/'
             })
         });
         //搜索表单
@@ -182,7 +163,5 @@
         })
     })
 </script>
-
-
 
 

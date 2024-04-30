@@ -39,20 +39,14 @@
             </div>
             <h3>欢迎使用 H+</h3>
 
-            <form class="m-t" role="form" action="/default/index">
+            <form method="post" action="/default/Loginverify">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="用户名" required="">
+                    <input type="text" class="form-control" placeholder="用户名" name="txtName" required="">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="密码" required="">
+                    <input type="password" class="form-control" placeholder="密码" name="txtPassword" required="">
                 </div>
-                <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
-
-
-                <p class="text-muted text-center">
-                    <a href="login.html#"><small>忘记密码了？</small></a> | <a href="register.html">注册一个新账号</a>
-                </p>
-
+                <button class="btn btn-primary block full-width m-b" >登 录</button>
             </form>
         </div>
     </div>
@@ -62,43 +56,6 @@
     <script src="/assets/hplus/js/bootstrap.min.js"></script>
 
     <!-- Code injected by live-server -->
-    <script>
-	// <![CDATA[  <-- For SVG support
-	if ('WebSocket' in window) {
-		(function () {
-			function refreshCSS() {
-				var sheets = [].slice.call(document.getElementsByTagName("link"));
-				var head = document.getElementsByTagName("head")[0];
-				for (var i = 0; i < sheets.length; ++i) {
-					var elem = sheets[i];
-					var parent = elem.parentElement || head;
-					parent.removeChild(elem);
-					var rel = elem.rel;
-					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-					}
-					parent.appendChild(elem);
-				}
-			}
-			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-			var address = protocol + window.location.host + window.location.pathname + '/ws';
-			var socket = new WebSocket(address);
-			socket.onmessage = function (msg) {
-				if (msg.data == 'reload') window.location.reload();
-				else if (msg.data == 'refreshcss') refreshCSS();
-			};
-			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-				console.log('Live reload enabled.');
-				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-			}
-		})();
-	}
-	else {
-		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-	}
-	// ]]>
-    </script>
 </body>
 
 </html>

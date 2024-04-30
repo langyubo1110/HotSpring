@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace HotSpringProjectService
 {
@@ -17,7 +18,7 @@ namespace HotSpringProjectService
     {
         private readonly IEmployEmpRepository _EmployEmpRepository;
 
-        public EmployEmpService(IEmployEmpRepository employemprepository)
+        public EmployEmpService(IEmployEmpRepository employemprepository )
         {
             _EmployEmpRepository = employemprepository;
         }
@@ -26,6 +27,7 @@ namespace HotSpringProjectService
             employemp.onboarding_time = DateTime.Now;
             employemp.create_time = DateTime.Now;
             employemp.account_status = 1;
+            employemp.last_log_time = DateTime.Now;
             int flag = _EmployEmpRepository.Add(employemp);
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
@@ -78,10 +80,29 @@ namespace HotSpringProjectService
             return model != null ? ResMessage.Success(model) : ResMessage.Fail();
         }
 
-        public ResMessage Update(EmployEmp employemp)
+        public ResMessage Update(EmployEmp employemp, bool isLoginRequest = false)
         {
+            if (isLoginRequest==true)
+            {
+                DateTime currentDateTime = DateTime.Now;
+                employemp.log_count += 1;
+                employemp.last_log_time = currentDateTime;
+            }
+            else
+            {
+                employemp.onboarding_time = DateTime.Now;
+                employemp.create_time = DateTime.Now;
+                employemp.account_status = 1;
+                employemp.last_log_time = DateTime.Now;
+            }
             bool flag = _EmployEmpRepository.Update(employemp);
             return flag ? ResMessage.Success() : ResMessage.Fail();
         }
+
+        public bool Verify(string username, string password)
+        {
+            return _EmployEmpRepository.Varfy(username, password);
+        }
+
     }
 }

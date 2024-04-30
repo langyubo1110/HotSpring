@@ -1,4 +1,4 @@
-﻿@model List<HotSpringProject.Entity.SystemModule>
+﻿@model List<HotSpringProject.Entity.MenuVO>
 @{
     Layout = null;
 }
@@ -49,19 +49,19 @@
                         @foreach (var item in Model)
                         {
                             <li>
-                                <a class="J_menuItem" href=" "><i class="fa fa-magic"></i> <span class="nav-label">@item.module_name</span></a>
-                                @*<ul class="nav nav-second-level">
-                                    @foreach (var p in item.pages)
+                                <a class="J_menuItem" href="/user/child"><i class="fa fa-magic"></i> <span class="nav-label">@item.module_name</span></a>
+                                <ul class="nav nav-second-level">
+                                    @foreach (var p in item.page_list)
                                     {
-                                        <li><a class="J_menuItem" href="mailbox.html">@p.page_name</a></li>
+                                        <li><a class="J_menuItem" href="@p.page_address">@p.page_name</a></li>
                                     }
-                                </ul>*@
+
+                                </ul>
                             </li>
 
                         }
-                                            
-                    </ul>
-                </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 919px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.9; z-index: 90; right: 1px;"></div>
+                        </ul>
+</div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 919px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.9; z-index: 90; right: 1px;"></div>
             </div>
         </nav>
         <!--左侧导航结束-->
