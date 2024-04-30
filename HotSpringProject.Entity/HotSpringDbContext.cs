@@ -21,6 +21,8 @@ namespace HotSpringProject.Entity
         public DbSet<SystemModule> SystemModules { get; set; }
         public DbSet<RepoGoodsStock> Repo_Goods_Stock { get; set; }
         public DbSet<RegAudit> regAudit { get; set; }
+        public DbSet<EquipType> Equiptype { get; set; }
+        public DbSet<RegEquipRes> RegEquipRes { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

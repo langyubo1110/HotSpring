@@ -41,7 +41,7 @@ namespace HotSpringProjectRepository
 
         }
 
-        public IEnumerable<EmployEmp> GetList()
+        public List<EmployEmp> GetList()
         {
                 return _db.EmployEmps.ToList();
         }
