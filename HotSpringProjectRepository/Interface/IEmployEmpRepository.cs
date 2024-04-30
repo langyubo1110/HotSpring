@@ -10,7 +10,7 @@ namespace HotSpringProjectRepository.Interface
 {
     public interface IEmployEmpRepository
     {
-        List<EmployEmp> GetList();
+        IEnumerable<EmployEmp> GetList();
         int Add(EmployEmp employemp);
         bool Update(EmployEmp employemp);
         bool Delete(int id);
