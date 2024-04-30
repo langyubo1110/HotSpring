@@ -151,6 +151,10 @@ namespace HotSpringProjectService
         //更新
         public ResMessage Update(Equipment equipment)
         {
+            int id=equipment.id;
+            List<Equipment> list = _equipmentRepository.QueryBySql<Equipment>($"select * from Equ_Equipment where id={id}").ToList();
+            equipment.create_time = list[0].create_time;
+            equipment.used_time = list[0].used_time;
             int flag = _equipmentRepository.Update(equipment);
             return flag>0 ? ResMessage.Success() : ResMessage.Fail();
         }

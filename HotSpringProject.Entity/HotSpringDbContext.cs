@@ -23,7 +23,11 @@ namespace HotSpringProject.Entity
         public DbSet<RepoOutInRecord> RepoOutInRecord { get; set; }
         public DbSet<RegAudit> regAudit { get; set; }
         public DbSet<EmployEmp> EmployEmps { get; set; }
+        public DbSet<EquipType> EquipType { get; set; }
+        public DbSet<RegEquipRes> RegEquipRes { get; set; }
+        public DbSet<EquUpkeepPlan> EquUpkeepPlan { get; set; }
         public DbSet<SystemPageCorrespondence> SystemPageCorrespondence { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

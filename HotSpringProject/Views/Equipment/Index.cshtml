@@ -30,7 +30,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 设备类型:
                                 <div class="layui-input-inline">
                                     <select name="type">
@@ -42,7 +42,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-5">
                                 <div class="layui-inline">
                                     <label class="layui-form-label">日期</label>
                                     <div class="layui-inline" id="date" lay-key="7">
@@ -229,7 +229,7 @@
                 layer.open({
                     type: 2,
                     content: '/equipment/detail/' + id,
-                    area: ['700px', '350px'],
+                    area: ['800px', '300px'],
                     //layer层销
                     end: function () {
                         table.reload("demo")
@@ -266,7 +266,7 @@
                 layer.open({
                     type: 2,
                     content: '/equipment/detail',
-                    area: ['700px', '350px'],
+                    area: ['800px', '300px'],
                     //layer层销毁
                     end: function () {
                         table.reload("demo")

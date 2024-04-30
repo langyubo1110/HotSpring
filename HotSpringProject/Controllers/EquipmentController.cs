@@ -38,6 +38,7 @@ namespace HotSpringProject.Controllers
         }
         public ActionResult detail(int id=0)
         {
+            ViewBag.EquipType = _equipmentService.getTypeList();
             ViewBag.Id = id;
             return View();
         }
