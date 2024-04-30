@@ -20,7 +20,7 @@ namespace HotSpringProjectRepository
 
         public List<EquipType> GetList()
         {
-            List<EquipType> list = _db.Equiptype.ToList();
+            List<EquipType> list = _db.EquipType.ToList();
             return list;
         }
     }
