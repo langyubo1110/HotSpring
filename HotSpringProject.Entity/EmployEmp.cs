@@ -23,6 +23,7 @@ namespace HotSpringProject.Entity
         public DateTime create_time { get; set; }
         public int role_id { get; set; }
         public string job_number { get; set; }
+        public string password { get; set; }
 
     }
 }

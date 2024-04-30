@@ -1,5 +1,6 @@
 ﻿using HotSpringProject.Entity;
 using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,6 @@ namespace HotSpringProjectRepository.Interface
         bool Update(EmployEmp employemp);
         bool Delete(int id);
         EmployEmp GetModel(int id);
+        bool Varfy(string username, string password);
     }
 }

@@ -3,10 +3,14 @@ using HotSpringProjectRepository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Configuration;
+using System.Web.UI.WebControls;
 using System.Xml.Linq;
 
 namespace HotSpringProjectRepository
@@ -43,7 +47,7 @@ namespace HotSpringProjectRepository
 
         public List<EmployEmp> GetList()
         {
-                return _db.EmployEmps.ToList();
+                return _db.EmployEmps;
         }
 
         public EmployEmp GetModel(int id)
@@ -54,14 +58,25 @@ namespace HotSpringProjectRepository
         public bool Update(EmployEmp employemp)
         {
             if (employemp != null)
-                employemp.onboarding_time = DateTime.Now;
-            employemp.create_time = DateTime.Now;
-            employemp.account_status = 1;
-            employemp.last_log_time = DateTime.Now;
+
             _db.Entry(employemp).State = EntityState.Modified;
             int flag = _db.SaveChanges();
             return flag > 0 ? true : false;
 
+        }
+
+
+        public bool Varfy(string username, string password)
+        {
+            var user = _db.EmployEmps.FirstOrDefault(u => u.name == username && u.password == password);
+            if (user != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
