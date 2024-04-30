@@ -21,6 +21,8 @@ namespace HotSpringProject.Controllers
     {
         private readonly IEquipmentService _equipmentService;
 
+
+
         //多个表注入
         //private readonly IMovieTypeService _movieTypeService;
 
