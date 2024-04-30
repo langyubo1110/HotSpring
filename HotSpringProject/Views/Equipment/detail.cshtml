@@ -3,68 +3,99 @@
     ViewBag.Title = "detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@*<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form role="form" class="layui-form form-inline" lay-filter="editform">
+            <div class="form-group">
+                <input type="hidden" name="id" />
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                设备名：<input type="text" name="name" lay-verify="required" placeholder="请输入设备名" class="form-control">
+            </div>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                位置：<input type="text" name="location" placeholder="请输入位置" class="form-control layui-input">
+            </div>
+            <br /> <br />
+                   <div class="form-group">
+                       &emsp;&emsp;&emsp;  &emsp;&emsp;
+                       状态：<input type="text" name="status" lay-verify="required" placeholder="请输入设备状态" class="form-control">
+                   </div>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+                   <div class="form-group">
+                       功率：<input type="text" name="power" placeholder="请输入功率" class="form-control">
+                   </div>
+            <br /> <br />
+                   <div class="form-group">
+                       &emsp;&emsp;&emsp;  &emsp;&emsp;
+                       设备类型：  &emsp;&nbsp;&nbsp;&nbsp;<input type="text" name="equ_type" placeholder="请输入设备类型" class="form-control">
+                   </div>
+            <br /> <br />
+                   <div class="form-group">
+                       &emsp;&emsp;&emsp;  &emsp;&emsp;
+                       创建时间：  &emsp;&nbsp;&nbsp;&nbsp;<input type="text" name="create_time"  class="form-control">
+                   </div>
+            <br /> <br />
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+                    <button type="reset" class="layui-btn">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>*@
 
 <form class="layui-form" action="" lay-filter="movieForm">
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">设备名</label>
-            <div class="layui-input-inline">
-                <input type="text" name="name" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+    <div class="pear-container">
+        <div class="layui-inline"></div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">设备名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">位置</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="location" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">位置</label>
-            <div class="layui-input-inline">
-                <input type="text" name="location" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="status" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">功率</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="power" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">状态</label>
-            <div class="layui-input-inline">
-                <input type="text" name="status" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">设备类型</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="equ_type" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">创建时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="create_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">功率</label>
-            <div class="layui-input-inline">
-                <input type="text" name="power" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">投入时长</label>
-            <div class="layui-input-inline">
-                <input type="text" name="used_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">设备类型</label>
-            <div class="layui-input-inline">
-                <input type="text" name="equ_type" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">创建时间</label>
-            <div class="layui-input-inline">
-                <input type="text" name="create_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
 </form>
