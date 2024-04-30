@@ -19,6 +19,7 @@ namespace HotSpringProjectRepository
         }
         public int Add(RegAudit regAudit)
         {
+            regAudit.create_time = DateTime.Now;
             _db.Entry(regAudit).State = System.Data.Entity.EntityState.Added;
             int flag = _db.SaveChanges();
             return flag;
@@ -36,9 +37,9 @@ namespace HotSpringProjectRepository
 
         }
 
-        public List<RegAudit> GetList()
+        public IEnumerable<RegAudit> GetList()
         {
-
+           
             return _db.regAudit.ToList();
         }
 

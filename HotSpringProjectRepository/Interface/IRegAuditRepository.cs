@@ -10,7 +10,7 @@ namespace HotSpringProjectRepository.Interface
     public interface IRegAuditRepository
     {
 
-        List<RegAudit> GetList();
+        IEnumerable<RegAudit> GetList();
         int Add(RegAudit movie);
         bool Update(RegAudit movie);
         bool Delete(int id);
