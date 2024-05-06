@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "RegBuy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="ibox-content">
+    <form class="layui-form" action="" lay-filter="editform">
+
+
+        <div class="layui-form-item">
+            <div class="form-group layui-inline">
+                <input type="hidden" id="id" name="id">
+            </div>
+            <div class="form-group layui-inline">
+                <label>立案申请人</label>
+                <input type="text" name="apply_id" placeholder="请输入姓名" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>设备名称</label>
+                <input type="text" name="equip_name" placeholder="请输入设备" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>采购原因</label>
+                <input type="text" name="buy_reason" placeholder="请输入原因" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>价格</label>
+                <input type="text" name="price" placeholder="请输入价格" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>审核意见</label>
+                <input type="text" name="" id="recheck_advice"  class="form-control">
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <div class="form-group layui-inline">
+                <label>申请时间</label>
+                <input type="text" name="create_time" placeholder="请输入时间" lay-verify="required" id="ApplyTime" class="form-control">
+                @*<input type="text" name="create_time" id="ApplyTime" lay-verify="required" autocomplete="off" >*@
+            </div>
+            <div class="form-group layui-inline">
+                <label>审核状态</label>
+                <input type="password" name="" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>厂家</label>
+                <input type="text" name="fac_name" placeholder="请输入厂家名称" class="form-control">
+            </div>
+
+            <div class="form-group layui-inline">
+                <label>批号</label>
+                <input type="text" name="batch_number" placeholder="请输入批号" class="form-control">
+            </div>
+
+
+        </div>
+        <div class="form-group layui-inline">
+
+            <div class="layui-input-inline">
+                <label>基本信息</label>
+                <textarea id="txtAreaDemo" name="basic_info" style="display: none;"></textarea>
+            </div>
+            <button type="submit" class="layui-btn" id="btnSubmit" lay-submit="" lay-filter="demo1">通过</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+        <div class="layui-input-block">
+            
+        </div>
+
+
+
+
+    </form>
+</div>
+<script>
+    layui.use(['form', 'laydate', 'util', 'layedit'], function () {
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var util = layui.util;
+        var layedit = layui.layedit;
+        var id=@ViewBag.Id;
+        laydate.render({
+            elem: '#ApplyTime' //指定元素
+            , value: '2024-01-01'
+        });
+        //构建富文本编辑器
+        layedit.build('txtAreaDemo'); //建立编辑器
+
+        //提交事件
+        $.post("/regbuy/getmodel", { id: id }, function (res) {
+            if (res.code == 200) {
+                res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
+                form.val('editform', res.data);
+            }
+        })
+
+        form.on('submit(demo1)', function (data) {
+            console.log(data);
+            let obj = data.field;
+            if (id == 0) {
+                $.post("/regbuy/insert", { regapply: obj }, function (res) {
+                    if (res.code == 200) {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        //方案2  当关闭后让父页面的table重载
+                        parent.layui.table.reload('demo');
+                    }
+                })
+            }
+            return false;
+        });
+
+        $("#btnSubmit").click(function () {
+            $.post("/regbuy/check", { RegId: $("#id").val(), txtAdvice: $("#recheck_advice").val() }, function () {
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+                //方案2  当关闭后让父页面的table重载
+                parent.layui.table.reload('demo');
+
+            })
+        })
+
+        
+    })
+</script>

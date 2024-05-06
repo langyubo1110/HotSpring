@@ -15,5 +15,6 @@ namespace HotSpringProjectRepository.Interface
         bool Update(RegAudit movie);
         bool Delete(int id);
         RegAudit GetModel(int id);
+        IEnumerable<T> QueryBySql<T>(string sql);
     }
 }
