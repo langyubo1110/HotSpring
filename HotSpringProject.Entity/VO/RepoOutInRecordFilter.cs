@@ -8,8 +8,11 @@ namespace HotSpringProject.Entity.VO
 {
     public class RepoOutInRecordFilter
     {
-        public int goods_id { get; set; }
-        public int outin_person_id { get; set; }
-        public int type { get; set; }
+        //商品ID
+        public int? id { get; set; }
+        //商品名称
+        public string goods_name { get; set; }
+        //出库/入库人姓名
+        public string name { get; set; }
     }
 }

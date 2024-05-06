@@ -10,10 +10,11 @@ namespace HotSpringProjectRepository.Interface
     // 裴晨旭 2024-04-25 
     public interface IRepoGoodsStockRepository
     {
-        IQueryable<RepoGoodsStock> GetList();
+        IQueryable<RepoGoodsStock> GetListByPager();
         int Delete(int id);
         bool Update(RepoGoodsStock repoGoodsStock);
-        bool Add(RepoGoodsStock repoGoodsStock);
+        int Add(RepoGoodsStock repoGoodsStock);
         RepoGoodsStock GetModel(int id);
+        IEnumerable<RepoGoodsStock> Getlist();
     }
 }
