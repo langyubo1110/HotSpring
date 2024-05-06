@@ -28,7 +28,7 @@ namespace HotSpringProjectRepository
 
         public IEnumerable<SystemPageCorrespondence> GetList()
         {
-            return _db.systemPageCorrespondences.ToList();
+            return _db.SystemPageCorrespondences.ToList();
         }
 
         public SystemPageCorrespondence GetModel(int id)
