@@ -6,17 +6,18 @@
 <link href="~/assets/layui/css/modules/laydate/default/laydate.css" rel="stylesheet" />
 
 <form class="layui-form" action="">
-    <div class="layui-form-item">
+    @*<div class="layui-form-item">
         <label class="layui-form-label" >输入框</label>
         <div class="layui-input-block">
             <input type="text" name="title"  required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
         </div>
-    </div>
+    </div>*@
    
     <div class="layui-form-item">
         <label class="layui-form-label">设备名称</label>
         <div class="layui-input-block">
-            <select name="city" lay-verify="required">
+            <input type="hidden" name="status"  value="0"/>
+            <select name="id" lay-verify="required">
                 @foreach (var item in ViewBag.equipmentNames)
                 {
                     <option value="@item.id">@item.name</option>
@@ -29,12 +30,9 @@
         <label class="layui-form-label">故障内容</label>
         <div class="layui-input-block">
           
-            <textarea id="demo" style="display: none;"></textarea>
+            <textarea id="demo"  style="display: none;"></textarea>
 
         </div>
-    </div>
-    <div class="layui-form-item">
-
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
@@ -43,35 +41,30 @@
         </div>
     </div>
 </form>
-
 <script>
     //Demo
-    layui.use(['form','layedit'], function () {
+    layui.use(['form','layedit','layer'], function () {
         var form = layui.form;
         var layedit = layui.layedit;
+        var layer = layui.layer;
+        
         layedit.build('demo'); //建立编辑器
+        
         //提交
-        form.on('submit(formDemo)', function (data) {
-            $.post("/repairtaskreport/add", { repaieTaskReport: obj }, function (res) {
-                
-            })
-
+        form.on('submit(formDemo)', function (date) {
+            console.log(date.field)
+            var index = parent.layer.getFrameIndex(window.name);
+            //更改设备状态
+            $.post("/repairtaskreport/updateequipmentstatus", { equipment: date.field }, function (res) {
+            });
+            //插入n条数据
+            
+            parent.layer.close(index);
+            parent.layui.table.reload("demo");//子窗体让父窗体table重载
+            parent.layer.msg(res.msg)
             return false;
         });
+        
     });
 </script>
-<script>
-    layui.use(['dropdown', 'util'], function () {
-        var dropdown = layui.dropdown
-            , util = layui.util        
-            , $ = layui.jquery;
-                       
-       
-        //用户点击提交
-        form.on('submit(demo1)', function (data) {
-            $.post("/repairtaskreport/updatestatus", {}, function (res) {
-            })
-
-        }) 
-    })
-</script>
+    

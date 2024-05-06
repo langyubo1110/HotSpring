@@ -70,15 +70,25 @@
     </div>
 </form>
 <script>
-    layui.use(['form', 'laydate', 'util'], function () {
+    layui.use(['form', 'laydate', 'util','layer'], function () {
         var form = layui.form;
         var laydate = layui.laydate;
         var util = layui.util;
-
-        var id =@ViewBag.Id;
+        var layer = layui.layer;
+        var id =@ViewBag.Id;      
         laydate.render({
-            elem: '#time' //指定元素
-            , value: '2000-01-01'
+            elem: '#time', // 指定元素
+            value: new Date() // 使用 new Date() 来获取当前时间作为初始值
+        });
+        $.post("/repairtaskreport/getmodel", { id: id }, function (res) {
+            if (res.code == 200) {
+
+                res.data.start_time = util.toDateString(formatDateString(res.data, "start_time"), "yyyy-MM-dd");
+                res.data.end_time = util.toDateString(formatDateString(res.data, "end_time"), "yyyy-MM-dd");
+                res.data.create_time = util.toDateString(formatDateString(res.data, "create_time"), "yyyy-MM-dd");
+                form.val('SystemLogForm', res.data);
+
+            }
         })
         form.on('submit(demo1)', function (data) {
             let obj = data.field;
@@ -97,7 +107,7 @@
             else {
                 $.post("/repairtaskreport/update", { repaieTaskReport: obj }, function (res) {
                     if (res.code == 200) {
-                        //找到父页面的自己  拿到index 让父页面关掉自己 4
+                        //找到父页面的自己  拿到index 让父页面关掉自己 
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layui.table.reload('demo');//子窗体让父窗体table重载
                         parent.layer.close(index);
@@ -107,16 +117,7 @@
             }
             return false;
         });
-        $.post("/repairtaskreport/getmodel/", { id: id }, function (res) {
-            if (res.code == 200) {
-
-                res.data.start_time = util.toDateString(formatDateString(res.data, "start_time"), "yyyy-MM-dd");
-                res.data.end_time = util.toDateString(formatDateString(res.data, "end_time"), "yyyy-MM-dd");
-                res.data.create_time = util.toDateString(formatDateString(res.data, "create_time"), "yyyy-MM-dd");
-                form.val('SystemLogForm', res.data);
-
-            }
-        })
+       
     })
 </script>
 

@@ -15,18 +15,23 @@ namespace HotSpringProject.Controllers
     {
         private readonly IRepairTaskReportService _repairTaskReportService;
         private readonly IEquipmentService _equipmentService;
+        private readonly IFaultAnalyseService _faultAnalyseService;
 
-        public RepairTaskReportController(IRepairTaskReportService  repairTaskReportService, IEquipmentService equipmentService) {
+        public RepairTaskReportController(IRepairTaskReportService  repairTaskReportService, IEquipmentService equipmentService,IFaultAnalyseService faultAnalyseService) {
             _repairTaskReportService = repairTaskReportService;
             _equipmentService=equipmentService;
+            _faultAnalyseService=faultAnalyseService;
         }
-        //private readonly 
-        // GET: RepairTaskReport
         
         #region 页面
         public ActionResult Index()
         {
-            //ViewBag.EquipName =_equipmentService.
+            
+            return View();
+        }
+        
+        public ActionResult Test()
+        {
             return View();
         }
         public ActionResult Details(int id=0)
@@ -35,17 +40,16 @@ namespace HotSpringProject.Controllers
             return View( );
         }
         
-        public ActionResult RepairTaskReport(int id)
+        public ActionResult RepairTaskReport()
         {
-            
-            
-            ViewBag.equipmentNames = _repairTaskReportService.GetEqumentName(id);
-
+            ResMessage resMessage = _repairTaskReportService.GetEquipmentList();
+            ViewBag.equipmentNames = resMessage.data;
             return View( );
         }
         //维修任务列表页
         public ActionResult RepairTaskList()
         {
+
             return View();
         }
         #endregion
@@ -64,23 +68,25 @@ namespace HotSpringProject.Controllers
         }
         public JsonResult GetModel(int id)
         {
-            return Json(_repairTaskReportService.GetModel(id));
+            return Json(_repairTaskReportService.GetModel(id), JsonRequestBehavior.AllowGet);
         }
         public JsonResult Update(RepaieTaskReport repaieTaskReport)
         {
-            return Json(_repairTaskReportService.UpDate(repaieTaskReport));
+            return Json(_repairTaskReportService.UpDate(repaieTaskReport), JsonRequestBehavior.AllowGet);
         }
         public JsonResult Add(RepaieTaskReport repaieTaskReport)
         {
-            return Json(_repairTaskReportService.Add(repaieTaskReport));
+            return Json(_repairTaskReportService.Add(repaieTaskReport), JsonRequestBehavior.AllowGet);
         }
         //更新设备状态接口
-        //public JsonResult UpdateEquipmentStatus(int id)
+        public JsonResult UpdateEquipmentStatus(Equipment equipment)
+        {
+            return Json(_repairTaskReportService.UpdateEquipmentStatus(equipment),JsonRequestBehavior.AllowGet);
+        }
+        //public JsonResult AddFaultContent(FaultAnalyse faultAnalyse)
         //{
-        //  bool flag = _equipmentService.UpdateEquipmentStatus(id);
-        //  return flag ? Json(new { code = 200 }) : Json(new { code = 400 });
+        //    return Json(_faultAnalyseService.Add(faultAnalyse), JsonRequestBehavior.AllowGet);
         //}
-
         #endregion
     }
 }

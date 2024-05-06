@@ -15,14 +15,14 @@ namespace HotSpringProjectRepository
         _Db = hotSpringDbContext;
         }
        
-        public int add(RepaieTaskReport repaieTaskReport)
+        public int Add(RepaieTaskReport repaieTaskReport)
         {
             _Db.Entry<RepaieTaskReport>(repaieTaskReport).State=System.Data.Entity.EntityState.Added;
             int flag=_Db.SaveChanges();
             return flag;
         }
 
-        public int delete(int id)
+        public int Delete(int id)
         {
             RepaieTaskReport repaieTaskReport=_Db.RepaieTaskReports.Find(id);
             _Db.Entry<RepaieTaskReport>(repaieTaskReport).State=System.Data.Entity.EntityState.Deleted;
@@ -30,29 +30,29 @@ namespace HotSpringProjectRepository
             return flag;
         }
 
-        public IQueryable<RepaieTaskReport> getlist()
+        public IQueryable<RepaieTaskReport> GetList()
         {
           IQueryable<RepaieTaskReport> list =_Db.RepaieTaskReports;
             return list;
         }
        
 
-        public RepaieTaskReport getmodel(int id)
+        public RepaieTaskReport GetModel(int id)
         {
             return _Db.RepaieTaskReports.Find(id);
         }
 
-        public int update(RepaieTaskReport repaieTaskReport)
+        public int UpDate(RepaieTaskReport repaieTaskReport)
         {
             _Db.Entry(repaieTaskReport).State=System.Data.Entity.EntityState.Modified;
             int flag=_Db.SaveChanges();
             return flag;
         }
-        public IEnumerable<string> GetAllEquipmentNames()
-        {
-            IEnumerable<string> names = _Db.Equipment.Select(e => e.name);
-            return names;
-        }
+        //public List<string> GetEquipmentName()
+        //{
+        //    List<string> namelist = _Db.Equipment.Select(e => e.name).ToList();
+        //    return namelist;
+        //}
 
     }
 }

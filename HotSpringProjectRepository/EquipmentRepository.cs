@@ -1,4 +1,5 @@
-﻿using HotSpringProject.Entity;
+﻿using DotNet.Utilities;
+using HotSpringProject.Entity;
 using HotSpringProjectRepository.Interface;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace HotSpringProjectRepository
             IEnumerable<Equipment> list =_db.Equipment;
             return list;
         }
-
+       
         //查实体
         public Equipment GetModel(int id)
         {
@@ -55,19 +56,20 @@ namespace HotSpringProjectRepository
             int flag= _db.SaveChanges();
             return flag;
         }
+
         //更新设备状态
-       public int UpdateStatus(int id)
-        {
-            Equipment equipment = _db.Equipment.Find(id);
+       //public int UpdateStatus(int id)
+       // {
+       //     Equipment equipment = _db.Equipment.Find(id);
 
-            if (equipment != null)
-            {
-                equipment.status = "停用";
-                _db.Entry(equipment).State = System.Data.Entity.EntityState.Modified;
-                return _db.SaveChanges();
-            }
+       //     if (equipment != null)
+       //     {
+       //         equipment.status = "停用";
+       //         _db.Entry(equipment).State = System.Data.Entity.EntityState.Modified;
+       //         return _db.SaveChanges();
+       //     }
 
-            return 0;
-        }
+       //     return 0;
+       //}
     }
 }

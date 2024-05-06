@@ -9,11 +9,13 @@ namespace HotSpringProjectRepository.Interface
 {
     public interface IRepairTaskReportRepository
     {
-        IQueryable<RepaieTaskReport> getlist();
-        int delete (int id);
-        int update(RepaieTaskReport repaieTaskReport);
+        IQueryable<RepaieTaskReport> GetList();
+        int Delete (int id);
+        int UpDate(RepaieTaskReport repaieTaskReport);
 
-        int add(RepaieTaskReport repaieTaskReport);
-        RepaieTaskReport getmodel(int id);
+        int Add(RepaieTaskReport repaieTaskReport);
+        
+        RepaieTaskReport GetModel(int id);
+
     }
 }

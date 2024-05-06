@@ -15,10 +15,10 @@ namespace HotSpringProject.Entity
         public int id { get; set; }
         public string name { get; set; }
         public string location { get; set; }
-        public string status { get; set; }
+        public int status { get; set; }
         public string power { get; set; }
         public int? used_time { get; set; }
-        public string equ_type { get; set; }
+        public int equ_type { get; set; }
         public DateTime? create_time { get; set; }
     }
 }

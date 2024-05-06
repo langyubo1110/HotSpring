@@ -15,6 +15,9 @@ namespace HotSpringProjectService.Interface
 
         ResMessage Add(RepaieTaskReport repaieTaskReport);
         ResMessage GetModel(int id);
-        ResMessage GetEqumentName(int id);
+        
+        ResMessage GetEquipmentList();
+        ResMessage UpdateEquipmentStatus(Equipment equipment);
+
     }
 }
