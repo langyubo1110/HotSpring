@@ -18,6 +18,7 @@ namespace HotSpringProjectService.Interface
         ResMessage Add(Equipment equip);
         ResMessage Delete(int id);
         ResMessage Update(Equipment equip);
-
+        List<EquipType> getTypeList();
+        ResMessage GetUsedModel(int id, string use);
     }
 }

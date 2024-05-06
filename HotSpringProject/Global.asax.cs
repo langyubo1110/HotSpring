@@ -1,6 +1,8 @@
 using Autofac;
 using Autofac.Integration.Mvc;
+using HotSpringProject.App_Start;
 using HotSpringProject.Entity;
+using HotSpringProject.Filter;
 using OA_AutoWork.App_Start;
 using System;
 using System.Collections.Generic;
@@ -20,7 +22,7 @@ namespace HotSpringProject
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             //ÈÝÆ÷×¢²á
             AutofacRegister();
-            //AutoMapper×¢²á
+            //GlobalFilters.Filters.Add(new AuthorizationFilter());
             AutoMapperConfig.Config();
             
         }

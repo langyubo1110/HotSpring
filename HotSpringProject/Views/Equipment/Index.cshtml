@@ -1,34 +1,25 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <form class="layui-form" name="movieform">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-2">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>自定义响应式表格</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li>
-                                    <a href="table_basic.html#">选项1</a>
-                                </li>
-                                <li>
-                                    <a href="table_basic.html#">选项2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
+                        <h5>设备类型</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="menuTree">
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-10">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>设备表展示</h5>
                     </div>
                     <div class="ibox-content">
                         <div class="row">
@@ -39,6 +30,32 @@
                                     </span>
                                 </div>
                             </div>
+                            <div class="col-sm-4">
+                                设备类型:
+                                <div class="layui-input-inline">
+                                    <select name="type">
+                                        <option value="0">请选择</option>
+                                        @foreach (var item in ViewBag.EquipType)
+                                        {
+                                            <option value="@item.id">@item.type_name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">日期</label>
+                                    <div class="layui-inline" id="date" lay-key="7">
+                                        <div class="layui-input-inline">
+                                            <input type="text" autocomplete="off" id="test-startDate-1" class="layui-input" placeholder="开始日期" data-sider-insert-id="dc1cdd0b-385a-4a41-b57b-ad0bb11e690a" data-sider-select-id="c2e22566-aeb4-4f13-9c79-08f11a9f41cc">
+                                        </div>
+                                        -
+                                        <div class="layui-input-inline">
+                                            <input type="text" autocomplete="off" id="test-endDate-1" class="layui-input" placeholder="结束日期">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="table-responsive">
                             <table id="demo" lay-filter="test"></table>
@@ -46,131 +63,241 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-    </form>
-    <!--js模板  表头组件-->
-    <script type="text/html" id="toolbarDemo">
-        <div class="layui-btn-container">
-            <input type="button" class="layui-btn layui-btn-sm" lay-event="add" value="添加">
-        </div>
-    </script>
+</form>
+<!--js模板  表头组件-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <input type="button" class="layui-btn layui-btn-sm" lay-event="add" value="添加">
+        <input type="button" class="layui-btn layui-btn-sm" lay-event="selectdown" value="批量下载">
+    </div>
+</script>
 
-    <!--js模板  列组件-->
-    <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    </script>
-    <script>
-        //layui 注册多个模块
-        layui.use(['table', 'util', 'layer', 'form'], function () {
-            //实例化多个模块
-            var table = layui.table
-            var layer = layui.layer
-            var util = layui.util
-            var form = layui.form
-            //1.渲染实例
-            table.render({
-                elem: '#demo'
-                , height: 500
-                , url: '/equipment/Query' //数据接口
-                , response: {
-                    statusName: 'code' //规定数据状态的字段名称，默认：code
-                    , statusCode: 200 //规定成功的状态码，默认：0
-                    , msgName: 'msg' //规定状态信息的字段名称，默认：msg
-                    , countName: 'count' //规定数据总数的字段名称，默认：count
-                    , dataName: 'data' //规定数据列表的字段名称，默认：data
-                }
-                , page: {
-                    page: 1,
-                    limit: 5
-                }//开启分页
-                , toolbar: "#toolbarDemo"
-                , cols: [[ //表头
-                    { field: 'id', title: '主键', sort: true, fixed: 'left' }
-                    , { field: 'name', title: '设备名称' }
-                    , { field: 'location', title: '位置' }
-                    , { field: 'status', title: '运行状态' }
-                    , { field: 'power', title: '功率' }
-                    , { field: 'used_time', title: '投入使用时间' }
-                    , { field: 'equ_type', title: '设备类型' }
-                    , {
-                        field: 'create_time', title: '创建时间'
-                        , templet: function (d) {
-                            return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+<!--js模板  列组件-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {{#  if(d.status==1){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="used">停用</a>
+    {{# } }}
+    {{#  if(d.status==0){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-xs" lay-event="use">启用</a>
+    {{# } }}
+    <a class="layui-btn layui-btn-xs layui-btn-xs" lay-event="upload">上传</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="download">下载</a>
+</script>
+<script>
+    //树形组件加载
+    let data1 = []
+    let tid=0
+    $.get('/equipment/getmenu', {}, function (res) {
+        data1 = res;
+        layui.use(['tree','table'], function () {
+            var tree = layui.tree;
+            tree.render({
+                elem: '#menuTree',
+                data: data1,
+                 height: 500,
+                click: function (obj) {
+                    var table = layui.table;
+                    table.reload("demo", {
+                        //获取文本款的值
+                        where: {
+                            //传参 文本框 设定异步数据接口参数外的值
+                            tid: obj.data.id
                         }
-                    }
-                    //添加操作列
-                    , { title: '操作', toolbar: "#barDemo" }
-                ]]
+                    })
+                }
             });
-
-            //2.单元格触发事件
-            table.on('tool(test)', function (obj) {
-                var data = obj.data;
-                //得到当前行的主键
-                let id = data.id;
-                //判断点击的是那个按钮
-                //删除
-                if (obj.event == 'del') {
-                    //提示框  index 表示在那个页面上显示
-                    layer.confirm('真的删除行么', function (index) {
-                        //点击确定
-                        //调接口删除数据库数据
-                        $.post("/equipment/delete", { id: id }, function (res) {
-                            if (res.code == 200) {
-                                //删除改行dom元素
-                                obj.del();
-                                layer.close(index);
+        })
+    })
+    //layui 注册多个模块
+    layui.use(['table', 'util', 'layer', 'form','laydate'], function () {
+        //实例化多个模块
+        var table = layui.table
+        var layer = layui.layer
+        var util = layui.util
+        var form = layui.form
+        var laydate=layui.laydate
+        //渲染日历组件
+        laydate.render({
+            elem: '#date' //指定元素
+            , range: true
+            , theme: '#393D49'
+            , done: function (value) {
+                let dateStart,dateEnd
+                if (value != "") {
+                    dateStart=value.split(' - ')[0].trim()
+                    dateEnd = value.split(' - ')[1].trim()
+                    console.log(value,dateStart,dateEnd)
+                }
+                        table.reload("demo", {
+                            //获取文本款的值
+                            where: {
+                                //传参 文本框 设定异步数据接口参数外的值
+                                begintime: dateStart,
+                                endtime: dateEnd
                             }
                         })
-                    });
                 }
-                //编辑
-                else if (obj.event == "edit") {
-                    //弹出弹窗
-                    layer.open({
-                        type: 2,
-                        content: '/equipment/detail/' + id,
-                        area: ['500px', '750px'],
-                        //layer层销毁
-                        end: function () {
-                            table.reload("demo")
-                        }
-                    });
-                }
-            });
-            //表头触发事件
-            table.on('toolbar(test)', function (obj) {
-                if (obj.event == "add") {
-                    //弹出弹窗
-                    layer.open({
-                        type: 2,
-                        content: '/equipment/detail',
-                        area: ['500px', '750px'],
-                        //layer层销毁
-                        end: function () {
-                            table.reload("demo")
-                        }
-                    });
-                    return false;
-                }
-            });
-            //搜索表单
-            form.on('submit(btnsearch)', function (data) {
-                console.log(data);
-                //表格重载 调用movielist函数
-                table.reload("demo", {
-                    //获取文本款的值
-                    where: {
-                        //传参 文本框 设定异步数据接口参数外的值
-                        name: data.field.txtequipmet
+        });
+        //1.渲染实例
+        table.render({
+            elem: '#demo'
+            , height: 500
+            , url: '/equipment/Query' //数据接口
+            , response: {
+                statusName: 'code' //规定数据状态的字段名称，默认：code
+                , statusCode: 200 //规定成功的状态码，默认：0
+                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                , countName: 'count' //规定数据总数的字段名称，默认：count
+                , dataName: 'data' //规定数据列表的字段名称，默认：data
+            }
+            , page: {
+                page: 1,
+                limit: 9
+            }//开启分页
+            , toolbar: "#toolbarDemo"
+            , cols: [[ //表头
+                { field: 'id', title: '主键', sort: true, fixed: 'left' }
+                , { field: 'name', title: '设备名称' }
+                , { field: 'location', title: '位置' }
+                , {
+                    field: 'status', title: '运行状态', templet: function (d) {
+                        return d.status==0?"未启用":"已启用"
+                    } }
+                , { field: 'power', title: '功率'  }
+                , {
+                    field: 'usedtime', title: '投入使用时间', templet: function (d) {
+                        return util.toDateString(d.usedtime.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    } }
+                , { field: 'typename', title: '设备类型' }
+                , {
+                    field: 'create_time', title: '创建时间'
+                    , templet: function (d) {
+                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
+                }
+                //添加操作列
+                , { title: '操作', toolbar: "#barDemo" ,minWidth:275 }
+            ]]
+        });
+        //2.单元格触发事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            //得到当前行的主键
+            let id = data.id;
+            //判断点击的是那个按钮
+            //删除
+            if (obj.event == 'del') {
+                //提示框  index 表示在那个页面上显示
+                layer.confirm('真的删除行么', function (index) {
+                    //点击确定
+                    //调接口删除数据库数据
+                    $.post("/equipment/delete", { id: id }, function (res) {
+                        if (res.code == 200) {
+                            //删除改行dom元素
+                            obj.del();
+                            layer.close(index);
+                        }
+                    })
+                });
+            }
+            //停用
+            else if (obj.event == 'used') {
+                    //调接口删除数据库数据
+                    $.post("/equipment/used", { id: id ,use:"used"}, function (res) {
+                        if (res.code == 200) {
+                            table.reload("demo")
+                        }
+                    })
+            }
+            //启用
+            else if (obj.event == 'use') {
+                    //调接口删除数据库数据
+                $.post("/equipment/used", { id: id, use: "use" }, function (res) {
+                        console.log(res)
+                        if (res.code == 200) {
+                            table.reload("demo")
+                        }
+                    })
+            }
+            //编辑
+            else if (obj.event == "edit") {
+                //弹出弹窗
+                layer.open({
+                    type: 2,
+                    content: '/equipment/detail/' + id,
+                    area: ['800px', '300px'],
+                    //layer层销
+                    end: function () {
+                        table.reload("demo")
+                    }
+                });
+            }
+            //上传
+            else if (obj.event == "upload") {
+                console.log(obj.data.id)
+                //弹出弹窗
+                layer.open({
+                    type: 2,
+                    content: '/equipment/upload/'+obj.data.id,
+                    area: ['700px', '350px'],
+                });
+            }
+            //单个下载
+            else if (obj.event == "download") {
+                console.log(obj.data)
+                let data = obj.data
+                data.create_time = util.toDateString(data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                data.usedtime = util.toDateString(data.usedtime.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                $.post("/equipment/downloading", { data: data }, function (res) {
+                    console.log(res)
+                        layer.msg(res.msg);
                 })
+            }
+        });
+        //表头触发事件
+        table.on('toolbar(test)', function (obj) {
+            //添加
+            if (obj.event == "add") {
+                //弹出弹窗
+                layer.open({
+                    type: 2,
+                    content: '/equipment/detail',
+                    area: ['800px', '300px'],
+                    //layer层销毁
+                    end: function () {
+                        table.reload("demo")
+                    }
+                });
                 return false;
+            }//批量下载
+            else if (obj.event == "selectdown") {
+                //弹出弹窗
+                layer.open({
+                    type: 2,
+                    content: '/equipment/download',
+                    area: ['1200px', '750px'],
+                });
+                return false;
+            }
+        });
+        //搜索表单
+        form.on('submit(btnsearch)', function (data) {
+            console.log(data);
+            //表格重载 调用movielist函数
+            table.reload("demo", {
+                //获取文本款的值
+                where: {
+                    //传参 文本框 设定异步数据接口参数外的值
+                    name: data.field.txtequipmet
+                }
             })
+            return false;
         })
-    </script>
+    })
+</script>
 
 

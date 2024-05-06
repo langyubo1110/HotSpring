@@ -45,10 +45,7 @@ namespace HotSpringProject.Controllers
         }
         public JsonResult Edit(EmployEmp employemp)
         {
-            employemp.onboarding_time = DateTime.Now;
-            employemp.create_time = DateTime.Now;
-            employemp.last_log_time = DateTime.Now;
-            employemp.account_status = 1;
+
             ResMessage result = _dbService.Update(employemp);
 
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -67,5 +64,6 @@ namespace HotSpringProject.Controllers
         {
             return Json(_dbService.GetListByPager(filter), JsonRequestBehavior.AllowGet);
         }
+        
     }
 }

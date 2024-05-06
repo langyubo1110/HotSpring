@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HotSpringProject.Entity
 {
+    [Table("System_Page_Correspondence")]
     public class SystemPageCorrespondence
     {
         [Key]
         public int id { get; set; }
-        public int module_id { get; set; }
+        public int pages_id { get; set; }
         public int role_id { get; set; }
     }
 }

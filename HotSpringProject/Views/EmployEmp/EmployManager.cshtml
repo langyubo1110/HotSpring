@@ -3,13 +3,13 @@
     ViewBag.Title = "EmployManager";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<form  class="layui-form" name="movieform">
+<form class="layui-form" name="movieform">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>自定义响应式表格</h5>
+                        <h5>员工管理</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -40,19 +40,6 @@
                                     <option value="3">选项3</option>
                                 </select>
                             </div>
-                            <div class="col-sm-4 m-b-xs">
-                                <div data-toggle="buttons" class="btn-group">
-                                    <label class="btn btn-sm btn-white">
-                                        <input type="radio" id="option1" name="options">天
-                                    </label>
-                                    <label class="btn btn-sm btn-white active">
-                                        <input type="radio" id="option2" name="options">周
-                                    </label>
-                                    <label class="btn btn-sm btn-white">
-                                        <input type="radio" id="option3" name="options">月
-                                    </label>
-                                </div>
-                            </div>
                             <div class="col-sm-3">
                                 <div class="input-group">
 
@@ -75,13 +62,12 @@
 <div class="gohome"><a class="animated bounceInUp" href="index.html?v=4.0" title="返回首页"><i class="fa fa-home"></i></a></div>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+        <input type="button" class="layui-btn layui-btn-sm" lay-event="add" value="添加" />
     </div>
 </script>
 <!--js模板行单元格-->
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
 <script>
@@ -111,7 +97,11 @@
             , cols: [[
                 { field: 'id', title: '主键', sort: true, fixed: 'left' }
                 , { field: 'name', title: '姓名' }
-                , { field: 'gendar', title: '性别' }
+                , {
+                    field: 'gendar', title: '性别', templet: function (d) {
+                        return d.gendar === 0 ? '男' : '女';
+                    }
+                }
                 , { field: 'identity_card', title: '身份证' }
                 , { field: 'avator', title: '头像' }
                 , {
@@ -119,7 +109,11 @@
                         return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
                 }
-                , { field: 'account_status', title: '账号状态' }
+                , {
+                    field: 'account_status', title: '账号状态', templet: function (d) {
+                        return d.gendar === 0 ? '已注销' : '未注销';
+                    }
+                }
                 , { field: 'log_count', title: '登录次数' }
                 , {
                     field: 'last_log_time', title: '最后登陆时间', templet: function (d) {
@@ -132,7 +126,10 @@
                         return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
                 }
-                , { field: 'role_id', title: '角色ID' }
+                , {
+                    field: 'role_id', title: '角色ID', templet: function (d) {
+                        return d.gendar === 0 ? '员工' : '管理员'
+                    }}
                 , { field: 'job_number', title: '工号' }
                 , { title: '操作', toolbar: "#barDemo" }
             ]]
@@ -173,13 +170,13 @@
         });
         //搜索表单
         form.on('submit(btnSearch)', function (data) {
-                table.reload("demo", {
-                    where: {
-                        name: data.field.textName
-                    },
-                    page: {
-                        curr: 1
-                    }
+            table.reload("demo", {
+                where: {
+                    name: data.field.textName
+                },
+                page: {
+                    curr: 1
+                }
             });
             return false;
         })

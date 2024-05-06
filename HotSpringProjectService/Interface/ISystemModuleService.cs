@@ -11,7 +11,7 @@ namespace HotSpringProjectService.Interface
 {
     public interface ISystemModuleService
     {
-        List<SystemModule> GetList();
-
+        IEnumerable<SystemModule> GetList();
+        //IEnumerable<ModuleVO> GetMenuList();
     }
 }
