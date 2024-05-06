@@ -34,7 +34,7 @@ namespace HotSpringProject.Controllers
         }
         public ActionResult Detail(int id = 0)
         {
-            ViewBag.MoviesType = db.regAudit.ToList();
+            ViewBag.MoviesType = db.RegAudit.ToList();
             ViewBag.Id = id;
             return View();
         }

@@ -22,9 +22,20 @@ namespace HotSpringProject.Controllers
             _employRoleService= employRoleService;
         }
         // GET: EmployRole
-        public ActionResult Index()
+        #region 页面
+        public ActionResult EmployRoleManager()
         {
+           
             return View();
         }
+        #endregion
+        #region 接口
+        public JsonResult GetEmployRole()
+        {
+            IEnumerable<EmployRole> role = _employRoleService.GetEmployRoles();
+            return Json(role,JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
     }
 }
