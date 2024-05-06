@@ -10,6 +10,7 @@ namespace HotSpringProjectRepository.Interface
 {
     public interface ISystemModuleRepository
     {
-        List<SystemModule> GetList();
+        IEnumerable<SystemModule> GetList();
+
     }
 }

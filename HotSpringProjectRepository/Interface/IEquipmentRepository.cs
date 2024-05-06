@@ -19,5 +19,7 @@ namespace HotSpringProjectRepository.Interface
         bool Delete(int id);
         //查实体
         Equipment GetModel(int id);
+        //sql查询
+        IEnumerable<T> QueryBySql<T>(string sql);
     }
 }

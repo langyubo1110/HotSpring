@@ -3,71 +3,71 @@
     ViewBag.Title = "detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form role="form" class="layui-form form-inline" lay-filter="movieForm">
+            <div class="form-group">
+                <input type="hidden" name="id" />
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                设备名称：&nbsp;<input type="text" name="name" lay-verify="required" placeholder="请输入设备名称" class="form-control">
+            </div>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                位置：<input type="text" name="location" placeholder="请输入设备位置" class="form-control layui-input">
+            </div>
+            <br /> <br />
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                <div class="layui-inline">
+                    <span>状态： &emsp;&emsp;</span>
+                    <div class="layui-input-inline">
+                        <select name="status" lay-verify="required" lay-search="" lay-filter="ddltest">
+                            <option value="0">未启用</option>
+                            <option value="1">已启用</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                功率：<input type="text" name="power" placeholder="请输入设备功率" class="form-control">
+            </div>
+            <br /> <br />
+                   <div class="form-group">
+                       &emsp;&emsp;&emsp;  &emsp;&emsp;
+                       <div class="layui-inline">
+                           <span>设备类型：</span>
+                           <div class="layui-input-inline">
+                               <select name="equ_type" lay-verify="required" lay-search="" lay-filter="ddltest">
+                                   <option value=""></option>
+                                   @foreach (var item in ViewBag.EquipType)
+                                   {
+                                       <option value="@item.id">@item.type_name</option>
+                                   }
+                               </select>
+                           </div>
+                       </div>
+                   </div>
+            <br /> <br />
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+    .layui-form-select .layui-input {
+        padding-right: 30px;
+        cursor: pointer;
+        height: 34px;
+        width: 198px;
+    }
+</style>
 
-<form class="layui-form" action="" lay-filter="movieForm">
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">设备名</label>
-            <div class="layui-input-inline">
-                <input type="text" name="name" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">位置</label>
-            <div class="layui-input-inline">
-                <input type="text" name="location" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">状态</label>
-            <div class="layui-input-inline">
-                <input type="text" name="status" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">功率</label>
-            <div class="layui-input-inline">
-                <input type="text" name="power" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">投入时长</label>
-            <div class="layui-input-inline">
-                <input type="text" name="used_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">设备类型</label>
-            <div class="layui-input-inline">
-                <input type="text" name="equ_type" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">创建时间</label>
-            <div class="layui-input-inline">
-                <input type="text" name="create_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
-    </div>
-</form>
 <script>
         //注册from组件
         layui.use(['form', 'util'], function () {
@@ -90,18 +90,20 @@
         //修改
         if (id == 0) {
             //ajax请求添加
-            $.post("/equipment/add", { equipment: obj }, function (res) {
-                if (res.code == 200) {
-                    //插入成功，关闭layer
-                    //找到父页面的自己  拿到index 让父页面关掉自己
-                    var index = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(index);
-                }
-            })
+            //设备表添加功能不投入使用
+            //$.post("/equipment/add", { equipment: obj }, function (res) {
+            //    if (res.code == 200) {
+            //        //插入成功，关闭layer
+            //        //找到父页面的自己  拿到index 让父页面关掉自己
+            //        var index = parent.layer.getFrameIndex(window.name);
+            //        parent.layer.close(index);
+            //    }
+            //})
         }
         else {
             obj.id = id
             $.post("/equipment/edit", { equipment: obj }, function (res) {
+                console.log(obj)
                     if (res.code == 200) {
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
@@ -110,8 +112,6 @@
             }
         return false;
         });
-
     })
-
 </script>
 

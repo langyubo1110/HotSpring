@@ -17,6 +17,7 @@ namespace HotSpringProject.Entity
         public int reg_equip_reaearch_id { get; set; }
         
         public int recheck_id { get; set; }
+        public string recheck_advice { get; set; }
         public int recheck_opin { get; set; }
         public DateTime create_time { get; set; }
     }

@@ -16,10 +16,8 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">性别</label>
-            <div class="layui-input-inline">
-                <input type="text" name="gendar" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
+            <input type="radio" name="gendar" value="0" title="男">
+            <input type="radio" name="gendar" value="1" title="女" checked>
         </div>
     </div>
     <div class="layui-form-item">
@@ -31,13 +29,15 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <div class="layui-inline">
+        <div class="layui-upload">
             <label class="layui-form-label">头像</label>
-            <div class="layui-input-inline">
-                <input type="text" name="avator" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            <button type="button" class="layui-btn" id="test1">上传图片</button>
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="preview">
+                <p id="demoText"></p></div>
+                <input type="hidden" name="img_url" id="hfimg_url" value="" />
             </div>
         </div>
-    </div>
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">工号</label>
@@ -75,6 +75,7 @@
         });
         form.on('submit(demo1)', function (data) {
             let obj = data.field;
+            console.log(data);
             if (id == 0) {
                 $.post("/EmployEmp/insert", { employemp: obj }, function (res) {
                     if (res.code == 200) {

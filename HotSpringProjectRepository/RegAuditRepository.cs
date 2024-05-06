@@ -42,6 +42,8 @@ namespace HotSpringProjectRepository
            
             return _db.regAudit.ToList();
         }
+        
+        
 
         public RegAudit GetModel(int id)
         {
@@ -49,8 +51,15 @@ namespace HotSpringProjectRepository
             return regAudit;
         }
 
+        public IEnumerable<T> QueryBySql<T>(string sql)
+        {
+            return _db.Database.SqlQuery<T>(sql);
+        }
+
         public bool Update(RegAudit regAudit)
         {
+            //当调用此方法设置审核意见为1通过
+            //regAudit.recheck_opin = 1;
             _db.Entry(regAudit).State = System.Data.Entity.EntityState.Modified;
             int flag = _db.SaveChanges();
             if (flag > 0)

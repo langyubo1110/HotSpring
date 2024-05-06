@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "PagesManager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form class="layui-form" name="Pagesform">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>页面管理</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li>
+                                    <a href="table_basic.html#">选项1</a>
+                                </li>
+                                <li>
+                                    <a href="table_basic.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-5 m-b-xs">
+                                <select class="input-sm form-control input-s-sm inline">
+                                    <option value="0">请选择</option>
+                                    <option value="1">选项1</option>
+                                    <option value="2">选项2</option>
+                                    <option value="3">选项3</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+
+                                    <input type="text" name="textName" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                        <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="btnSearch">搜索</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-card-body">
+                            <table id="demo" lay-filter="test"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<div class="gohome"><a class="animated bounceInUp" href="index.html?v=4.0" title="返回首页"><i class="fa fa-home"></i></a></div>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <input type="button" class="layui-btn layui-btn-sm" lay-event="add" value="添加" />
+    </div>
+</script>
+<!--js模板行单元格-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script>
+    //1.注册一个模块
+    layui.use(['table', 'util', 'layer', 'form'], function () {
+        //2.创建一个表格组件
+        var table = layui.table;
+        var util = layui.util;
+        var layer = layui.layer;
+        var form = layui.form;
+        //3.渲染一个表格实例
+        table.render({
+            elem: '#demo'
+            , url: '/SystemPages/Pages'
+            , response: {
+                statusName: 'code' //规定数据状态的字段名称，默认：code
+                , statusCode: 200 //规定成功的状态码，默认：0
+                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                , countName: 'count' //规定数据总数的字段名称，默认：count
+                , dataName: 'data' //规定数据列表的字段名称，默认：data
+            }
+            , page: {
+                page: 1,
+                limit: 5
+            }
+            , toolbar: '#toolbarDemo'
+            , cols: [[
+                { field: 'id', title: '主键', sort: true, fixed: 'left' }
+                , { field: 'page_name', title: '页面名' }
+                , { field: 'icon', title: '图标' }
+                , {
+                    field: 'create_time', title: '创建时间'
+                    , templet: function (d) {
+                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    }
+                }
+                , {
+                    field: 'module_id', title: '模块ID'  
+                }
+                , {
+                    field: 'module_name', title: '模块名称'
+                }
+                , { title: '操作', toolbar: "#barDemo" }
+            ]]
+        });
+        //单元格监听事件
+        table.on('tool(test)', function (obj) {
+            var id = obj.data.id;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (EmployManager) {
+                    $.post("/SystemPages/del?id=" + id, function (res) {
+                        if (res.code === 200) {
+                            layer.msg('删除成功');
+                            obj.del();
+                        } else {
+                            layer.msg('删除失败：' + res.msg);
+                        }
+                    });
+                    layer.close(EmployManager);
+                });
+            }
+            else {
+                layer.open({
+                    title: '员工xi',
+                    type: 2,
+                    content: "/SystemPages/detail?id=" + id,
+                    area: ['500px', '550px']
+                });
+            }
+        })
+        // 工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            layer.open({
+                title: '页面添加',
+                type: 2,
+                area: ['500px', '550px'],
+                content: '/SystemPages/detail/'
+            })
+        });
+        //搜索表单
+        form.on('submit(btnSearch)', function (data) {
+            table.reload("demo", {
+                where: {
+                    name: data.field.textName
+                },
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        })
+    })
+</script>
+
+
