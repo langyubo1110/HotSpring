@@ -26,6 +26,7 @@ namespace HotSpringProject.Entity
         public DbSet<RegEquipRes> RegEquipRes { get; set; }
         public DbSet<SystemPageCorrespondence> systemPageCorrespondences { get; set; }
         public DbSet<SystemPages> systemPages { get; set; }
+        public DbSet<EmployRole> EmployRole { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
