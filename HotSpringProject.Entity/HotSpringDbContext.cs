@@ -24,6 +24,7 @@ namespace HotSpringProject.Entity
         public DbSet<RepoOutInRecord> RepoOutInRecord { get; set; }
         public DbSet<RegAudit> regAudit { get; set; }
         public DbSet<EquipType> EquipType { get; set; }
+        public DbSet<RegApply> RegApply { get; set; }
         public DbSet<RegEquipRes> RegEquipRes { get; set; }
         public DbSet<SystemPageCorrespondence> systemPageCorrespondences { get; set; }
         public DbSet<SystemPages> systemPages { get; set; }
