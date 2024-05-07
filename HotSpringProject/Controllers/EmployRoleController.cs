@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using HotSpringProject.Entity;
 using HotSpringProjectService;
 using HotSpringProjectService.Interface;
+using DotNet.Utilities;
 
 namespace HotSpringProject.Controllers
 {
@@ -28,12 +29,25 @@ namespace HotSpringProject.Controllers
            
             return View();
         }
+        public ActionResult Detail()
+        {
+            return View();
+        }
         #endregion
         #region 接口
-        public JsonResult GetEmployRole()
+        public JsonResult GetRoles()
         {
-            IEnumerable<EmployRole> role = _employRoleService.GetEmployRoles();
-            return Json(role,JsonRequestBehavior.AllowGet);
+            ResMessage res = _employRoleService.GetRoles();
+            return Json(res,JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Add(EmployRole employRole)
+        {
+            if (employRole == null)
+            {
+                return Json(false);
+            }
+            ResMessage result=_employRoleService.Add(employRole);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion
 
