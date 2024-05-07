@@ -13,5 +13,8 @@ namespace HotSpringProjectService.Interface
         IEnumerable<EmployRole> GetEmployRoles();
         ResMessage GetRoles();
         ResMessage Add(EmployRole employRole);
+        ResMessage Delete(int id);
+        ResMessage GetModel(int id);
+        ResMessage Update(EmployRole employRole);
     }
 }

@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form class="layui-form" action="" lay-filter="movieForm">
+<form class="layui-form" action="" lay-filter="roleForm">
     <div class="layui-form-item">
         <div class="layui-inline">
             <input type="hidden" name="id" value="0" />
@@ -45,22 +45,45 @@
     </div>
 </form>
 <script>
-    layui.use('form', function () {
+    layui.use(['form','util','layer'], function () {
         var form = layui.form;
+        var util = layui.util;
+        var layer = layui.layer;
+        let id =@ViewBag.id;
+        $.get("/EmployRole/getrolemodel", { id: id }, function (res) {
+            if (res.code == 200) {
+                console.log(res);
+                form.val('roleForm', res.data);
+            }
+        });
         form.on('submit(demo1)', function (data) {
             //console.log(data.field);
             var obj = data.field;
-            $.post("/EmployRole/Add", { employrole: obj }, function (res) {
-                //console.log(res);
-                if (res.code == 200) {
-                    var index = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(index);
-                    parent.layui.table.reload('demo');
-                    parent.layui.layer.msg(res.msg);
-                }
-            })
+            if (id == 0) {
+                $.post("/EmployRole/Add", { employrole: obj }, function (res) {
+                    //console.log(res);
+                    //添加
+                    if (res.code == 200) {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.layui.table.reload('demo');
+                        parent.layui.layer.msg(res.msg);
+                    }
+                })
+                
+            } else
+            {
+                $.post("/EmployRole/update", { employrole: obj }, function (res) {
+                    if (res.code == 200) {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.layui.table.reload('demo');
+                        parent.layui.layer.msg(res.msg);
+                    }
+                })
+            }
             return false;
         });
-        });
+    });
 </script>
 

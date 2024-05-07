@@ -44,5 +44,24 @@ namespace HotSpringProjectService
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
 
+        public ResMessage Delete(int id)
+        {
+           bool flag=_employRoleRepository.Delete(id);
+            return flag?ResMessage.Success():ResMessage.Fail();
+            
+        }
+
+        public ResMessage GetModel(int id)
+        {
+            EmployRole model=_employRoleRepository.GetModelById(id);
+            return model!=null ? ResMessage.Success(model) :ResMessage.Fail();
+        }
+
+        public ResMessage Update(EmployRole employRole)
+        {
+              employRole.create_time= DateTime.Now;
+              bool flag=_employRoleRepository.Update(employRole);
+              return flag? ResMessage.Success():ResMessage.Fail();
+        }
     }
 }
