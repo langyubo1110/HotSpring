@@ -61,5 +61,9 @@ namespace HotSpringProjectRepository
                                      .Select(x => (x.id, x.module_name));
         }
 
+        public List<SystemPages> GetPagesByModuleId(int moduleId)
+        {
+            return _db.systemPages.Where(p => p.module_id == moduleId).ToList();
+        }
     }
 }

@@ -13,8 +13,8 @@ namespace HotSpringProjectService.Interface
     {
         List<RegAudit> GetList();
         ResMessage GetListByPager(RegAuditFilter filter);
-        ResMessage Add(RegAudit movie);
-        ResMessage Update(RegAudit movie);
+        ResMessage Add(RegAudit regAudit);
+        ResMessage Update(RegAudit regAudit);
         ResMessage Delete(int id);
         RegAudit GetModel(int id);
     }

@@ -1,4 +1,9 @@
-﻿using System;
+﻿using DotNet.Utilities;
+using HotSpringProject.Entity;
+using HotSpringProjectRepository;
+using HotSpringProjectRepository.Interface;
+using HotSpringProjectService.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,7 +53,10 @@ namespace HotSpringProjectService
         {
            bool flag=_employRoleRepository.Delete(id);
             return flag?ResMessage.Success():ResMessage.Fail();
-            
+
+        public IEnumerable<EmployRole> GetList()
+        {
+            return _db.GetList();
         }
 
         public ResMessage GetModel(int id)

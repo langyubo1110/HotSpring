@@ -19,6 +19,7 @@ namespace HotSpringProject.Entity
         public int outin_person_id { get; set; }
         public int type { get; set; }
         public DateTime create_time { get; set; }
+        public int stock_number { get; set; }
 
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI;
 
 namespace HotSpringProjectRepository.Interface
 {
@@ -15,6 +16,7 @@ namespace HotSpringProjectRepository.Interface
         bool Delete(int id);
         SystemPages GetModel(int id);
         IEnumerable<(int Id, string Name)> GetModuleList();
+        List<SystemPages> GetPagesByModuleId(int moduleId);
 
     }
 }

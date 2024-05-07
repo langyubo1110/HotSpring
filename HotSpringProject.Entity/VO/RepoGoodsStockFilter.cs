@@ -8,8 +8,9 @@ namespace HotSpringProject.Entity.VO
 {
     public class RepoGoodsStockFilter
     {
+        //商品名称
         public string goods_name { get; set; }
-        public string threshold { get; set; }
-        public string factory { get; set; }
+        //库存数量
+        public int? goods_number { get; set; }
     }
 }

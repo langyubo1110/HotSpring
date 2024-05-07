@@ -44,6 +44,10 @@ namespace HotSpringProjectService
         {
             return _EmployEmpRepository.GetList();
         }
+        //public IEnumerable<EmployEmp> GetListByID(int id)
+        //{
+        //    return _EmployEmpRepository.GetListByID(id);
+        //}
         /// <summary>
         /// 带分页查询
         /// </summary>
