@@ -4,54 +4,60 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Detail</h2>
+
+<div class="ibox-content">
+    <form class="layui-form" action="" lay-filter="editform">
 
 
-<form class="layui-form" action="" lay-filter="editform">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">立案表ID</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="reg_equip_reaearch_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                </div>
+            </div>
 
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">立案表ID</label>
-            <div class="layui-input-inline">
-                <input type="text" name="reg_equip_reaearch_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            <div class="layui-inline">
+                <label class="layui-form-label">复核人ID</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="recheck_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">复核人ID</label>
-            <div class="layui-input-inline">
-                <input type="text" name="recheck_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">复核意见</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="recheck_opin" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">创建时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="create_time" id="input_create_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                </div>
             </div>
         </div>
-    </div><div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">复核意见</label>
-            <div class="layui-input-inline">
-                <input type="text" name="recheck_opin" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">创建时间</label>
-            <div class="layui-input-inline">
-                <input type="text" name="create_time" id="input_create_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-
-
-    <div class="layui-input-block">
-        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-    </div>
-</form>
 
 
 
 
-<script>
+    </form>
+</div>
+
+    
+
+
+
+
+
+
+    <script>
     layui.use(['form', 'laydate', 'util'], function () {
         var form = layui.form;
         var laydate = layui.laydate;
@@ -83,6 +89,7 @@
                 })
             }
             else {
+                //obj = data.field
                 obj.id = id;//把id的值赋给obj  或者用隐藏控件存id
                 $.post("/regaudit/edit", { regAudit: obj }, function (res) {
                     if (res.code == 200) {
@@ -95,15 +102,8 @@
 
             return false;
         });
-        //console.log(id);
-        $.post("/layui/getmovie", {id:id}, function (res) {
-            if (res.code == 200) {
-                console.log(res.data);
-                res.data.create_time = util.toDateString(formatDateString(res.data, "create_time"), "yyyy-MM-dd");
-                form.val('movieForm', res.data);
-            }
-        })
+        
     })
-</script>
+    </script>
 
 

@@ -4,6 +4,7 @@ using HotSpringProject.Entity.VO;
 using HotSpringProjectService;
 using HotSpringProjectService.Interface;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -40,9 +41,9 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _repoGoodsStockService.Delete(id);
             return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetList(int page, int limit,RepoGoodsStockFilter filter)
+        public JsonResult GetListByPager(int page, int limit,RepoGoodsStockFilter filter)
         {
-            ResMessage resMessage = _repoGoodsStockService.GetList(page,limit,filter);
+            ResMessage resMessage = _repoGoodsStockService.GetListByPager(page,limit,filter);
             return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetModel(int id = 0)
@@ -59,6 +60,20 @@ namespace HotSpringProject.Controllers
         {
             ResMessage resMessage = _repoGoodsStockService.Update(repoGoodsStock);
             return Json(resMessage);
+        }
+        public JsonResult GetList(string keywords)
+        {
+            ResMessage resMessage = _repoGoodsStockService.GetList(keywords);
+            if (string.IsNullOrEmpty(keywords)) 
+            {
+                return Json(resMessage,JsonRequestBehavior.AllowGet);
+            }
+            //自动补全组件数据格式
+            Hashtable ht = new Hashtable();
+            ht["code"] = 0;
+            ht["msg"] = "";
+            ht["data"] = resMessage.data;
+            return Json(ht,JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

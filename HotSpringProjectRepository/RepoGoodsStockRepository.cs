@@ -1,8 +1,10 @@
 ﻿using HotSpringProject.Entity;
+using HotSpringProject.Entity.DTO;
 using HotSpringProjectRepository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,13 +20,11 @@ namespace HotSpringProjectRepository
             _Db = hotSpringDb;
         }
         //添加
-        public bool Add(RepoGoodsStock repoGoodsStock)
+        public int Add(RepoGoodsStock repoGoodsStock)
         {
             _Db.Entry(repoGoodsStock).State = System.Data.Entity.EntityState.Added;
-            int flag = _Db.SaveChanges();
-            if (flag > 0) 
-                return true;
-            return false;
+            int flag=_Db.SaveChanges();
+            return flag>0?repoGoodsStock.id:0;
         }
         //删除
         public int Delete(int id)
@@ -34,8 +34,8 @@ namespace HotSpringProjectRepository
             int flag = _Db.SaveChanges();
             return flag;
         }
-        //查全表
-        public IQueryable<RepoGoodsStock> GetList() {
+        //查全表(分页)
+        public IQueryable<RepoGoodsStock> GetListByPager() {
             IQueryable<RepoGoodsStock> list = _Db.RepoGoodsStock;
             return list;
         }
@@ -53,6 +53,12 @@ namespace HotSpringProjectRepository
         {
             RepoGoodsStock repoGoodsStock = _Db.RepoGoodsStock.Find(id);
             return repoGoodsStock;
+        }
+        //查全表
+        public IEnumerable<RepoGoodsStock> Getlist()
+        {
+            IEnumerable<RepoGoodsStock> list = _Db.RepoGoodsStock;
+            return list;
         }
     }
 }

@@ -11,6 +11,7 @@ namespace HotSpringProjectRepository.Interface
     public interface IEmployEmpRepository
     {
         IEnumerable<EmployEmp> GetList();
+        //IEnumerable<EmployEmp> GetListByID(int id);
         int Add(EmployEmp employemp);
         bool Update(EmployEmp employemp);
         bool Delete(int id);

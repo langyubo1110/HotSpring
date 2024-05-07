@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using HotSpringProject.Entity.DTO;
 
 namespace HotSpringProject.Controllers
 {
@@ -18,19 +19,32 @@ namespace HotSpringProject.Controllers
     public class RepoOutInRecordController : Controller
     {
         private readonly IRepoOutInRecordService _repoOutInRecordService;
+        private readonly IRepoGoodsStockService _repoGoodsStockService;
+        private readonly IRepoBuyService _repoBuyService;
 
-        public RepoOutInRecordController(IRepoOutInRecordService repoOutInRecordService) 
+        public RepoOutInRecordController(IRepoOutInRecordService repoOutInRecordService,IRepoGoodsStockService repoGoodsStockService,IRepoBuyService repoBuyService) 
         {
             _repoOutInRecordService=repoOutInRecordService;
+            _repoGoodsStockService=repoGoodsStockService;
+            _repoBuyService=repoBuyService;
         }
         #region 页面
         public ActionResult GoodsOutIn()
         {
             return View();
         }
-        public ActionResult Detail(int id = 0)
+        public ActionResult OutDetail()
         {
-            ViewBag.id = id;
+            List<RepoGoodsStock> list = (List<RepoGoodsStock>)_repoGoodsStockService.GetList(null).data;
+            ViewBag.list = list;
+            return View();
+        }
+        public ActionResult InDetail()
+        {
+            return View();
+        }
+        public ActionResult Test() 
+        {
             return View();
         }
         #endregion
@@ -41,9 +55,9 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _repoOutInRecordService.Delete(id);
             return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetList(int page, int limit, RepoOutInRecordFilter filter)
+        public JsonResult GetList()
         {
-            ResMessage resMessage = _repoOutInRecordService.GetList(page, limit, filter);
+            ResMessage resMessage = _repoOutInRecordService.GetList();
             return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetModel(int id = 0)
@@ -51,9 +65,9 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _repoOutInRecordService.GetModel(id);
             return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult Add(RepoOutInRecord repoOutInRecord)
+        public JsonResult Add(RepoGoodsStockDTO repoGoodsStockDTO)
         {
-            ResMessage resMessage = _repoOutInRecordService.Add(repoOutInRecord);
+            ResMessage resMessage = _repoOutInRecordService.Add(repoGoodsStockDTO);
             return Json(resMessage);
         }
         public JsonResult Update(RepoOutInRecord repoGoodsStock)
@@ -61,7 +75,11 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _repoOutInRecordService.Update(repoGoodsStock);
             return Json(resMessage);
         }
-
+        public JsonResult GetListBySql(int? page, int? limit,RepoOutInRecordFilter filter) 
+        {
+            ResMessage resMessage = _repoOutInRecordService.GetListBySql(page,limit,filter);
+            return Json(resMessage,JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
     }

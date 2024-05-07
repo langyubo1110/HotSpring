@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form role="form" class="layui-form form-inline" lay-filter="editform">
+            <div class="form-group">
+                <input type="hidden" name="type" value="0" />
+                <input type="hidden" id="hdid" name="id" value="0" />
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                <div class="layui-inline">
+                    <span>商品名称：</span>
+                    <div class="layui-input-inline">
+                        <input type="text" name="goods_name" id="searchName" placeholder="请输入商品名称" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                单价：&emsp;&emsp;<input type="text" name="price" placeholder="请输入商品单价" class="form-control">
+            </div>
+            <br /> <br />
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                入库数量：&nbsp;<input type="text" name="oi_number" lay-verify="required" placeholder="请输入入库数量" class="form-control">
+            </div>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                阈值：&emsp;&emsp;<input type="text" name="threshold" id="txtThreshold" placeholder="请输入阈值" class="form-control">
+            </div>
+            <br /> <br />
+                   <div class="form-group">
+                       &emsp;&emsp;&emsp;  &emsp;&emsp;
+                       采购商：&emsp;&nbsp;<input type="text" name="buyer" id="txtBuyer" lay-verify="required" placeholder="请输入采购商" class="form-control">
+                   </div>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                采购电话：<input type="text" name="buyer_phone" id="txtPhone" lay-verify="required" placeholder="请输入采购电话" class="form-control">
+            </div>
+            <br /> <br />
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                上传图片：&nbsp;<input type="text" name="picture" id="txtPicture" lay-verify="required" placeholder="请上传图片" class="form-control">
+            </div>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                厂家：&emsp;&emsp;<input type="text" name="factory" id="txtFactory" placeholder="请输入厂家名称" class="form-control">
+            </div>
+            <br /> <br />
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                库存数量：&nbsp;<input type="text" name="goods_number" id="txtGoodsNumber" lay-verify="required" readonly="readonly" value="0" class="layui-disabled form-control">
+            </div>
+            <br /><br /><br />
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+                    <button type="reset" class="layui-btn" id="rebtn">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+    .layui-form-select .layui-input {
+        padding-right: 30px;
+        cursor: pointer;
+        height: 34px;
+        width: 196px;
+    }
+</style>
+<!--自动补全js-->
+<link href="~/assets/layui/css/autocomplete.css" rel="stylesheet" />
+<script src="~/assets/layui/extra/autocomplete.js"></script>
+<script>
+    layui.use(['form', 'util'], function () {
+        var form = layui.form;
+        var util = layui.util;
+        var autocomplete = layui.autocomplete;
+        form.on('submit(demo1)', function (data) {
+            console.log(data)
+            //$.post("/repooutinrecord/add", { repoGoodsStockDTO: data.field }, function (res) {
+            //    console.log(res)
+            //    if (res.code == 200) {
+            //        var index = parent.layer.getFrameIndex(window.name);
+            //        parent.layer.close(index);
+            //        parent.layui.table.reload("demo");
+            //        parent.layer.msg("入库成功");
+            //    }
+            //})
+            return false;
+        })
+       
+        //自动补齐
+        autocomplete.render({
+            elem: $('#searchName'),
+            //进行缓存，每一次键入都发起新请求  true只发起一次请求
+            cache: false,
+            url: '/repogoodsstock/getlist?name=' + $("#searchName").val(),
+            //绑定的val值字段，通常情况下绑定id
+            template_val: '{{d.id}}',
+            //绑定的内容
+            template_txt: '<span class=\'autostyle layui-input\'>{{d.goods_name}}</span>',
+            //事件：选中
+            onselect: function (autores) {
+                console.log(autores);
+                $("#searchName").val(autores.goods_name)
+                $("#hdid").val(autores.id)
+                $("#txtFactory").attr("class", "layui-disabled form-control").attr("readonly", "readonly");
+                $("#txtPicture").attr("class", "layui-disabled form-control").attr("readonly", "readonly");
+                $.post("/repogoodsstock/getmodel", { id: autores.id }, function (res) {
+                    $("#txtThreshold").val(res.data.threshold);
+                    $("#txtFactory").val(res.data.factory);
+                    $("#txtGoodsNumber").val(res.data.goods_number);
+                    $("#txtPicture").val("商品已存在")
+                })
+            }
+        });
+    })
+    $("#rebtn").click(function () {
+        $("#txtFactory").attr("class", "form-control").removeAttr("readonly");
+        $("#txtPicture").attr("class", "form-control").removeAttr("readonly");
+    })
+</script>
+
+

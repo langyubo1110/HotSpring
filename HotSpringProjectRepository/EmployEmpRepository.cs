@@ -49,6 +49,10 @@ namespace HotSpringProjectRepository
         {
                 return _db.EmployEmps;
         }
+        //public IEnumerable<EmployEmp> GetListByID(int id)
+        //{
+        //    return _db.EmployEmps.Where(e => e.role_id == id).ToList();
+        //}
 
         public EmployEmp GetModel(int id)
         {
