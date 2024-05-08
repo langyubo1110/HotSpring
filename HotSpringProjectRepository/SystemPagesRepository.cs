@@ -28,7 +28,7 @@ namespace HotSpringProjectRepository
 
         public bool Delete(int id)
         {
-            SystemPages systemPages = _db.systemPages.Find(id);
+            SystemPages systemPages = _db.SystemPages.Find(id);
             if (systemPages != null)
                 _db.Entry(systemPages).State = EntityState.Deleted;
             int flag = _db.SaveChanges();
@@ -38,12 +38,12 @@ namespace HotSpringProjectRepository
 
         public IEnumerable<SystemPages> GetList()
         {
-            return _db.systemPages;
+            return _db.SystemPages;
         }
 
         public SystemPages GetModel(int id)
         {
-            return _db.systemPages.Find(id);
+            return _db.SystemPages.Find(id);
         }
 
         public bool Update(SystemPages systemPages)
@@ -60,5 +60,9 @@ namespace HotSpringProjectRepository
                                      .Select(x => (x.id, x.module_name));
         }
 
+        public List<SystemPages> GetPagesByModuleId(int moduleId)
+        {
+            return _db.systemPages.Where(p => p.module_id == moduleId).ToList();
+        }
     }
 }

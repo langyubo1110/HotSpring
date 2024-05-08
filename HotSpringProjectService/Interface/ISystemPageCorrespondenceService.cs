@@ -10,16 +10,17 @@ namespace HotSpringProjectService.Interface
 {
     public interface ISystemPageCorrespondenceService
     {
-        List<SystemPageCorrespondenceService> GetList();
+        List<SystemPageCorrespondence> GetList();
 
 
-        ResMessage Add(SystemPageCorrespondenceService movies);
-        ResMessage Delete(int Id);
-        ResMessage Update(SystemPageCorrespondenceService movies);
+        ResMessage Add(int roleId, List<int> pageIds);
+        ResMessage Delete(int roleId);
+        ResMessage Update(SystemPageCorrespondence movies);
 
         ResMessage GetModel(int Id);
 
         List<MenuVO> GetMenu(int RoleId);
+        List<MenuVO> GetAllPages(int role_id);
         bool verify(int roleId, int pageId);
     }
 }

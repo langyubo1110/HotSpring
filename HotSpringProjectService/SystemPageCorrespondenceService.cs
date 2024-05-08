@@ -1,5 +1,6 @@
 ﻿using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProjectRepository;
 using HotSpringProjectRepository.Interface;
 using HotSpringProjectService.Interface;
 using System;
@@ -7,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Security;
+using System.Web.UI;
 
 namespace HotSpringProjectService
 {
@@ -18,21 +21,49 @@ namespace HotSpringProjectService
         {
             _rolePageRepository = rolePageRepository;
         }
-        public ResMessage Add(SystemPageCorrespondenceService movies)
+        public ResMessage Add(int roleId, List<int> pageIds)
+        {
+            int flag = _rolePageRepository.Add(roleId,pageIds);
+            return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
+        }
+
+        public ResMessage Delete(int roleId)
+        {
+            bool flag = _rolePageRepository.Delete(roleId);
+            return flag ? ResMessage.Success() : ResMessage.Fail();
+        }
+
+        public List<SystemPageCorrespondence> GetList()
         {
             throw new NotImplementedException();
         }
-
-        public ResMessage Delete(int Id)
+        public List<MenuVO> GetAllPages(int role_id)
         {
-            throw new NotImplementedException();
+            int roleId = role_id;
+            List<PagesVO> list = _rolePageRepository.QueryBySql<PagesVO>($@"select p.*,m.module_name from System_Pages p 
+                                                                         inner join System_Module m on m.id=p.module_id");
+            List<MenuVO> resulitList = new List<MenuVO>();
+            //查出对应关系表的所有数据
+            foreach (var gp in list.GroupBy(x => x.module_name))
+            {
+                MenuVO menu = new MenuVO();
+                menu.module_name = gp.Key;
+                List<SystemPages> plist = new List<SystemPages>();
+                foreach (var p in gp.ToList())
+                {
+                    SystemPages page = new SystemPages();
+                    page.page_name = p.page_name;
+                    page.id = p.id;
+                    page.page_address = p.page_address;
+                    bool exists = verify(roleId,p.id);
+                    page.isChecked = exists;
+                    plist.Add(page);
+                }
+                menu.page_list = plist;
+                resulitList.Add(menu);
+            }
+            return resulitList;
         }
-
-        public List<SystemPageCorrespondenceService> GetList()
-        {
-            throw new NotImplementedException();
-        }
-
         public List<MenuVO> GetMenu(int RoleId)
         {
             List<SystemPageCorrespondenceDTO> list = _rolePageRepository.QueryBySql<SystemPageCorrespondenceDTO>($@"select rp.*,p.page_name,p.page_address,m.module_name from System_Page_Correspondence rp 
@@ -65,7 +96,7 @@ namespace HotSpringProjectService
             throw new NotImplementedException();
         }
 
-        public ResMessage Update(SystemPageCorrespondenceService movies)
+        public ResMessage Update(SystemPageCorrespondence movies)
         {
             throw new NotImplementedException();
         }
