@@ -22,15 +22,23 @@ namespace HotSpringProject.Controllers
         {
             _dbService = employEmpService;
         }
+        #region 页面
+        //员工管理页面
         public ActionResult EmployManager()
+        {
+            return View();
+        }
+        //员工注册页面
+        public ActionResult EmployRegister()
         {
             return View();
         }
         public ActionResult Detail(int id=0)
         {
-            ViewBag.id = id;
+           ViewBag.id = id; 
             return View();
         }
+        #endregion
         public JsonResult Employ(EmployEmpFilter filter) 
         {
             ResMessage res = _dbService.GetListByPager(filter);

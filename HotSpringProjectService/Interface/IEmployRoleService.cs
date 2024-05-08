@@ -10,12 +10,11 @@ namespace HotSpringProjectService.Interface
 {
     public interface IEmployRoleService
     {
-        ResMessage GetModel(int id);
-        //查分页
-        IEnumerable<EmployRole> GetList();
-
-        ResMessage Add(EmployRole EmployRole);
+        IEnumerable<EmployRole> GetEmployRoles();
+        ResMessage GetRoles();
+        ResMessage Add(EmployRole employRole);
         ResMessage Delete(int id);
-        ResMessage Update(EmployRole EmployRole);
+        ResMessage GetModel(int id);
+        ResMessage Update(EmployRole employRole);
     }
 }

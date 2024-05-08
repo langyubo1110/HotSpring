@@ -9,16 +9,15 @@ namespace HotSpringProjectRepository.Interface
 {
     public interface IEmployRoleRepository
     {
+        //查询
         IEnumerable<EmployRole> GetList();
-        //增
-        int Add(EmployRole EmployRole);
-        //改
-        bool Update(EmployRole EmployRole);
-        //删
+        //添加
+        int Add(EmployRole employRole);
+        //删除
         bool Delete(int id);
-        //查实体
-        EmployRole GetModel(int id);
-        //sql查询
-        IEnumerable<T> QueryBySql<T>(string sql);
+        //修改
+        bool Update(EmployRole employRole);
+        //获得角色实体
+        EmployRole GetModelById(int id);
     }
 }
