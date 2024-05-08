@@ -8,16 +8,17 @@ using System.Threading.Tasks;
 
 namespace HotSpringProject.Entity
 {
-    [Table("Repo_Buy")]
-    public class RepoBuy
+    [Table("GRoom_Repair")]
+    public class GRoomRepair
     {
         [Key]
         public int id { get; set; }
-        public int goods_id { get; set; }
-        public int goods_number { get; set; }
-        public decimal price { get; set; }
-        public string buyer { get; set; }
-        public string buyer_phone { get; set; }
+        public int reporter_id { get; set; }
+        public string confirmer { get; set; }
+        public string location { get; set; }
+        public DateTime start_time { get; set; }
+        public DateTime end_time { get; set; }
+        public string context { get; set; }
         public DateTime create_time { get; set; }
     }
 }

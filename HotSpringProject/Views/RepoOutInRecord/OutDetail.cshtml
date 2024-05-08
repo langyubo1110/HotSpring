@@ -76,9 +76,9 @@
                     console.log(res)
                     if (res.code == 200) {
                         var index = parent.layer.getFrameIndex(window.name);
-                        parent.layer.close(index);
                         parent.layui.table.reload("demo");
                         parent.layer.msg("出库成功");
+                        parent.layer.close(index);
                     }
                 })
             return false;

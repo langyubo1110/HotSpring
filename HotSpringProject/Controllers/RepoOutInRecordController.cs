@@ -20,13 +20,14 @@ namespace HotSpringProject.Controllers
     {
         private readonly IRepoOutInRecordService _repoOutInRecordService;
         private readonly IRepoGoodsStockService _repoGoodsStockService;
+        private readonly IEmployEmpService _employEmpService;
         private readonly IRepoBuyService _repoBuyService;
 
-        public RepoOutInRecordController(IRepoOutInRecordService repoOutInRecordService,IRepoGoodsStockService repoGoodsStockService,IRepoBuyService repoBuyService) 
+        public RepoOutInRecordController(IRepoOutInRecordService repoOutInRecordService,IRepoGoodsStockService repoGoodsStockService,IEmployEmpService employEmpService) 
         {
             _repoOutInRecordService=repoOutInRecordService;
             _repoGoodsStockService=repoGoodsStockService;
-            _repoBuyService=repoBuyService;
+            _employEmpService=employEmpService;
         }
         #region 页面
         public ActionResult GoodsOutIn()
@@ -41,6 +42,8 @@ namespace HotSpringProject.Controllers
         }
         public ActionResult InDetail()
         {
+            List<EmployEmp> elist = _employEmpService.GetList().ToList();
+            ViewBag.list = elist;
             return View();
         }
         public ActionResult Test() 

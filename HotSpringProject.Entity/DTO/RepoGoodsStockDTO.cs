@@ -12,8 +12,6 @@ namespace HotSpringProject.Entity.DTO
         public int id { get; set; }
         //商品名称
         public string goods_name { get; set; }
-        //入库id
-        public int instock_id { get; set; }
         //单价
         public decimal price { get; set; }
         //采购商

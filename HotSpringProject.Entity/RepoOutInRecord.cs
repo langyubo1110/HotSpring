@@ -20,6 +20,7 @@ namespace HotSpringProject.Entity
         public int type { get; set; }
         public DateTime create_time { get; set; }
         public int stock_number { get; set; }
-
+        public int audit { get; set; }
+        public int recipient_id { get; set; }
     }
 }

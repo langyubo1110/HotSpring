@@ -111,6 +111,8 @@ namespace HotSpringProjectService
                 repoOutInRecord.outin_person_id = 1;//通过Session获取登录人ID
                 repoOutInRecord.type = repoGoodsStockDTO.type;//出库/入库
                 repoOutInRecord.stock_number = repoGoodsStockDTO.goods_number;
+                repoOutInRecord.audit = 0;
+                repoOutInRecord.recipient_id = 1;
                 _repoOutInRecordRepository.Add(repoOutInRecord);
                 _repoOutInRecordRepository.Commit();
                 return ResMessage.Success();
@@ -131,7 +133,6 @@ namespace HotSpringProjectService
         public ResMessage GetList()
         {
             List<RepoOutInRecord> list = _repoOutInRecordRepository.GetList().ToList();
-            
             return list != null ? ResMessage.Success(list) : ResMessage.Fail();
         }
         public ResMessage GetModel(int id)
