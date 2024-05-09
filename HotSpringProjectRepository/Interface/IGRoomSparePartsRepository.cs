@@ -10,9 +10,9 @@ namespace HotSpringProjectRepository.Interface
     public interface IGRoomSparePartsRepository
     {
         int Delete(int id);
-        bool Update(GRoomRepair gRoomRepair);
-        bool Add(GRoomRepair gRoomRepair);
-        GRoomRepair GetModel(int id);
-        IEnumerable<GRoomRepair> GetList();
+        bool Update(GRoomSpareParts gRoomSpareParts);
+        bool Add(GRoomSpareParts gRoomSpareParts);
+        GRoomSpareParts GetModel(int id);
+        IEnumerable<GRoomSpareParts> GetList();
     }
 }

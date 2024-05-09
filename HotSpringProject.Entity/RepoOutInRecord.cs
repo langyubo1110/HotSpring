@@ -15,11 +15,12 @@ namespace HotSpringProject.Entity
         public int id { get; set; }
 
         public int goods_id { get; set; }
-        public int goods_number { get; set; }
+        public int oi_number { get; set; }
         public int outin_person_id { get; set; }
         public int type { get; set; }
         public DateTime create_time { get; set; }
-        public int stock_number { get; set; }
+        public int start_number { get; set; }
+        public int end_number { get; set; }
         public int audit { get; set; }
         public int recipient_id { get; set; }
     }

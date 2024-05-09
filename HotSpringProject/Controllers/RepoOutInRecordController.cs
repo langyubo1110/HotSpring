@@ -21,7 +21,6 @@ namespace HotSpringProject.Controllers
         private readonly IRepoOutInRecordService _repoOutInRecordService;
         private readonly IRepoGoodsStockService _repoGoodsStockService;
         private readonly IEmployEmpService _employEmpService;
-        private readonly IRepoBuyService _repoBuyService;
 
         public RepoOutInRecordController(IRepoOutInRecordService repoOutInRecordService,IRepoGoodsStockService repoGoodsStockService,IEmployEmpService employEmpService) 
         {
@@ -36,14 +35,16 @@ namespace HotSpringProject.Controllers
         }
         public ActionResult OutDetail()
         {
-            List<RepoGoodsStock> list = (List<RepoGoodsStock>)_repoGoodsStockService.GetList(null).data;
-            ViewBag.list = list;
+            List<RepoGoodsStock> goodslist = (List<RepoGoodsStock>)_repoGoodsStockService.GetList(null,null).data;
+            ViewBag.goodslist = goodslist;
+            List<EmployEmp> employlist = _employEmpService.GetList().ToList();
+            ViewBag.employlist = employlist;
             return View();
         }
         public ActionResult InDetail()
         {
-            List<EmployEmp> elist = _employEmpService.GetList().ToList();
-            ViewBag.list = elist;
+            List<EmployEmp> employlist = _employEmpService.GetList().ToList();
+            ViewBag.list = employlist;
             return View();
         }
         public ActionResult Test() 

@@ -16,12 +16,12 @@ namespace HotSpringProjectRepository
         {
             _Db= hotSpringDbContext;
         }
-
-        public bool Add(GRoomRepair gRoomRepair)
+        //添加操作返回最新ID
+        public int Add(GRoomRepair gRoomRepair)
         {
             _Db.Entry(gRoomRepair).State = System.Data.Entity.EntityState.Added;
-            int flag = _Db.SaveChanges();
-            return flag>0?true:false;
+            _Db.SaveChanges();
+            return gRoomRepair.id;
         }
 
         public int Delete(int id)

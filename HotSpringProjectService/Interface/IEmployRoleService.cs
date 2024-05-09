@@ -16,5 +16,6 @@ namespace HotSpringProjectService.Interface
         ResMessage Delete(int id);
         ResMessage GetModel(int id);
         ResMessage Update(EmployRole employRole);
+        IEnumerable<EmployRole> GetList();
     }
 }

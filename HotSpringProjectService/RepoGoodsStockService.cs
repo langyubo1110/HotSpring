@@ -73,20 +73,26 @@ namespace HotSpringProjectService
             }
             return ResMessage.Fail();
         }
-        public ResMessage GetList(string keywords)
+        public ResMessage GetList(string keywords,int? goods_type)
         {
             //自动补全
             if (!string.IsNullOrEmpty(keywords))
             {
                 List<RepoGoodsStock> list = _repoGoodsStockRepository.Getlist().Where(x => x.goods_name.Contains(keywords)).ToList();
-                int count = list.Count();
+                int count = list.Count;
                 return list == null ? ResMessage.Fail() : ResMessage.Success(list, count);
             }
             //查全表
+            else if (goods_type != null)
+            {
+                List<RepoGoodsStock> list = _repoGoodsStockRepository.Getlist().Where(x => x.goods_type == goods_type).ToList();
+                int count = list.Count;
+                return list == null ? ResMessage.Fail() : ResMessage.Success(list, count);
+            }
             else 
             {
                 List<RepoGoodsStock> list = _repoGoodsStockRepository.Getlist().ToList();
-                int count = list.Count();
+                int count = list.Count;
                 return list == null ? ResMessage.Fail() : ResMessage.Success(list, count);
             }
         }

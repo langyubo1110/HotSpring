@@ -24,12 +24,11 @@
             id: 'idTest'
             , elem: '#demo'
             , height: 472
-            , url: '/repogoodsstock/getlist?type=1'//数据接口
+            , url: '/repogoodsstock/getlist?goods_type=1'//数据接口
             , cols: [[ //表头
                 { type: 'checkbox', fixed: 'left' }
                 , { field: 'goods_name', title: '备件名称', sort: true }
                 , { field: 'goods_number', title: '库存数量', sort: true }
-                , { field: 'number', title: '需求数量', sort: true, edit: 'text' }
             ]]
             , parseData: function (res) { //res 即为原始返回的数据
                 return {

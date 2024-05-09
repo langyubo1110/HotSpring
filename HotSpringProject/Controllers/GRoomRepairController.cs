@@ -46,9 +46,9 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _gRoomRepairService.GetModel(id);
             return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult Add(GRoomRepair gRoomRepair)
+        public JsonResult Add(GRoomRepair gRoomRepair,List<GRoomSparePartsVO> gRoomSPVOlist)
         {
-            ResMessage resMessage = _gRoomRepairService.Add(gRoomRepair);
+            ResMessage resMessage = _gRoomRepairService.Add(gRoomRepair, gRoomSPVOlist);
             return Json(resMessage);
         }
         public JsonResult Update(GRoomRepair gRoomRepair)

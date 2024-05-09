@@ -19,9 +19,9 @@
             </div>
             &emsp;&emsp;&emsp;  &emsp;&emsp;
             <div class="form-group">
-                接收人： &nbsp;&nbsp;&nbsp;<div class="layui-inline">
+                入库人： &nbsp;&nbsp;<div class="layui-inline">
                     <div class="layui-input-inline">
-                        <select name="recipient_id" lay-verify="required" lay-search="" lay-filter="ddltest">
+                        <select name="outin_person_id" lay-verify="required" lay-search="" lay-filter="ddltest">
                             <option value=""></option>
                             @foreach (var item in ViewBag.list)
                             {
@@ -33,40 +33,73 @@
             </div>
 
             <br /> <br />
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+                   <div class="form-group">
+                       接收人： &nbsp;&nbsp;&nbsp;<div class="layui-inline">
+                           <div class="layui-input-inline">
+                               <select name="recipient_id" lay-verify="required" lay-search="" lay-filter="ddltest">
+                                   <option value=""></option>
+                                   @foreach (var item in ViewBag.list)
+                                   {
+                                       <option value="@item.id">@item.name</option>
+                                   }
+                               </select>
+                           </div>
+                       </div>
+                   </div>
+
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
-                入库数量：&nbsp;<input type="text" name="oi_number" lay-verify="required" placeholder="请输入入库数量" class="form-control">
+                入库数量：<input type="text" name="oi_number" lay-verify="required" placeholder="请输入入库数量" class="form-control">
             </div>
+            <br /> <br />
             &emsp;&emsp;&emsp;  &emsp;&emsp;
             <div class="form-group">
                 阈值：&emsp;&emsp;<input type="text" name="threshold" id="txtThreshold" placeholder="请输入阈值" class="form-control">
             </div>
-            <br /> <br />
+
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
                 采购商：&emsp;&nbsp;<input type="text" name="buyer" id="txtBuyer" lay-verify="required" placeholder="请输入采购商" class="form-control">
             </div>
+            <br /> <br />
             &emsp;&emsp;&emsp;  &emsp;&emsp;
             <div class="form-group">
                 采购电话：<input type="text" name="buyer_phone" id="txtPhone" lay-verify="required" placeholder="请输入采购电话" class="form-control">
             </div>
-            <br /> <br />
+
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
-                上传图片：&nbsp;<input type="text" name="picture" id="txtPicture" lay-verify="required" placeholder="请上传图片" class="form-control">
-            </div>
-            &emsp;&emsp;&emsp;  &emsp;&emsp;
-            <div class="form-group">
-                厂家：&emsp;&emsp;<input type="text" name="factory" id="txtFactory" placeholder="请输入厂家名称" class="form-control">
+                单价：&emsp;&emsp;&nbsp;<input type="text" name="price" placeholder="请输入商品单价" class="form-control">
             </div>
             <br /> <br />
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                类型：&emsp;&emsp;<div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <select name="goods_type" id="ddltype">
+                            <option value=""></option>
+                            <option value="0">食物</option>
+                            <option value="1">备件</option>
+                            <option value="2">生活用品</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                厂家：&emsp;&emsp;&nbsp;<input type="text" name="factory" id="txtFactory" placeholder="请输入厂家名称" class="form-control">
+            </div>
+            <br /><br />
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                上传图片：<input type="text" name="picture" id="txtPicture" lay-verify="required" placeholder="请上传图片" class="form-control">
+            </div>
+
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
                 库存数量：&nbsp;<input type="text" name="goods_number" id="txtGoodsNumber" lay-verify="required" readonly="readonly" value="0" class="layui-disabled form-control">
-            </div>
-            &emsp;&emsp;&emsp;  &emsp;&emsp;
-            <div class="form-group">
-                单价：&emsp;&emsp;<input type="text" name="price" placeholder="请输入商品单价" class="form-control">
             </div>
             <br /><br /><br />
             <div class="layui-form-item">
@@ -86,9 +119,10 @@
         height: 34px;
         width: 196px;
     }
+
     .layui-form-selected dl {
         display: block;
-        height: 200px;
+        height: 120px;
     }
 </style>
 <!--自动补全js-->
@@ -112,7 +146,7 @@
             })
             return false;
         })
-       
+
         //自动补齐
         autocomplete.render({
             elem: $('#searchName'),
@@ -131,13 +165,17 @@
                 $("#txtFactory").attr("class", "layui-disabled form-control").attr("readonly", "readonly");
                 $("#txtPicture").attr("class", "layui-disabled form-control").attr("readonly", "readonly");
                 $.post("/repogoodsstock/getmodel", { id: autores.id }, function (res) {
-                    $("#txtThreshold").val(res.data.threshold);
-                    $("#txtFactory").val(res.data.factory);
-                    $("#txtGoodsNumber").val(res.data.goods_number);
-                    $("#txtPicture").val("商品已存在")
+                    form.val('editform', {
+                        "goods_type": res.data.goods_type
+                        , "threshold": res.data.threshold
+                        , "factory": res.data.factory
+                        , "goods_number": res.data.goods_number
+                        , "picture": "商品已存在"
+                    })
                 })
             }
         });
+        
     })
     $("#rebtn").click(function () {
         $("#txtFactory").attr("class", "form-control").removeAttr("readonly");

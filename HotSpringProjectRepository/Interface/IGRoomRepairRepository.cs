@@ -12,7 +12,7 @@ namespace HotSpringProjectRepository.Interface
     {
         int Delete(int id);
         bool Update(GRoomRepair gRoomRepair);
-        bool Add(GRoomRepair gRoomRepair);
+        int Add(GRoomRepair gRoomRepair);
         GRoomRepair GetModel(int id);
         IEnumerable<GRoomRepair> GetList();
     }

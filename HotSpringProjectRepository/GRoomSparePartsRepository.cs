@@ -17,9 +17,11 @@ namespace HotSpringProjectRepository
             _Db= hotSpringDbContext;
         }
 
-        public bool Add(GRoomRepair gRoomRepair)
+        public bool Add(GRoomSpareParts gRoomSpareParts)
         {
-            throw new NotImplementedException();
+            _Db.Entry(gRoomSpareParts).State = System.Data.Entity.EntityState.Added;
+            int flag =_Db.SaveChanges();
+            return flag>0?true:false;
         }
 
         public int Delete(int id)
@@ -27,17 +29,17 @@ namespace HotSpringProjectRepository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<GRoomRepair> GetList()
+        public IEnumerable<GRoomSpareParts> GetList()
         {
             throw new NotImplementedException();
         }
 
-        public GRoomRepair GetModel(int id)
+        public GRoomSpareParts GetModel(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(GRoomRepair gRoomRepair)
+        public bool Update(GRoomSpareParts gRoomSpareParts)
         {
             throw new NotImplementedException();
         }

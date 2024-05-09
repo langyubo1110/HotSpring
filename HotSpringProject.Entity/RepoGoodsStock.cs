@@ -21,7 +21,7 @@ namespace HotSpringProject.Entity
         public string threshold { get; set; }
         public string factory { get; set; }
         public string picture { get; set; }
-        public int type { get; set; }
+        public int goods_type { get; set; }
         public DateTime create_time { get; set; }
         public DateTime update_time { get; set; }
     }

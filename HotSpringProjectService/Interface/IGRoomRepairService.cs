@@ -1,5 +1,6 @@
 ﻿using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace HotSpringProjectService.Interface
     {
         ResMessage Delete(int id);
         ResMessage Update(GRoomRepair gRoomRepair);
-        ResMessage Add(GRoomRepair gRoomRepair);
+        ResMessage Add(GRoomRepair gRoomRepair,List<GRoomSparePartsVO> gRoomSPVOlist);
         ResMessage GetModel(int id);
         ResMessage GetList();
     }

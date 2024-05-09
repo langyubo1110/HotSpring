@@ -19,7 +19,13 @@ namespace HotSpringProject.Entity.DTO
         //采购商电话
         public string buyer_phone { get; set; }
         //出库/入库前的库存数量
-        public int stock_number { get; set; }
+        public int start_number { get; set; }
+        //出库/入库后的库存数量
+        public int end_number { get; set; }
+        //接收人id
+        public int recipient_id { get; set; }
+        //出入库人id
+        public int outin_person_id { get; set; }
         //出入库人
         public string name { get; set; }
         //出入库数量
@@ -27,13 +33,16 @@ namespace HotSpringProject.Entity.DTO
         //出入库类型
         //0出1入
         public int type { get; set; }
+        //商品类型
+        //0食物1备件2生活用品
+        public int goods_type { get; set; }
         //阈值
         public string threshold { get; set; }
         //厂家
         public string factory { get; set; }
         //图片
         public string picture { get; set; }
-        //出库/入库后的库存数量
+        //库存数量
         public int goods_number { get; set; }
         //出入库记录创建时间
         public DateTime create_time { get; set; }

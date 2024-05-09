@@ -88,12 +88,15 @@
             , type: 'datetime'
         });
         form.on('submit(demo1)', function (data) {
+            console.log(data.field)
             if (data.field.reporter_id == 0)
             {
                 layer.msg("请选择上报人");
                 return false;
             }
-            $.post("/groomrepair/add", { gRoomRepair: data.field }, function (res) {
+            var datatable = table.getData("demo")
+            console.log(datatable)
+            $.post("/groomrepair/add", { gRoomRepair: data.field, gRoomSPVOlist: datatable }, function (res) {
                 if (res.code == 200)
                 {
                     layer.msg('添加成功');
@@ -104,16 +107,17 @@
         //展示已知数据
         table.render({
             elem: '#demo'
-            , width:364
+            , width:606
             , cols: [[ //标题栏
                 { field: 'goods_name', title: '备件名称', width: 120 }
                 , { field: 'goods_number', title: '库存数量', width: 120 }
-                , { field: 'number', title: '需求数量', width: 120 , edit:'text'}
+                , { field: 'number', title: '出库数量', width: 120, edit: 'text' }
+                , { field: 'used_number', title: '使用数量', width: 120, edit: 'text' }
+                , { field: 'oi_number', title: '剩余数量', width: 120, edit: 'text' }
             ]]
             , data: [{
                 "goods_name": "无"
                 , "goods_number": "无"
-                , "number": "无"
             }]
             //,skin: 'line' //表格风格
             , even: true
@@ -126,7 +130,7 @@
             layer.open({
                 title: '备件列表',
                 type: 2,
-                area: ['400px', '650px'],
+                area: ['350px', '650px'],
                 content: '/groomspareparts/detail'
             })
         })
@@ -136,7 +140,6 @@
                 data: [{
                     "goods_name": "无"
                     , "goods_number": "无"
-                    , "number": "无"
                 }]
             })
         })
