@@ -22,15 +22,15 @@ namespace HotSpringProjectRepository
         public int Add(int roleId, List<int> pageIds)
         {
             var pagesToAdd = pageIds.Select(pageId => new SystemPageCorrespondence { role_id = roleId, pages_id = pageId });
-            _db.systemPageCorrespondences.AddRange(pagesToAdd);
+            _db.SystemPageCorrespondences.AddRange(pagesToAdd);
             int flag = _db.SaveChanges();
             return flag;
         }
 
         public bool Delete(int roleId)
         {
-            var pagesToDelete = _db.systemPageCorrespondences.Where(p => p.role_id == roleId);
-            _db.systemPageCorrespondences.RemoveRange(pagesToDelete);
+            var pagesToDelete = _db.SystemPageCorrespondences.Where(p => p.role_id == roleId);
+            _db.SystemPageCorrespondences.RemoveRange(pagesToDelete);
             int flag = _db.SaveChanges();
             if (flag > 0)
             {
