@@ -4,6 +4,8 @@ using HotSpringProject.App_Start;
 using HotSpringProject.Entity;
 using HotSpringProject.Filter;
 using OA_AutoWork.App_Start;
+using Quartz.Impl;
+using Quartz;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,9 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using HotSpringProjectService;
+using HotSpringProject.Job;
+using Autofac.Extras.Quartz;
 
 namespace HotSpringProject
 {
@@ -22,9 +27,30 @@ namespace HotSpringProject
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             //容器注册
             AutofacRegister();
-            //GlobalFilters.Filters.Add(new AuthorizationFilter());
+            //GlobalFilters.Filters.Add(new AuthorizationFilter());//拦截器
             AutoMapperConfig.Config();
-            
+
+
+            // 创建 Quartz 调度器
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            IScheduler scheduler = schedulerFactory.GetScheduler().Result;
+            //*** 设置 Quartz 作业工厂，以便解析作业实例中的依赖项
+            scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
+            // 开启调度器
+            scheduler.Start().Wait();
+
+            // 创建 JobDetail
+            IJobDetail jobDetail = JobBuilder.Create<DataBaseJob>()
+                                             .WithIdentity("DataBaseJob")
+                                             .Build();
+
+            // 创建触发器
+            ITrigger trigger = TriggerBuilder.Create()
+                                             .WithIdentity("myTrigger")
+                                             .StartNow() // 立即启动触发器
+                                             .Build();
+            // 将 JobDetail 和 Trigger 绑定到调度器
+            scheduler.ScheduleJob(jobDetail, trigger).Wait();
         }
         public static void AutofacRegister()
         {
@@ -39,6 +65,12 @@ namespace HotSpringProject
             builder.RegisterAssemblyTypes(asmService).Where(t => !t.IsAbstract).AsImplementedInterfaces().PropertiesAutowired();
             Assembly asmRepository = Assembly.Load("HotSpringProjectRepository");
             builder.RegisterAssemblyTypes(asmRepository).Where(t => !t.IsAbstract).AsImplementedInterfaces().PropertiesAutowired();
+
+            ////注入任务类
+            builder.RegisterModule(new QuartzAutofacFactoryModule());
+            //把任务类注入到autofac
+            builder.RegisterModule(new QuartzAutofacJobsModule(typeof(DataBaseJob).Assembly));
+
             //容器构建
             var container = builder.Build();
             //解析器替换
