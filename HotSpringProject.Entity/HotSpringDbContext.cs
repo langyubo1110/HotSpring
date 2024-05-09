@@ -26,6 +26,8 @@ namespace HotSpringProject.Entity
         public DbSet<RegApply> RegApply { get; set; }
         public DbSet<EquipType> EquipType { get; set; }
         public DbSet<RegEquipRes> RegEquipRes { get; set; }
+        public DbSet<EmployPerform> EmployPerform { get; set; }
+        public DbSet<EmployAllsalary> EmployAllsalary { get; set; }
         public DbSet<SystemPages> SystemPages { get; set; }
         public DbSet<GRoomSpareParts> GRoomSpareParts { get; set; }
         public DbSet<GRoomRepair> GRoomRepair { get; set; }
