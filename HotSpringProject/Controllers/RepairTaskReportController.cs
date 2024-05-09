@@ -42,6 +42,7 @@ namespace HotSpringProject.Controllers
         
         public ActionResult RepairTaskReport()
         {
+            ViewBag.emList = (List<EmployEmp>)_repairTaskReportService.GetListByRole().data;
             ResMessage resMessage = _repairTaskReportService.GetEquipmentList();
             ViewBag.equipmentNames = resMessage.data;
             return View( );
@@ -57,9 +58,10 @@ namespace HotSpringProject.Controllers
 
         public JsonResult List(int page, int limit)
         {
+            
+            
             ResMessage resMessage = _repairTaskReportService.GetList(page,limit);
             return Json(resMessage,JsonRequestBehavior.AllowGet);
-
         }
         public JsonResult Delete(int id)
         {
@@ -79,14 +81,14 @@ namespace HotSpringProject.Controllers
             return Json(_repairTaskReportService.Add(repaieTaskReport), JsonRequestBehavior.AllowGet);
         }
         //更新设备状态接口
-        public JsonResult UpdateEquipmentStatus(Equipment equipment)
+        public JsonResult StopAndAdd(int id,string contents )
         {
-            return Json(_repairTaskReportService.UpdateEquipmentStatus(equipment),JsonRequestBehavior.AllowGet);
+
+            return Json(_repairTaskReportService.StopAndAdd(id,contents), JsonRequestBehavior.AllowGet) ;
         }
-        //public JsonResult AddFaultContent(FaultAnalyse faultAnalyse)
-        //{
-        //    return Json(_faultAnalyseService.Add(faultAnalyse), JsonRequestBehavior.AllowGet);
-        //}
+        
+        
+
         #endregion
     }
 }

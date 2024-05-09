@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 using HotSpringProject.Entity;
 namespace HotSpringProjectRepository.Interface
 {
-    public interface IFaultAnalyseRepository
+    public interface IFaultAppRepository
     {
-        IQueryable<FaultAnalyse> GetList();
+        IQueryable<FaultApp> GetList();
         int Delete(int id);
-        int UpDate(FaultAnalyse faultAnalyse);
+        int UpDate(FaultApp faultApp);
 
-        int Add(FaultAnalyse faultAnalyse);
-
-        FaultAnalyse GetModel(int id);
+        int Add(FaultApp faultApp);
         IEnumerable<T> QueryBySql<T>(string sql);
+        FaultApp GetModel(int id);
     }
 }

@@ -82,6 +82,19 @@ namespace HotSpringProjectService
             return flag>0 ? ResMessage.Success() : ResMessage.Fail();
         }
 
-       
+        public ResMessage GetListByPager(EquipmentFilter filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<EquipType> getTypeList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ResMessage GetUsedModel(int id, string use)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -42,17 +42,18 @@ namespace HotSpringProjectRepository
             return _Db.RepaieTaskReports.Find(id);
         }
 
+        public IEnumerable<T> QueryBySql<T>(string sql)
+        {
+            return _Db.Database.SqlQuery<T>(sql);
+        }
+
         public int UpDate(RepaieTaskReport repaieTaskReport)
         {
             _Db.Entry(repaieTaskReport).State=System.Data.Entity.EntityState.Modified;
             int flag=_Db.SaveChanges();
             return flag;
         }
-        //public List<string> GetEquipmentName()
-        //{
-        //    List<string> namelist = _Db.Equipment.Select(e => e.name).ToList();
-        //    return namelist;
-        //}
+        
 
     }
 }

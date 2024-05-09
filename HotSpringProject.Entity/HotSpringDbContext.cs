@@ -22,11 +22,14 @@ namespace HotSpringProject.Entity
         public DbSet<RepoGoodsStock> RepoGoodsStock { get; set; }
         public DbSet<RepoOutInRecord> RepoOutInRecord { get; set; }
         public DbSet<RegAudit> regAudit { get; set; }
+        public DbSet<RegApply> RegApply { get; set; }
         public DbSet<EquipType> EquipType { get; set; }
         public DbSet<RegEquipRes> RegEquipRes { get; set; }
         public DbSet<SystemPageCorrespondence> systemPageCorrespondences { get; set; }
         public DbSet<SystemPages> systemPages { get; set; }
-
+        public DbSet<RepaieTaskReport>RepaieTaskReports { get; set; }
+        public DbSet<FaultAnalyse> FaultAnalyse { get; set; }
+        public DbSet<FaultApp> FaultApp { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<form class="layui-form" action="" lay-filter="SystemLogForm">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="hidden" name="id" value="0" />
+            <label class="layui-form-label">设备ID</label>
+            <div class="layui-input-inline">
+                <input type="text" name="equip_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">故障申报人</label>
+            <div class="layui-input-inline">
+                <input type="text" name="fault_report" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">故障描述</label>
+            <div class="layui-input-inline">
+                <input type="text" name="fault_describe"  lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">故障时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="fault_time" id="fault_time" lay-verify="required|date" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="create_time" id="create_time" lay-verify="required|date" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'util'], function (){
+        var form = layui.form;
+        var util = layui.util;
+        var $ = layui.jquery;
+        var id =@ViewBag.id;
+        $.post("/faultapp/getmodel", { id: id }, function (res) {
+            if (res.code == 200) {
+                res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
+                res.data.fault_time = util.toDateString(res.data.fault_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
+              
+                form.val('editform', res.data);
+            }
+        })
+        form.on('submit(demo1)', function (data) {
+            if (id == 0) {
+                $.post("/faultapp/add", { faultapp: data.field }, function (res) {
+                    console.log(res)
+                    if (res.code == 200)
+                    {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.layui.table.reload("demo");
+                        parent.layer.msg(res.msg);
+                    }
+                })
+            }
+            else
+            {
+                $.post("/faultapp/update", { faultapp: data.field }, function (res) {
+                    console.log(res)
+                    if (res.code == 200) {
+                        //找到父页面的自己  拿到index 让父页面关掉自己
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.layui.table.reload("demo");//子窗体让父窗体table重载
+                        parent.layer.msg(res.msg)
+                    }
+                })
+            }
+            return false;
+        })
+    })
+</script>

@@ -7,7 +7,7 @@ using HotSpringProject.Entity;
 using HotSpringProjectRepository.Interface;
 namespace HotSpringProjectRepository
 {
-    public class FaultAnalyseRepository:IFaultAnalyseRepository
+    public class FaultAnalyseRepository : IFaultAnalyseRepository
     {
         private readonly HotSpringDbContext _Db;
 
@@ -21,25 +21,33 @@ namespace HotSpringProjectRepository
             int flag=_Db.SaveChanges();
             return flag;    
         }
-
         public int Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<IFaultAnalyseRepository> GetList()
+        public IQueryable<FaultAnalyse> GetList()
         {
             throw new NotImplementedException();
         }
 
-        public FaultAnalyseRepository GetModel(int id)
+        public FaultAnalyse GetModel(int id)
         {
-            throw new NotImplementedException();
+            return _Db.FaultAnalyse.Find(id);    
+            
+        }
+
+        public IEnumerable<T> QueryBySql<T>(string sql)
+        {
+
+            return _Db.Database.SqlQuery<T>(sql);
         }
 
         public int UpDate(FaultAnalyse faultAnalyse)
         {
             throw new NotImplementedException();
         }
+
+       
     }
 }

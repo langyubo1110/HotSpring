@@ -36,9 +36,11 @@ namespace HotSpringProjectService
 
         public ResMessage GetModel(int id)
         {
-            throw new NotImplementedException();
+            FaultAnalyse faultAnalyse = _faultAnalyseRepository.GetModel(id);
+            return faultAnalyse!=null ?ResMessage.Success(faultAnalyse) : ResMessage.Fail();
+            
         }
-
+       
         public ResMessage Update(FaultAnalyse faultAnalyse)
         {
             throw new NotImplementedException();

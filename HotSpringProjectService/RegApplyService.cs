@@ -112,8 +112,7 @@ namespace HotSpringProjectService
         {
             List<RegApplyVO> list = _regApplyRepository.QueryBySql<RegApplyVO>($@"SELECT  rb.*,  ee.name, (SELECT COUNT(*) FROM Employ_Emp WHERE role_id = 2) AS count
                                         FROM  Reg_Buy rb INNER JOIN Employ_Emp ee ON ee.id = rb.apply_id").ToList();
-            //IEnumerable<RegAuditVO> listAudit = _regAuditRepository.QueryBySql<RegAuditVO>($@"SELECT reg_equip_reaearch_id, SUM(CASE WHEN recheck_opin = 1 THEN 1 ELSE 0 END) AS countAudit
-            //                            FROM Reg_Audit GROUP BY reg_equip_reaearch_id");
+           
             foreach (var item in list)
             {
                  List<RegAudit> regAuditList=_regAuditRepository.GetList().ToList().Where(x=>x.reg_equip_reaearch_id==item.id &&x.recheck_opin==1).ToList();

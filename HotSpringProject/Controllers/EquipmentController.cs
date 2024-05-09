@@ -10,7 +10,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO.Compression;
 
-
 /*  郎于博
  *  2024-04-25
  *  设备控制器
@@ -112,6 +111,7 @@ namespace HotSpringProject.Controllers
                 // 写入数据到文件
                 DataChange(filePath, item);
                 filesToCompress.Add(filePath);
+
             }
             // 创建一个新的ZIP文件
             using (ZipArchive archive = ZipFile.Open(zipPath, ZipArchiveMode.Create))

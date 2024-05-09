@@ -8,16 +8,15 @@ using System.Threading.Tasks;
 
 namespace HotSpringProject.Entity
 {
-    [Table("Rep_Fault_Analyse")]
-    public class FaultAnalyse
+    [Table("Rep_Fault_App")]
+    public class FaultApp
     {
         [Key]
-        public int id { get; set; } 
-        public int  fault_app_id {  get; set; }
-        public int analyse_id {  get; set; }    
-        public string contents {  get; set; }
-        public int final_scheme {  get; set; }
+       public  int id {  get; set; }
+       public int equip_id { get; set; }
+        public string fault_report { get; set; }
+        public string fault_describe { get; set;}
+        public DateTime fault_time {  get; set; }
         public DateTime create_time {  get; set; }
-        
     }
 }

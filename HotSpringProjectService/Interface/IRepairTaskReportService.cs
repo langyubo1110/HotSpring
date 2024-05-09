@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
 namespace HotSpringProjectService.Interface
 {
     public interface IRepairTaskReportService
@@ -18,6 +19,8 @@ namespace HotSpringProjectService.Interface
         
         ResMessage GetEquipmentList();
         ResMessage UpdateEquipmentStatus(Equipment equipment);
+        ResMessage StopAndAdd(int id, string contents);
+        ResMessage GetListByRole();
 
     }
 }

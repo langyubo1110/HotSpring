@@ -10,59 +10,74 @@ using HotSpringProjectRepository.Interface;
 using System.Runtime.Remoting.Messaging;
 using System.Runtime.InteropServices;
 using HotSpringProjectRepository;
+using HotSpringProject.Entity.VO;
+using System.Runtime.Remoting.Contexts;
 namespace HotSpringProjectService
 {
-    public class RepairTaskReportService:IRepairTaskReportService
+    public class RepairTaskReportService : IRepairTaskReportService
     {
         private readonly IRepairTaskReportRepository _repairTaskReportRepository;
         private readonly IEquipmentRepository _equipmentRepository;
         private readonly IFaultAnalyseRepository _faultAnalyseRepository;
+        private readonly IEmployEmpRepository _employEmpRepository;
 
-        public RepairTaskReportService(IRepairTaskReportRepository repairTaskReportRepository,IEquipmentRepository equipmentRepository,IFaultAnalyseRepository faultAnalyseRepository) {
+        public RepairTaskReportService(IRepairTaskReportRepository repairTaskReportRepository, IEquipmentRepository equipmentRepository, IFaultAnalyseRepository faultAnalyseRepository,IEmployEmpRepository  employEmpRepository)
+        {
             _repairTaskReportRepository = repairTaskReportRepository;
             _equipmentRepository = equipmentRepository;
-            _faultAnalyseRepository=faultAnalyseRepository;
+            _faultAnalyseRepository = faultAnalyseRepository;
+            _employEmpRepository=employEmpRepository;
         }
-        
+
         public ResMessage Add(RepaieTaskReport repaieTaskReport)
         {
-            return _repairTaskReportRepository.Add(repaieTaskReport)>  0 ? ResMessage.Success():ResMessage.Fail(); 
+            return _repairTaskReportRepository.Add(repaieTaskReport) > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
 
         public bool Delete(int id)
-        {   
-            return _repairTaskReportRepository.Delete(id)>0? true: false;
-          
+        {
+            return _repairTaskReportRepository.Delete(id) > 0 ? true : false;
+
         }
 
-        public ResMessage GetList(int page,int limit)
+        public ResMessage GetList(int page, int limit)
         {
-            IQueryable<RepaieTaskReport> list=_repairTaskReportRepository.GetList();
+            IQueryable<RepaieTaskReport> list = _repairTaskReportRepository.GetList();
             int count = list.Count();
-            List<RepaieTaskReport> list1=list.OrderBy(x=>x.id).Skip((page-1)*limit).Take(limit).ToList();
-            return list == null ? ResMessage.Fail() : ResMessage.Success(list1,count);
+            List<RepaieTaskReport> list1 = list.OrderBy(x => x.id).Skip((page - 1) * limit).Take(limit).ToList();
+            return list == null ? ResMessage.Fail() : ResMessage.Success(list1, count);
         }
 
         public ResMessage GetModel(int id)
         {
-            RepaieTaskReport repaieTaskReport=_repairTaskReportRepository.GetModel(id);
-            return repaieTaskReport!=null? ResMessage.Success(repaieTaskReport) : ResMessage.Fail();
+            RepaieTaskReport repaieTaskReport = _repairTaskReportRepository.GetModel(id);
+            return repaieTaskReport != null ? ResMessage.Success(repaieTaskReport) : ResMessage.Fail();
         }
 
         public ResMessage UpDate(RepaieTaskReport repaieTaskReport)
         {
-            
+
             return _repairTaskReportRepository.UpDate(repaieTaskReport) > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
-        //更新设备表的设备状态为停用
+        
         public ResMessage UpdateEquipmentStatus(Equipment equipment)
-        {
+        {   //向故障分析表插入n条数据
+            List<RepairTaskReportVO> list = _repairTaskReportRepository.QueryBySql<RepairTaskReportVO>($@"SELECT *, (SELECT COUNT(*) FROM Employ_Emp WHERE Employ_Role.id=1) AS count
+            FROM Employ_Emp
+            INNER JOIN Employ_Role ON Employ_Emp.role_id = Employ_Role.id
+            WHERE Employ_Role.role = 1 ").ToList();
+            //foreach(var item in list)
+            //{
+            //    FaultAnalyse faultAnalyse = _faultAnalyseRepository.Add().Where(x => x.analyse_id ==item.id).FirstOrDefault();
+            //}
+
+            //更新设备表的设备状态为停用
             int equipmentId = equipment.id;
             Equipment equipment1 = _equipmentRepository.GetList().Where(X => X.id == equipmentId).FirstOrDefault();
             equipment1.status = 0;
-            _equipmentRepository.Update(equipment1);  // 调用Update方法更新设备状态
-            //插入N条数据
-           
+            _equipmentRepository.Update(equipment1);  
+            
+
             return ResMessage.Success();
         }
         public ResMessage GetEquipmentList()
@@ -73,11 +88,75 @@ namespace HotSpringProjectService
             {
                 int id = equipment.id; // 获取id属性
                 string name = equipment.name; // 获取name属性
-               
+
             }
             return ResMessage.Success(equipmentList);
         }
-        
 
+        
+        //public IEnumerable<RepairTaskReportVO> GetAllList()
+        //{
+        //    List<RepairTaskReportVO> list = _repairTaskReportRepository.QueryBySql<RepairTaskReportVO>($@"SELECT *, (SELECT COUNT(*) FROM Employ_Emp WHERE Employ_Role.id=1) AS count
+        //   FROM Employ_Emp
+        //   INNER JOIN Employ_Role ON Employ_Emp.role_id = Employ_Role.id
+        //   WHERE Employ_Role.id = 1; ").ToList();
+
+        //     foreach(var item in list)
+        //     {
+        //        List<RepaieTaskReport> ManageCount = _repairTaskReportRepository.GetList().ToList().Where(x => x.reporter_id == item.id ).ToList();
+
+        //        int count=ManageCount.Count;
+        //        item.audited = count;
+        //     }
+        //    var result = list.ToList();
+        //    return list.ToList();
+        //}
+        //public ResMessage GetAllList()
+        //{
+        // List<RepairTaskReportVO> list = _repairTaskReportRepository.QueryBySql<RepairTaskReportVO>($@"SELECT *, (SELECT COUNT(*) FROM Employ_Emp WHERE Employ_Role.id=1) AS count
+        //FROM Employ_Emp
+        //INNER JOIN Employ_Role ON Employ_Emp.role_id = Employ_Role.id
+        //WHERE Employ_Role.role = 1 ").ToList();
+
+        ////维修上报全表（已经审核人数/应该审核的总人数）
+        ////1查到维修全表 vo X  Y
+        //foreach ()
+        //{
+        //    HttpItem.x =;
+        //    yield.Y =;
+
+        //}
+        ////2缺已审核人数  应审核的总人数
+        //    foreach (var item in list)
+        //    {
+        //        List<RepaieTaskReport> ManageCount = _repairTaskReportRepository.GetList().ToList().Where(x => x.reporter_id == item.id).ToList();
+
+        //        int count = ManageCount.Count;
+        //        item.audited = count;
+        //    }
+        //    var result = list.ToList();
+        //    return ResMessage.Success(result) ;
+        //}
+        //修改和增加
+        public ResMessage StopAndAdd(int id,string contents)
+        {
+            Equipment equipment=_equipmentRepository.GetModel(id);
+            equipment.status = 0;
+            _equipmentRepository.Update(equipment);
+            
+            return ResMessage.Success();
+        }
+        //得到领导链表
+        public ResMessage GetListByRole()
+        {
+            int[] RoleList = {1,2,3,25};
+            List <EmployEmp> list=_employEmpRepository.GetList().Where(x=>RoleList.Contains(x.role_id) ).ToList();
+            return list==null?ResMessage.Fail():ResMessage.Success(list);
+        }
+        //查维修上报全表
+        //public ResMessage GetList()
+        //{
+        //    List<FaultAnalyseVO> list=_faultAnalyseRepository.QueryBySql<FaultAnalyseVO>($@)
+        //}
     }
 }

@@ -12,7 +12,7 @@ namespace HotSpringProjectRepository.Interface
         IQueryable<RepaieTaskReport> GetList();
         int Delete (int id);
         int UpDate(RepaieTaskReport repaieTaskReport);
-
+        IEnumerable<T> QueryBySql<T>(string sql);
         int Add(RepaieTaskReport repaieTaskReport);
         
         RepaieTaskReport GetModel(int id);
