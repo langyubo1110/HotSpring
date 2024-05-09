@@ -32,7 +32,9 @@
             , page: true//开启分页
             , cols: [[ //表头
                 { field: 'goods_number', title: '采购数量', sort: true }
-                , { field: 'price', title: '单价', sort: true }
+                , {
+                    field: 'price', title: '单价', sort: true, templet: function (d) { return d.price+".00" }
+                }
                 , { field: 'buyer', title: '采购商', sort: true }
                 , { field: 'buyer_phone', title: '采购电话', sort: true }
                 , { field: 'create_time', title: '采购时间', sort: true, templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }

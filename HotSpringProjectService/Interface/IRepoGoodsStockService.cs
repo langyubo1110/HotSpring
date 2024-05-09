@@ -17,7 +17,7 @@ namespace HotSpringProjectService.Interface
         ResMessage Update(RepoGoodsStock repoGoodsStock);
         ResMessage Add(RepoGoodsStock repoGoodsStock);
         ResMessage GetModel(int id);
-        ResMessage GetList(string keywords);
+        ResMessage GetList(string keywords, int? goods_type);
 
     }
 }

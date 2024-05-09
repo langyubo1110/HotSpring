@@ -61,9 +61,9 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _repoGoodsStockService.Update(repoGoodsStock);
             return Json(resMessage);
         }
-        public JsonResult GetList(string keywords)
+        public JsonResult GetList(string keywords,int? goods_type)
         {
-            ResMessage resMessage = _repoGoodsStockService.GetList(keywords);
+            ResMessage resMessage = _repoGoodsStockService.GetList(keywords, goods_type);
             if (string.IsNullOrEmpty(keywords)) 
             {
                 return Json(resMessage,JsonRequestBehavior.AllowGet);

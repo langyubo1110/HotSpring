@@ -6,8 +6,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Security;
-using System.Web.UI;
 
 namespace HotSpringProjectRepository
 {
@@ -44,7 +42,7 @@ namespace HotSpringProjectRepository
 
         public IEnumerable<SystemPageCorrespondence> GetList()
         {
-            return _db.SystemPageCorrespondences.ToList();
+            return _db.systemPageCorrespondences.ToList();
         }
 
         public SystemPageCorrespondence GetModel(int id)

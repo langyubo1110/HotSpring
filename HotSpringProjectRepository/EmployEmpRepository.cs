@@ -9,8 +9,6 @@ using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Configuration;
-using System.Web.UI.WebControls;
 using System.Xml.Linq;
 
 namespace HotSpringProjectRepository

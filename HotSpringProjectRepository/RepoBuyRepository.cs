@@ -48,7 +48,9 @@ namespace HotSpringProjectRepository
 
         public bool Update(RepoBuy repoBuy)
         {
-            throw new NotImplementedException();
+            _Db.Entry(repoBuy).State = System.Data.Entity.EntityState.Modified;
+            int flag = _Db.SaveChanges();
+            return flag>0?true:false;
         }
      
     }

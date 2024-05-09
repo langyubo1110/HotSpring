@@ -55,7 +55,8 @@ namespace HotSpringProjectService
 
         public ResMessage Update(RepoBuy repoBuy)
         {
-            throw new NotImplementedException();
+            bool result= _repoBuyRepository.Update(repoBuy);
+            return result==true ? ResMessage.Success() : ResMessage.Fail();
         }
     }
 }

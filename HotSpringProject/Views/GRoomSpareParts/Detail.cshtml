@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="table-responsive">
+            <table id="demo" lay-filter="test" lay-data="{id: 'idTest'}"></table>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" id="clobtn" class="layui-btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['table'], function () {
+        var table = layui.table;
+        //表格渲染
+        table.render({
+            id: 'idTest'
+            , elem: '#demo'
+            , height: 472
+            , url: '/repogoodsstock/getlist?goods_type=1'//数据接口
+            , cols: [[ //表头
+                { type: 'checkbox', fixed: 'left' }
+                , { field: 'goods_name', title: '备件名称', sort: true }
+                , { field: 'goods_number', title: '库存数量', sort: true }
+            ]]
+            , parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
+        });
+       
+        $("#clobtn").click(function () {
+            var checkStatus = table.checkStatus('idTest'); //idTest 即为基础参数 id 对应的值
+            parent.layui.table.reload('demo', {
+                data: checkStatus.data
+            })
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        })
+    })
+</script>
