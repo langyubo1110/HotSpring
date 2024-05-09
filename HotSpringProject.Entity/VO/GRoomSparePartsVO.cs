@@ -8,7 +8,7 @@ namespace HotSpringProject.Entity.VO
 {
     public class GRoomSparePartsVO
     {
-        
+        //商品id
         public int id { get; set; }
         //维修任务id
         public int repair_id { get; set; }

@@ -16,6 +16,8 @@ namespace HotSpringProject.Entity.DTO
         public decimal price { get; set; }
         //采购商
         public string buyer { get; set; }
+        //出入库id
+        public int oi_id { get; set; }
         //采购商电话
         public string buyer_phone { get; set; }
         //出库/入库前的库存数量
@@ -42,6 +44,7 @@ namespace HotSpringProject.Entity.DTO
         public string factory { get; set; }
         //图片
         public string picture { get; set; }
+        public int audit { get; set; } 
         //库存数量
         public int goods_number { get; set; }
         //出入库记录创建时间

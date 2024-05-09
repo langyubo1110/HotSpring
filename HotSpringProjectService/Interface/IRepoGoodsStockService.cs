@@ -1,6 +1,7 @@
 ﻿
 using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.DTO;
 using HotSpringProject.Entity.VO;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace HotSpringProjectService.Interface
         ResMessage GetListByPager(int page,int limit,RepoGoodsStockFilter repoGoodsStockFilter);
         ResMessage Delete(int id);
         ResMessage Update(RepoGoodsStock repoGoodsStock);
+        ResMessage UpdateByAudit(RepoGoodsStockDTO repoGoodsStockDTO);
         ResMessage Add(RepoGoodsStock repoGoodsStock);
         ResMessage GetModel(int id);
         ResMessage GetList(string keywords, int? goods_type);
