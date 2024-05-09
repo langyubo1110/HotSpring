@@ -21,12 +21,7 @@
                                     </div>
                                     <div class="layui-form-item layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="text" name="txtSThreshold" placeholder="请输入阈值" class="layui-input">
-                                        </div>
-                                    </div>
-                                    <div class="layui-form-item layui-inline">
-                                        <div class="layui-input-inline">
-                                            <input type="text" name="txtSFactory" placeholder="请输入厂家名称" class="layui-input">
+                                            <input type="text" name="txtSNumber" placeholder="请输入库存数量" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-inline">
@@ -53,16 +48,11 @@
         </div>
     </div>
 </div>
-<!--js模版表头工具栏-->
-<script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-    </div>
-</script>
 <!--操作单元格-->
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="detail">详情</a>
 </script>
 <script>
     layui.use(['table', 'form', 'util', 'layer'], function () {
@@ -70,18 +60,16 @@
         var util = layui.util;
         var layer = layui.layer;
         var form = layui.form;
-        var $ = layui.jquery;
         //表格渲染
         table.render({
             elem: '#demo'
             , height: 525
-            , url: '/repogoodsstock/getlist' //数据接口
+            , url: '/repogoodsstock/getlistbypager' //数据接口
             , page: true//开启分页
             , toolbar: '#toolbarDemo'
             , cols: [[ //表头
-                { field: 'id', title: '主键', sort: true, fixed: 'left' }
-                , { field: 'goods_name', title: '商品名称', }
-                , { field: 'goods_number', title: '商品数量' }
+                { field: 'goods_name', title: '商品名称', }
+                , { field: 'goods_number', title: '商品库存数量' }
                 , { field: 'threshold', title: '阈值' }
                 , { field: 'factory', title: '工厂', }
                 , { field: 'picture', title: '图片', }
@@ -100,6 +88,7 @@
         //行单击事件
         table.on('tool(test)', function (obj) {
             var id = obj.data.id;
+            console.log(obj)
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     $.post('/repogoodsstock/delete', { id: id }, function (res) {
@@ -115,7 +104,7 @@
                     layer.close(index)
                 });
             }
-            else {
+            else if (obj.event === 'edit') {
                 layer.open({
                     title: '商品编辑',
                     type: 2,
@@ -123,18 +112,15 @@
                     content: '/repogoodsstock/detail/' + id
                 })
             }
-        });
-        table.on('toolbar(test)', function (obj) {
-            if (obj.event == "add")
-            {
+            else {
                 layer.open({
-                    title: '商品添加',
+                    title: '采购详细信息',
                     type: 2,
-                    area: ['800px', '300px'],
-                    content: '/repogoodsstock/detail/'
+                    area: ['800px', '578px'],
+                    content: '/repobuy/detail/' + id
                 })
             }
-        })
+        });
         //搜索工具栏
         form.on('submit(btnSearch)', function (data) {
             //表格重载 where 再加一个参数name
@@ -142,8 +128,7 @@
             table.reload('demo', {
                 where: {
                     goods_name: data.field.txtSName,
-                    threshold: data.field.txtSThreshold,
-                    factory: data.field.txtSFactory
+                    goods_number: data.field.txtSNumber
                 }
             })
              return false;

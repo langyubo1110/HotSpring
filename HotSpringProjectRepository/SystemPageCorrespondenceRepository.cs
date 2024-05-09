@@ -2,9 +2,12 @@
 using HotSpringProjectRepository.Interface;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Security;
+using System.Web.UI;
 
 namespace HotSpringProjectRepository
 {
@@ -16,19 +19,32 @@ namespace HotSpringProjectRepository
         {
             _db = keDa2024DbContext;
         }
-        public int Add(SystemPageCorrespondence sp)
+        public int Add(int roleId, List<int> pageIds)
         {
-            throw new NotImplementedException();
+            var pagesToAdd = pageIds.Select(pageId => new SystemPageCorrespondence { role_id = roleId, pages_id = pageId });
+            _db.systemPageCorrespondences.AddRange(pagesToAdd);
+            int flag = _db.SaveChanges();
+            return flag;
         }
 
-        public bool Delete(int id)
+        public bool Delete(int roleId)
         {
-            throw new NotImplementedException();
+            var pagesToDelete = _db.systemPageCorrespondences.Where(p => p.role_id == roleId);
+            _db.systemPageCorrespondences.RemoveRange(pagesToDelete);
+            int flag = _db.SaveChanges();
+            if (flag > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public IEnumerable<SystemPageCorrespondence> GetList()
         {
-            return _db.systemPageCorrespondences.ToList();
+            return _db.SystemPageCorrespondences.ToList();
         }
 
         public SystemPageCorrespondence GetModel(int id)

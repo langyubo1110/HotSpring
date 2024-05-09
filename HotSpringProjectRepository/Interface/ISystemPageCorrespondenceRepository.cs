@@ -10,9 +10,9 @@ namespace HotSpringProjectRepository.Interface
     public interface ISystemPageCorrespondenceRepository
     {
         IEnumerable<SystemPageCorrespondence> GetList();
-        int Add(SystemPageCorrespondence sp);
+        int Add(int roleId, List<int> pageIds);
         bool Update(SystemPageCorrespondence sp);
-        bool Delete(int id);
+        bool Delete(int roleId);
         SystemPageCorrespondence GetModel(int id);
         List<T> QueryBySql<T>(string sql);
     }

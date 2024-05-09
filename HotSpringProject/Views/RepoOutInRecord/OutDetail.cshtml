@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="ibox float-e-margins" style="height:250px;background-color:white">
+    <div class="ibox-content">
+        <form role="form" class="layui-form form-inline" lay-filter="editform">
+            <div class="form-group">
+                <input type="hidden" name="type" value="1" />
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                <div class="layui-inline">
+                    <span>商品名称：</span>
+                    <div class="layui-input-inline">
+                        <select name="id" lay-verify="required" lay-search="" lay-filter="ddltest">
+                            <option value=""></option>
+                            @foreach (var item in ViewBag.list)
+                            {
+                                <option value="@item.id">@item.goods_name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                出库数量：&nbsp;<input type="text" name="oi_number" lay-verify="required" placeholder="请输入出库数量" class="form-control">
+            </div>
+            <br/><br/>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+                 <div class="form-group">
+                     阈值：&emsp;&emsp;&nbsp;<input type="text" name="threshold" placeholder="请输入阈值" class="form-control">
+                 </div>
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                库存数量：&nbsp;<input type="text" name="goods_number" lay-verify="required" readonly="readonly" value="0" class="layui-disabled form-control">
+            </div>
+            <br /><br /><br />
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+                    <button type="reset" class="layui-btn">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+    .layui-form-select .layui-input {
+        padding-right: 30px;
+        cursor: pointer;
+        height: 34px;
+        width: 196px;
+    }
+</style>
+<script>
+    layui.use(['form', 'util'], function (){
+        var form = layui.form;
+        var util = layui.util;
+        var $ = layui.jquery;
+        form.on('select(ddltest)', function (data) {
+            var id = data.value;
+            console.log(data.value)
+            $.post("/repogoodsstock/getmodel", { id: id }, function (res) {
+                form.val("editform", {
+                    "threshold": res.data.threshold,
+                    "goods_number": res.data.goods_number
+                })
+            })
+            return false;
+        })
+        form.on('submit(demo1)', function (data) {
+            console.log(data)
+                $.post("/repooutinrecord/add", { repoGoodsStockDTO: data.field}, function (res) {
+                    console.log(res)
+                    if (res.code == 200) {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.layui.table.reload("demo");
+                        parent.layer.msg("出库成功");
+                    }
+                })
+            return false;
+        })
+    })
+</script>
+
+
+

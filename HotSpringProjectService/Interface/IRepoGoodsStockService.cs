@@ -12,11 +12,12 @@ namespace HotSpringProjectService.Interface
 {
     public interface IRepoGoodsStockService
     {
-        ResMessage GetList(int page,int limit,RepoGoodsStockFilter repoGoodsStockFilter);
+        ResMessage GetListByPager(int page,int limit,RepoGoodsStockFilter repoGoodsStockFilter);
         ResMessage Delete(int id);
         ResMessage Update(RepoGoodsStock repoGoodsStock);
         ResMessage Add(RepoGoodsStock repoGoodsStock);
         ResMessage GetModel(int id);
+        ResMessage GetList(string keywords);
 
     }
 }
