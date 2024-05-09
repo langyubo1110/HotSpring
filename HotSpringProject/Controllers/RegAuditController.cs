@@ -18,7 +18,7 @@ namespace HotSpringProject.Controllers
 {
     public class RegAuditController : Controller
     {
-        HotSpringDbContext db=new HotSpringDbContext();
+        HotSpringDbContext db = new HotSpringDbContext();
         private readonly IRegAuditService _regAuditService;
 
         public RegAuditController(IRegAuditService regAuditService)
@@ -28,13 +28,17 @@ namespace HotSpringProject.Controllers
         // GET: Reg_Audit
         public ActionResult Index()
         {
-            
-            List<RegAudit> list= _regAuditService.GetList();
+
+            List<RegAudit> list = _regAuditService.GetList();
+            return View();
+        }
+        public ActionResult test()
+        {
             return View();
         }
         public ActionResult Detail(int id = 0)
         {
-            ViewBag.MoviesType = db.regAudit.ToList();
+            //ViewBag.MoviesType = db.regAudit.ToList();
             ViewBag.Id = id;
             return View();
         }
@@ -51,7 +55,7 @@ namespace HotSpringProject.Controllers
             //return Json(hashtable, JsonRequestBehavior.AllowGet);
             #endregion
             //ResMessage res = _regAuditService.GetListByPager(page, limit);
-            return Json(_regAuditService.GetListByPager(filter),JsonRequestBehavior.AllowGet);
+            return Json(_regAuditService.GetListByPager(filter), JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult GetModel(int id)
@@ -69,7 +73,8 @@ namespace HotSpringProject.Controllers
         }
         public JsonResult Insert(RegAudit regAudit)
         {
-            ResMessage res=_regAuditService.Add(regAudit);
+            
+            ResMessage res = _regAuditService.Add(regAudit);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
         public JsonResult Delete(int id)
@@ -79,7 +84,7 @@ namespace HotSpringProject.Controllers
         }
         public JsonResult Edit(RegAudit regAudit)
         {
-            ResMessage resMessage=_regAuditService.Update(regAudit);
+            ResMessage resMessage = _regAuditService.Update(regAudit);
             return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
     }

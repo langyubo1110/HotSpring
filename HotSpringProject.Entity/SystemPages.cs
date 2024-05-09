@@ -18,5 +18,10 @@ namespace HotSpringProject.Entity
         public string icon { get; set;}
         public int module_id { get; set;}
         public DateTime? create_time { get; set; }
+        /// <summary>
+        /// 映射创建人
+        /// </summary>
+        [NotMapped]
+        public bool isChecked { get; set; }
     }
 }

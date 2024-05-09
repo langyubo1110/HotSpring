@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewBag.Title = "EmployRoleManager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>员工角色</h2>
+<title>员工角色</title>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <input type="button" class="layui-btn layui-btn-sm" lay-event="add" value="添加" />
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<div class="layui-card-body">
+    <table id="demo" lay-filter="test"></table>
+</div>
+<script>
+    layui.use(['table', 'util','layer'], function () {
+        var table = layui.table
+        var util = layui.util
+        var layer = layui.layer
+        table.render({
+            elem: '#demo'
+            , url: '/EmployRole/GetRoles'
+            , response: {
+                statusName: 'code' //规定数据状态的字段名称，默认：code
+                , statusCode: 200 //规定成功的状态码，默认：0
+                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                , countName: 'count' //规定数据总数的字段名称，默认：count
+                , dataName: 'data' //规定数据列表的字段名称，默认：data
+            }
+            , toolbar: '#toolbarDemo'
+            , cols: [[
+                { field: 'id', title: '主键', sort: true, fixed: 'left' }
+                , { field: 'role_name', title: '职位' }
+                , {
+                    field: 'role', title: '是否领导', templet: function (d) {
+                        return d.role === 0 ? '否' : '是'
+                    }
+                }
+                , { field: 'Salary', title: '底薪' }
+                , { field: 'Labor_hours', title: '工时费' }
+                , {
+                    field: 'create_time', title: '创建时间'
+                    , templet: function (d) {
+                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    }
+                }
+                , { title: '操作', toolbar: "#barDemo" }
+            ]]
+        });
+        // 工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            layer.open({
+                title: '角色添加',
+                type: 2,
+                area: ['500px', '500px'],
+                content: "/EmployRole/Detail?id="+0
+            })
+        });
+        //单元格监听事件
+        table.on('tool(test)', function (obj) { // 双击 toolDouble
+            let id = obj.data.id
+            //console.log(obj)
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    $.post("/EmployRole/delete", { id: id }, function (res) {
+                        if (res.code == 200) {
+                            layer.msg('删除成功');
+                            obj.del();
+                        } else {
+                            layer.msg('删除失败');
+                        }
+                    })
+                    layer.close(index);
+                });
+            } else {
+                layer.open({
+                    title: '角色编辑',
+                    type: 2,
+                    area: ['500px', '500px'],
+                    content: "/EmployRole/detail?id=" + id
+                });
+            }
+        });
+    })
+</script>

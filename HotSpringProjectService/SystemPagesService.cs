@@ -93,6 +93,11 @@ namespace HotSpringProjectService
             return _systemPagesRepository.GetModuleList();
         }
 
+        public List<SystemPages> GetPagesByModuleId(int moduleId)
+        {
+            return _systemPagesRepository.GetPagesByModuleId(moduleId);
+        }
+
         //public IEnumerable<SystemPages> GetRoleList(int roleId)
         //{
         //    return _systemPagesRepository.GetList().Where(x=>x.id)

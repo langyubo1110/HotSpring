@@ -1,0 +1,67 @@
+﻿@model List<HotSpringProject.Entity.MenuVO>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+    <div class="layui-side">
+    </div>
+    <div class="layui-body">
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+            <ul class="layui-tab-title">
+                @foreach (var tab in Model)
+                {
+                    <li>@tab.module_name</li>
+                }
+            </ul>
+            <div class="layui-tab-content">
+                @foreach (var tab in Model)
+                {
+                    <div class="layui-tab-item">
+                        <ul>
+                            @foreach (var p in tab.page_list)
+                            {
+                                <li href="@p.page_address">
+                                    <input type="checkbox" @(p.isChecked ? "checked" : "") />
+                                    <input type="hidden" value="@p.id" />
+                                    <a>@p.page_name</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+            <input type="button" id="submit" value="提交" />
+        </div>
+    </div>
+    <script>
+        var roleId = @ViewBag.Role;
+        console.log(roleId);
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var selectedPages = [];
+                $('input[type=checkbox]:checked').each(function () {
+                    var pageId = $(this).next("input[type=hidden]").val();
+                    selectedPages.push(pageId);
+                });
+                var data = {
+                    roleId: roleId,
+                    selectedPages: selectedPages
+                };
+                $.ajax({
+                    url: '/SystemEmpPagesAdd/SavePages',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function (data) {
+                        alert('Pages saved successfully!');
+                    },
+                    error: function () {
+                        alert('Error occurred while saving pages.');
+                    }
+                });
+            });
+        });
+    </script>
+    </body>

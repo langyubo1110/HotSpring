@@ -1,0 +1,178 @@
+﻿
+@{
+    ViewBag.Title = "RegApply";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>自定义响应式表格</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <form class="layui-form">
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input type="text" name="txtRecheckID" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                        <input type="submit" lay-submit="" lay-filter="btnSearch" class="btn btn-sm btn-primary" value="搜索" />
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <table class="table table-striped" id="demo" lay-filter="test"></table>
+                </div>
+                <!--表头工具栏-->
+                <script type="text/html" id="toolbarDemo">
+                    <div class="layui-btn-container">
+                        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+                    </div>
+                </script>
+                <!--js模板行单元格-->
+                <script type="text/html" id="barDemo">
+                    @*{{#  if(d.recheck_opin ==0){ }}
+        <a class="layui-btn layui-btn-xs" lay-event="edit">查看详情</a>
+        {{# } }}*@
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">查看详情</a>
+                </script>
+                <script>
+                    layui.use(['table', 'util', 'layer', 'form', 'tree'], function () {
+                        var table = layui.table;
+                        var util = layui.util;
+                        var layer = layui.layer;
+                        var form = layui.form;
+                        var tree = layui.tree;
+                        //展示已知数据
+                        table.render({
+                            elem: '#demo'
+                            //分页
+                            , response: {
+                                statusName: 'code' //规定数据状态的字段名称，默认：code
+                                , statusCode: 200 //规定成功的状态码，默认：0
+                                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                                , countName: 'count' //规定数据总数的字段名称，默认：count
+                                , dataName: 'data' //规定数据列表的字段名称，默认：data
+                            }
+                            , page: {
+                                page: 1,
+                                limit: 4
+                            }
+                            , toolbar: '#toolbarDemo' //开启表格工具栏
+                            , cols: [[ //标题栏
+                                { field: 'id', title: '主键', width: 80, sort: true }
+                                , { field: 'name', title: '申请人', width: 120 }
+                                , { field: 'equip_name', title: '设备名', width: 120 }
+                                , { field: 'buy_reason', title: '采购原因', minWidth: 150 }
+                                , {
+                                    field: 'price', title: '价格', templet: function (d) {
+                                        // 在 templet 中调用 formatNumber() 方法来格式化价格
+                                        return formatNumber(d.price);
+                                    }
+                                }
+                                //审核状态, { field: 'price', title: '价格', minWidth: 150 }
+                                , {
+                                    field: 'create_time', title: '申请时间'
+                                    , templet: function (d) {
+                                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                                    }
+                                }
+                                
+                                ,{ field: 'score', title: '进度', templet: function (d) { return d.countAudit + ' / ' + d.count; } }
+                                
+                                , { title: '操作', toolbar: "#barDemo" }
+                            ]]
+                            , url: '/regbuy/getlist'
+                            , skin: 'line' //表格风格
+                            //, even: true
+                            //,page: true //是否显示分页
+                            //,limits: [5, 7, 10]
+                            //,limit: 5 //每页默认显示的数量
+                        });
+
+                        function formatNumber(number) {
+                            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        }
+                        //单元格监听事件
+                        table.on('tool(test)', function (obj) { // 双击 toolDouble
+                            var data = obj.data;
+                            //console.log(obj)
+                            if (obj.event === 'del') {
+                                layer.confirm('真的删除行么', function (index) {
+                                    //console.log(data.id)
+                                    $.post("/regaudit/delete", { id: data.id }, function (res) {
+                                        if (res.code = 200) {
+                                            layer.msg(res.msg)
+                                            obj.del();
+                                        }
+                                        else {
+                                            layer.msg(e.msg)
+                                        }
+                                    });
+                                    obj.del();
+                                    layer.close(index);
+                                });
+                            } else if (obj.event == 'edit') {
+                                //console.log(obj.event);
+                                layer.open({
+                                    title: '立案审批表',
+                                    type: 2,
+                                    content: "/regbuy/regbuy/" + data.id,
+                                    area: ['500px', '500px'],
+                                });
+                            }
+                        });
+                        // 工具栏事件 添加
+                        table.on('toolbar(test)', function (obj) {
+
+                            if (obj.event == 'add')
+                            //添加 弹出层
+                            {
+                                console.log(obj)
+                                let index = layer.open({
+                                    type: 2,
+                                    content: "/regbuy/regbuy",
+                                    area: ['500px', '500px'],
+                                    //方案一 当弹出层关闭就重载
+                                    //end: function () {
+                                    //    table.reload("demo")
+                                    //}
+
+                                })
+                            }
+                        });
+                        //搜索框
+                        form.on('submit(btnSearch)', function (data) {
+                            console.log(data);
+                            table.reload("demo", {
+                                where: {
+                                    recheckid: data.field.txtRecheckID,
+
+                                }
+                            })
+                            return false;
+                        })
+                    });
+                </script>
+  
+            </div>
+        </div>
+    </div>
+
+</div>
+

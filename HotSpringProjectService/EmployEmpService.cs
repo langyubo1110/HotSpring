@@ -1,5 +1,4 @@
-﻿
-using DotNet.Utilities;
+﻿using DotNet.Utilities;
 using HotSpringProject.Entity;
 using HotSpringProjectRepository.Interface;
 using HotSpringProjectService.Interface;
@@ -23,6 +22,10 @@ namespace HotSpringProjectService
         }
         public ResMessage Add(EmployEmp employemp)
         {
+            //工号自动生成
+            //查询数据库中最大id数据对象，将id+1，为基础号码
+            //再用000000加上基础号码拼成工号
+            //employemp.identity_card = "FX" ;
             employemp.onboarding_time = DateTime.Now;
             employemp.create_time = DateTime.Now;
             employemp.account_status = 1;
@@ -41,6 +44,10 @@ namespace HotSpringProjectService
         {
             return _EmployEmpRepository.GetList();
         }
+        //public IEnumerable<EmployEmp> GetListByID(int id)
+        //{
+        //    return _EmployEmpRepository.GetListByID(id);
+        //}
         /// <summary>
         /// 带分页查询
         /// </summary>

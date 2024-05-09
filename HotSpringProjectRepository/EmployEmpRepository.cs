@@ -9,7 +9,6 @@ using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using System.Configuration;
 using System.Xml.Linq;
 
 namespace HotSpringProjectRepository
@@ -48,6 +47,10 @@ namespace HotSpringProjectRepository
         {
                 return _db.EmployEmps;
         }
+        //public IEnumerable<EmployEmp> GetListByID(int id)
+        //{
+        //    return _db.EmployEmps.Where(e => e.role_id == id).ToList();
+        //}
 
         public EmployEmp GetModel(int id)
         {

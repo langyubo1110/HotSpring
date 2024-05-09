@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DotNet.Utilities;
 using HotSpringProject.Entity.VO;
+using HotSpringProject.Entity.DTO;
 namespace HotSpringProjectService
 {
     public class RepoGoodsStockService: IRepoGoodsStockService
@@ -21,12 +22,10 @@ namespace HotSpringProjectService
         public ResMessage Add(RepoGoodsStock repoGoodsStock)
         {
             repoGoodsStock.create_time = DateTime.Now;
-            bool result = _repoGoodsStockRepository.Add(repoGoodsStock);
-            if (result)
-            {
-                return ResMessage.Success("添加成功");
-            }
-            return ResMessage.Fail();
+            repoGoodsStock.update_time = DateTime.Now;
+            int last_id = _repoGoodsStockRepository.Add(repoGoodsStock);
+            return last_id==0 ? ResMessage.Fail(): ResMessage.Success("添加成功");
+            
         }
 
         public ResMessage Delete(int id)
@@ -35,20 +34,16 @@ namespace HotSpringProjectService
             return flag>0 ? ResMessage.Success("删除成功",null,flag):ResMessage.Fail("删除失败");
         }
 
-        public ResMessage GetList(int page,int limit,RepoGoodsStockFilter filter)
+        public ResMessage GetListByPager(int page,int limit,RepoGoodsStockFilter filter)
         {
-            IQueryable<RepoGoodsStock> list = _repoGoodsStockRepository.GetList();
+            IQueryable<RepoGoodsStock> list = _repoGoodsStockRepository.GetListByPager();
             if (!String.IsNullOrEmpty(filter.goods_name)) 
             {
                 list = list.Where(x => x.goods_name.Contains(filter.goods_name));
             }
-            if (!String.IsNullOrEmpty(filter.threshold)) 
+            if (filter.goods_number != null)
             {
-                list = list.Where(x => x.threshold.Contains(filter.threshold));
-            }
-            if (!String.IsNullOrEmpty(filter.factory))
-            {
-                list = list.Where(x => x.factory.Contains(filter.factory));
+                list = list.Where(x => x.goods_number==filter.goods_number);
             }
             int count = list.Count();
             List<RepoGoodsStock> result = list.OrderBy(x => x.id).Skip((page - 1) * limit).Take(limit).ToList();
@@ -77,6 +72,29 @@ namespace HotSpringProjectService
                 return ResMessage.Success("修改成功");
             }
             return ResMessage.Fail();
+        }
+        public ResMessage GetList(string keywords,int? goods_type)
+        {
+            //自动补全
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                List<RepoGoodsStock> list = _repoGoodsStockRepository.Getlist().Where(x => x.goods_name.Contains(keywords)).ToList();
+                int count = list.Count;
+                return list == null ? ResMessage.Fail() : ResMessage.Success(list, count);
+            }
+            //查全表
+            else if (goods_type != null)
+            {
+                List<RepoGoodsStock> list = _repoGoodsStockRepository.Getlist().Where(x => x.goods_type == goods_type).ToList();
+                int count = list.Count;
+                return list == null ? ResMessage.Fail() : ResMessage.Success(list, count);
+            }
+            else 
+            {
+                List<RepoGoodsStock> list = _repoGoodsStockRepository.Getlist().ToList();
+                int count = list.Count;
+                return list == null ? ResMessage.Fail() : ResMessage.Success(list, count);
+            }
         }
     }
 }

@@ -19,8 +19,10 @@ namespace HotSpringProject.Entity
         public DbSet<EmployEmp> EmployEmps { get; set; }
         public DbSet<SystemLogs> SystemLogs { get; set; }
         public DbSet<SystemModule> SystemModules { get; set; }
+        public DbSet<RepoBuy> RepoBuy { get; set; }
         public DbSet<RepoGoodsStock> RepoGoodsStock { get; set; }
         public DbSet<RegAudit> regAudit { get; set; }
+        public DbSet<RegApply> RegApply { get; set; }
         public DbSet<EquipType> EquipType { get; set; }
         public DbSet<RegEquipRes> RegEquipRes { get; set; }
         public DbSet<EquUpkeepPlan> EquUpkeepPlan { get; set; }
@@ -29,7 +31,10 @@ namespace HotSpringProject.Entity
         public DbSet<EquUpkeepTask> EquUpkeepTask { get; set; }
         public DbSet<EquToTask> EquToTask { get; set; }
         public DbSet<SystemPageCorrespondence> systemPageCorrespondences { get; set; }
-
+        public DbSet<SystemPages> SystemPages { get; set; }
+        public DbSet<EmployRole> EmployRole { get; set; }
+        public DbSet<GRoomRepair> GRoomRepair { get; set; }
+        public DbSet<GRoomSpareParts> GRoomSpareParts { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
