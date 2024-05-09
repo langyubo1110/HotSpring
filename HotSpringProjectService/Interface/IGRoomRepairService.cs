@@ -16,5 +16,6 @@ namespace HotSpringProjectService.Interface
         ResMessage Add(GRoomRepair gRoomRepair,List<GRoomSparePartsVO> gRoomSPVOlist);
         ResMessage GetModel(int id);
         ResMessage GetList();
+        ResMessage GetListById(int id);
     }
 }
