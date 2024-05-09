@@ -57,6 +57,13 @@ namespace HotSpringProjectService
             List<Equipment> list = _equipmentRepository.QueryBySql<Equipment>("select e.status  from Equ_Equipment e group by  e.status").ToList();
             return list;
         }
+        //查设备表
+        public List<Equipment> getList()
+        {
+            //查状态分组
+            List<Equipment> list = _equipmentRepository.QueryBySql<Equipment>("select * from Equ_Equipment").ToList();
+            return list;
+        }
         
         //查实体
         public ResMessage GetModel(int id)
@@ -136,7 +143,7 @@ namespace HotSpringProjectService
             //开启分页
             if (filter.page != 0 && filter.limit != 0)
             {
-                list = list.OrderByDescending(x => x.id).Skip((filter.page - 1) * filter.limit).Take(filter.limit).ToList();
+                list = list.OrderBy(x => x.id).Skip((filter.page - 1) * filter.limit).Take(filter.limit).ToList();
             }
             List<EquipmentTypeVO> list1=list.ToList();
             return list1;

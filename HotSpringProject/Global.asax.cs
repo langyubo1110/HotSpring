@@ -2,8 +2,10 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using HotSpringProject.App_Start;
 using HotSpringProject.Entity;
-using HotSpringProject.Filter;
+using HotSpringProject.Job;
 using OA_AutoWork.App_Start;
+using Quartz.Impl;
+using Quartz;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Autofac.Extras.Quartz;
 
 namespace HotSpringProject
 {
@@ -20,28 +23,61 @@ namespace HotSpringProject
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            //ÈİÆ÷×¢²á
+            //å®¹å™¨æ³¨å†Œ
             AutofacRegister();
-            //GlobalFilters.Filters.Add(new AuthorizationFilter());
+            //GlobalFilters.Filters.Add(new AuthorizationFilter());//æ‹¦æˆªå™¨
             AutoMapperConfig.Config();
-            
+
+            // åˆ›å»º Quartz è°ƒåº¦å™¨
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            IScheduler scheduler = schedulerFactory.GetScheduler().Result;
+            //è®¾ç½® Quartz ä½œä¸šå·¥å‚ï¼Œä»¥ä¾¿è§£æä½œä¸šå®ä¾‹ä¸­çš„ä¾èµ–é¡¹
+            scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
+            // å¼€å¯è°ƒåº¦å™¨
+            scheduler.Start().Wait();
+
+            // åˆ›å»º JobDetail
+            IJobDetail writeDatajobDetail = JobBuilder.Create<MyJob>()
+                                            .WithIdentity("myJob")
+                                            .Build();
+            // åˆ›å»ºè§¦å‘å™¨
+            ITrigger writeDatatrigger = TriggerBuilder.Create()
+                                             .WithIdentity("myTrigger")
+                                             .StartNow()
+                                             .WithCronSchedule("0 0 8 * * ?")
+                                             //.WithSimpleSchedule(x => x
+                                             //.WithIntervalInSeconds(60) // æ¯ 5 ç§’æ‰§è¡Œä¸€æ¬¡
+                                             //.RepeatForever())
+                                             .Build();
+
+            // å°† JobDetail å’Œ Trigger ç»‘å®šåˆ°è°ƒåº¦å™¨
+            scheduler.ScheduleJob(writeDatajobDetail, writeDatatrigger).Wait();
         }
+
+
+
         public static void AutofacRegister()
         {
-            //ÈİÆ÷×¢²á
+            //å®¹å™¨æ³¨å†Œ
             var builder = new ContainerBuilder();
-            //1.µ¥¸öÒÀÀµ×¢Èë
+            //1.å•ä¸ªä¾èµ–æ³¨å…¥  
             builder.RegisterType<HotSpringDbContext>();
-            //2.ÒÀÀµ×¢Èëµ±Ç°Ó¦ÓÃ³ÌĞòÏÂµÄËùÓĞController
-            builder.RegisterControllers(typeof(MvcApplication).Assembly).PropertiesAutowired();//Ö¸¶¨×¢Èë·½Ê½ÎªÊôĞÔ×¢Èë
-            //3.ÒÀÀµ×¢Èë°´³ÌĞò¼¯×¢Èë
+            //2.ä¾èµ–æ³¨å…¥å½“å‰åº”ç”¨ç¨‹åºä¸‹çš„æ‰€æœ‰Controller
+            builder.RegisterControllers(typeof(MvcApplication).Assembly).PropertiesAutowired();//æŒ‡å®šæ³¨å…¥æ–¹å¼ä¸ºå±æ€§æ³¨å…¥
+            //3.ä¾èµ–æ³¨å…¥æŒ‰ç¨‹åºé›†æ³¨å…¥
             Assembly asmService = Assembly.Load("HotSpringProjectService");
             builder.RegisterAssemblyTypes(asmService).Where(t => !t.IsAbstract).AsImplementedInterfaces().PropertiesAutowired();
             Assembly asmRepository = Assembly.Load("HotSpringProjectRepository");
             builder.RegisterAssemblyTypes(asmRepository).Where(t => !t.IsAbstract).AsImplementedInterfaces().PropertiesAutowired();
-            //ÈİÆ÷¹¹½¨
+
+            ////æ³¨å…¥ä»»åŠ¡ç±»
+            builder.RegisterModule(new QuartzAutofacFactoryModule());
+            //æŠŠä»»åŠ¡ç±»æ³¨å…¥åˆ°autofac
+            builder.RegisterModule(new QuartzAutofacJobsModule(typeof(MyJob).Assembly));
+
+            //å®¹å™¨æ„å»º
             var container = builder.Build();
-            //½âÎöÆ÷Ìæ»»
+            //è§£æå™¨æ›¿æ¢
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
     }

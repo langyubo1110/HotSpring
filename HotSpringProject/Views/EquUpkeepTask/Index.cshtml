@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form class="layui-form" name="movieform">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>保养任务表</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table id="demo" lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!--js模板  表头组件-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <input type="button" class="layui-btn layui-btn-sm" lay-submit="" lay-filter="btndown" lay-event="downloadselect" value="下载勾选的文件">
+    </div>
+</script>
+
+<script>
+    //layui 注册多个模块
+    layui.use(['table', 'util'], function () {
+        //实例化多个模块
+        var table = layui.table
+        var util = layui.util
+        var form = layui.form
+        //1.渲染实例
+        table.render({
+            elem: '#demo'
+            , height: 500
+            , width: 1450
+            , url: '/equupkeeptask/Query' //数据接口
+            , id: 'idTest'
+            , response: {
+                statusName: 'code' //规定数据状态的字段名称，默认：code
+                , statusCode: 200 //规定成功的状态码，默认：0
+                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                , countName: 'count' //规定数据总数的字段名称，默认：count
+                , dataName: 'data' //规定数据列表的字段名称，默认：data
+            }
+            , page: {
+                page: 1,
+                limit: 9
+            }//开启分页
+            , toolbar: "#toolbarDemo"
+            , cols: [[ //表头
+                { type: 'checkbox', fixed: 'left' }
+                ,{ field: 'id', title: '主键', sort: true, fixed: 'left' }
+                , { field: 'task_name', title: '保养名称' }
+                , {
+                    field: 'upkeep_time', title: '保养时间', templet: function (d) {
+                        return util.toDateString(d.upkeep_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    }
+                }
+                , {
+                    field: 'distribute_id', title: '分发人id'
+                }
+                , {
+                    field: 'exec_id', title: '实施人id'}
+                , {
+                    field: 'distribute_time', title: '分发时间', templet: function (d) {
+                        return util.toDateString(d.distribute_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    } }
+                , {
+                    field: 'feedback_time', title: '反馈时间', templet: function (d) {
+                        return util.toDateString(d.feedback_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    } }
+                , { field: 'upkeep_feedback_info', title: '保养反馈信息' }
+            ]]
+        });
+        //表头触发事件
+        table.on('toolbar(test)', function (obj) {
+            //获取选中行的数据
+            var checkStatus = table.checkStatus('idTest'); //idTest 即为基础参数 id 对应的值
+            console.log(checkStatus)
+            let data=checkStatus.data
+            console.log(data)
+            //后端打包下载
+            $.post("/equipment/downselect", { data: data }, function (res) {
+                console.log(res)
+                layer.msg(res.msg);
+            })
+        });
+    })
+</script>
+
+

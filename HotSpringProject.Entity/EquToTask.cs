@@ -8,17 +8,12 @@ using System.Threading.Tasks;
 
 namespace HotSpringProject.Entity
 {
-    [Table("Equ_Upkeep_Plan")]
-    public class EquUpkeepPlan
+    [Table("Equ_To_Taskes")]
+    public class EquToTask
     {
         [Key]
         public int id { get; set; }
         public int equ_id { get; set; }
-        public DateTime? start_time { get; set; }
-        public DateTime? end_time { get; set; }
-        public int? interval { get; set; }
-        public int? importance { get; set; }
-        public string task_name { get; set; }
-        public string task_info { get; set; }
+        public int task_id { get; set; }
     }
 }
