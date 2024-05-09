@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HotSpringProject.Entity
+namespace HotSpringProject.Entity.VO
 {
-    public class RegApplyFilter
+    public class EquUpkeepTaskFilter
     {
-        public int? applyid { get; set; }
+        //过滤条件
         public int page { get; set; }
         public int limit { get; set; }
     }

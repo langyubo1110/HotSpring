@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectService.Interface
 {
-    public interface IGRoomRepairService
+    public interface IEquUpkeepPlanService
     {
+        List<EquUpkeepPlan> GetList();
+        ResMessage GetListUnion(EquUpkeepPlanFilter filter);
+        ResMessage Add(EquUpkeepPlan equUpkeepPlan);
         ResMessage Delete(int id);
-        ResMessage Update(GRoomRepair gRoomRepair);
-        ResMessage Add(GRoomRepair gRoomRepair,List<GRoomSparePartsVO> gRoomSPVOlist);
+        ResMessage Update(EquUpkeepPlan equUpkeepPlan);
+        //查实体
         ResMessage GetModel(int id);
-        ResMessage GetList();
-        ResMessage GetListById(int id);
     }
 }

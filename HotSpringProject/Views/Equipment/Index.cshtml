@@ -23,9 +23,9 @@
                     </div>
                     <div class="ibox-content">
                         <div class="row">
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <div class="input-group">
-                                    <input type="text" name="txtequipmet" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                    <input type="text" name="txtequipmet" placeholder="请输关键词" class="input-sm form-control"> <span class="input-group-btn">
                                         <button type="submit" class="btn btn-sm btn-primary" lay-submit="" lay-filter="btnsearch"> 搜索</button>
                                     </span>
                                 </div>
@@ -42,7 +42,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-6">
                                 <div class="layui-inline">
                                     <label class="layui-form-label">日期</label>
                                     <div class="layui-inline" id="date" lay-key="7">
@@ -86,6 +86,7 @@
     {{# } }}
     <a class="layui-btn layui-btn-xs layui-btn-xs" lay-event="upload">上传</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="download">下载</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="upkeep">保养</a>
 </script>
 <script>
     //树形组件加载
@@ -98,7 +99,7 @@
             tree.render({
                 elem: '#menuTree',
                 data: data1,
-                 height: 500,
+                 height: 1000,
                 click: function (obj) {
                     var table = layui.table;
                     table.reload("demo", {
@@ -130,7 +131,6 @@
                 if (value != "") {
                     dateStart=value.split(' - ')[0].trim()
                     dateEnd = value.split(' - ')[1].trim()
-                    console.log(value,dateStart,dateEnd)
                 }
                         table.reload("demo", {
                             //获取文本款的值
@@ -145,7 +145,7 @@
         //1.渲染实例
         table.render({
             elem: '#demo'
-            , height: 500
+            , height: 450
             , url: '/equipment/Query' //数据接口
             , response: {
                 statusName: 'code' //规定数据状态的字段名称，默认：code
@@ -156,7 +156,7 @@
             }
             , page: {
                 page: 1,
-                limit: 9
+                limit: 8
             }//开启分页
             , toolbar: "#toolbarDemo"
             , cols: [[ //表头
@@ -180,7 +180,7 @@
                     }
                 }
                 //添加操作列
-                , { title: '操作', toolbar: "#barDemo" ,minWidth:275 }
+                , { title: '操作', toolbar: "#barDemo" ,minWidth:325 }
             ]]
         });
         //2.单元格触发事件
@@ -253,9 +253,17 @@
                 data.create_time = util.toDateString(data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                 data.usedtime = util.toDateString(data.usedtime.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                 $.post("/equipment/downloading", { data: data }, function (res) {
-                    console.log(res)
                         layer.msg(res.msg);
                 })
+            }
+            //保养信息
+            else if (obj.event == "upkeep") {
+                //弹出弹窗
+                layer.open({
+                    type: 2,
+                    content: '/equipment/upkeep/' + obj.data.id,
+                    area: ['1100px', '800px'],
+                });
             }
         });
         //表头触发事件
@@ -279,14 +287,13 @@
                 layer.open({
                     type: 2,
                     content: '/equipment/download',
-                    area: ['1200px', '750px'],
+                    area: ['1100px', '650px'],
                 });
                 return false;
             }
         });
         //搜索表单
         form.on('submit(btnsearch)', function (data) {
-            console.log(data);
             //表格重载 调用movielist函数
             table.reload("demo", {
                 //获取文本款的值

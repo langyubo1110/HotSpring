@@ -1,0 +1,18 @@
+﻿using HotSpringProject.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HotSpringProjectRepository.Interface
+{
+    public interface IEquUpkeepTaskRepository
+    {
+        IEnumerable<EquUpkeepTask> GetList();
+        //sql查询
+        IEnumerable<T> QueryBySql<T>(string sql);
+        int execBySql(string sql);
+
+    }
+}

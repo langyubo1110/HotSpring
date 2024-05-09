@@ -84,6 +84,12 @@ namespace HotSpringProjectService
             return list==null?ResMessage.Fail(): ResMessage.Success(list);
         }
 
+        public ResMessage GetListById(int id)
+        {
+            List<GRoomRepair> list = _gRoomRepairRepository.GetList().Where(x => x.reporter_id ==id ).ToList();
+            return list == null ? ResMessage.Fail() : ResMessage.Success(list);
+        }
+
         public ResMessage GetModel(int id)
         {
             GRoomRepair gRoomRepair =_gRoomRepairRepository.GetModel(id);

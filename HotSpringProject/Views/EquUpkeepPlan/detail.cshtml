@@ -1,0 +1,125 @@
+﻿
+@{
+    ViewBag.Title = "detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form role="form" class="layui-form form-inline" lay-filter="movieForm">
+            <div class="form-group">
+                <input type="hidden" name="id" />
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                <span>设备id：&emsp;</span>
+                <div class="layui-input-inline">
+                    <select name="equ_id" lay-verify="required" lay-search="" lay-filter="ddltest">
+                        <option value=""></option>
+                        @foreach (var item in ViewBag.equid)
+                        {
+                            <option value="@item.id">@item.id</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                保养开始时间：<input type="date" name="start_time"  class="form-control layui-input">
+            </div>
+            <br /> <br />
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                <div class="layui-inline">
+                    <span>重要性： &emsp;</span>
+                    <div class="layui-input-inline">
+                        <select name="importance" lay-verify="required" lay-search="" lay-filter="ddltest">
+                            <option value="0">重要</option>
+                            <option value="1">超级重要</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                保养结束时间：<input type="date" name="end_time"  class="form-control">
+            </div>
+            <br /> <br />
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                <div class="layui-inline">
+                    保养间隔：&nbsp;<input type="text" name="interval" lay-verify="required" placeholder="请输入间隔天数" class="form-control">
+                </div>
+            </div>
+            
+            <br /> <br />
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+    .layui-form-select .layui-input {
+        padding-right: 30px;
+        cursor: pointer;
+        height: 34px;
+        width: 198px;
+    }
+</style>
+
+<script>
+        //注册from组件
+    layui.use(['form', 'util', 'layedit'], function () {
+        //实例化
+        var form = layui.form;
+        var util = layui.util;
+        var layedit = layui.layedit;
+        layedit.build('txtarea', {
+            height: 180, //设置编辑器高度
+        });
+        //form加载
+        var id =@ViewBag.Id;
+            //表单赋值
+        $.post("/equupkeepplan/getequip", { id: id }, function (res) {
+            console.log(res)
+            if (res.code == 200) {
+                   /* res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");*/
+                    //赋值
+                    form.val('movieForm', res.data);
+             }
+        })
+        //提交事件
+        form.on('submit(demo1)', function (data) {
+            let obj = data.field
+            //富文本
+            //obj.upkeep_distribute = layedit.getContent(1)
+        //修改
+        if (id == 0) {
+            $.post("/equupkeepplan/add", { keepplan: obj }, function (res) {
+                if (res.code == 200) {
+                    //插入成功，关闭layer
+                    //找到父页面的自己  拿到index 让父页面关掉自己
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                }
+            })
+        }
+        else {
+            obj.id = id
+            $.post("/equupkeepplan/edit", { keepplan: obj }, function (res) {
+                    if (res.code == 200) {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    }
+                })
+            }
+        return false;
+        });
+    })
+</script>
+
+
+

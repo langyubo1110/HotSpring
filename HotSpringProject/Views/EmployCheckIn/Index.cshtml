@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <div class="layui-container">
+        <div class="layui-row">
+            <div class="layui-col-md-offset3 layui-col-md6" style="margin-top: 50px;">
+                <form class="layui-form" id="checkInForm">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">班次类型</label>
+                        <div class="layui-input-block">
+                            <select name="shiftType" id="dropList" lay-verify="required">
+                                <option value="">请选择班次类型</option>
+                                <option value="0">早班</option>
+                                <option value="1">午班</option>
+                                <option value="2">晚班</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="checkIn">上班签到</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="layui-form-item layui-hide" id="resultContainer">
+                    <div class="layui-input-block">
+                        <span id="resultLabel" class="layui-form-text"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        layui.use(['form'], function () {
+            var form = layui.form;
+            // 监听表单提交
+            form.on('submit(checkIn)', function (data) {
+                var selectedValue = $('#dropList').val();
+                // 调用接口插入数据
+                $.get('/EmployCheckIn/Insert', { selectedValue: selectedValue }, function (res) {
+                    if (res.code === 0) {
+                        layer.msg('签到成功：' + res.msg);
+                    } else {
+                        layer.msg('签到失败：' + res.msg, { icon: 2 });
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+</body>
+
