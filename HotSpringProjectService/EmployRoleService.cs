@@ -44,8 +44,10 @@ namespace HotSpringProjectService
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
         public ResMessage Delete(int id)
-        {           bool flag=_employRoleRepository.Delete(id);
-            return flag?ResMessage.Success():ResMessage.Fail();
+        {
+            bool flag = _employRoleRepository.Delete(id);
+            return flag ? ResMessage.Success() : ResMessage.Fail();
+        }
 
         public IEnumerable<EmployRole> GetList()
         {
@@ -54,7 +56,7 @@ namespace HotSpringProjectService
 
         public ResMessage GetModel(int id)
         {
-            EmployRole model=_employRoleRepository.GetModelById(id);
+            EmployRole model=_employRoleRepository.GetModel(id);
             return model!=null ? ResMessage.Success(model) :ResMessage.Fail();
         }
 

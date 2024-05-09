@@ -27,8 +27,9 @@ namespace HotSpringProject.Entity
         public DbSet<EquipType> EquipType { get; set; }
         public DbSet<RegEquipRes> RegEquipRes { get; set; }
         public DbSet<SystemPageCorrespondence> SystemPageCorrespondences { get; set; }
-        public DbSet<SystemPages> systemPages { get; set; }
+        public DbSet<SystemPages> SystemPages { get; set; }
         public DbSet<GRoomSpareParts> GRoomSpareParts { get; set; }
+        public DbSet<GRoomRepair> GRoomRepair { get; set; }
         public DbSet<EmployRole> EmployRole { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
