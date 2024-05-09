@@ -28,30 +28,27 @@ namespace HotSpringProject
             //GlobalFilters.Filters.Add(new AuthorizationFilter());//拦截器
             AutoMapperConfig.Config();
 
+
             // 创建 Quartz 调度器
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
             IScheduler scheduler = schedulerFactory.GetScheduler().Result;
-            //设置 Quartz 作业工厂，以便解析作业实例中的依赖项
+            //*** 设置 Quartz 作业工厂，以便解析作业实例中的依赖项
             scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
             // 开启调度器
             scheduler.Start().Wait();
 
             // 创建 JobDetail
-            IJobDetail writeDatajobDetail = JobBuilder.Create<MyJob>()
-                                            .WithIdentity("myJob")
-                                            .Build();
-            // 创建触发器
-            ITrigger writeDatatrigger = TriggerBuilder.Create()
-                                             .WithIdentity("myTrigger")
-                                             .StartNow()
-                                             .WithCronSchedule("0 0 8 * * ?")
-                                             //.WithSimpleSchedule(x => x
-                                             //.WithIntervalInSeconds(60) // 每 5 秒执行一次
-                                             //.RepeatForever())
+            IJobDetail jobDetail = JobBuilder.Create<DataBaseJob>()
+                                             .WithIdentity("DataBaseJob")
                                              .Build();
 
+            // 创建触发器
+            ITrigger trigger = TriggerBuilder.Create()
+                                             .WithIdentity("myTrigger")
+                                             .StartNow() // 立即启动触发器
+                                             .Build();
             // 将 JobDetail 和 Trigger 绑定到调度器
-            scheduler.ScheduleJob(writeDatajobDetail, writeDatatrigger).Wait();
+            scheduler.ScheduleJob(jobDetail, trigger).Wait();
         }
 
 
