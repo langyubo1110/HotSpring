@@ -27,11 +27,10 @@ namespace HotSpringProject.Entity
         public DbSet<RegEquipRes> RegEquipRes { get; set; }
         public DbSet<EquUpkeepPlan> EquUpkeepPlan { get; set; }
         public DbSet<RepoOutInRecord> RepoOutInRecord { get; set; }
-        public DbSet<SystemPages> systemPages { get; set; }
+        public DbSet<SystemPages> SystemPages { get; set; }
         public DbSet<EquUpkeepTask> EquUpkeepTask { get; set; }
         public DbSet<EquToTask> EquToTask { get; set; }
-        public DbSet<SystemPageCorrespondence> systemPageCorrespondences { get; set; }
-        public DbSet<SystemPages> SystemPages { get; set; }
+        public DbSet<SystemPageCorrespondence> SystemPageCorrespondences { get; set; }
         public DbSet<EmployRole> EmployRole { get; set; }
         public DbSet<GRoomRepair> GRoomRepair { get; set; }
         public DbSet<GRoomSpareParts> GRoomSpareParts { get; set; }
