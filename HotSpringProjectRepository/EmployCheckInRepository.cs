@@ -28,5 +28,10 @@ namespace HotSpringProjectRepository
             int flag = _db.SaveChanges();
             return flag;
         }
+
+        public IEnumerable<EmployCheckIn> GetList()
+        {
+            return _db.EmployCheckIns;
+        }
     }
 }

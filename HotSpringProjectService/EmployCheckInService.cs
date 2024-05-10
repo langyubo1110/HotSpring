@@ -24,5 +24,10 @@ namespace HotSpringProjectService
             int flag = _db.Add(EmployCheckIn, empId,type);
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
+
+        public IEnumerable<EmployCheckIn> GetList()
+        {
+            return _db.GetList();
+        }
     }
 }

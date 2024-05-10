@@ -17,17 +17,18 @@ namespace HotSpringProject.Entity
         }
         public DbSet<Equipment> Equipment { get; set; }
         public DbSet<EmployEmp> EmployEmps { get; set; }
+        public DbSet<EmployCheckIn> EmployCheckIns { get; set; }
         public DbSet<SystemLogs> SystemLogs { get; set; }
         public DbSet<SystemModule> SystemModules { get; set; }
         public DbSet<RepoBuy> RepoBuy { get; set; }
         public DbSet<RepoGoodsStock> RepoGoodsStock { get; set; }
         public DbSet<RegAudit> regAudit { get; set; }
+        public DbSet<RepoOutInRecord> RepoOutInRecord { get; set; }
         public DbSet<RegApply> RegApply { get; set; }
         public DbSet<EquipType> EquipType { get; set; }
         public DbSet<RegEquipRes> RegEquipRes { get; set; }
-        
-        
-        public DbSet<SystemPageCorrespondence> systemPageCorrespondences { get; set; }
+        public DbSet<EquUpkeepPlan> EquUpkeepPlan { get; set; }
+        public DbSet<EquUpKeepDistributed> EquUpKeepDistributed { get; set; }
         public DbSet<SystemPages> SystemPages { get; set; }
         public DbSet<GRoomSpareParts> GRoomSpareParts { get; set; }
         public DbSet<GRoomRepair> GRoomRepair { get; set; }

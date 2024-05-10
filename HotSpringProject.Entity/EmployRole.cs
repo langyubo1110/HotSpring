@@ -11,10 +11,10 @@ namespace HotSpringProject.Entity
     public class EmployRole
     {
         public int id { get; set; }
-        public int? role {  get; set; }
+        public int? is_leader {  get; set; }
         public string role_name { get; set; }
-        public decimal? Labor_hours { get; set; }
-        public decimal? Salary { get; set; }
+        public decimal? labor_hours { get; set; }
+        public decimal? salary { get; set; }
         public DateTime create_time { get; set; }
     }
 }

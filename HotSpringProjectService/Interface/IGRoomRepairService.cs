@@ -17,5 +17,6 @@ namespace HotSpringProjectService.Interface
         ResMessage GetModel(int id);
         ResMessage GetList();
         ResMessage GetListById(int id);
+        ResMessage GetListId(int id);
     }
 }

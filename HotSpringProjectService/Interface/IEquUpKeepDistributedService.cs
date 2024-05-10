@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectService.Interface
 {
-    public interface IEmployCheckInService
+    public interface IEquUpKeepDistributedService
     {
-        ResMessage Add(int empId, int type);
-        IEnumerable<EmployCheckIn> GetList();
+        IEnumerable<EquUpKeepDistributed> GetList();
+        ResMessage Add(EquUpKeepDistributed EquUpKeepDistributed);
     }
 }

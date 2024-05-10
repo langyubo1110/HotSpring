@@ -29,26 +29,31 @@ namespace HotSpringProject
             AutoMapperConfig.Config();
 
 
-            // 创建 Quartz 调度器
-            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
-            IScheduler scheduler = schedulerFactory.GetScheduler().Result;
-            //*** 设置 Quartz 作业工厂，以便解析作业实例中的依赖项
-            scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
-            // 开启调度器
-            scheduler.Start().Wait();
+            //BackUpDataBase.Initialize();
+            //备份数据库
 
-            // 创建 JobDetail
-            IJobDetail jobDetail = JobBuilder.Create<DataBaseJob>()
-                                             .WithIdentity("DataBaseJob")
-                                             .Build();
 
-            // 创建触发器
-            ITrigger trigger = TriggerBuilder.Create()
-                                             .WithIdentity("myTrigger")
-                                             .StartNow() // 立即启动触发器
-                                             .Build();
-            // 将 JobDetail 和 Trigger 绑定到调度器
-            scheduler.ScheduleJob(jobDetail, trigger).Wait();
+            //保养任务生成
+            //// 创建 Quartz 调度器
+            //ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            //IScheduler scheduler = schedulerFactory.GetScheduler().Result;
+            ////*** 设置 Quartz 作业工厂，以便解析作业实例中的依赖项
+            //scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
+            //// 开启调度器
+            //scheduler.Start().Wait();
+
+            //// 创建 JobDetail
+            //IJobDetail jobDetail = JobBuilder.Create<DataBaseJob>()
+            //                                 .WithIdentity("DataBaseJob")
+            //                                 .Build();
+
+            //// 创建触发器
+            //ITrigger trigger = TriggerBuilder.Create()
+            //                                 .WithIdentity("myTrigger")
+            //                                 .StartNow() // 立即启动触发器
+            //                                 .Build();
+            //// 将 JobDetail 和 Trigger 绑定到调度器
+            //scheduler.ScheduleJob(jobDetail, trigger).Wait();
         }
 
 
@@ -71,6 +76,11 @@ namespace HotSpringProject
             builder.RegisterModule(new QuartzAutofacFactoryModule());
             //把任务类注入到autofac
             builder.RegisterModule(new QuartzAutofacJobsModule(typeof(MyJob).Assembly));
+
+            ////注入任务类
+            builder.RegisterModule(new QuartzAutofacFactoryModule());
+            //把任务类注入到autofac
+            builder.RegisterModule(new QuartzAutofacJobsModule(typeof(DataBaseJob).Assembly));
 
             //容器构建
             var container = builder.Build();

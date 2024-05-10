@@ -25,6 +25,12 @@ namespace HotSpringProject.Controllers
         // GET: EmployTasks
         public ActionResult RepairTasks()
         {
+
+            return View();
+        }
+        public ActionResult Detail(int id)
+        {
+            ViewBag.Id = id;
             return View();
         }
         public ActionResult Index()
@@ -41,9 +47,14 @@ namespace HotSpringProject.Controllers
             ResMessage res = _db.GetListById(id);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult RepairByID(int id=0)
+        {
+            ResMessage res = _db.GetListId(id);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
         //public JsonResult UpKeep() 
         //{
-            
+
         //}
     }
 }

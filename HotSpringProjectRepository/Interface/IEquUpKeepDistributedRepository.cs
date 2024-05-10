@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectRepository.Interface
 {
-    public interface IEmployCheckInRepository
+    public interface IEquUpKeepDistributedRepository
     {
-        int Add(EmployCheckIn EmployCheckIn,int empId,int type);
-        IEnumerable<EmployCheckIn> GetList();
+        IEnumerable<EquUpKeepDistributed> GetList();
+        int Add(EquUpKeepDistributed EquUpKeepDistributed);
     }
 }
