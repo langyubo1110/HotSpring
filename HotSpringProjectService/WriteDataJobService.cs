@@ -2,9 +2,13 @@
 using HotSpringProjectService.Interface;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Hosting;
+using QRCoder;
 
 namespace HotSpringProjectService
 {
@@ -34,12 +38,27 @@ namespace HotSpringProjectService
                     //需要保养
                     if (daysDifference % item.interval == 0)
                     {
+                        // 生成包含参数的链接
+                        string targetUrl = $"https://localhost:44364/equupkeeptask/upkeeptask?id={item.task_id}";
+                        // 生成二维码
+                        QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                        QRCodeData qrCodeData = qrGenerator.CreateQrCode(targetUrl, QRCodeGenerator.ECCLevel.Q);
+                        QRCode qrCode = new QRCode(qrCodeData);
+                        Bitmap qrCodeImage = qrCode.GetGraphic(10);
+
+                        // 保存二维码图片到文件夹
+                        string imagePath = HostingEnvironment.MapPath($"/assets/QRimg/{item.task_id}.png");
+                        string imgurl = $"/assets/QRimg/{item.task_id}.png";
+                        qrCodeImage.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
+
                         //入库一条数据
-                        _equUpkeepTaskService.insert(item.equ_plan_id, time);
+                        _equUpkeepTaskService.insert(item.equ_plan_id, time, imgurl);
                     }
                 }
             }
             return Task.CompletedTask;
         }
+
+       
     }
 }

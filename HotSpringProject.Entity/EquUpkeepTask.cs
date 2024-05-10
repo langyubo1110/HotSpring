@@ -20,6 +20,7 @@ namespace HotSpringProject.Entity
         public int? distribute_id { get; set; }
         public int? exec_id { get; set; }
         public string upkeep_feedback_info { get; set; }
+        public string QRimg { get; set; }
         
     }
 }

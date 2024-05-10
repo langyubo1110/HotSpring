@@ -18,7 +18,7 @@ namespace HotSpringProject.Entity
         public DateTime pay_time { get; set; }
         public int post_status { get; set; }
         public decimal salary { get; set; }
-        public int Perform_money { get; set; }
+        public decimal Perform_money { get; set; }
         public DateTime create_time { get; set; }
 
     }

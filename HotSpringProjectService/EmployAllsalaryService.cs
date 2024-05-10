@@ -35,7 +35,7 @@ namespace HotSpringProjectService
         public ResMessage GetList()
         {
             List<EmployAllsalary> list = _employAllsalaryRepository.GetList().ToList();
-            return list == null ? ResMessage.Fail() : ResMessage.Success();
+            return list == null ? ResMessage.Fail() : ResMessage.Success(list);
         }
 
         public ResMessage GetModel(int id)

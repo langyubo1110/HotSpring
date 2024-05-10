@@ -9,13 +9,18 @@ namespace HotSpringProject.Entity.VO
     public class EquUpkeepTaskVO
     {
         public int id { get; set; }
+        public int interval { get; set; }
         public int equ_plan_id { get; set; }
         public DateTime? upkeep_time { get; set; }
         public DateTime? distribute_time { get; set; }
         public DateTime? feedback_time { get; set; }
+        public DateTime? start_time { get; set; }
+        public DateTime? end_time { get; set; }
         public int? distribute_id { get; set; }
         public int? exec_id { get; set; }
         public string upkeep_feedback_info { get; set; }
         public string task_name { get; set; }
+        public string task_info { get; set; }
+        public string QRimg { get; set; }
     }
 }

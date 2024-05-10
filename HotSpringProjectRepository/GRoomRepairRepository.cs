@@ -23,7 +23,6 @@ namespace HotSpringProjectRepository
             _Db.SaveChanges();
             return gRoomRepair.id;
         }
-
         public int Delete(int id)
         {
             GRoomRepair gRoomRepair = _Db.GRoomRepair.Find(id);

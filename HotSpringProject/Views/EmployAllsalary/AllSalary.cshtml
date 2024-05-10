@@ -1,8 +1,168 @@
 ﻿
 @{
-    ViewBag.Title = "AllSalary";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>薪资页</h2>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <form class="layui-form" action="" lay-filter="searchForm">
+                                <div class="layui-form-item">
+                                    <div class="layui-form-item layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="name" placeholder="请输入员工姓名" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="pay_month" placeholder="请输入发放月份" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-inline">
+                                        <button class="layui-btn" lay-submit="" lay-filter="btnSearch">
+                                            <i class="layui-icon layui-icon-search"></i>
+                                            查询
+                                        </button>
+                                        <button type="reset" class="layui-btn">
+                                            <i class="layui-icon layui-icon-refresh"></i>
+                                            重置
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+
+                        <table id="demo" lay-filter="test"></table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--js模版表头工具栏-->
+@*<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="out"></button>
+        <button class="layui-btn layui-btn-sm" lay-event="in">入库</button>
+    </div>
+</script>*@
+<!--操作单元格-->
+@*<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>*@
+
+
+<script>
+    layui.use(['table', 'form', 'util', 'layer'], function () {
+        var table = layui.table;
+        var util = layui.util;
+        var layer = layui.layer;
+        var form = layui.form;
+        //表格渲染
+        table.render({
+            elem: '#demo'
+            , height: 525
+            , url: '/employallsalary/getlist' //数据接口
+            , page: true//开启分页
+            , toolbar: '#toolbarDemo'
+            , cols: [[ //表头
+                { field: 'emp_id', title: '员工姓名', sort: true,  fixed: 'left' }
+                , {field: 'pay_month', title: '发放月份', sort: true, templet: function (d) { return d.pay_month+"月" }}
+                , { field: 'pay_time', title: '发放日期', sort: true, templet: function (d) { return util.toDateString(d.pay_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
+                , { field: 'post_status', title: '发放状态', sort: true, templet: function (d) { return d.post_status == 0? "未发放":"已发放" } }
+                , { field: 'salary', title: '当月底薪', sort: true, templet: function (d) { return formatNumber(d.salary); }}
+                , { field: 'Perform_money', title: '当月绩效', sort: true, templet: function (d) { return formatNumber(d.Perform_money); } }
+                , { field: 'create_time', title: '创建时间', sort: true , templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
+               /* , { title: '操作', toolbar: '#barDemo', templet:'#barDemo' }*/
+            ]]
+            , parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
+        });
+        ////行单击事件
+        ////删除应该同添加，同时删除出入库表，库存表和采购表
+        ////详情展示相应采购信息
+        //table.on('tool(test)', function (obj) {
+        //    var id = obj.data.id;
+        //    console.log(obj)
+        //    if (obj.event === 'del') {
+        //        layer.confirm('真的删除行么', function (index) {
+        //            $.post('/repooutinrecord/delete', { id: id }, function (res) {
+        //                if (res.code = 200) {
+        //                    layer.msg(res.msg)
+        //                    obj.del();
+        //                    table.reload('demo')
+        //                }
+        //                else {
+        //                    layer.msg(e.msg)
+        //                }
+        //            })
+        //            layer.close(index)
+        //        });
+        //    }
+        //    else if (obj.event === 'audit') {
+        //        $.post("/repogoodsstock/updatebyaudit", { repoGoodsStockDTO: obj.data }, function (res) {
+        //            if (res.code == 200)
+        //            {
+        //                table.reload('demo');
+        //                layer.msg("审核通过,库存已更新")
+        //            }
+        //        })
+        //    }
+
+        //});
+        //table.on('toolbar(test)', function (obj) {
+        //    if (obj.event == "out") {
+        //        layer.open({
+        //            title: '商品出库',
+        //            type: 2,
+        //            area: ['800px', '305px'],
+        //            content: '/repooutinrecord/outdetail'
+        //        })
+        //    }
+        //    else if (obj.event == "in")
+        //    {
+        //        layer.open({
+        //            title: '商品入库',
+        //            type: 2,
+        //            area: ['800px', '455px'],
+        //            content: '/repooutinrecord/indetail'
+        //        })
+        //    }
+        //})
+        ////搜索工具栏
+        //form.on('submit(btnSearch)', function (data) {
+        //    //表格重载 where 再加一个参数name
+        //    console.log(data)
+        //    table.reload('demo', {
+        //        where: {
+        //            goods_name: data.field.txtSGoodsName,
+        //            name: data.field.txtSName,
+        //        }
+        //    })
+        //     return false;
+        //});
+    })
+</script>
+
+
+
+
+
+
+
 

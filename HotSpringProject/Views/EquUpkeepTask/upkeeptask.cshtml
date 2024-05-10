@@ -1,0 +1,44 @@
+﻿@model List<HotSpringProject.Entity.VO.EquUpkeepTaskVO>
+@{
+    ViewBag.Title = "upkeeptask";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form role="form" class="layui-form form-inline" lay-filter="movieForm">
+            <div class="form-group">
+                <input type="hidden" name="id" />
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                保养任务名称：&nbsp;<input type="text" name="task_name" class="form-control layui-input" value="@Model[0].task_name">
+            </div>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                上次保养结果：<input type="text" name="upkeep_feedback_info" class="form-control layui-input" value="@Model[0].upkeep_feedback_info">
+            </div>
+            <br /> <br />
+            &emsp;&emsp;&emsp;&emsp;&emsp;
+                   <div class="form-group">
+                       &emsp;&emsp;
+                       保养任务：<input type="text" name="task_info" class="form-control layui-input" value="@Model[0].task_info">
+                   </div>
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                保养结束时间：<input type="text" name="end_time" class="form-control layui-input" value="@Model[0].end_time">
+            </div>
+            <br /> <br />
+        </form>
+    </div>
+</div>
+<style>
+    .layui-form-select .layui-input {
+        padding-right: 30px;
+        cursor: pointer;
+        height: 34px;
+        width: 198px;
+    }
+</style>
+
+
+
+

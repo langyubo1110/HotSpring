@@ -39,11 +39,13 @@
                 , { field: 'role_name', title: '职位' }
                 , {
                     field: 'is_leader', title: '是否领导', templet: function (d) {
-                        return d.role === 0 ? '否' : '是'
+                        return d.is_leader === 0 ? '否' : '是'
                     }
                 }
-                , { field: 'Salary', title: '底薪' }
-                , { field: 'Labor_hours', title: '工时费' }
+                , { field: 'salary', title: '底薪' }
+                , {
+                    field: 'labor_hours', title: '工时费', templet: function (d) { return d.labor_hours+".00" }
+                }
                 , {
                     field: 'create_time', title: '创建时间'
                     , templet: function (d) {
