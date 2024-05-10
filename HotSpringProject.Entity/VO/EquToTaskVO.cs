@@ -17,6 +17,7 @@ namespace HotSpringProject.Entity.VO
         public int task_id { get; set; }
         public string title { get; set; }
         public string task_name { get; set; }
+        public string task_info { get; set; }
         public string upkeep_feedback_info { get; set; }
         public DateTime? upkeep_time { get; set; }
         public DateTime? distribute_time { get; set; }

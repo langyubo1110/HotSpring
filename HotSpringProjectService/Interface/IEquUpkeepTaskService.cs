@@ -13,6 +13,6 @@ namespace HotSpringProjectService.Interface
     {
         ResMessage GetList(EquUpkeepTaskFilter filter);
         List<EquUpkeepTaskVO> getlistnofilter();
-        int insert(int id, DateTime time);
+        int insert(int id, DateTime time, string img);
     }
 }

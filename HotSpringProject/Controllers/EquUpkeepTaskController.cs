@@ -27,6 +27,25 @@ namespace HotSpringProject.Controllers
         {
             return View();
         }
+        //弹出二维码
+        public ActionResult QRimg(int id)
+        {
+            List<EquUpkeepTaskVO> list = _equUpkeepTaskService.getlistnofilter();
+            list = list.Where(x => x.id == id).ToList();
+            return View(list);
+        }
+        //弹出当日签到人员
+        public ActionResult Sign()
+        {
+            return View();
+        }
+        //单个保养任务
+        public ActionResult upkeeptask(int id)
+        {
+            List<EquUpkeepTaskVO> list= _equUpkeepTaskService.getlistnofilter();
+            list = list.Where(x => x.id== id).ToList();
+            return View(list);
+        }
         #endregion
 
         #region 接口
