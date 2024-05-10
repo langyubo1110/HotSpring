@@ -33,5 +33,9 @@ namespace HotSpringProjectRepository
         {
             return _db.EmployCheckIns;
         }
+        public IEnumerable<T> QueryBySql<T>(string sql)
+        {
+            return _db.Database.SqlQuery<T>(sql);
+        }
     }
 }

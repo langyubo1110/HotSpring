@@ -91,5 +91,15 @@ namespace HotSpringProjectService
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<EquipmentTypeVO> GetListUnion()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Equipment> getList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -11,5 +11,7 @@ namespace HotSpringProjectRepository.Interface
     {
         int Add(EmployCheckIn EmployCheckIn,int empId,int type);
         IEnumerable<EmployCheckIn> GetList();
+        IEnumerable<T> QueryBySql<T>(string sql);
+
     }
 }

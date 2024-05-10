@@ -29,5 +29,11 @@ namespace HotSpringProjectService
         {
             return _db.GetList();
         }
+
+        public IEnumerable<EmployCheckInVO> GetListUnionSql()
+        {
+            IEnumerable<EmployCheckInVO> list = _db.QueryBySql<EmployCheckInVO>($@"SELECT ci.*, e.name AS emp_name FROM Employ_Check_In AS ci JOIN Employ_Emp AS e ON ci.emp_id = e.id WHERE ci.check_event = 1;");
+            return list;
+        }
     }
 }

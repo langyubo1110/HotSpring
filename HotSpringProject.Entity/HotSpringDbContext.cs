@@ -24,12 +24,13 @@ namespace HotSpringProject.Entity
         public DbSet<RepoGoodsStock> RepoGoodsStock { get; set; }
         public DbSet<RepoOutInRecord> RepoOutInRecord { get; set; }
         public DbSet<RegAudit> regAudit { get; set; }
-        public DbSet<RepoOutInRecord> RepoOutInRecord { get; set; }
         public DbSet<RegApply> RegApply { get; set; }
         public DbSet<EquipType> EquipType { get; set; }
         public DbSet<RegEquipRes> RegEquipRes { get; set; }
-        
-        
+        public DbSet<RegVote> RegVote { get; set; }
+        public DbSet<EmployPerform> EmployPerform { get; set; }
+        public DbSet<EmployAllsalary> EmployAllsalary { get; set; }
+        public DbSet<EquUpKeepDistributed> EquUpKeepDistributed { get; set; }
         public DbSet<SystemPageCorrespondence> systemPageCorrespondences { get; set; }
         public DbSet<SystemPages> SystemPages { get; set; }
         public DbSet<GRoomSpareParts> GRoomSpareParts { get; set; }
