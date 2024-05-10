@@ -37,7 +37,11 @@ namespace HotSpringProjectService
             List<EmployPerform> list = _employPerformRepository.GetList().ToList();
             return list==null?ResMessage.Fail():ResMessage.Success();
         }
-
+        public List<EmployPerform> GetListByRepairId(int id)
+        {
+            List<EmployPerform> list = _employPerformRepository.GetList().Where(item => item.repair_id == id).ToList();
+            return list ;
+        }
         public ResMessage GetModel(int id)
         {
             EmployPerform employPerform = _employPerformRepository.GetModel(id);

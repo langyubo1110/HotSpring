@@ -43,16 +43,20 @@ namespace HotSpringProject
             //scheduler.Start().Wait();
 
             //// 创建 JobDetail
-            //IJobDetail jobDetail = JobBuilder.Create<DataBaseJob>()
-            //                                 .WithIdentity("DataBaseJob")
+            //IJobDetail jobDetail = JobBuilder.Create<MyJob>()
+            //                                 .WithIdentity("MyJob")
             //                                 .Build();
 
             //// 创建触发器
-            //ITrigger trigger = TriggerBuilder.Create()
+            //ITrigger writeDatatrigger = TriggerBuilder.Create()
             //                                 .WithIdentity("myTrigger")
-            //                                 .StartNow() // 立即启动触发器
+            //                                 .StartNow()
+            //                                 .WithCronSchedule("0 0 8 * * ?")
+            //                                 //.WithSimpleSchedule(x => x
+            //                                 //.WithIntervalInSeconds(60)
+            //                                 //.RepeatForever())
             //                                 .Build();
-            //// 将 JobDetail 和 Trigger 绑定到调度器
+            // 将 JobDetail 和 Trigger 绑定到调度器
             //scheduler.ScheduleJob(jobDetail, trigger).Wait();
         }
 

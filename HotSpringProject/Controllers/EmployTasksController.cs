@@ -13,10 +13,12 @@ namespace HotSpringProject.Controllers
     public class EmployTasksController : Controller
     {
         private readonly IGRoomRepairService _db;
+        private readonly IEmployPerformService _db1;
 
-        public EmployTasksController(IGRoomRepairService gRoomRepair)
+        public EmployTasksController(IGRoomRepairService gRoomRepair, IEmployPerformService employPerformService)
         {
             _db = gRoomRepair;
+            _db1 = employPerformService;
         }
         /*员工个人表的控制器
         * 刘星宇
@@ -25,7 +27,6 @@ namespace HotSpringProject.Controllers
         // GET: EmployTasks
         public ActionResult RepairTasks()
         {
-
             return View();
         }
         public ActionResult Detail(int id)
@@ -43,7 +44,7 @@ namespace HotSpringProject.Controllers
         }
         public JsonResult Repair()
         {
-            int id = 1; 
+            int id = 25; 
             ResMessage res = _db.GetListById(id);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
@@ -56,5 +57,17 @@ namespace HotSpringProject.Controllers
         //{
 
         //}
+        public JsonResult Perform(int id =0)
+        {
+            List<EmployPerform> list = _db1.GetListByRepairId(id);
+            if (list.Any())
+            {
+                return Json(new { code = 200, data = list }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { code = 404, message = "No data found for the provided ID." }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

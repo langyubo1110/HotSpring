@@ -30,14 +30,20 @@
         var util = layui.util;
         var id =@ViewBag.Id;
         $.post("/EmployTasks/RepairByID", { id: id }, function (res) {
-            console.log(res)
         if (res.code == 200) {
             form.val('empForm', {
-                "context": res.data[0]["context"],
-                "performance": 10
+                "context": res.data[0]["context"]
             })
         }
-    })
+        })
+        $.post("/EmployTasks/Perform", { id: id }, function (res) {
+            console.log(res)
+            if (res.code == 200) {
+                form.val('empForm', {
+                    "performance": formatNumber(res.data[0]["repair_up_money"])
+                })
+            }
+        })
     })
     </script>
     </div>
