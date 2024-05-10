@@ -38,7 +38,7 @@
                 { field: 'id', title: '主键', sort: true, fixed: 'left' }
                 , { field: 'role_name', title: '职位' }
                 , {
-                    field: 'role', title: '是否领导', templet: function (d) {
+                    field: 'is_leader', title: '是否领导', templet: function (d) {
                         return d.role === 0 ? '否' : '是'
                     }
                 }

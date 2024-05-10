@@ -44,8 +44,8 @@ namespace HotSpringProjectService
                     if (gRoomSparePartsVO.oi_number != 0)
                     {
                         RepoOutInRecord repoOutInRecord = new RepoOutInRecord();
-                        //入库记录的商品id就是备件id
-                        repoOutInRecord.goods_id = gRoomSparePartsVO.spare_parts_id;
+                        //入库记录的商品id
+                        repoOutInRecord.goods_id = gRoomSparePartsVO.id;
                         //维修任务上报人就是剩余备件的入库人
                         repoOutInRecord.outin_person_id = gRoomRepair.reporter_id;
                         repoOutInRecord.type = 0;
@@ -82,6 +82,18 @@ namespace HotSpringProjectService
         {
            List<GRoomRepair> list = _gRoomRepairRepository.GetList().ToList();
             return list==null?ResMessage.Fail(): ResMessage.Success(list);
+        }
+
+        public ResMessage GetListById(int id)
+        {
+            List<GRoomRepair> list = _gRoomRepairRepository.GetList().Where(x => x.reporter_id ==id ).ToList();
+            return list == null ? ResMessage.Fail() : ResMessage.Success(list);
+        }
+
+        public ResMessage GetListId(int id)
+        {
+            List<GRoomRepair> list = _gRoomRepairRepository.GetList().Where(x => x.id == id).ToList();
+            return list == null ? ResMessage.Fail() : ResMessage.Success(list);
         }
 
         public ResMessage GetModel(int id)

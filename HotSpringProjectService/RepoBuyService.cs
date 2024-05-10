@@ -34,11 +34,18 @@ namespace HotSpringProjectService
             int flag =_repoBuyRepository.Delete(id);
             return flag>0?ResMessage.Success():ResMessage.Fail();
         }
-
-        public ResMessage GetList(int id)
+        //通过商品id查符合条件的所有采购记录
+        public ResMessage GetList(int? id)
         {
-            List<RepoBuy> list = _repoBuyRepository.GetList().Where(x => x.goods_id == id).ToList();
-            return list==null? ResMessage.Fail():ResMessage.Success(list);
+            if (id ==null)
+            {
+                List<RepoBuy> list = _repoBuyRepository.GetList().Where(x => x.goods_id == id).ToList();
+                return list == null ? ResMessage.Fail() : ResMessage.Success(list);
+            }
+            else {
+                List<RepoBuy> list = _repoBuyRepository.GetList().ToList();
+                return list == null ? ResMessage.Fail() : ResMessage.Success(list);
+            }
         }
         public ResMessage GetListByPager(int page,int limit,int id)
         {

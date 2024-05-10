@@ -38,7 +38,7 @@ namespace HotSpringProjectRepository
             return flag>0?true:false;
         }
 
-        public EmployRole GetModelById(int id)
+        public EmployRole GetModel(int id)
         {
             return _db.EmployRole.Find(id);
         }

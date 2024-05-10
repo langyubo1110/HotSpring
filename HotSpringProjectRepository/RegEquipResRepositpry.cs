@@ -16,9 +16,35 @@ namespace HotSpringProjectRepository
 
             _db = HotSpringDbContext;
         }
+
+        public int Add(RegEquipRes regEquipRes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<RegEquipRes> GetList()
         {
           return _db.RegEquipRes;
+        }
+
+        public RegEquipRes GetModel(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> QueryBySql<T>(string sql)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Update(RegEquipRes regEquipRes)
+        {
+            throw new NotImplementedException();
         }
     }
 }

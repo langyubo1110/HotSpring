@@ -103,7 +103,6 @@
         //详情展示相应采购信息
         table.on('tool(test)', function (obj) {
             var id = obj.data.id;
-            var instock_id = obj.data.instock_id;
             console.log(obj)
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
@@ -120,6 +119,16 @@
                     layer.close(index)
                 });
             }
+            else if (obj.event === 'audit') {
+                $.post("/repogoodsstock/updatebyaudit", { repoGoodsStockDTO: obj.data }, function (res) {
+                    if (res.code == 200)
+                    {
+                        table.reload('demo');
+                        layer.msg("审核通过,库存已更新")
+                    }
+                })
+            }
+           
         });
         table.on('toolbar(test)', function (obj) {
             if (obj.event == "out") {

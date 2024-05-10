@@ -1,5 +1,6 @@
 ﻿using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.DTO;
 using HotSpringProject.Entity.VO;
 using HotSpringProjectService;
 using HotSpringProjectService.Interface;
@@ -59,6 +60,11 @@ namespace HotSpringProject.Controllers
         public JsonResult Update(RepoGoodsStock repoGoodsStock)
         {
             ResMessage resMessage = _repoGoodsStockService.Update(repoGoodsStock);
+            return Json(resMessage);
+        }
+        public JsonResult UpdateByAudit(RepoGoodsStockDTO repoGoodsStockDTO)
+        {
+            ResMessage resMessage = _repoGoodsStockService.UpdateByAudit(repoGoodsStockDTO);
             return Json(resMessage);
         }
         public JsonResult GetList(string keywords,int? goods_type)
