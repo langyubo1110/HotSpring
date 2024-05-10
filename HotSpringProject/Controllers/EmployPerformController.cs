@@ -23,7 +23,7 @@ namespace HotSpringProject.Controllers
             _employPerformService=employPerformService;
         }
         #region 页面
-        public ActionResult Perform()
+        public ActionResult Detail()
         {
             return View();
         }

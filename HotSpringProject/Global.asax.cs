@@ -31,7 +31,8 @@ namespace HotSpringProject
 
             //BackUpDataBase.Initialize();
             //备份数据库
-
+            
+            //SalaryPost.Initialize();//定时调度薪资发放
 
             // 创建 Quartz 调度器
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory();

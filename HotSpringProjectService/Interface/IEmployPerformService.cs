@@ -15,5 +15,6 @@ namespace HotSpringProjectService.Interface
         ResMessage Add(EmployPerform employPerform);
         ResMessage GetModel(int id);
         ResMessage GetList();
+        List<EmployPerform> GetListByRepairId(int id);
     }
 }
