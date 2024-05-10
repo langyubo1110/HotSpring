@@ -62,9 +62,8 @@ namespace HotSpringProjectService
 
         ResMessage IEquUpkeepPlanService.GetListUnion(EquUpkeepPlanFilter filter)
         {
-            IEnumerable<EquPlanVO> list = _upkeepPlanRepository.QueryBySql<EquPlanVO>($@"select t.task_name,s.*  from Equ_Upkeep_Task s
-inner join Equ_Upkeep_Plan t on s.equ_plan_id=t.id
- ");
+            IEnumerable<EquPlanVO> list = _upkeepPlanRepository.QueryBySql<EquPlanVO>($@"select u.* ,e.name as equ_name  from Equ_Upkeep_Plan as u inner join Equ_Equipment as e
+                                                                                        on e.id=u.equ_id");
             List<EquPlanVO> list1 = list.ToList();
             list = MakeQuery(list, filter);
             return ResMessage.Success(list, list1.Count);

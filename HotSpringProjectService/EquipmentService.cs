@@ -124,9 +124,9 @@ namespace HotSpringProjectService
                 list = list.Where(x => x.name.Contains(filter.name)).ToList();
             }
             //类型筛选
-            if (filter.type != 0)
+            if (filter.e_type != 0)
             {
-                list = list.Where(x => x.equ_type == (filter.type));
+                list = list.Where(x => x.equ_type == (filter.e_type));
             }
             //时间筛选
             if (filter.begintime != null && filter.endtime != null)

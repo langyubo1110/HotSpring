@@ -17,7 +17,7 @@ namespace HotSpringProject.Entity
         //过滤条件
         public int page { get; set; }
         public int limit { get; set; }
-        public int type { get; set; }
+        public int e_type { get; set; }
         public int tid { get; set; }
         public DateTime? begintime { get; set; }
         public DateTime? endtime { get; set; }

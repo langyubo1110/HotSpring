@@ -28,9 +28,6 @@ namespace HotSpringProject.Controllers
         {
             return Json(_equToTaskService.AddAfterDelete(getData,filter,id), JsonRequestBehavior.AllowGet);
         }
-        //public JsonResult Delete()
-        //{
-        //    return Json(_equToTaskService.Delete(), JsonRequestBehavior.AllowGet);
-        //}
+      
     }
 }
