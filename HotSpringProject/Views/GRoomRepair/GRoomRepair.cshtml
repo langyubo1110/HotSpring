@@ -99,10 +99,9 @@
             $.post("/groomrepair/add", { gRoomRepair: data.field, gRoomSPVOlist: datatable }, function (res) {
                 if (res.code == 200)
                 {
-                    layer.msg('添加成功');
+                    layer.msg('提交成功');
                 }
             })
-            
             return false;
         })
         //展示已知数据

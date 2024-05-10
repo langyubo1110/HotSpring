@@ -102,7 +102,7 @@
         //删除应该同添加，同时删除出入库表，库存表和采购表
         //详情展示相应采购信息
         table.on('tool(test)', function (obj) {
-            var id = obj.data.id;
+            var id = obj.data.oi_id;
             console.log(obj)
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {

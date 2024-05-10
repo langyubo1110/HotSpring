@@ -89,13 +89,15 @@ namespace HotSpringProjectService
                 //通过员工id查询员工表获取role_id
                 int role_id = _employEmpRepository.GetList().Where(x => x.id == employ_id).ToList()[0].role_id;
                 //通过role_id去查询角色表获取角色对应的工时费(labor_hours)
-                //decimal labor_hours = _employRoleRepository.GetList().Where(x => x.id == role_id).ToList()[0].Labor_hours;
+                decimal labor_hours = _employRoleRepository.GetList().Where(x => x.id == role_id).ToList()[0].labor_hours;
                 //获取工作时间
                 TimeSpan ts = gRoomRepair.end_time - gRoomRepair.start_time;
                 int work_hours = ts.Hours;
                 //绩效金额通过工作时间*工时费计算
-                //employPerform.repair_up_money = 
-                //employPerform.create_time=DateTime.Now;
+                employPerform.repair_up_money = work_hours*labor_hours;
+                employPerform.create_time = DateTime.Now;
+                //绩效表插入数据
+                _employPerformRepository.Add(employPerform);
                 _repoOutInRecordRepository.Commit();
                 return ResMessage.Success();
             }
