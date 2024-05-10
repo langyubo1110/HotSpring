@@ -1,0 +1,228 @@
+﻿
+@{
+    ViewBag.Title = "ReIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="layui-container">
+
+    <div class="ibox-content" style="width:100%">
+        <form class="layui-form" action="" lay-filter="editform">
+
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+
+                    <div class="layui-input-inline">
+                        <select name="apply_id" lay-verify="required" lay-search="" lay-filter="ddltest">
+                            <option value="">选择立案申请人</option>
+                            @foreach (var item in ViewBag.list)
+                            {
+                                <option value="@item.id">@item.name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group layui-inline">
+                    <label>设备名称</label>
+                    <input type="text" name="equip_name" placeholder="请输入设备" class="form-control">
+                </div>
+                <div class="form-group layui-inline">
+                    <label>采购原因</label>
+                    <input type="text" name="buy_reason" placeholder="请输入原因" class="form-control">
+                </div>
+                <div class="form-group layui-inline">
+                    <label>价格</label>
+                    <input type="text" id="price" name="price" class="form-control">
+                </div>
+
+                <div class="form-group layui-inline">
+                    <input type="hidden" id="id" name="id">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="form-group layui-inline">
+                    <label>申请时间</label>
+                    <input type="text" name="create_time" placeholder="请输入时间" lay-verify="required" id="ApplyTime" class="form-control">
+                    @*<input type="text" name="create_time" id="ApplyTime" lay-verify="required" autocomplete="off" >*@
+                </div>
+                <div class="form-group layui-inline">
+                    <label>厂家</label>
+                    <input type="text" name="fac_name" placeholder="请输入厂家名称" class="form-control">
+                </div>
+
+                <div class="form-group layui-inline">
+                    <label>批号</label>
+                    <input type="text" name="batch_number" placeholder="请输入批号" class="form-control">
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>
+<div id="result" style="height: 50px;">
+
+</div>
+
+<table class="table table-striped" id="demo" lay-filter="test"></table>
+
+
+<!--表头工具栏-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    @*{{# if (d.vote_status == null || (d.vote_status == 1 && d.vote_id != id)) { }}*@
+    <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="download">文件下载</a>
+    {{# if (d.Is_show==1) { }}
+    <a class="layui-btn layui-btn-xs" lay-event="agree">通过</a>
+    {{# } }}
+
+
+</script>
+<script>
+
+    layui.use(['form', 'laydate', 'util', 'layedit','layer'], function () {
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var util = layui.util;
+        var table = layui.table;
+        var id =@ViewBag.Id;
+        var userName = '@ViewBag.userName';
+        var userId = @ViewBag.userId;
+        var layer = layui.layer;
+        getVOdata();
+        table.render({
+            elem: '#demo'
+            //分页
+            , response: {
+                statusName: 'code' //规定数据状态的字段名称，默认：code
+                , statusCode: 200 //规定成功的状态码，默认：0
+                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                , countName: 'count' //规定数据总数的字段名称，默认：count
+                , dataName: 'data' //规定数据列表的字段名称，默认：data
+            }
+
+            , toolbar: '#toolbarDemo' //开启表格工具栏
+            , cols: [[ //标题栏
+                { field: 'id', title: '调研ID', sort: true }
+                ,{ field: 'reg_buy_id', title: '采购编号', sort: true }
+                , { field: 'prod_name', title: '设备名称'}
+                , { field: 'fac_name', title: '厂商' }
+                , {field: 'prod_img', title: '图片', templet: function (d) {
+                        return '<img src="' + d.prod_img + '" height="100"/>';
+                    }}
+                , {field: 'price', title: '价格', templet: function (d) {
+                        // 在 templet 中调用 formatNumber() 方法来格式化价格
+                        return formatNumber(d.price);
+                    }
+                }
+                , { field: 'batch_number', title: '生产批号', sort: true  }
+                , { field: 'basic_info', title: '基本信息'}
+                , { field: 'fac_phone', title: '厂家联系方式' }
+                , { field: 'fac_address', title: '厂家地址'}
+                //, { field: 'prod_img', title: '调研开始时间', minWidth: 150 }
+                , {
+                    field: 'create_time', title: '调研开始时间', sort: true
+                    , templet: function (d) {
+                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    }
+                }
+                , { title: '操作', toolbar: "#barDemo",minWidth:200}
+            ]]
+            , url: '/regresearch/getlist/' + id
+            , skin: 'line' //表格风格
+        });
+        //日历
+        laydate.render({
+            elem: '#ApplyTime' //指定元素
+            , value: '2024-01-01'
+        });
+        //单元格监听事件
+        table.on('tool(test)', function (obj) { // 双击 toolDouble
+            var data = obj.data;
+            //console.log(obj)
+            if (obj.event === 'agree') {
+                //console.log(data);
+
+                //向后台发接口，向数据库更改投票意见
+                $.post("/regresearch/voteupdate", { resId: data.id, regId: id }, function (res) {
+                    if (res.code == 200) {
+                        layer.msg("已通过");
+                        table.reload("demo")
+                        getVOdata();
+                    }
+
+                })
+            }
+            else if (obj.event === 'download') {
+                layer.open({
+                    type: 2,
+                    content: "/regresearch/resfile/" + id,
+                    area: ['800px', '500px'],
+                })
+            }
+        });
+        //写一个去VO查询数据的方法，页面打开调用，按钮点击调用
+        function getVOdata() {
+            $.post("/regresearch/getdata", { id: id }, function (res) {
+
+                if (res.code == 200) {
+                    console.log(res.data.lessList);
+                    // 假设 res.data.lessList 是一个包含 ResLessVO 对象的数组
+                    var lessList = res.data.lessList;
+                    // 获取 id 为 test 的大 div 元素
+                    var resultDiv = document.getElementById('result');
+                    
+                    while (resultDiv.firstChild) {
+                        resultDiv.removeChild(resultDiv.firstChild);
+                    }
+                    // 遍历 lessList 中的每个对象
+                    lessList.forEach(function (item) {
+                       // 清空 id 为 test 的大 div 元素的内容
+                        //testDiv.innerHTML = '';
+                        // 创建一个新的 div 元素
+                        var div = document.createElement('div');
+                        // 设置 div 的内容为 ResLessVO 对象的某些属性，假设 name 和 fac_name 是 ResLessVO 的属性
+                        div.textContent = '厂商: ' + item.fac_name + ' 已通过用户: ' + item.name;
+                        // 将创建的 div 插入到 id 为 test 的大 div 下
+                        resultDiv.appendChild(div);
+                    });
+                }
+            })
+        }
+        // 工具栏事件 添加
+        table.on('toolbar(test)', function (obj) {
+
+            if (obj.event == 'add')
+            //添加 弹出层
+            {
+                console.log(obj)
+                layer.open({
+                    type: 2,
+                    content: "/regresearch/resadd/" + id,//采购表id
+                    area: ['800px', '500px'],
+                })
+            }
+        });
+        //提交事件 上方采购表得到内容  正确
+        $.post("/regbuy/getmodel", { id: id }, function (res) {
+            if (res.code == 200) {
+                res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
+                form.val('editform', res.data);
+
+            }
+        })
+
+    })
+    function formatNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+</script>
+
+

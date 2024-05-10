@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectRepository.Interface
 {
-    public interface IRegEquipResRepositpry
+    public interface IRegVoteRepository
     {
-        IEnumerable<RegEquipRes> GetList();
-        
-        int Add(RegEquipRes regEquipRes);
-        bool Update(RegEquipRes regEquipRes);
+        IEnumerable<RegVote> GetList();
+        int Add(RegVote regVote);
+        bool Update(RegVote regVote);
         bool Delete(int id);
-        RegEquipRes GetModel(int id);
+        RegVote GetModel(int id);
+        RegVote GetModelWithId(int userID, int regId);
         IEnumerable<T> QueryBySql<T>(string sql);
     }
 }
