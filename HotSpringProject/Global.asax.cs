@@ -31,29 +31,10 @@ namespace HotSpringProject
 
             //BackUpDataBase.Initialize();
             //备份数据库
+            
+            //SalaryPost.Initialize();//定时调度薪资发放
 
-
-            //保养任务生成
-            //// 创建 Quartz 调度器
-            //ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
-            //IScheduler scheduler = schedulerFactory.GetScheduler().Result;
-            ////*** 设置 Quartz 作业工厂，以便解析作业实例中的依赖项
-            //scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
-            //// 开启调度器
-            //scheduler.Start().Wait();
-
-            //// 创建 JobDetail
-            //IJobDetail jobDetail = JobBuilder.Create<DataBaseJob>()
-            //                                 .WithIdentity("DataBaseJob")
-            //                                 .Build();
-
-            //// 创建触发器
-            //ITrigger trigger = TriggerBuilder.Create()
-            //                                 .WithIdentity("myTrigger")
-            //                                 .StartNow() // 立即启动触发器
-            //                                 .Build();
-            //// 将 JobDetail 和 Trigger 绑定到调度器
-            //scheduler.ScheduleJob(jobDetail, trigger).Wait();
+           
         }
 
 

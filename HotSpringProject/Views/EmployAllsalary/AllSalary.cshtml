@@ -67,22 +67,20 @@
         var util = layui.util;
         var layer = layui.layer;
         var form = layui.form;
-        var $ = layui.jquery;
         //表格渲染
         table.render({
             elem: '#demo'
             , height: 525
-            , url: '/repooutinrecord/getlistbysql' //数据接口
+            , url: '/employallsalary/getlist' //数据接口
             , page: true//开启分页
             , toolbar: '#toolbarDemo'
             , cols: [[ //表头
-                { field: 'goods_name', title: '商品名称', sort: true,  fixed: 'left' }
-                , { field: 'name', title: '出库/入库人', sort: true }
-                , { field: 'type', title: '出库/入库', sort: true, templet: function (d) { return d.type == 0 ? "入库" : "出库" } }
-                , { field: 'start_number', title: '操作前库存数量', sort: true }
-                , { field: 'oi_number', title: '出库/入库数量', sort: true }
-                , { field: 'end_number', title: '操作后库存数量', sort: true }
-                , { field: 'threshold', title: '阈值', sort: true }
+                { field: 'emp_id', title: '员工姓名', sort: true,  fixed: 'left' }
+                , {field: 'pay_month', title: '发放月份', sort: true, templet: function (d) { return d.pay_month+"月" }}
+                , { field: 'pay_time', title: '发放日期', sort: true, templet: function (d) { return util.toDateString(d.pay_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
+                , { field: 'post_status', title: '发放状态', sort: true, templet: function (d) { return d.post_status == 0? "未发放":"已发放" } }
+                , { field: 'salary', title: '当月底薪', sort: true, templet: function (d) { return formatNumber(d.salary); }}
+                , { field: 'Perform_money', title: '当月绩效', sort: true, templet: function (d) { return formatNumber(d.Perform_money); } }
                 , { field: 'create_time', title: '创建时间', sort: true , templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
                /* , { title: '操作', toolbar: '#barDemo', templet:'#barDemo' }*/
             ]]
