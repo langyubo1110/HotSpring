@@ -1,6 +1,5 @@
 ﻿using DotNet.Utilities;
 using HotSpringProject.Entity;
-using HotSpringProject.Entity.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectService.Interface
 {
-    public interface IEmployCheckInService
+    public interface IEquUpKeepDistributedService
     {
-        ResMessage Add(int empId, int type);
-        IEnumerable<EmployCheckIn> GetList();
-        IEnumerable<EmployCheckInVO> GetListUnionSql();
+        IEnumerable<EquUpKeepDistributed> GetList();
+        ResMessage Add(EquUpKeepDistributed EquUpKeepDistributed);
     }
 }

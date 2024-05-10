@@ -8,18 +8,19 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectRepository
 {
-    public class RegEquipResRepositpry : IRegEquipResRepositpry
+    public class RegResRepository : IRegEquipResRepositpry
     {
         private readonly HotSpringDbContext _db;
 
-        public RegEquipResRepositpry(HotSpringDbContext HotSpringDbContext) {
-
+        public RegResRepository(HotSpringDbContext HotSpringDbContext)
+        {
             _db = HotSpringDbContext;
         }
-
         public int Add(RegEquipRes regEquipRes)
         {
-            throw new NotImplementedException();
+            _db.Entry(regEquipRes).State = System.Data.Entity.EntityState.Added;
+            int flag = _db.SaveChanges();
+            return flag;
         }
 
         public bool Delete(int id)
@@ -29,7 +30,7 @@ namespace HotSpringProjectRepository
 
         public IEnumerable<RegEquipRes> GetList()
         {
-          return _db.RegEquipRes;
+            return _db.RegEquipRes;
         }
 
         public RegEquipRes GetModel(int id)
@@ -37,14 +38,13 @@ namespace HotSpringProjectRepository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<T> QueryBySql<T>(string sql)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool Update(RegEquipRes regEquipRes)
         {
             throw new NotImplementedException();
+        }
+        public IEnumerable<T> QueryBySql<T>(string sql)
+        {
+            return _db.Database.SqlQuery<T>(sql);
         }
     }
 }

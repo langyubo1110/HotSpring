@@ -19,25 +19,31 @@ namespace HotSpringProject.Controllers
     {
         private readonly IRegApplyService _regApplyService;
         private readonly IRegAuditService _regAuditService;
+        private readonly IEmployEmpService _employEmpService;
         private readonly HotSpringDbContext _db;
 
-        public RegBuyController(IRegApplyService regApplyService, IRegAuditService regAuditService, HotSpringDbContext db)
+        public RegBuyController(IRegApplyService regApplyService, IRegAuditService regAuditService,IEmployEmpService employEmpService, HotSpringDbContext db)
         {
             _regApplyService = regApplyService;
             _regAuditService = regAuditService;
-            _db = db;
+            _employEmpService = employEmpService;
+            _db = db;   
         }
         // GET: RegBuy
         //弹出层  立案采购表
         public ActionResult RegBuy(int id = 0)
         {
+            List<EmployEmp> list=_employEmpService.GetList().ToList();
             ViewBag.Id = id;
+            ViewBag.list = list;
+
             return View();
         }
         //立案申请  主页
         public ActionResult RegApply()
         {
             Session["userID"] = 22;
+            Session["userName"] = "张三";
             return View();
         }
         #region 接口
@@ -68,7 +74,7 @@ namespace HotSpringProject.Controllers
         public JsonResult Check(int RegId, string txtAdvice)
         {
             int userID = Convert.ToInt32(Session["userID"]);
-            return Json(_regApplyService.Check(RegId, txtAdvice, userID),JsonRequestBehavior.AllowGet) ;
+            return Json(_regApplyService.Check(RegId, txtAdvice, userID), JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

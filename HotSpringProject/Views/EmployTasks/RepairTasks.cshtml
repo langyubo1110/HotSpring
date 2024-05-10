@@ -39,14 +39,16 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">详细信息</a>
+</script>
 <script>
-    layui.use(['table','util'], function () {
+    layui.use(['table','util',"layer"], function () {
         var table = layui.table;
         var util = layui.util;
-
+        var layer = layui.layer;
         table.render({
             elem: '#demo'
             , url: '/EmployTasks/Repair'
@@ -62,9 +64,8 @@
                 { field: 'id', title: '主键', sort: true, fixed: 'left' }
                 , { field: 'reporter_id', title: '上报人ID' }
                 , {
-                    field: 'location', title: '房间地址'
+                    field: 'location', title: '维修地点'
                 }
-                , { field: 'context', title: '工作内容' }
                 , { field: 'confirmer', title: '确认人' }
                 , {
                     field: 'start_time', title: '开始时间', templet: function (d) {
@@ -82,7 +83,22 @@
                         return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
                 }
+                , { title: '操作', toolbar: "#barDemo" }
             ]]
+        });
+
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            var id = data.id;
+            if (obj.event === 'edit') {
+                // 显示弹出层
+                layer.open({
+                    type: 2,
+                    title: '详细信息',
+                    content: "/EmployTasks/Detail/" + id,
+                    area: ['600px', '500px'] 
+                });
+            }
         });
     })
     
