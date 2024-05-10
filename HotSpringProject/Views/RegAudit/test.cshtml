@@ -4,77 +4,55 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>test</h2>
 
+    <div class="layui-container">
+        <div class="layui-row">
+            <div class="layui-col-md-offset2 layui-col-md8">
+                <!-- 第一个表单 -->
+                <form class="layui-form" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">字段1</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="field1" lay-verify="required" placeholder="请输入字段1" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <!-- 其他表单项 -->
+                    <!-- ... -->
+                </form>
 
-@*<div class="ibox float-e-margins">
-    <div class="ibox-content">
-        <form role="form" class="form-inline" lay-filter="editform">
-            <div class="form-group">
-                <input type="hidden" name="id" />
-                商品名称：<input type="text" name="goods_name" lay-verify="required" placeholder="请输入商品名称" class="form-control">
+                <!-- 第二个表单 -->
+                <form class="layui-form" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">字段1</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="field1" lay-verify="required" placeholder="请输入字段1" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <!-- 其他表单项 -->
+                    <!-- ... -->
+                </form>
+
+                <!-- 第三个表单 -->
+                <form class="layui-form" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">字段1</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="field1" lay-verify="required" placeholder="请输入字段1" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <!-- 其他表单项 -->
+                    <!-- ... -->
+                </form>
             </div>
-            &nbsp;&nbsp;&nbsp;
-            <div class="form-group">
-                图片：<input type="text" name="picture" placeholder="请输入图片名" class="form-control">
-            </div>
-            <br /> <br />
-        </form>
+        </div>
     </div>
-</div>*@
 
-<div class="ibox-content">
-    <form class="layui-form" action="" lay-filter="editform">
+    <script src="https://cdn.jsdelivr.net/npm/layui@2.6.8/layui.js"></script>
+    <script>
+        // 初始化layui
+        layui.use('form', function () {
+            var form = layui.form;
 
-
-        <div class="layui-form-item">
-            <div class="form-group layui-inline">
-                <label>立案申请人</label>
-                <input type="email" placeholder="请输入您注册的E-mail" class="form-control">
-            </div>
-            <div class="form-group layui-inline">
-                <label>采购目的</label>
-                <input type="password" placeholder="请输入密码" class="form-control">
-            </div>
-            <div class="form-group layui-inline">
-                <label>价格</label>
-                <input type="password" placeholder="请输入密码" class="form-control">
-            </div>
-            <div class="form-group layui-inline">
-                <label>申请时间</label>
-                <input type="password" placeholder="请输入密码" class="form-control">
-            </div>
-            <div class="form-group layui-inline">
-                <label>审核状态</label>
-                <input type="password" placeholder="请输入密码" class="form-control">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="form-group layui-inline">
-                <label>厂家</label>
-                <input type="email" placeholder="请输入您注册的E-mail" class="form-control">
-            </div>
-            <div class="form-group layui-inline">
-                <label>价格</label>
-                <input type="password" placeholder="请输入密码" class="form-control">
-            </div>
-            <div class="form-group layui-inline">
-                <label>批号</label>
-                <input type="password" placeholder="请输入密码" class="form-control">
-            </div>
-            
-            <div class="form-group layui-inline">
-                <label>基本信息</label>
-                <input type="password" placeholder="请输入密码" class="form-control">
-            </div>
-        </div>
-        <div class="layui-input-block">
-            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
-
-
-
-
-    </form>
-</div>
+            // 表单渲染等操作
+        });
+    </script>

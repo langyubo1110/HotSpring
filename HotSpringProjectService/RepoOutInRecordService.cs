@@ -157,11 +157,7 @@ namespace HotSpringProjectService
         {
             repoOutInRecord.create_time = DateTime.Now;
             bool result = _repoOutInRecordRepository.Update(repoOutInRecord);
-            if (result)
-            {
-                return ResMessage.Success("修改成功");
-            }
-            return ResMessage.Fail();
+            return result==true? ResMessage.Success("修改成功"):ResMessage.Fail();
         }
 
         //三表联合数据
@@ -171,7 +167,7 @@ namespace HotSpringProjectService
             {
                 int ipage = (int)page;//将可空整形转为不可空整形
                 int ilimit = (int)limit;
-                IEnumerable<RepoGoodsStockDTO> list = _repoOutInRecordRepository.GetListBySql<RepoGoodsStockDTO>("select s.goods_name,s.threshold,s.goods_type,oi.id,oi.start_number,oi.oi_number,oi.end_number,oi.type,e.name,oi.create_time from Repo_Goods_Stock s inner join Repo_Out_In_Record oi on s.id=oi.goods_id inner join Employ_Emp e on oi.outin_person_id=e.id");
+                IEnumerable<RepoGoodsStockDTO> list = _repoOutInRecordRepository.GetListBySql<RepoGoodsStockDTO>("select s.id,s.goods_name,s.threshold,s.goods_type,oi.id oi_id,oi.start_number,oi.oi_number,oi.end_number,oi.type,oi.audit,e.name,oi.create_time from Repo_Goods_Stock s inner join Repo_Out_In_Record oi on s.id=oi.goods_id inner join Employ_Emp e on oi.outin_person_id=e.id");
                 //商品名称搜索
                 if (!String.IsNullOrEmpty(filter.goods_name))
                 {

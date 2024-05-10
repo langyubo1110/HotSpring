@@ -11,7 +11,7 @@ namespace HotSpringProjectService.Interface
 {
     public interface IRepoBuyService
     {
-        ResMessage GetList(int id);
+        ResMessage GetList(int? id);
         ResMessage Delete(int id);
         ResMessage Update(RepoBuy repoBuy);
         ResMessage Add(RepoBuy repoBuy);

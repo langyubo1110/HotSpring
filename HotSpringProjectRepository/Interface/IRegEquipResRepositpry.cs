@@ -10,5 +10,11 @@ namespace HotSpringProjectRepository.Interface
     public interface IRegEquipResRepositpry
     {
         IEnumerable<RegEquipRes> GetList();
+        
+        int Add(RegEquipRes regEquipRes);
+        bool Update(RegEquipRes regEquipRes);
+        bool Delete(int id);
+        RegEquipRes GetModel(int id);
+        IEnumerable<T> QueryBySql<T>(string sql);
     }
 }

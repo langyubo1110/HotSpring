@@ -46,12 +46,14 @@
                 </script>
                 <!--js模板行单元格-->
                 <script type="text/html" id="barDemo">
-                    @*{{#  if(d.recheck_opin ==0){ }}
-        <a class="layui-btn layui-btn-xs" lay-event="edit">查看详情</a>
-        {{# } }}*@
+
                     <a class="layui-btn layui-btn-xs" lay-event="edit">查看详情</a>
+                    {{#  if(d.count ==d.countAudit){ }}
+                    <a class="layui-btn layui-btn-xs layui-btn-warm"  lay-event="research">立案调研</a>
+                    {{# } }}
                 </script>
                 <script>
+                    
                     layui.use(['table', 'util', 'layer', 'form', 'tree'], function () {
                         var table = layui.table;
                         var util = layui.util;
@@ -92,9 +94,9 @@
                                         return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                                     }
                                 }
-                                
-                                ,{ field: 'score', title: '进度', templet: function (d) { return d.countAudit + ' / ' + d.count; } }
-                                
+
+                                , { field: 'score', title: '进度', templet: function (d) { return d.countAudit + ' / ' + d.count; } }
+
                                 , { title: '操作', toolbar: "#barDemo" }
                             ]]
                             , url: '/regbuy/getlist'
@@ -112,20 +114,12 @@
                         table.on('tool(test)', function (obj) { // 双击 toolDouble
                             var data = obj.data;
                             //console.log(obj)
-                            if (obj.event === 'del') {
-                                layer.confirm('真的删除行么', function (index) {
-                                    //console.log(data.id)
-                                    $.post("/regaudit/delete", { id: data.id }, function (res) {
-                                        if (res.code = 200) {
-                                            layer.msg(res.msg)
-                                            obj.del();
-                                        }
-                                        else {
-                                            layer.msg(e.msg)
-                                        }
-                                    });
-                                    obj.del();
-                                    layer.close(index);
+                            if (obj.event === 'research') {
+                                layer.open({
+                                    title: '立案调研表',
+                                    type: 2,
+                                    content: "/regresearch/reindex/" + data.id,
+                                    area: ['100%', '100%'],
                                 });
                             } else if (obj.event == 'edit') {
                                 //console.log(obj.event);
@@ -133,7 +127,7 @@
                                     title: '立案审批表',
                                     type: 2,
                                     content: "/regbuy/regbuy/" + data.id,
-                                    area: ['500px', '500px'],
+                                    area: ['800px', '500px'],
                                 });
                             }
                         });
@@ -147,7 +141,7 @@
                                 let index = layer.open({
                                     type: 2,
                                     content: "/regbuy/regbuy",
-                                    area: ['500px', '500px'],
+                                    area: ['800px', '500px'],
                                     //方案一 当弹出层关闭就重载
                                     //end: function () {
                                     //    table.reload("demo")
@@ -169,7 +163,7 @@
                         })
                     });
                 </script>
-  
+
             </div>
         </div>
     </div>
