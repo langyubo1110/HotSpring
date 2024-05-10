@@ -17,21 +17,35 @@ namespace HotSpringProjectService
         private readonly IGRoomRepairRepository _gRoomRepairRepository;
         private readonly IRepoOutInRecordRepository _repoOutInRecordRepository;
         private readonly IGRoomSparePartsRepository _gRoomSparePartsRepository;
+        private readonly IEmployPerformRepository _employPerformRepository;
+        private readonly IEmployAllsalaryRepository _employAllsalaryRepository;
+        private readonly IEmployEmpRepository _employEmpRepository;
+        private readonly IEmployRoleRepository _employRoleRepository;
 
-        public GRoomRepairService(IGRoomRepairRepository gRoomRepairRepository,IRepoOutInRecordRepository repoOutInRecordRepository,IGRoomSparePartsRepository gRoomSparePartsRepository) 
+        public GRoomRepairService(IGRoomRepairRepository gRoomRepairRepository,IRepoOutInRecordRepository repoOutInRecordRepository,IGRoomSparePartsRepository gRoomSparePartsRepository,IEmployPerformRepository employPerformRepository,IEmployAllsalaryRepository employAllsalaryRepository,IEmployEmpRepository employEmpRepository,IEmployRoleRepository employRoleRepository) 
         {
             _gRoomRepairRepository=gRoomRepairRepository;
             _repoOutInRecordRepository = repoOutInRecordRepository;
             _gRoomSparePartsRepository = gRoomSparePartsRepository;
+            _employPerformRepository=employPerformRepository;
+            _employAllsalaryRepository=employAllsalaryRepository;
+            _employEmpRepository= employEmpRepository;
+            _employRoleRepository= employRoleRepository;
         }
-
+        //维修任务上报成功：
+        //维修任务上报表插入一条数据
+        //维修任务备件使用表插入n条数据（取决于备件使用种类）
+        //商品出入库表插入一条入库记录（需要审批audit=0）
+        //点击审核按钮后商品库存表相应的商品的库存数量更新
+        //绩效表插入一条绩效数据
         public ResMessage Add(GRoomRepair gRoomRepair, List<GRoomSparePartsVO> gRoomSPVOlist)
         {
             _repoOutInRecordRepository.TransBegin();
             try
             {
-                //接收维修任务上报表执行插入操作后最新数据的ID
                 gRoomRepair.create_time = DateTime.Now;
+                //维修任务表插入
+                //接收维修任务上报表执行插入操作后最新数据的ID
                 int last_id = _gRoomRepairRepository.Add(gRoomRepair);
                 foreach (GRoomSparePartsVO gRoomSparePartsVO in gRoomSPVOlist)
                 {
@@ -57,10 +71,31 @@ namespace HotSpringProjectService
                         repoOutInRecord.end_number = gRoomSparePartsVO.goods_number + gRoomSparePartsVO.oi_number;
                         repoOutInRecord.recipient_id = 1;
                         repoOutInRecord.create_time = DateTime.Now;
+                        //出入库表插入
                         _repoOutInRecordRepository.Add(repoOutInRecord);
                     }
+                    //备件表插入
                     _gRoomSparePartsRepository.Add(gRoomSpareParts);
                 }
+                //获取员工id(维修任务上报人id)
+                int employ_id = gRoomRepair.reporter_id;
+                //获取当前月份
+                int current_month = DateTime.Now.Month;
+                //薪资id通过当前月份和员工id去薪资表查询得到
+                int allsalary_id = _employAllsalaryRepository.GetList().Where(x => x.emp_id == employ_id && x.pay_month == current_month).ToList()[0].id; 
+                EmployPerform employPerform = new EmployPerform();
+                employPerform.allsalary_id = allsalary_id;
+                employPerform.repair_id = last_id;
+                //通过员工id查询员工表获取role_id
+                int role_id = _employEmpRepository.GetList().Where(x => x.id == employ_id).ToList()[0].role_id;
+                //通过role_id去查询角色表获取角色对应的工时费(labor_hours)
+                //decimal labor_hours = _employRoleRepository.GetList().Where(x => x.id == role_id).ToList()[0].Labor_hours;
+                //获取工作时间
+                TimeSpan ts = gRoomRepair.end_time - gRoomRepair.start_time;
+                int work_hours = ts.Hours;
+                //绩效金额通过工作时间*工时费计算
+                //employPerform.repair_up_money = 
+                //employPerform.create_time=DateTime.Now;
                 _repoOutInRecordRepository.Commit();
                 return ResMessage.Success();
             }

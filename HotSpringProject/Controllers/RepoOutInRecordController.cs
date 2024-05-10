@@ -47,10 +47,6 @@ namespace HotSpringProject.Controllers
             ViewBag.list = employlist;
             return View();
         }
-        public ActionResult Test() 
-        {
-            return View();
-        }
         #endregion
 
         #region 接口
