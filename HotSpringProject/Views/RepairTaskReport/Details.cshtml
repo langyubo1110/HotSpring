@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form class="layui-form" action="" lay-filter="SystemLogForm">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="hidden" name="id" value="0" />
+            <label class="layui-form-label">上报人ID</label>
+            <div class="layui-input-inline">
+                <input type="text" name="reporter_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">开始时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="start_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">结束时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="end_time" id="input_time" lay-verify="required|date" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">确认人</label>
+            <div class="layui-input-inline">
+                <input type="text" name="confirmer" id="input_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">维修地点</label>
+            <div class="layui-input-inline">
+                <input type="text" name="location" id="input_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">工作内容</label>
+            <div class="layui-input-inline">
+                <input type="text" name="work_context" id="input_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">创建时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="create_time" id="time" lay-verify="required|date" autocomplete="off" class="layui-input demo-phone">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'laydate', 'util','layer'], function () {
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var util = layui.util;
+        var layer = layui.layer;
+        var id =@ViewBag.Id;      
+        laydate.render({
+            elem: '#time', // 指定元素
+            value: new Date() // 使用 new Date() 来获取当前时间作为初始值
+        });
+        $.post("/repairtaskreport/getmodel", { id: id }, function (res) {
+            if (res.code == 200) {
+
+                res.data.start_time = util.toDateString(formatDateString(res.data, "start_time"), "yyyy-MM-dd");
+                res.data.end_time = util.toDateString(formatDateString(res.data, "end_time"), "yyyy-MM-dd");
+                res.data.create_time = util.toDateString(formatDateString(res.data, "create_time"), "yyyy-MM-dd");
+                form.val('SystemLogForm', res.data);
+
+            }
+        })
+        form.on('submit(demo1)', function (data) {
+            let obj = data.field;
+            
+            if (id == 0) {
+                $.post("/repairtaskreport/add", { repaieTaskReport: obj }, function (res) {
+                    if (res.code == 200) {
+                        //找到父页面的自己  拿到index 让父页面关掉自己
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layui.table.reload('demo');//子窗体让父窗体table重载
+                        parent.layer.close(index);
+                    }
+                    else alert(res.msg)
+                })
+            }
+            else {
+                $.post("/repairtaskreport/update", { repaieTaskReport: obj }, function (res) {
+                    if (res.code == 200) {
+                        //找到父页面的自己  拿到index 让父页面关掉自己 
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layui.table.reload('demo');//子窗体让父窗体table重载
+                        parent.layer.close(index);
+                    }
+                    else alert(res.msg)
+                })
+            }
+            return false;
+        });
+       
+    })
+</script>
+

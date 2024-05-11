@@ -11,6 +11,7 @@ namespace HotSpringProject.Entity
     [Table("Employ_Emp")]
     public class EmployEmp
     {
+        
         public int id {  get; set; }
         public string name { get; set; }
         public int gendar { get; set; }

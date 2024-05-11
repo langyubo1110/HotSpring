@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="input-group">
-                                    <input type="text" name="txtequipmet" placeholder="请输关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                    <input type="text" name="txtequipmet" placeholder="请输入设备名称" class="input-sm form-control"> <span class="input-group-btn">
                                         <button type="submit" class="btn btn-sm btn-primary" lay-submit="" lay-filter="btnsearch"> 搜索</button>
                                     </span>
                                 </div>
@@ -71,8 +71,7 @@
             }//开启分页
             , toolbar: "#toolbarDemo"
             , cols: [[ //表头
-                { field: 'id', title: '主键', sort: true, fixed: 'left' }
-                , { field: 'equ_name', title: '设备名称' }
+                 { field: 'equ_name', title: '设备名称' }
                 , {
                     field: 'start_time', title: '保养开始时间', templet: function (d) {
                         return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
@@ -124,7 +123,7 @@
                 layer.open({
                     type: 2,
                     content: '/equupkeepplan/detail/' + id,
-                    area: ['800px', '300px'],
+                    area: ['800px', '360px'],
                     //layer层销
                     end: function () {
                         table.reload("idTest")
@@ -140,7 +139,7 @@
                 layer.open({
                     type: 2,
                     content: '/equupkeepplan/detail',
-                    area: ['800px', '300px'],
+                    area: ['800px', '360px'],
                     //layer层销毁
                     end: function () {
                         table.reload("idTest")

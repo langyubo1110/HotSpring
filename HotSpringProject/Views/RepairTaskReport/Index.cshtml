@@ -1,0 +1,160 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<table class="layui-hide" id="demo" lay-filter="test"></table>*@
+<!--表头工具栏-->
+<!--搜索-->
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <form class="layui-form" action="" lay-filter="searchForm">
+                                <div class="layui-form-item">
+                                    <div class="layui-form-item layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="txtSName" placeholder="上报人ID" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-inline">
+                                        <button class="layui-btn" lay-submit="" lay-filter="btnSearch">
+                                            <i class="layui-icon layui-icon-search"></i>
+                                            查询
+                                        </button>
+                                        <button type="reset" class="layui-btn">
+                                            <i class="layui-icon layui-icon-refresh"></i>
+                                            重置
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+
+                        <table id="demo" lay-filter="test"></table>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--js模版表头工具栏-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>0
+        <button class="layui-btn layui-btn-sm" lay-event="RepairTaskReport">维修任务上报</button>
+        <button class="layui-btn layui-btn-sm" lay-event="RepairTaskList">维修任务列表</button>
+    </div>
+</script>
+<!--操作单元
+<!--js模板行单元格-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use(['table', 'util', 'layer', 'form'], function () {
+        var table = layui.table
+        var util = layui.util
+        var layer = layui.layer
+        var form = layui.form
+        
+        table.render({
+            elem: '#demo'
+            , url: '/repairtaskreport/list'
+            , page: true
+            , toolbar: '#toolbarDemo'
+            , cols: [[
+                { field: 'id', title: '主键', sort: true, fixed: 'left' }
+                , { field: 'reporter_id', title: '上报人id' }
+                , { field: 'start_time', title: '开始时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
+                , { field: 'end_time', title: '结束时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
+                , { field: 'confirmer', title: '确认人' }
+                , { field: 'location', title: '维修地点' }
+                , { field: 'work_context', title: '工作内容' }
+                , { field: 'create_time', title: '创建时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
+                , { title: '操作', toolbar: "#barDemo" }
+                /*, { title: '审核状态', field: 'score', templet: function (d) { return d.audited+'/'+d.count} }*/
+            ]]
+            , parseData: function (res) { //res 即为原始返回的数据
+                console.log(res)
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
+        })
+        table.on('tool(test)', function (obj) { // 双击 toolDouble
+            var data = obj.data;          
+            let id = data.id;
+            if (obj.event === 'del') {
+
+                layer.confirm('真的删除行么', function (index) {
+                    $.post("/repairtaskreport/delete", { id: id }, function (res) {
+                        if (code == 200) {
+                            obj.del();
+                            
+                        }
+                        else {
+                            alert(res.msg)
+                        }
+                    })
+                    layer.close(index);
+                });
+            }
+            if (obj.event === 'edit') {
+                let index = layer.open({
+                    title: '编辑',
+                    type: 2
+                    , content: "/repairtaskreport/details/" + id
+                    , area: ['500px', '700px']
+                });
+            }
+        });
+        //工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            if (obj.event == "add") {
+                let index = layer.open({
+                    type: 2
+                    , content: '/repairtaskreport/details'
+                    , area: ['500px', '700px']
+                    , anim: 2
+                });
+            }
+            if (obj.event == "RepairTaskReport") {
+                let index = layer.open({
+                    type: 2
+                    , content: '/repairtaskreport/repairtaskreport'
+                    , area: ['500px', '700px']
+                    , anim: 2
+                });
+            }
+            if (obj.event == "RepairTaskList") {
+                let index = layer.open({
+                    type: 2
+                    , content: '/repairtaskreport/repairtasklist'
+                    , area: ['500px', '700px']
+                    , anim: 2
+                });
+            }
+        });
+        //搜素  4
+        form.on('submit(btnSearch)', function (data) {
+            table.reload("demo", {
+                where: {
+                    reporter_id: data.field.txtreporter_id
+                }
+            })
+            return false;
+        })
+    });
+</script>

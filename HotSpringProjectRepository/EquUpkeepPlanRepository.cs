@@ -40,6 +40,7 @@ namespace HotSpringProjectRepository
             return false;
         }
 
+
         EquUpkeepPlan IEquUpkeepPlanRepository.GetModel(int id)
         {
             EquUpkeepPlan equUpkeepPlan = _db.EquUpkeepPlan.Find(id);

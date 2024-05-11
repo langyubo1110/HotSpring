@@ -155,5 +155,9 @@ namespace HotSpringProjectService
             return _EmployEmpRepository.Varfy(number, password);
         }
 
+        public ResMessage Update(EmployEmp movies)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -33,7 +33,7 @@
                             <div class="col-sm-4">
                                 设备类型:
                                 <div class="layui-input-inline">
-                                    <select name="type">
+                                    <select name="e_type">
                                         <option value="0">请选择</option>
                                         @foreach (var item in ViewBag.EquipType)
                                         {
@@ -294,12 +294,14 @@
         });
         //搜索表单
         form.on('submit(btnsearch)', function (data) {
+            console.log(data)
             //表格重载 调用movielist函数
             table.reload("demo", {
                 //获取文本款的值
                 where: {
                     //传参 文本框 设定异步数据接口参数外的值
-                    name: data.field.txtequipmet
+                    name: data.field.txtequipmet,
+                    e_type:data.field.e_type
                 }
             })
             return false;

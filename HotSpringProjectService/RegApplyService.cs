@@ -57,13 +57,13 @@ namespace HotSpringProjectService
                     }
                     //--2审批插库
                     _regAuditRepository.Add(regAudit);
-                    _regApplyRepository.Commit();
+                    //_regApplyRepository.Commit();
                 }
                 return ResMessage.Success();
             }
             catch (Exception ex)
             {
-                _regApplyRepository.RollBack();
+               // _regApplyRepository.RollBack();
                 return ResMessage.Fail(ex.Message);
             }
         }
@@ -83,7 +83,7 @@ namespace HotSpringProjectService
             IEnumerable<RegApplyVO> list = GetListSqlAudit();
             int count = list.Count();
             List<RegApplyVO> result = list.OrderBy(x => x.id).Skip((filter.page - 1) * filter.limit).Take(filter.limit).ToList();
-            return  result==null?ResMessage.Fail():ResMessage.Success(list, count);
+            return  result==null?ResMessage.Fail():ResMessage.Success(result, count);
         }
         public List<RegApplyVO> GetListUnion()
         {
@@ -115,8 +115,7 @@ namespace HotSpringProjectService
         {
             List<RegApplyVO> list = _regApplyRepository.QueryBySql<RegApplyVO>($@"SELECT  rb.*,  ee.name, (SELECT COUNT(*) FROM Employ_Emp WHERE role_id = 2) AS count
                                         FROM  Reg_Buy rb INNER JOIN Employ_Emp ee ON ee.id = rb.apply_id").ToList();
-            //IEnumerable<RegAuditVO> listAudit = _regAuditRepository.QueryBySql<RegAuditVO>($@"SELECT reg_equip_reaearch_id, SUM(CASE WHEN recheck_opin = 1 THEN 1 ELSE 0 END) AS countAudit
-            //                            FROM Reg_Audit GROUP BY reg_equip_reaearch_id");
+           
             foreach (var item in list)
             {
                  List<RegAudit> regAuditList=_regAuditRepository.GetList().ToList().Where(x=>x.reg_equip_reaearch_id==item.id &&x.recheck_opin==1).ToList();
