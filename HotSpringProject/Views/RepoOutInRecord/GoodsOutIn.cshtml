@@ -57,8 +57,10 @@
 </script>
 <!--操作单元格-->
 <script type="text/html" id="barDemo">
-
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {{# if(d.audit==0){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="audit">审核</a>
+    {{# } }}
 </script>
 
 
@@ -79,11 +81,10 @@
             , cols: [[ //表头
                 { field: 'goods_name', title: '商品名称', sort: true,  fixed: 'left' }
                 , { field: 'name', title: '出库/入库人', sort: true }
-                , { field: 'name', title: '出库/入库人', sort: true }
                 , { field: 'type', title: '出库/入库', sort: true, templet: function (d) { return d.type == 0 ? "入库" : "出库" } }
-                , { field: 'stock_number', title: '操作前库存数量', sort: true }
+                , { field: 'start_number', title: '操作前库存数量', sort: true }
                 , { field: 'oi_number', title: '出库/入库数量', sort: true }
-                , { field: 'goods_number', title: '操作后库存数量', sort: true }
+                , { field: 'end_number', title: '操作后库存数量', sort: true }
                 , { field: 'threshold', title: '阈值', sort: true }
                 , { field: 'create_time', title: '创建时间', sort: true , templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
                 , { title: '操作', toolbar: '#barDemo', templet:'#barDemo' }
@@ -101,8 +102,7 @@
         //删除应该同添加，同时删除出入库表，库存表和采购表
         //详情展示相应采购信息
         table.on('tool(test)', function (obj) {
-            var id = obj.data.id;
-            var instock_id = obj.data.instock_id;
+            var id = obj.data.oi_id;
             console.log(obj)
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
@@ -119,13 +119,23 @@
                     layer.close(index)
                 });
             }
+            else if (obj.event === 'audit') {
+                $.post("/repogoodsstock/updatebyaudit", { repoGoodsStockDTO: obj.data }, function (res) {
+                    if (res.code == 200)
+                    {
+                        table.reload('demo');
+                        layer.msg("审核通过,库存已更新")
+                    }
+                })
+            }
+           
         });
         table.on('toolbar(test)', function (obj) {
             if (obj.event == "out") {
                 layer.open({
                     title: '商品出库',
                     type: 2,
-                    area: ['800px', '300px'],
+                    area: ['800px', '305px'],
                     content: '/repooutinrecord/outdetail'
                 })
             }
@@ -134,7 +144,7 @@
                 layer.open({
                     title: '商品入库',
                     type: 2,
-                    area: ['800px', '405px'],
+                    area: ['800px', '455px'],
                     content: '/repooutinrecord/indetail'
                 })
             }

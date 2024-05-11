@@ -9,14 +9,17 @@ using System.Threading.Tasks;
 using DotNet.Utilities;
 using HotSpringProject.Entity.VO;
 using HotSpringProject.Entity.DTO;
+using HotSpringProjectRepository;
 namespace HotSpringProjectService
 {
     public class RepoGoodsStockService: IRepoGoodsStockService
     {
         private readonly IRepoGoodsStockRepository _repoGoodsStockRepository;
+        private readonly IRepoOutInRecordRepository _repoOutInRecordRepository;
 
-        public RepoGoodsStockService(IRepoGoodsStockRepository repo_Goods_StockRepository) {
+        public RepoGoodsStockService(IRepoGoodsStockRepository repo_Goods_StockRepository,IRepoOutInRecordRepository repoOutInRecordRepository) {
             _repoGoodsStockRepository = repo_Goods_StockRepository;
+            _repoOutInRecordRepository=repoOutInRecordRepository;
         }
 
         public ResMessage Add(RepoGoodsStock repoGoodsStock)
@@ -56,37 +59,63 @@ namespace HotSpringProjectService
                 return ResMessage.Fail("主键不能为空");
             }
             RepoGoodsStock repoGoodsStock = _repoGoodsStockRepository.GetModel(id);
-            if (repoGoodsStock == null)
-            {
-                return ResMessage.Fail("通过该主键获取的实体为空");
-            }
-            return ResMessage.Success(repoGoodsStock);
+           
+            return repoGoodsStock==null? ResMessage.Fail("通过该主键获取的实体为空"):ResMessage.Success(repoGoodsStock);
         }
 
         public ResMessage Update(RepoGoodsStock repoGoodsStock)
         {
-            repoGoodsStock.create_time = DateTime.Now;
+            repoGoodsStock.update_time = DateTime.Now;
             bool result = _repoGoodsStockRepository.Update(repoGoodsStock);
-            if (result)
-            {
-                return ResMessage.Success("修改成功");
-            }
-            return ResMessage.Fail();
+            return result==true? ResMessage.Success("修改成功"):ResMessage.Fail();
         }
-        public ResMessage GetList(string keywords)
+        //归还备件插入出入库记录表（入库操作）
+        //通过出入库记录页的审核按钮进行库存数量更新
+        //同时这条入库记录的审核状态更新为1（0未审核）
+        public ResMessage UpdateByAudit(RepoGoodsStockDTO repoGoodsStockDTO)
+        {
+            //EF事务
+            _repoOutInRecordRepository.TransBegin();
+            try
+            {
+                //库存数量更新
+                RepoGoodsStock repoGoodsStock = _repoGoodsStockRepository.GetModel(repoGoodsStockDTO.id);
+                repoGoodsStock.goods_number += repoGoodsStockDTO.oi_number;
+                repoGoodsStock.update_time = DateTime.Now;
+                _repoGoodsStockRepository.Update(repoGoodsStock);
+                //入库记录更新审核状态
+                RepoOutInRecord repoOutInRecord = _repoOutInRecordRepository.GetModel(repoGoodsStockDTO.oi_id);
+                repoOutInRecord.audit = 1;
+                _repoOutInRecordRepository.Update(repoOutInRecord);
+                _repoOutInRecordRepository.Commit();
+                return ResMessage.Success();
+            }
+            catch (Exception ex)
+            {
+                _repoOutInRecordRepository.Rollback();
+                return ResMessage.Fail(ex.Message);
+            }
+        }
+        public ResMessage GetList(string keywords,int? goods_type)
         {
             //自动补全
             if (!string.IsNullOrEmpty(keywords))
             {
                 List<RepoGoodsStock> list = _repoGoodsStockRepository.Getlist().Where(x => x.goods_name.Contains(keywords)).ToList();
-                int count = list.Count();
+                int count = list.Count;
                 return list == null ? ResMessage.Fail() : ResMessage.Success(list, count);
             }
             //查全表
+            else if (goods_type != null)
+            {
+                List<RepoGoodsStock> list = _repoGoodsStockRepository.Getlist().Where(x => x.goods_type == goods_type).ToList();
+                int count = list.Count;
+                return list == null ? ResMessage.Fail() : ResMessage.Success(list, count);
+            }
             else 
             {
                 List<RepoGoodsStock> list = _repoGoodsStockRepository.Getlist().ToList();
-                int count = list.Count();
+                int count = list.Count;
                 return list == null ? ResMessage.Fail() : ResMessage.Success(list, count);
             }
         }

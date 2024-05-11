@@ -1,0 +1,154 @@
+﻿@model List<HotSpringProject.Entity.EquipmentTypeVO>
+@{
+    ViewBag.Title = "upkeep";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="layui-table" lay-skin="line">
+    <thead>
+        <tr>
+            <th>设备主键</th>
+            <th>设备昵称</th>
+            <th>位置</th>
+            <th>功率</th>
+            <th>设备状态</th>
+            <th>类型名称</th>
+            <th>投入使用时间</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model[0].id</td>
+            <td>@Model[0].name</td>
+            <td>@Model[0].location</td>
+            <td>@Model[0].power</td>
+            <td>@Model[0].sname</td>
+            <td>@Model[0].typename</td>
+            <td>@Model[0].usedtime</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend>设备保养项目筛选</legend>
+</fieldset>
+<div class="row">
+    <div class="col-sm-3">
+        <div>
+        </div>
+    </div>
+    <div class="col-sm-9">
+        <div>
+            <div id="test4" class="demo-transfer"></div>
+        </div>
+    </div>
+</div>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend>已有保养任务</legend>
+</fieldset>
+<div class="table-responsive">
+    <table id="demo" lay-filter="test"></table>
+</div>
+
+<script>
+    let data1 = []
+    let equ_id =@Model[0].id
+    $.post('/equipment/equtotask', {}, function (res) {
+        data1 = res
+    layui.use(['transfer', 'layer', 'util','table'], function () {
+         transfer = layui.transfer
+         ,layer = layui.layer
+            , util = layui.util
+            , table = layui.table
+
+        //1.渲染实例
+        table.render({
+            elem: '#demo'
+            , height: 300
+            , url: '/equtotask/Query/' + equ_id //数据接口
+            , response: {
+                statusName: 'code' //规定数据状态的字段名称，默认：code
+                , statusCode: 200 //规定成功的状态码，默认：0
+                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                , countName: 'count' //规定数据总数的字段名称，默认：count
+                , dataName: 'data' //规定数据列表的字段名称，默认：data
+            }
+            , page: {
+                page: 1,
+                limit: 4
+            }//开启分页
+            , cols: [[ //表头
+                { field: 'task_name', title: '任务名称' }
+                , { field: 'upkeep_feedback_info', title: '保养任务反馈' }
+                , {
+                    field: 'interval', title: '保养间隔', templet: function (d) {
+                        return d.interval + "天"
+                    } }
+                , {
+                    field: 'start_time', title: '保养开始时间', templet: function (d) {
+                        return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    }
+                }
+                , {
+                    field: 'end_time', title: '保养结束时间', templet: function (d) {
+                        return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    } }
+                , {
+                    field: 'feedback_time', title: '反馈时间', templet: function (d) {
+                        return util.toDateString(d.feedback_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    } }
+            ]]
+        });  //table
+
+        //右侧默认赋值
+        $.post('/equtotask/Query/' + equ_id, {}, function (res) {
+            console.log(res)
+            let defaultValue = []
+            for (var item of res.data) {
+                defaultValue.push(item.task_id)
+            }
+            console.log(defaultValue)
+            //数据格式解析
+            transfer.render({
+                elem: '#test4'
+                , data: data1
+                , value: defaultValue // 右侧默认值
+                , id: 'demo1'
+                , parseData: function (res) {
+                    return {
+                        "value": res.id //数据值
+                        , "title": res.task_name //数据标题
+                    }
+                }
+                , height: 250
+                , showSearch: true
+                //穿梭时的回调
+                , onchange: function (data, index) {
+                    //获得右侧数据
+                    let getData = transfer.getData('demo1');
+                    //右侧不为空 说明进行删除数据添加
+                    //if (getData != "") {
+                        $.post('/equtotask/AddAfterDelete', { getData: getData, id: equ_id }, function (res) {
+                            if (res.code == 200) {
+                                //表格重载
+                                table.reload("demo")
+                            }
+                        })
+                    //}
+                    //else {
+                    //    //右侧为空 则清空表
+                    //    $.post('/equtotask/Delete', {}, function (res) {
+                    //        if (res.code == 200) {
+                    //            //表格重载
+                    //            table.reload("demo")
+                    //        }
+                    //    })
+                    //}
+                }
+            }) //transfer
+        })  //post
+
+ })//layui
+ })//post
+</script>

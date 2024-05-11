@@ -4,24 +4,37 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <form class="layui-form" name="movieform">
     <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>设备表批量下载页</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="table-responsive">
-                            <table id="demo" lay-filter="test"></table>
-                        </div>
-                    </div>
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>设备表批量下载页</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table id="demo1" lay-filter="test"></table>
                 </div>
+            </div>
+        </div>
     </div>
+
 </form>
 <!--js模板  表头组件-->
 <script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <input type="button" class="layui-btn layui-btn-sm" lay-submit="" lay-filter="btndown" lay-event="downloadselect" value="下载勾选的文件">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="input-group">
+                <input type="text" name="txtequipmet" placeholder="请输关键词" class="input-sm form-control"> <span class="input-group-btn">
+                    <button type="submit" class="btn btn-sm btn-primary" lay-submit="" lay-filter="btnsearch"> 搜索</button>
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="layui-btn-container">
+                <input type="button" class="layui-btn layui-btn-sm" lay-submit="" lay-filter="btndown" lay-event="downloadselect" value="下载勾选的文件">
+            </div>
+        </div>
     </div>
 </script>
 
@@ -34,7 +47,7 @@
         var form = layui.form
         //1.渲染实例
         table.render({
-            elem: '#demo'
+            elem: '#demo1'
             , height: 500
             , width: 1000
             , url: '/equipment/Query' //数据接口
@@ -53,18 +66,20 @@
             , toolbar: "#toolbarDemo"
             , cols: [[ //表头
                 { type: 'checkbox', fixed: 'left' }
-                ,{ field: 'id', title: '主键', sort: true, fixed: 'left' }
+                , { field: 'id', title: '主键', sort: true, fixed: 'left' }
                 , { field: 'name', title: '设备名称' }
                 , { field: 'location', title: '位置' }
                 , {
                     field: 'status', title: '运行状态', templet: function (d) {
-                        return d.status==0?"未启用":"已启用"
-                    } }
-                , { field: 'power', title: '功率'  }
+                        return d.status == 0 ? "未启用" : "已启用"
+                    }
+                }
+                , { field: 'power', title: '功率' }
                 , {
                     field: 'usedtime', title: '投入使用时间', templet: function (d) {
                         return util.toDateString(d.usedtime.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                    } }
+                    }
+                }
                 , { field: 'typename', title: '设备类型' }
                 , {
                     field: 'create_time', title: '创建时间'
@@ -79,15 +94,60 @@
             //获取选中行的数据
             var checkStatus = table.checkStatus('idTest'); //idTest 即为基础参数 id 对应的值
             console.log(checkStatus)
-            let data=checkStatus.data
+            let data = checkStatus.data
             console.log(data)
-            //后端打包下载
-            $.post("/equipment/downselect", { data: data }, function (res) {
-                console.log(res)
-                layer.msg(res.msg);
-            })
-        });
 
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/equipment/downselect', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.responseType = 'blob';
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var blob = xhr.response;
+
+                    // 创建一个 URL 对象
+                    var url = window.URL.createObjectURL(blob);
+
+                    // 创建一个隐藏的<a>元素
+                    var downloadLink = document.createElement('a');
+                    downloadLink.href = url;
+                    downloadLink.download = 'files.zip';
+
+                    // 将<a>元素添加到页面中
+                    document.body.appendChild(downloadLink);
+
+                    // 模拟点击下载链接
+                    downloadLink.click();
+
+                    // 下载完成后释放 URL 对象
+                    window.URL.revokeObjectURL(url);
+
+                    // 移除<a>元素
+                    document.body.removeChild(downloadLink);
+                } else {
+                    console.error('下载文件失败');
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error('下载文件时发生错误');
+            };
+            xhr.send(JSON.stringify(data));
+        });
+        //搜索表单
+        form.on('submit(btnsearch)', function (data) {
+            console.log(data);
+            //表格重载 调用movielist函数
+            table.reload("idTest", {
+                //获取文本款的值
+                where: {
+                    //传参 文本框 设定异步数据接口参数外的值
+                    name: data.field.txtequipmet
+                }
+            })
+            return false;
+        })
     })
 </script>
 

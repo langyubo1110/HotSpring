@@ -16,12 +16,14 @@ namespace HotSpringProjectService
         private readonly IRegApplyRepository _regApplyRepository;
         private readonly IEmployEmpRepository _EmployEmpRepository;
         private readonly IRegAuditRepository _regAuditRepository;
+        private readonly IRegVoteRepository _regVoteRepository;
 
-        public RegApplyService(IRegApplyRepository regApplyRepository, IEmployEmpRepository employemprepository,IRegAuditRepository regAuditRepository)
+        public RegApplyService(IRegApplyRepository regApplyRepository, IEmployEmpRepository employemprepository,IRegAuditRepository regAuditRepository,IRegVoteRepository regVoteRepository)
         {
             _regApplyRepository = regApplyRepository;
             _EmployEmpRepository = employemprepository;
             _regAuditRepository = regAuditRepository;
+            _regVoteRepository = regVoteRepository;
         }
     
 
@@ -55,12 +57,13 @@ namespace HotSpringProjectService
                     }
                     //--2审批插库
                     _regAuditRepository.Add(regAudit);
-
+                    _regApplyRepository.Commit();
                 }
                 return ResMessage.Success();
             }
             catch (Exception ex)
             {
+                _regApplyRepository.RollBack();
                 return ResMessage.Fail(ex.Message);
             }
         }
@@ -150,7 +153,31 @@ namespace HotSpringProjectService
             RegAudit regAudit= _regAuditRepository.GetList().ToList().Where(x => x.reg_equip_reaearch_id == RegId && x.recheck_id == userID).FirstOrDefault();
             regAudit.recheck_opin = 1;
             regAudit.recheck_advice=txtAdvice;
-            
+            bool flag = _regAuditRepository.Update(regAudit);
+            //新加的部分  当审批人数都通过后，需要向投票表里插入n条投票数据，要有采购id和投票人id
+            List<RegAudit> allList=_regAuditRepository.GetList().Where(x => x.reg_equip_reaearch_id == RegId ).ToList();
+            int allCount=allList.Count;
+            List<RegAudit> realList=_regAuditRepository.GetList().Where(x=>x.reg_equip_reaearch_id == RegId &&x.recheck_opin==1).ToList();
+            int realCount=realList.Count;
+            if (allCount==realCount)
+            {
+                IEnumerable<EmployEmp> emplist = _EmployEmpRepository.GetList().ToList().Where(x => x.role_id == 2);
+                foreach (EmployEmp emp in emplist)
+                {
+                    RegVote regVote = new RegVote();
+                    {
+                        regVote.reg_buy_id = RegId;
+                        regVote.equip_research_id = 0;
+                        regVote.vote_status = 0;
+                        regVote.vote_id=emp.id;
+                        regVote.create_time = DateTime.Now;
+                    }
+                    //--2投票表插库
+                    _regVoteRepository.Add(regVote);
+                }
+                
+            }
+            //新加的结束
             return _regAuditRepository.Update(regAudit);
         }
     }

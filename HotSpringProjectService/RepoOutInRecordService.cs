@@ -54,6 +54,8 @@ namespace HotSpringProjectService
                     //库存表更新
                     //出入库表实体的商品id赋值
                     repoOutInRecord.goods_id = repoGoodsStockDTO.id;//商品ID
+                    repoOutInRecord.end_number = repoGoodsStock.goods_number;
+
                 }
                 //入库
                 else
@@ -75,7 +77,7 @@ namespace HotSpringProjectService
                         repoOutInRecord.goods_id = repoGoodsStockDTO.id;//商品ID
                         //采购表实体的商品id赋值
                         repoBuy.goods_id = repoGoodsStockDTO.id;
-
+                        repoOutInRecord.end_number = repoGoodsStock.goods_number;
                     }
                     //2.不存在,插入
                     else
@@ -88,11 +90,13 @@ namespace HotSpringProjectService
                         repoGoodsStock.picture = repoGoodsStockDTO.picture;
                         repoGoodsStock.threshold= repoGoodsStockDTO.threshold;
                         repoGoodsStock.factory= repoGoodsStockDTO.factory;
+                        repoGoodsStock.goods_type= repoGoodsStockDTO.goods_type;
                         _repoGoodsStockRepository.Add(repoGoodsStock);
                         last_id = repoGoodsStock.id;
                         //库存表插入
                         //出入库表实体的商品id赋值最新插入库存表数据的id
                         repoOutInRecord.goods_id = last_id;//商品ID
+                        repoOutInRecord.end_number = repoGoodsStock.goods_number;
                         //采购表实体id赋值库存表最新插入id
                         repoBuy.goods_id = last_id;
                     }
@@ -107,10 +111,12 @@ namespace HotSpringProjectService
                 //商品出入库表实体补全
                 //插入
                 repoOutInRecord.create_time = DateTime.Now;
-                repoOutInRecord.goods_number = repoGoodsStockDTO.oi_number;//出入库数量
-                repoOutInRecord.outin_person_id = 1;//通过Session获取登录人ID
-                repoOutInRecord.type = repoGoodsStockDTO.type;//出库/入库
-                repoOutInRecord.stock_number = repoGoodsStockDTO.goods_number;
+                repoOutInRecord.oi_number = repoGoodsStockDTO.oi_number;//出入库数量
+                repoOutInRecord.outin_person_id = repoGoodsStockDTO.outin_person_id;
+                repoOutInRecord.type = repoGoodsStockDTO.type;//出入库
+                repoOutInRecord.start_number = repoGoodsStockDTO.goods_number;
+                repoOutInRecord.recipient_id = repoGoodsStockDTO.recipient_id;
+                repoOutInRecord.audit = 1;
                 _repoOutInRecordRepository.Add(repoOutInRecord);
                 _repoOutInRecordRepository.Commit();
                 return ResMessage.Success();
@@ -131,7 +137,6 @@ namespace HotSpringProjectService
         public ResMessage GetList()
         {
             List<RepoOutInRecord> list = _repoOutInRecordRepository.GetList().ToList();
-            
             return list != null ? ResMessage.Success(list) : ResMessage.Fail();
         }
         public ResMessage GetModel(int id)
@@ -152,11 +157,7 @@ namespace HotSpringProjectService
         {
             repoOutInRecord.create_time = DateTime.Now;
             bool result = _repoOutInRecordRepository.Update(repoOutInRecord);
-            if (result)
-            {
-                return ResMessage.Success("修改成功");
-            }
-            return ResMessage.Fail();
+            return result==true? ResMessage.Success("修改成功"):ResMessage.Fail();
         }
 
         //三表联合数据
@@ -166,7 +167,7 @@ namespace HotSpringProjectService
             {
                 int ipage = (int)page;//将可空整形转为不可空整形
                 int ilimit = (int)limit;
-                IEnumerable<RepoGoodsStockDTO> list = _repoOutInRecordRepository.GetListBySql<RepoGoodsStockDTO>("select s.goods_name,s.goods_number,s.threshold,oi.id,oi.stock_number,oi.goods_number oi_number,oi.type,e.name,oi.create_time from Repo_Goods_Stock s inner join Repo_Out_In_Record oi on s.id=oi.goods_id inner join Employ_Emp e on oi.outin_person_id=e.id");
+                IEnumerable<RepoGoodsStockDTO> list = _repoOutInRecordRepository.GetListBySql<RepoGoodsStockDTO>("select s.id,s.goods_name,s.threshold,s.goods_type,oi.id oi_id,oi.start_number,oi.oi_number,oi.end_number,oi.type,oi.audit,e.name,oi.create_time from Repo_Goods_Stock s inner join Repo_Out_In_Record oi on s.id=oi.goods_id inner join Employ_Emp e on oi.outin_person_id=e.id");
                 //商品名称搜索
                 if (!String.IsNullOrEmpty(filter.goods_name))
                 {

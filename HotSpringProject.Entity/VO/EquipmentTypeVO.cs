@@ -19,5 +19,7 @@ namespace HotSpringProject.Entity
         public DateTime? create_time { get; set; }
         public DateTime? usedtime { get; set; }
         public string typename { get; set; }
+        //设备状态
+        public string sname { get; set; }
     }
 }

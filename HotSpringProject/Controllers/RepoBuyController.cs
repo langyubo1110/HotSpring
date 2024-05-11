@@ -36,7 +36,7 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _repoBuyService.Delete(id);
             return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetList(int id=0)
+        public JsonResult GetList(int? id=null)
         {
             ResMessage resMessage = _repoBuyService.GetList(id);
             return Json(resMessage, JsonRequestBehavior.AllowGet);

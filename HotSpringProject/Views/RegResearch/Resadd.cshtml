@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewBag.Title = "Resadd";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div class="ibox-content">
+    <form class="layui-form" action="" lay-filter="editform">
+
+
+        <div class="layui-form-item">
+            <div class="form-group layui-inline">
+                <label>设备名称</label>
+                <input type="text" name="prod_name" placeholder="请输入设备" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>厂家</label>
+                <input type="text" name="fac_name" placeholder="请输入原因" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>厂家联系方式</label>
+                <input type="text" name="fac_phone" placeholder="请输入原因" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>厂家地址</label>
+                <input type="text" name="fac_address" placeholder="请输入原因" class="form-control">
+            </div>
+
+            @*隐藏控件id*@
+            <div class="form-group layui-inline">
+                <input type="hidden" id="id" name="reg_buy_id" value="@ViewBag.id">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="form-group layui-inline">
+                <label>调研时间</label>
+                <input type="text" name="create_time" placeholder="请输入时间" lay-verify="required" id="ApplyTime" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>批号</label>
+                <input type="text" name="batch_number" placeholder="请输入批号" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>价格</label>
+                <input type="text" name="price" placeholder="请输入价格" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <input type="hidden" id="prod_img" name="prod_img">
+            </div>
+            <div class="form-group layui-inline">
+                <label>图片</label>
+
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
+                    <div class="layui-upload-list" style="max-width: 1000px;">
+                        <table class="layui-table">
+                            <colgroup>
+                                <col>
+                                <col width="150">
+                                <col width="260">
+                                <col width="150">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>文件名</th>
+                                    <th>大小</th>
+                                    <th>上传进度</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="demoList"></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group layui-inline">
+            @*文件上传*@
+            <div class="layui-input-inline">
+                <label>基本信息</label>
+                <textarea id="txtAreaDemo" name="basic_info" style="display: none;"></textarea>
+            </div>
+            <button type="submit" class="layui-btn" id="btnSubmit" lay-submit="" lay-filter="demo2">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+</div>
+
+
+<script>
+
+
+    layui.use(['upload', 'element', 'layer'], function () {
+        var $ = layui.jquery,
+            upload = layui.upload,
+            element = layui.element,
+            layer = layui.layer,
+            id =@ViewBag.id;
+        var form = layui.form;
+        var layedit = layui.layedit;
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#ApplyTime' //指定元素 时间
+            , value: '2024-01-01'
+        });
+        //构建富文本编辑器
+        layedit.build('txtAreaDemo'); //建立编辑器
+        //演示多文件列表
+        var uploadListIns = upload.render({
+            elem: '#testList'
+            , elemList: $('#demoList') //列表元素对象
+            , url: '/regresearch/fileimg/'+id // 实际使用时改成您自己的上传接口即可。
+            , accept: 'file'
+            , multiple: true
+            , number: 4
+            , auto: false
+            , bindAction: '#testListAction'
+            , choose: function (obj) {
+                var that = this;
+                var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                //读取本地文件
+                obj.preview(function (index, file, result) {
+                    var tr = $(['<tr id="upload-' + index + '">'
+                        , '<td>' + file.name + '</td>'
+                        , '<td>' + (file.size / 1024).toFixed(1) + 'kb</td>'
+                        , '<td><div class="layui-progress" lay-filter="progress-demo-' + index + '"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
+                        , '<td>'
+                        , '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                        , '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                        , '</td>'
+                        , '</tr>'].join(''));
+
+                    //单个重传
+                    tr.find('.demo-reload').on('click', function () {
+                        obj.upload(index, file);
+                    });
+
+                    //删除
+                    tr.find('.demo-delete').on('click', function () {
+                        delete files[index]; //删除对应的文件
+                        tr.remove();
+                        uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                    });
+
+                    that.elemList.append(tr);
+                    element.render('progress'); //渲染新加的进度条组件
+                });
+            }
+            , done: function (res, index, upload) { //成功的回调
+                var that = this;
+                //console.log(res);
+                $("#prod_img").val(res.data);
+                console.log($("#prod_img").val());
+                //if(res.code == 0){ //上传成功
+                var tr = that.elemList.find('tr#upload-' + index)
+                    , tds = tr.children();
+                tds.eq(3).html(''); //清空操作
+                delete this.files[index]; //删除文件队列已经上传成功的文件
+                return;
+                //}
+                this.error(index, upload);
+            }
+            , allDone: function (obj) { //多文件上传完毕后的状态回调
+                console.log(obj)
+            }
+            , error: function (index, upload) { //错误回调
+                var that = this;
+                var tr = that.elemList.find('tr#upload-' + index)
+                    , tds = tr.children();
+                tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+            }
+            , progress: function (n, elem, e, index) { //注意：index 参数为 layui 2.6.6 新增
+                element.progress('progress-demo-' + index, n + '%'); //执行进度条。n 即为返回的进度百分比
+            }
+        });
+
+        //向对应的采购表下插入调研表
+        form.on('submit(demo2)', function (data) {
+            layedit.getContent(1);
+            let obj = data.field;
+            console.log(obj);
+            obj.basic_info = layedit.getContent(1);
+            //console.log(obj.basic_info);
+            if (id != 0) {
+                
+                $.post("/regresearch/insert", { regEquipRes: obj }, function (res) {
+                    if (res.code == 200) {
+                        console.log(res);
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        //方案2  当关闭后让父页面的table重载
+                        parent.layui.table.reload('demo');
+                    }
+                })
+            }
+            return false;
+        });
+    });
+</script>

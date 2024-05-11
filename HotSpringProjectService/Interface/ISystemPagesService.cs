@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace HotSpringProjectService.Interface
 {
     public interface ISystemPagesService
@@ -21,6 +22,6 @@ namespace HotSpringProjectService.Interface
         IEnumerable<(int Id, string Name)> GetModuleList();
 
         //IEnumerable<SystemPages> GetRoleList(int roleId);
-        List<SystemPages> GetPagesByModuleId(int moduleId);
+
     }
 }

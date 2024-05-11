@@ -1,0 +1,757 @@
+# javascript
+
+## 01简介
+
+javascript:客户端（浏览器）脚本语言
+
+  脚本语言：python
+
+  动态语言：python javascript php  不进行编译  执行速度快   
+
+  静态语言：C C++ C# java      进行编译   执行效率更高
+
+  历史：2个星期时间写出来一个语言，让网页生动点。 javascript和java没任何关系
+
+  javascript, ECMA组织。
+
+  ECMAScript(ES) ECMAScript2015(ES6)....ECMA(2022 ES11) 
+
+​	学什么：
+
+  1.语法
+
+  2.BOM:控制浏览器 window.location.href='www.baidu.com'
+
+  3.DOM(核心):利用js实现对页面元素的控制 90%
+
+ javascript编码规范严格遵循驼峰命名法
+
+  驼峰命名：所有单词首字母小写
+
+  name   studentName  studentClass  
+
+  java/C#：操作系统
+
+  作用：开发网页交互效果 
+
+## 02js编写位置
+
+<script>
+        //js脚本标签：告知浏览器 此处代码按照javascript编译
+        // window.location.href="#"
+</script>
+
+## 03变量
+
+```
+//变量：会根据情景不同改变自身的值
+       var a;//声明一个变量
+       var n=10;//声明一个变量 并且为它赋值为10 
+       var a,b,c;//声明多个变量
+       console.log(a);//undefined 变量声明过，但是没有赋值
+
+       //var会产生变量提升问题，在es6版本之前使用的是var   es6版本之后 使用let
+       let aa;
+       let nn;
+		//什么是变量提升问题：使用var声明变量，不管在哪里写，都会提到代码的最上方进行创建
+       //var和let都是js进行变量声明的
+       //区别：var产生变量提升问题，let不会
+       console.log(x);
+       let x=1;
+
+       //let 老IE不兼容
+```
+
+
+
+## 04数据类型
+
+```
+//数据类型
+        //一、Number类型：数字类型，包括小数、整数、负数 
+        let number2=1000000;
+        //二、字符类型String:字符都是string 
+        let name='张三.afadf;&^*&';   //注意：js中字符类型可以用双引号或者单引号包裹。  约定俗成：使用''
+        //三、boolean布尔类型 
+        let result=true;
+        //四、对象类型
+        let people=new Object(); //声明了一个对象对象叫people
+        //五、数组类型
+        let list=[1,2,3,4,5]   
+        //六、undefined    已定义，没赋值
+        
+        //七、null类型:null表示内存中没有空间，没有内存地址 
+        //javascript当网页关闭的时候，会自动释放内存资源
+
+        //八、Symbol ES6提出新数据类型
+```
+
+
+
+## 05对象
+
+```
+/*
+        javascript是面向对象语言
+        特性：
+        1)封装:函数 对象体现
+        2)继承性:有效的节省代码量，提高复用性，提高维护性     原型链  
+        3)多态
+
+        创建对象：
+        1.使用构造函数进行创建
+        2.使用字面量进行创建
+
+
+        对象类型：
+        1.宿主对象:document DOM
+        2.内置对象:语言本身已经写好的    console
+        3.自定义对象:程序员创建的对象
+
+        对象中的成员:成员是以option选项形式展示
+        //1变量成员
+        //2函数成员
+
+        对象成员如何访问：
+        1.以对象.成员名形式
+        2.以对象['属性名']
+        
+        
+        
+        */
+        //构造函数创建法
+        let student=new Object();
+        //字面量创建法
+        let student01={
+
+        }
+        console.log('你好');
+
+        let teacher={
+            //属性成员 变量
+            name:'张三',
+            age:18,
+            //函数成员
+            say:function(){
+                console.log('老师说：你好');
+            }
+        }
+        //访问成员
+        //1.以对象.成员名形式
+        //console.log(teacher.name);
+        //console.log(teacher.age);
+        //console.log(teacher.say);//访问函数成员
+       // teacher.say();//访问函数成员并且执行这个成员函数
+        //2.以对象['属性名']
+        // console.log(teacher['name'])
+        // console.log(teacher['age'])
+        // console.log(teacher['say'])
+        // teacher['say']();
+        //哪个常用：1比较常用  2也有应用场景
+```
+
+
+
+## 06流程控制
+
+```
+if                   特殊情况
+        if else              二选一
+        if else if   ...else 多选1使用
+        switch               多选1使用
+        for
+        while
+        do while
+        break:立即结束当前循环体，后面的循环都不在进行
+        continue:立即结束当次循环，循环体还要继续进行
+
+
+        非常重要的两个流程控制：
+        for in:
+        1）遍历一个集合，每次获取的是集合的索引位置。
+        2）遍历一个对象，每次获取的是对象的属性名
+
+        for of:遍历一个集合，每次获取集合中的成员
+        总结：
+        forof只能迭代集合,  forin迭代集合，也可以迭代对象。
+
+
+
+
+        */
+        // let type=0;//0正常 1会员 2管理员
+        // if(type==0)
+        // {
+        //     console.log('正常');
+        // }
+        // let text="会员"
+        // switch(type)
+        // {
+        //     case 0: console.log('正常');break;
+        //     case 1: console.log('会员');break;
+        //     default: console.log('管理员');break;
+        // }
+        // switch(text)
+        // {
+        //     case '会员': console.log(1);break;
+        //     case 1: console.log('会员');break;
+        //     case 2: console.log('管理员');break;
+        // }
+        // for(let i=0;i<10;i++)
+        // {
+        //     console.log(i);
+        // }
+        // let i=0;
+        // while(i<10)
+        // {
+        //     console.log(i);
+        //     if(i==5)
+        //     {
+        //         i++;
+        //         continue;
+        //     }
+        //     console.log('这一次循环结束了')
+        //     i++;
+        // }
+
+
+        let list=['A','B','C','D','E'];
+        //item输出的是索引号
+        for(let index in list)
+        {   
+            console.log(list[index]);
+        }
+        for(let item of list)
+        {
+            console.log(item);
+        }
+        let student={
+            name:'小王',
+            age:18,
+            say:function(){
+                console.log('你好');
+            }
+        }
+        for(let item in student)//'say' 'name' 'age'
+        {
+            console.log(student[item]);
+        }
+```
+
+
+
+## 07运算符
+
+```
+一元运算符: ++ -- 
+        二元运算符:+ - * / || && ! == !=   > < ...
+        三元运算符: ?:
+        
+        =赋值
+        ==值等
+        ===值等类型也等
+        
+        */
+        let number=1;//Number
+        let number1="1";//String
+        console.log(number==number1);//true
+        console.log(number===number1);//false
+
+        let type=0;
+        if(type==0)
+        {
+            console.log('男')
+        }
+        else{
+            console.log('女')
+        }
+        console.log(type==0?'男':'女') 
+```
+
+## 08函数
+
+函数是js封装性体现，将一段代码放到函数中，执行函数的时候，依次运行函数中的代码。
+
+​    作用：提高代码复用性、维护性增强
+
+​     函数创建方式
+
+​    1.构造函数创建   不推荐使用
+
+​    2.字面量创建    推荐使用
+
+​    3.使用function创建 推荐使用
+
+```
+let func1=new Function("console.log('构造函数创建方法')");
+        func1();
+let func2=function(){
+	console.log('字面量创建函数方法');
+        }
+func2();
+function func3(){
+            console.log("function关键词创建函数");
+        }
+        func3();
+```
+
+
+
+## 09函数的参数和返回值
+
+```
+函数可以拥有参数:一个函数可以有多个参数，也可以没有参数
+        function getSum(n,m)//n,m是参数，形参 
+        {
+            return n+m;
+        }
+      
+        函数的返回值：javascript所有函数都有返回值，无论你写不写
+        如果你写return 则返回你的变量
+        如果你不写return 默认返回undefined
+        let result=getSum(10,20);
+        console.log(result);
+
+        function say()
+        {
+            console.log(1);
+        }
+
+        let result2=say();
+        console.log(result2);
+
+        let student={
+            name:'小王',
+            //方法
+            say(){
+                console.log('方法')
+            }
+        }
+        概念:
+        方法：当函数声明在对象中的时候，我们称之为方法
+        方法有一个字面量增强写法
+        student.say();
+```
+
+
+
+## 10作用域
+
+作用域：变量、代码生效的范围
+
+​    javascript中存在两个作用域
+
+​    一、全局作用域:指的是整个网页   window
+
+​    二、函数作用域：函数是拥有作用域
+
+
+
+​    C java c#特别注意，花括号是没有作用域  for循环也没有作用域
+
+
+
+​    let a=10;//作用域就是window
+
+
+
+​    console.log(a);
+
+​    console.log(window.a);
+
+```
+function xxx()
+        {
+            let b=100;
+            console.log(a);
+        }
+
+        // console.log(b);
+
+        {
+            var a=10;
+        }
+        console.log(a)
+
+        for(let i=0;i<10;i++)
+        {
+            console.log(i)
+        }
+        console.log("这是一个i:"+i);
+```
+
+
+
+## 11立即执行函数
+
+立即执行函数：函数声明和执行同时发生，函数一次性，没有复用性。
+
+异步程序：执行需要给他提供一个函数运行
+
+立即执行函数==一次性的函数
+
+```
+let result = (function (n, m) {
+            console.log(n + m);
+            return n + m;
+})(10, 20);
+        console.log(result)
+```
+
+
+
+## 12this关键词
+
+this:当javascript创建对象的时候，浏览器会创建一个this对象，这个this会根据不同的情况赋上不同的值
+
+
+
+ 情况一、
+
+​    在函数对象中，都有一个this对象，这个对象是window
+
+​    作用：开发中没有用 
+
+ 情况二、
+
+​    在对象中的方法中，this代表的是当前对象
+
+​    作用：非常大 90%  可以让我们访问对象中的任意成员
+
+ 情况三、
+
+​    当我们使用构造函数创建对象的时候，构造函数中的this代表的是当前创建的这个对象
+
+​    作用： 不太常用
+
+ 情况四、
+
+​    apply call
+
+```js
+let func = function x() {
+            console.log(this)//window
+        }
+        func();
+
+        let student={
+            name:'小王',
+            age:18,
+            say(){
+                console.log('方法')
+            },
+            intro(){
+                console.log('大家好，我叫'+this.name)//student
+                console.log('我今年'+this.age)
+                this.say()
+            }
+        }
+        student.intro();
+
+for(let i=0;i<10;i++)
+        {
+            console.log(this) //window
+        }
+
+
+        console.log(this)//window
+
+
+        function x(){
+            console.log(this)//window
+            let student={
+                say(){
+                    console.log(this)//student
+                    let teacher={
+                        run(){
+                            console.log(this);//teacher
+                        }
+                    }
+                }
+            }
+        }
+```
+
+
+
+## 13工厂模式创建对象
+
+工厂模式：创建一个工厂，利用工厂批量的进行对象的创建
+
+​    作用：使用字面量创建对象，当对象字段相同时，创建代码过于繁琐
+
+​    优势：创建简单、代码量少、维护性强
+
+​    缺点：只能创建Object 基类型
+
+```js
+function studentFactory(name,age,address)
+        {   
+            let obj=new Object();//构造函数创建对象
+            obj.name=name
+            obj.age=age
+            obj.address=address
+            return obj
+        }
+        let studentWang1=studentFactory('小王',20,'开封');
+        let studentZhang1=studentFactory('小张',21,'洛阳');
+
+        console.log(typeof(studentWang1))
+```
+
+
+
+## 14使用构造函数创建对象
+
+使用构造函数创建对象
+
+​    构造函数:首字母大写构造函数
+
+
+
+
+
+​    new关键词
+
+​    1.调用我们的构造函数
+
+​    2.创建一个对象，并且把该对象赋给this
+
+​    3.new会执行构造函数中的代码
+
+​    4.把对象返回出去
+
+ this是谁？
+
+```js
+function Student(name,age,address)
+        {
+            // 构造函数
+            this.name=name
+            this.age=age
+            this.address=address
+            
+        }
+
+        let student=new Student('张三',20,'郑州');
+        let student1=new Student('xiali',20,'郑州');
+
+        console.log(student,student1)
+```
+
+## 15箭头函数
+
+箭头函数 ES6语法糖:匿名函数指的是没有名字的函数
+
+语法糖：程序中特殊的写法，在语法上并不真正的存在 需要编译器翻译
+
+符号:=>  读作:goes to  lambda表达式
+
+箭头函数
+
+没参数写法
+
+```js
+(()=>{
+            console.log('你好')
+        })();
+        //有参数
+        ((x)=>{
+            console.log(x);
+        })(10)
+        如果参数只有一个 括号可以省略
+         (x=>{
+            console.log(x);
+        })(10)
+        如果你的箭头函数中只有一行代码  花括号可以省略
+         (()=>console.log('你好')
+        )();
+```
+
+## 16原型
+
+面向对象：继承性
+
+一、原型概念：在javascript中，每一个构造函数在创建的时候，浏览器都会为这个函数创建一个对象，叫做原型对象 prototype
+
+如果我们使用构造函数来创建一个对象时，创建出的这个对象具有原型属性，可以通过__proto__读取原型属性
+
+作用：我们可以在原型对象中添加属性，这样所有的对象都会拥有这个属性，实际上原型属性就是为了解决js继承问题
+
+二、认识prototype和__proto__
+
+prototype：在构造函数上写
+
+__proto__:构造函数创建出来的对象身上
+
+三、原型作用
+
+继承:一个类继承了一个基类，派生类就具有基类中的所有成员
+
+好处:节约代码量，提高重构
+
+四、hasOwnProperty的使用
+
+我们可以通过hasOwnProperty判断是否拥有原型属性
+
+```js
+function Student()
+        {
+
+        }
+        console.log(Student.prototype)//原型
+
+
+        let stuObj=new Student()//通过构造函数创建一个对象stuObj
+        console.log(stuObj.__proto__)//输出的是对象  对象身上有一个原型属性
+        console.log(Student.prototype==stuObj.__proto__)
+
+        
+        //Student都有一个No属性
+        Student.prototype.No="学号"
+        Student.prototype.say=()=>console.log('你好')
+
+        //继承
+        let stuWang=new Student();
+        console.log(stuWang.__proto__.No)
+        console.log(stuWang.__proto__.say())
+
+        console.log(stuWang.__proto__.hasOwnProperty('No'))
+
+        console.log(stuWang.__proto__.__proto__.hasOwnProperty("toString"))//
+```
+
+## 17原型链
+
+一、原型链概念：原型可以连续继承，由于所有对象都会继承自object 所以js对象的原型一般都是一个原型链.
+
+原型链指的是我们的函数原型对象可能会指向另一个函数的原型对象，实现继承。当多个函数之间存在继承关系时，我们称这种关系为原型链
+
+二、原型链是如何进行连接的
+
+例如Child构造函数继承了Father构造函数
+
+那么Child的原型会指向Fahter的对象
+
+
+
+三、原型链作用
+
+1.修改原型方法
+
+2.继
+
+四、原型链示
+
+五、原型链中如何检查hasOwnPreperty
+
+注意：javascript的继承是通过原型链进行.  麻烦原因并不是你菜，而是语言本身确实垃圾。
+
+```js
+Object.prototype.toString = function () {
+            let str = `{`
+            for (let key in this) {
+                str += `${key}:${this[key]},`
+            }
+            str += `}`
+            console.log(str);
+        }
+
+
+        function Student(name, age, address) {
+            this.name = name;
+            this.age = age;
+            this.address = address;
+        }
+
+        function Teacher(tname, tage) {
+            this.tname = name;
+            this.tage = age;
+        }
+        let stuWang = new Student('小王', 25, '南阳'); //{name:'小王',age:25,adress:'南阳'}  [object Object]
+        console.log(stuWang.toString())
+
+        //动物  哺乳   猫
+        function Animal() {}
+        Animal.prototype.run = () => console.log('动物会跑'); //在动物的原型行加入一个run方法
+
+        Buru.prototype = new Animal(); //创建一个动物的对象，把给赋给了哺乳构造函数的原型对象
+
+        function Buru() {
+
+        }
+        Buru.prototype.taisheng = () => console.log('胎生'); //在哺乳动物的原型上加入一个taisheng方法
+
+        let mao = new Buru();
+        mao.run();
+        mao.taisheng();
+        console.log(mao.__proto__.hasOwnProperty('taisheng'))
+        console.log(mao.__proto__.__proto__.hasOwnProperty('run'))
+
+function Cat()
+        {
+
+        }
+        Cat.prototype=new Buru() //给自己原型上赋父亲的对象
+        Cat.prototype.miao=()=>console.log('喵喵')
+
+        let heimao=new Cat();
+        heimao.run()//animal
+        heimao.taisheng()//buru
+        heimao.miao()//自己身上
+
+        console.log(heimao.__proto__.__proto__.__proto__.__proto__.hasOwnProperty('toString'))
+        console.log(heimao.__proto__.__proto__.hasOwnProperty('taisheng'))
+```
+
+作业：
+
+​    汽车类  跑    豪华车  贵   电动汽车  充电   四驱电动汽车  四轮驱动 
+
+```js
+function Car()
+        {
+
+        }
+        Car.prototype.run=()=>console.log('跑')
+        
+        
+        Luxurycar.prototype=new Car();
+        function Luxurycar(){
+
+        }
+        Luxurycar.prototype.expensive=()=>console.log('贵')
+        
+        
+        let car1=new Luxurycar();
+        // car1.run();
+        // car1.expensive()
+        console.log(car1.__proto__.hasOwnProperty('expensive'))
+        console.log(car1.__proto__.__proto__.hasOwnProperty('run'))
+        Eleccar.prototype=new Luxurycar()
+        function Eleccar(){
+
+        }
+        Eleccar.prototype.charge=()=>console.log('充电')
+        function Siqucar(){
+
+        }
+        Siqucar.prototype=new Eleccar();
+        Siqucar.prototype.silunqudong=()=>console.log('四轮驱动')
+        let vehicle=new Siqucar();
+        vehicle.charge();
+        vehicle.run();
+        vehicle.expensive();
+        vehicle.silunqudong();
+        console.log(vehicle.__proto__.__proto__.__proto__.__proto__.hasOwnProperty('run'))
+```
+
+![image-20240229135521485](C:\Users\86132\AppData\Roaming\Typora\typora-user-images\image-20240229135521485.png)
+
+## 18闭包
+
+## 19apply和call
+
+## 20字符串常用方法
+
+## 21数组

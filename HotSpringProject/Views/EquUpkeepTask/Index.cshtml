@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form class="layui-form" name="movieform">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>保养任务表</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table id="demo" lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!--js模板  表头组件-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <input type="button" class="layui-btn layui-btn-sm" lay-submit="" lay-filter="btndown" lay-event="selectpeople" value="选择实施人">
+    </div>
+</script>
+<!--js模板  列组件-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="look">查看</a>
+</script>
+
+<script>
+    //layui 注册多个模块
+    layui.use(['table', 'util'], function () {
+        //实例化多个模块
+        var table = layui.table
+        var util = layui.util
+        var form = layui.form
+        //1.渲染实例
+        table.render({
+            elem: '#demo'
+            , height: 500
+            , width: 1200
+            , url: '/equupkeeptask/Query' //数据接口
+            , id: 'idTest'
+            , response: {
+                statusName: 'code' //规定数据状态的字段名称，默认：code
+                , statusCode: 200 //规定成功的状态码，默认：0
+                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                , countName: 'count' //规定数据总数的字段名称，默认：count
+                , dataName: 'data' //规定数据列表的字段名称，默认：data
+            }
+            , page: {
+                page: 1,
+                limit: 5
+            }//开启分页
+            , toolbar: "#toolbarDemo"
+            , cols: [[ //表头
+                { type: 'checkbox', fixed: 'left' }
+                , { field: 'task_name', title: '保养名称' }
+                , {
+                    field: 'start_time', title: '保养起始时间', templet: function (d) {
+                        return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    }
+                }
+                , { field: 'distribute_id', title: '分发人id' }
+                , {
+                    field: 'interval', title: '保养间隔', templet: function (d) {
+                        return d.interval + "天"
+                    }
+                }
+                , {
+                    field: 'end_time', title: '保养结束时间', templet: function (d) {
+                        return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    }
+                }
+                , {
+                    field: 'feedback_time', title: '反馈时间', templet: function (d) {
+                        return util.toDateString(d.feedback_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    }
+                }
+                , { field: 'upkeep_feedback_info', title: '保养反馈信息' }
+                //添加操作列
+                , { title: '操作', toolbar: "#barDemo", minWidth: 50 }
+            ]]
+        });
+        //表头触发事件
+        table.on('toolbar(test)', function (obj) {
+            //获取选中行的数据
+            var checkStatus = table.checkStatus('idTest'); //idTest 即为基础参数 id 对应的值
+            console.log(checkStatus)
+            let data = checkStatus.data
+            console.log(data)
+            //展示今日签到人员信息
+            //弹出弹窗
+            layer.open({
+                type: 2,
+                content: '/equupkeeptask/Sign',
+                area: ['450px', '500px'],
+                //layer层销
+                end: function () {
+
+                }
+            });
+        });
+        //2.单元格触发事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            //得到当前行的主键
+            let id = data.id;
+            //弹出弹窗
+            layer.open({
+                type: 2,
+                content: '/equupkeeptask/QRimg/' + id,
+                area: ['450px', '500px'],
+                //layer层销
+                end: function () {
+                   
+                }
+            });
+        })
+    })
+</script>
+
+

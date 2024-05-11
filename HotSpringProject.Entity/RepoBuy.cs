@@ -19,6 +19,5 @@ namespace HotSpringProject.Entity
         public string buyer { get; set; }
         public string buyer_phone { get; set; }
         public DateTime create_time { get; set; }
-        public int instock_id { get; set; }
     }
 }

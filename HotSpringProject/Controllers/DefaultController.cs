@@ -42,7 +42,7 @@ namespace HotSpringProject.Controllers
             }
             else
             {
-                return RedirectToAction("login", "default");
+                return View();  
             }
             
         }

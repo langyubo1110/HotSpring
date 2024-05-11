@@ -18,6 +18,6 @@ namespace HotSpringProjectRepository.Interface
         //修改
         bool Update(EmployRole employRole);
         //获得角色实体
-        EmployRole GetModelById(int id);
+        EmployRole GetModel(int id);
     }
 }
