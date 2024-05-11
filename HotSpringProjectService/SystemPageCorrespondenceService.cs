@@ -111,5 +111,20 @@ namespace HotSpringProjectService
                 return false;
             }
         }
+
+        List<SystemPageCorrespondenceService> ISystemPageCorrespondenceService.GetList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ResMessage Add(SystemPageCorrespondenceService movies)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ResMessage Update(SystemPageCorrespondenceService movies)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

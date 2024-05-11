@@ -38,14 +38,7 @@ namespace HotSpringProjectService
             List<RegEquipRes> result = _regEquipResRepositpry.GetList().ToList();
             return result == null ? ResMessage.Fail() : ResMessage.Success(result, 0);
         }
-        //public ResMessage GetListById(int id,int voteId)
-        //{
-        //    List<RegResVO> regResList = _regEquipResRepositpry.QueryBySql<RegResVO>($@"select rr.*,v.vote_status,v.vote_id from Reg_Equip_Research rr left join Reg_Research_Vote_Record v 
-        //                                                            on rr.id=v.equip_research_id
-        //                                                            where rr.reg_buy_id={id} and (v.vote_id = {voteId} OR v.vote_id IS NULL)").ToList();
-        //    //List<RegEquipRes> result = _regEquipResRepositpry.GetList().Where(x=>x.reg_buy_id==id).ToList();
-        //    return regResList == null ? ResMessage.Fail() : ResMessage.Success(regResList, 0);
-        //}
+        
         //采购表id  用户id
         public ResMessage GetListById(int id,int userId)
         {
