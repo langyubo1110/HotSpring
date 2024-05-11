@@ -17,6 +17,12 @@ namespace HotSpringProject.Entity.VO
         public int count { get; set; }
         public int auditcount {  get; set; }    
         public int show {  get; set; }
-        
+        public string name { get; set; }
+        //public string location { get; set; }
+        //public int status { get; set; }
+        //public string power { get; set; }
+        //public int used_time { get; set;}
+        //public int equ_type { get; set;}
+
     }
 }

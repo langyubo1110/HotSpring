@@ -33,7 +33,7 @@
                     </div>*@
 
                     <div class="table-responsive">
-
+                        <input type="hidden" name="fault_app_id" value="@ViewBag.id" />
                         <table id="demo" lay-filter="test"></table>
 
                     </div>
@@ -76,15 +76,16 @@
         var layer = layui.layer;
         var form = layui.form;
         var $ = layui.jquery;
+
         //表格渲染
         table.render({
             elem: '#demo'
             , height: 525
             , url: '/faultapp/getrepairList' //数据接口
-            , page: true//开启分页
+            , page: true//开启分页/
             , toolbar: '#toolbarDemo'
             , cols: [[ //表头
-              /*  { field: 'equip_id', title: '设备id', }*/
+                 { field: 'name', title: '设备名称', }
                 , { field: 'fault_report', title: '故障申报人' }
                 , { field: 'fault_describe', title: '故障描述' }
                 , { field: 'fault_time', title: '故障时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
