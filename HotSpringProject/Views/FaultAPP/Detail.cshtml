@@ -4,58 +4,72 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="layui-form" action="" lay-filter="SystemLogForm">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <input type="hidden" name="id" value="0" />
+                    <label class="layui-form-label">设备ID&nbsp;&nbsp;&nbsp;</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="equip_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">申报人&nbsp;&nbsp;&nbsp;</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="fault_report" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">故障描述</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="fault_describe" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">故障时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="fault_time" id="fault_time" lay-verify="required|date" autocomplete="off" class="layui-input demo-phone">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">创建时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="create_time" id="create_time" lay-verify="required|date" autocomplete="off" class="layui-input demo-phone">
+                    </div>
+                </div>
+            </div>
 
-<form class="layui-form" action="" lay-filter="SystemLogForm">
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <input type="hidden" name="id" value="0" />
-            <label class="layui-form-label">设备ID</label>
-            <div class="layui-input-inline">
-                <input type="text" name="equip_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">故障申报人</label>
-            <div class="layui-input-inline">
-                <input type="text" name="fault_report" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">故障描述</label>
-            <div class="layui-input-inline">
-                <input type="text" name="fault_describe"  lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">故障时间</label>
-            <div class="layui-input-inline">
-                <input type="text" name="fault_time" id="fault_time" lay-verify="required|date" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">创建时间</label>
-            <div class="layui-input-inline">
-                <input type="text" name="create_time" id="create_time" lay-verify="required|date" autocomplete="off" class="layui-input demo-phone">
-            </div>
-        </div>
-    </div>
-    
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
-    </div>
-</form>
-<script>
+</div>
+<style>
+    .layui-form-label {
+        float: left;
+        display: block;
+        padding: 9px 15px;
+        width: auto;
+        font-weight: 400;
+        line-height: 20px;
+        text-align: right;
+    }
+</style>
+        <script>
     layui.use(['form', 'util'], function (){
         var form = layui.form;
         var util = layui.util;
@@ -65,7 +79,7 @@
             if (res.code == 200) {
                 res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
                 res.data.fault_time = util.toDateString(res.data.fault_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
-              
+
                 form.val('editform', res.data);
             }
         })
@@ -98,4 +112,4 @@
             return false;
         })
     })
-</script>
+        </script>
