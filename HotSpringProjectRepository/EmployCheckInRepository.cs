@@ -31,7 +31,7 @@ namespace HotSpringProjectRepository
 
         public IEnumerable<EmployCheckIn> GetList()
         {
-            return _db.EmployCheckIns;
+            return _db.EmployCheckIn;
         }
         public IEnumerable<T> QueryBySql<T>(string sql)
         {
