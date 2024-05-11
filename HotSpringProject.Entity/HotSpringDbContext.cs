@@ -39,6 +39,9 @@ namespace HotSpringProject.Entity
         public DbSet<EquUpkeepPlan> EquUpkeepPlan { get; set; }
         public DbSet<SystemPageCorrespondence> SystemPageCorrespondences { get; set; }
         public DbSet<EmployRole> EmployRole { get; set; }
+        public DbSet<RepaieTaskReport> RepaieTaskReports { get; set; }
+        public DbSet<FaultAnalyse> FaultAnalyse { get; set; }
+        public DbSet<FaultApp> FaultApp { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
