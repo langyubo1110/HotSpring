@@ -39,8 +39,14 @@ namespace HotSpringProjectRepository
             return false;
         }
 
+        //public IEnumerable<Equipment> GetList()
+        //{
+
+        //    throw new NotImplementedException();
+        //}
+
         //查设备表全表
-        public IEnumerable<Equipment> GetListByPager()
+        public IEnumerable<Equipment> GetList()
         {
             IEnumerable<Equipment> list = _db.Equipment;
             return list;

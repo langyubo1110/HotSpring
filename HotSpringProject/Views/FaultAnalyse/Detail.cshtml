@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/assets/layui/css/modules/laydate/default/laydate.css" rel="stylesheet" />
+
+<form class="layui-form" action="">
+    @*//申报表ID*@
+    <input type="hidden" name="fault_app_id" value="@ViewBag.id" />
+    <div class="layui-form-item">
+            <label class="layui-form-label">设备名称</label>
+            <div class="layui-input-block">
+                <select name="equ_id" lay-verify="required">
+                    @foreach (var item in ViewBag.equipmentNames)
+                    {
+                        <option value="@item.id">@item.name</option>
+                    }
+                </select>
+            </div>
+        </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">分析人</label>
+        <div class="layui-input-block">
+            <select name="analyse_id" lay_search="" lay-verify="required">
+                @foreach (var item in ViewBag.emList)
+                {
+                    <option value="@item.id">@item.name</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">故障分析</label>
+        <div class="layui-input-block">
+            <textarea id="demo" name="contents" placeholder="请输入" class="layui-textarea"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'layedit', 'layer'], function (res) {
+        var form = layui.form;
+        var layedit = layui.layedit;
+        var layer = layui.layer;
+        layedit.build('demo'); //建立编辑器
+
+        //提交
+        form.on('submit(formDemo)', function (data) {
+            console.log(data.field)
+            var index = parent.layer.getFrameIndex(window.name);
+            data.field.contents = layedit.getContent(1)
+            //更改设备状态
+            $.post("/faultapp/StopAndAdd", { eid: data.field.equ_id, faultAnalyse:data.field}, function (res) {
+                if (res.code == 200) {
+                    layer.msg("停用成功")
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+
+

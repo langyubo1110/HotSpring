@@ -10,7 +10,7 @@ namespace HotSpringProjectRepository.Interface
     public interface IEquipmentRepository
     {
         //查
-        IEnumerable<Equipment> GetListByPager();
+        IEnumerable<Equipment> GetList();
         //增
         int Add(Equipment equ);
         //改
