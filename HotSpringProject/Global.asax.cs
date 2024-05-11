@@ -14,6 +14,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Autofac.Extras.Quartz;
+using HotSpringProject.Filter;
 
 namespace HotSpringProject
 {
@@ -25,9 +26,8 @@ namespace HotSpringProject
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             //容器注册
             AutofacRegister();
-            //GlobalFilters.Filters.Add(new AuthorizationFilter());//拦截器
+            /*GlobalFilters.Filters.Add(new AuthorizationFilter());*///拦截器
             AutoMapperConfig.Config();
-
 
             //BackUpDataBase.Initialize();
             //备份数据库

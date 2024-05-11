@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -26,14 +27,56 @@ namespace HotSpringProjectService
             //查询数据库中最大id数据对象，将id+1，为基础号码
             //再用000000加上基础号码拼成工号
             //employemp.identity_card = "FX" ;
+            int baseNumber = GenerateRandomBaseNumber();
+            // 生成员工的工号
+            string employeeNumber = GenerateEmployeeNumber(baseNumber);
+            employemp.job_number = employeeNumber;
             employemp.onboarding_time = DateTime.Now;
             employemp.create_time = DateTime.Now;
             employemp.account_status = 1;
             employemp.last_log_time = DateTime.Now;
+            int pwd = 123;
+            employemp.password = GetMD5Hash(pwd.ToString());
             int flag = _EmployEmpRepository.Add(employemp);
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
+        public static string GetMD5Hash(string input)
+        {
+            // 创建一个 MD5 实例
+            using (MD5 md5 = MD5.Create())
+            {
+                // 将输入字符串转换为字节数组
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
 
+                // 计算哈希值
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                // 将字节数组转换为字符串表示
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2"));
+                }
+                return sb.ToString();
+            }
+        }
+        private int GenerateRandomBaseNumber()
+        {
+            // 这里假设你要生成一个 6 位数的随机数作为基础号码
+            Random random = new Random();
+            int baseNumber = random.Next(100000, 999999); // 生成 100000 到 999999 之间的随机数
+
+            return baseNumber;
+        }
+
+        // 生成员工工号的方法
+        private string GenerateEmployeeNumber(int baseNumber)
+        {
+            // 根据实际情况设置工号的格式，这里以 "FX" 开头，后面跟着六位数字
+            string employeeNumber = "FX" + baseNumber.ToString();
+
+            return employeeNumber;
+        }
         public ResMessage Delete(int Id)
         {
             bool flag = _EmployEmpRepository.Delete(Id);
@@ -91,7 +134,8 @@ namespace HotSpringProjectService
             if (isLoginRequest==true)
             {
                 DateTime currentDateTime = DateTime.Now;
-                employemp.log_count += 1;
+                int log_count = int.Parse(employemp.log_count) + 1;
+                employemp.log_count = log_count.ToString();
                 employemp.last_log_time = currentDateTime;
             }
             else
@@ -105,9 +149,10 @@ namespace HotSpringProjectService
             return flag ? ResMessage.Success() : ResMessage.Fail();
         }
 
-        public bool Verify(string username, string password)
+        public bool Verify(string number, string password)
         {
-            return _EmployEmpRepository.Varfy(username, password);
+            string numberJob = GetMD5Hash(number.ToString());
+            return _EmployEmpRepository.Varfy(number, password);
         }
 
     }

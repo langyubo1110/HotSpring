@@ -30,7 +30,6 @@ namespace HotSpringProject.Entity
         public DbSet<RegVote> RegVote { get; set; }
         public DbSet<EmployPerform> EmployPerform { get; set; }
         public DbSet<EmployAllsalary> EmployAllsalary { get; set; }
-        public DbSet<EquUpKeepDistributed> EquUpKeepDistributed { get; set; }
         public DbSet<SystemPages> SystemPages { get; set; }
         public DbSet<GRoomSpareParts> GRoomSpareParts { get; set; }
         public DbSet<GRoomRepair> GRoomRepair { get; set; }
