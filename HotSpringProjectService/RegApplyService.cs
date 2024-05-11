@@ -57,13 +57,13 @@ namespace HotSpringProjectService
                     }
                     //--2审批插库
                     _regAuditRepository.Add(regAudit);
-                    _regApplyRepository.Commit();
+                    //_regApplyRepository.Commit();
                 }
                 return ResMessage.Success();
             }
             catch (Exception ex)
             {
-                _regApplyRepository.RollBack();
+               // _regApplyRepository.RollBack();
                 return ResMessage.Fail(ex.Message);
             }
         }
@@ -83,7 +83,7 @@ namespace HotSpringProjectService
             IEnumerable<RegApplyVO> list = GetListSqlAudit();
             int count = list.Count();
             List<RegApplyVO> result = list.OrderBy(x => x.id).Skip((filter.page - 1) * filter.limit).Take(filter.limit).ToList();
-            return  result==null?ResMessage.Fail():ResMessage.Success(list, count);
+            return  result==null?ResMessage.Fail():ResMessage.Success(result, count);
         }
         public List<RegApplyVO> GetListUnion()
         {

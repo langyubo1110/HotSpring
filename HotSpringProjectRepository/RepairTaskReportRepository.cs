@@ -24,7 +24,7 @@ namespace HotSpringProjectRepository
 
         public int Delete(int id)
         {
-            RepaieTaskReport repaieTaskReport=_Db.RepaieTaskReports.Find(id);
+            RepaieTaskReport repaieTaskReport=_Db.RepaieTaskReport.Find(id);
             _Db.Entry<RepaieTaskReport>(repaieTaskReport).State=System.Data.Entity.EntityState.Deleted;
             int flag=_Db.SaveChanges();
             return flag;
@@ -32,14 +32,14 @@ namespace HotSpringProjectRepository
 
         public IQueryable<RepaieTaskReport> GetList()
         {
-          IQueryable<RepaieTaskReport> list =_Db.RepaieTaskReports;
+          IQueryable<RepaieTaskReport> list =_Db.RepaieTaskReport;
             return list;
         }
        
 
         public RepaieTaskReport GetModel(int id)
         {
-            return _Db.RepaieTaskReports.Find(id);
+            return _Db.RepaieTaskReport.Find(id);
         }
 
         public IEnumerable<T> QueryBySql<T>(string sql)
