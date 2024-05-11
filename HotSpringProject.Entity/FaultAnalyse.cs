@@ -18,6 +18,7 @@ namespace HotSpringProject.Entity
         public string contents {  get; set; }
         public int final_scheme {  get; set; }
         public DateTime create_time {  get; set; }
-        
+       
+
     }
 }

@@ -8,12 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HotSpringProject.Entity;
-using HotSpringProjectRepository;
-using HotSpringProjectRepository.Interface;
-using HotSpringProjectService.Interface;
-using DotNet.Utilities;
-
 namespace HotSpringProjectService
 {
     public class EmployRoleService : IEmployRoleService
@@ -51,12 +45,12 @@ namespace HotSpringProjectService
 
         public ResMessage Delete(int id)
         {
-           bool flag=_employRoleRepository.Delete(id);
-            return flag?ResMessage.Success():ResMessage.Fail();
-
+            bool flag = _employRoleRepository.Delete(id);
+            return flag ? ResMessage.Success() : ResMessage.Fail();
+        }
         public IEnumerable<EmployRole> GetList()
         {
-            return _db.GetList();
+            return _employRoleRepository.GetList();
         }
 
         public ResMessage GetModel(int id)

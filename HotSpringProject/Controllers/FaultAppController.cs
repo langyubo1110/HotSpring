@@ -9,6 +9,7 @@ using DotNet.Utilities;
 using HotSpringProject.Entity;
 using HotSpringProjectService;
 using HotSpringProjectService.Interface;
+using Newtonsoft.Json.Linq;
 
 namespace HotSpringProject.Controllers
 {
@@ -37,6 +38,10 @@ namespace HotSpringProject.Controllers
         public ActionResult Detail(int id = 0)
         {
             ViewBag.id = id;
+            return View();
+        }
+        public ActionResult RepairTaskReport()
+        {
             return View();
         }
        
@@ -71,11 +76,12 @@ namespace HotSpringProject.Controllers
 
             return Json(_faultAppService.StopAndAdd(eid, faultAnalyse), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetRepairList()
+        public JsonResult GetRepairList( int page, int limit)
         {
-            return Json(_faultAppService.GetRepairList(), JsonRequestBehavior.AllowGet);
+            ResMessage result = _faultAppService.GetRepairList(page ,limit);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
-        
+      
         #endregion
     }
 }

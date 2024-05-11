@@ -37,7 +37,6 @@ namespace HotSpringProjectService
             return _faultAppRepository.Delete(id) > 0 ? true : false;
 
         }
-
         public ResMessage GetList(int page, int limit)
         {
             IQueryable<FaultApp> list = _faultAppRepository.GetList();
@@ -75,12 +74,40 @@ namespace HotSpringProjectService
             return list == null ? ResMessage.Fail() : ResMessage.Success(list);
         }
       
-        public ResMessage GetRepairList()
+        public ResMessage GetRepairList(int page, int limit)
         {
-            List<FaultAppVO> list = _faultAppRepository.QueryBySql<FaultAppVO>($@"select a.*,COUNT(fault_app_id) count from Rep_Fault_App a left join Rep_Fault_Analyse s on a.id=s.fault_app_id Group By a.id,a.equip_id,a.fault_report,a.fault_describe,a.fault_time,a.create_time ").ToList();
+            IQueryable<FaultApp> List = _faultAppRepository.GetList();
+            int count = List.Count();
+            List<FaultApp> pagedResult = List.OrderBy(x => x.id).Skip((page - 1) * limit).Take(limit).ToList();
+            List<FaultAnalyse> faultAnalyses = _faultAnalyseRepository.GetList().ToList();
+            //查故障申报全表
+            List<FaultApp> list = _faultAppRepository.GetList().ToList();
+            List<FaultAppVO> res = new List<FaultAppVO>();
+            foreach(var item in list)
+            {
+                FaultAppVO vo = new FaultAppVO();
+                vo.fault_report = item.fault_report;
+                vo.fault_time= item.fault_time;
+                vo.fault_describe = item.fault_describe;
+                vo.equip_id = item.equip_id;
+                vo.create_time = item.create_time;
+                vo.id = item.id;
+                vo.count = faultAnalyses.Where(x => x.fault_app_id == item.id).ToList().Count;
+                //已审批数量
+                vo.auditcount = faultAnalyses.Where(x => x.contents != "" && x.contents != null).ToList().Count;
+                if (vo.count == vo.auditcount)
+                {
+                    //隐藏按钮
+                    vo.show = 0;
+                }
+                else
+                {
+                    vo.show = 1;
+                }
+                res.Add(vo);
+            }
 
-
-            return list == null ? ResMessage.Fail() : ResMessage.Success(list);
+            return  list==null ? ResMessage.Fail() : ResMessage.Success(res,count);
         }
     }
 }

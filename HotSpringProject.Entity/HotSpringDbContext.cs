@@ -25,10 +25,10 @@ namespace HotSpringProject.Entity
         public DbSet<RegAudit> regAudit { get; set; }
         public DbSet<RegApply> RegApply { get; set; }
         public DbSet<EquipType> EquipType { get; set; }
-        public DbSet<RegApply> RegApply { get; set; }
+      
         public DbSet<RegEquipRes> RegEquipRes { get; set; }
-        public DbSet<SystemPageCorrespondence> systemPageCorrespondences { get; set; }
-        public DbSet<SystemPages> systemPages { get; set; }
+        public DbSet<SystemPageCorrespondence> SystemPageCorrespondences { get; set; }
+        public DbSet<SystemPages> SystemPages { get; set; }
         public DbSet<EmployRole> EmployRole { get; set; }
         public DbSet<RepaieTaskReport> RepaieTaskReports { get; set; }
         public DbSet<FaultAnalyse> FaultAnalyse { get; set; }

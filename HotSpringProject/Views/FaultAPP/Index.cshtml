@@ -3,14 +3,12 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <div class="layui-card">
+                    @*<div class="layui-card">
                         <div class="layui-card-body">
                             <form class="layui-form" action="" lay-filter="searchForm">
                                 <div class="layui-form-item">
@@ -32,7 +30,8 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
+                    </div>*@
+
                     <div class="table-responsive">
 
                         <table id="demo" lay-filter="test"></table>
@@ -51,10 +50,24 @@
 </script>
 <!--操作单元格-->
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    @*<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>*@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-sm" lay-event="report">故障分析</a>
-
+    {{# if(d.show === 1){ }}
+    <a class="layui-btn layui-btn-sm btn-report" lay-event="report">故障分析</a>
+    {{# } }}
+</script>
+  @*auditcount=0都不显示，1/4时显示维修任务添加，4/4时显示维修任务上报*@ 
+<script type="text/html" id="repair">
+    <a class="layui-btn layui-btn-xs" lay-event="repairReport">维修任务上报</a>
+    {{#if (d.auditcount === 0) { }}
+    <!-- 不显示 -->
+    {{# } else{ }}
+    {{#if (d.auditcount === d.count){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="repairReport">维修任务上报</a>
+    {{# }else{ }}
+    @*<a class="layui-btn layui-btn-xs" lay-event="repairAdd">维修记录上报</a>*@
+    {{# } }}
+    {{# } }}
 </script>
 <script>
     layui.use(['table', 'form', 'util', 'layer'], function () {
@@ -71,15 +84,14 @@
             , page: true//开启分页
             , toolbar: '#toolbarDemo'
             , cols: [[ //表头
-                
-                 { field: 'equip_id', title: '设备id', }
+              /*  { field: 'equip_id', title: '设备id', }*/
                 , { field: 'fault_report', title: '故障申报人' }
                 , { field: 'fault_describe', title: '故障描述' }
                 , { field: 'fault_time', title: '故障时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
                 , { field: 'create_time', title: '创建时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
                 , { title: '操作', toolbar: '#barDemo' }
-                
-                , { field: 'score', title: '审核状态', templet: function (d) { return d.count + ' / '+ 4; } }
+                , { field: 'count', title: '审核状态', templet: function (d) { return d.auditcount + ' / ' + d.count; } }
+                , { title: '维修任务', toolbar: '#repair' }
             ]]
             , parseData: function (res) { //res 即为原始返回的数据
                 return {
@@ -92,6 +104,7 @@
         });
         //行单击事件
         table.on('tool(test)', function (obj) {
+            var data = obj.data;
             var id = obj.data.id;
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
@@ -118,19 +131,34 @@
                         content: `/faultanalyse/detail/${id}`
                     })
                 }
-                else {
+                if (obj.event === 'edit') {
                     layer.open({
                         title: '编辑',
                         type: 2,
-                        area: ['800px', '300px'],
+                        area: ['500px', '600px'],
                         content: '/faultapp/detail/' + id
+                    })
+                }
+                if (obj.event === 'repairReport') {
+                    layer.open({
+                        title: '维修任务上报',
+                        type: 2,
+                        area: ['500px', '600px'],
+                        content: '/faultapp/repairTaskReport/' + id
+                    })
+                }
+                if (obj.event === 'repairAdd') {
+                    layer.open({
+                        title: '维修任务添加',
+                        type: 2,
+                        area: ['500px', '600px'],
+                        content: '/faultapp/repairAdd/' + id
                     })
                 }
             }
         });
         table.on('toolbar(test)', function (obj) {
-            if (obj.event == "add")
-            {
+            if (obj.event == "add") {
                 layer.open({
                     title: '添加',
                     type: 2,
@@ -140,16 +168,16 @@
             }
         })
         //搜索工具栏
-        form.on('submit(btnSearch)', function (data) {
-            //表格重载 where 再加一个参数name
-            console.log(data)
-            table.reload('demo', {
-                where: {
-                    equip_id: data.field.txtSName,
-                }
-            })
-             return false;
-        });
+        //form.on('submit(btnSearch)', function (data) {
+        //    //表格重载 where 再加一个参数name
+        //    console.log(data)
+        //    table.reload('demo', {
+        //        where: {
+        //            equip_id: data.field.txtSName,
+        //        }
+        //    })
+        //    return false;
+        //});
     })
 </script>
 

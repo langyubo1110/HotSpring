@@ -28,7 +28,8 @@ namespace HotSpringProjectRepository
 
         public IQueryable<FaultAnalyse> GetList()
         {
-            throw new NotImplementedException();
+            IQueryable<FaultAnalyse> list = _Db.FaultAnalyse;
+            return list;
         }
 
         public FaultAnalyse GetModel(int id)

@@ -15,5 +15,8 @@ namespace HotSpringProject.Entity.VO
         public DateTime fault_time { get; set; }
         public DateTime create_time { get; set; }
         public int count { get; set; }
+        public int auditcount {  get; set; }    
+        public int show {  get; set; }
+        
     }
 }

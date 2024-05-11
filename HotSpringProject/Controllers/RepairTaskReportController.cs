@@ -83,12 +83,8 @@ namespace HotSpringProject.Controllers
         //更新设备状态接口
         public JsonResult StopAndAdd(int id,string contents )
         {
-
             return Json(_repairTaskReportService.StopAndAdd(id,contents), JsonRequestBehavior.AllowGet) ;
         }
-        
-        
-
         #endregion
     }
 }

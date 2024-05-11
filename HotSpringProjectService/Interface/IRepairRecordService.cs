@@ -8,15 +8,14 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectService.Interface
 {
-    public interface IFaultAppService
+    public interface IRepairRecordService
     {
         ResMessage GetList(int page, int limit);
         bool Delete(int id);
-        ResMessage UpDate(FaultApp faultApp);
-        ResMessage Add(FaultApp faultApp);
+        ResMessage UpDate(RepairRecord repairRecord);
+
+        ResMessage Add(RepairRecord  repairRecord);
         ResMessage GetModel(int id);
-        ResMessage StopAndAdd(int eid, FaultAnalyse faultAnalyse);
-        ResMessage GetListByRole();
-        ResMessage GetRepairList(int page,int limit );
+
     }
 }

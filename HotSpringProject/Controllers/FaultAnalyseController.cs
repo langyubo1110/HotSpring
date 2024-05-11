@@ -39,5 +39,6 @@ namespace HotSpringProject.Controllers
         {
             return Json(_faultAnalyseService.Add(faultAnalyse), JsonRequestBehavior.AllowGet);
         }
+
     }
 }
