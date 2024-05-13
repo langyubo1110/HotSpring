@@ -30,11 +30,14 @@ namespace HotSpringProject.Controllers
         // GET: RegResearch
         public ActionResult ReIndex(int id = 0)
         {
+            EmployEmp employEmp = (EmployEmp)Session["User"];
+            int userId = employEmp.id;
+            string userName = employEmp.name;
             List<EmployEmp> list = _employEmpService.GetList().ToList();
             ViewBag.Id = id;//采购表id
             ViewBag.list = list;
-            ViewBag.userName = Session["userName"];
-            ViewBag.userId = Session["userId"];
+            ViewBag.userName = userName;
+            ViewBag.userId = userId;
             return View();
         }
         public ActionResult ResAdd(int id = 0)
@@ -55,7 +58,9 @@ namespace HotSpringProject.Controllers
         //查询调研表的数据
         public ActionResult GetList(int id = 0)
         {
-            int voteId = Convert.ToInt32(Session["userId"]);
+            EmployEmp employEmp = (EmployEmp)Session["User"];
+            int userId = employEmp.id;
+            int voteId = Convert.ToInt32(userId);
             ResMessage res = _regEquipResService.GetListById(id, voteId);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
@@ -174,8 +179,9 @@ namespace HotSpringProject.Controllers
         //index页更改投票信息
         public ActionResult VoteUpdate(int resId = 0, int regId = 0)
         {
-            int userID = Convert.ToInt32(Session["userID"]);
-            ResMessage res = _regVoteService.UpdateWithVote(regId, resId, userID);
+            EmployEmp employEmp = (EmployEmp)Session["User"];
+            int userId = employEmp.id;
+            ResMessage res = _regVoteService.UpdateWithVote(regId, resId, userId);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
         //下载文件
