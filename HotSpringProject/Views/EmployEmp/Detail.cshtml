@@ -14,13 +14,13 @@
             </div>
         </div>
     </div>
-    <div class="layui-form-item">
+   <div class="layui-form-item" style="margin-left:34px">
         <div class="layui-inline">
             <input type="radio" name="gendar" value="0" title="男">
             <input type="radio" name="gendar" value="1" title="女" checked>
         </div>
     </div>
-    <div class="layui-form-item">
+    <div class="layui-form-item" style="margin-left:5px">
         <div class="layui-inline">
             <label class="layui-form-label">身份证</label>
             <div class="layui-input-inline">
@@ -33,44 +33,74 @@
             <label class="layui-form-label">头像</label>
             <button type="button" class="layui-btn" id="test1">上传图片</button>
             <div class="layui-upload-list">
-                <img class="layui-upload-img" id="preview">
-                <p id="demoText"></p></div>
-                <input type="hidden" name="img_url" id="hfimg_url" value="" />
+                <img class="layui-upload-img" id="preview" style="width: 200px; height: 200px;">
+                <p id="demoText"></p>
             </div>
-        </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">工号</label>
-            <div class="layui-input-inline">
-                <input type="text" name="job_number" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
-            </div>
+            <input type="hidden" name="avatar" id="avatar" value="" />
+            <input type="hidden" name="job_number" value="" />
         </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">角色</label>
             <div class="layui-input-inline">
-                <input type="text" name="role_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                    <select name="role_id" lay-verify="required" lay-search="" lay-filter="ddltest">
+                        <option value=""></option>
+                        @foreach (var item in ViewBag.list)
+                        {
+                            <option value="@item.id">@item.role_name</option>
+                        }
+                    </select>
+                @*<input type="text" name="role_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">*@
             </div>
         </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-           <input type="submit"  class="layui-btn" lay-submit="" lay-filter="demo1" value="提交" />
+            <input type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" value="提交" />
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
 </form>
 <script>
-    layui.use(['form', 'util','layer'], function () {
+    layui.use(['form', 'util','layer','upload'], function () {
         var form = layui.form;
         var util = layui.util;
         var layer = layui.layer;
+        var upload = layui.upload;
         var id =@ViewBag.Id;
+        $(document).ready(function () {
+            checkAvatar();
+        });
+
+        // 检查头像是否为空，若为空则设置默认图片
+        function checkAvatar() {
+            var avatar = $("#avatar").val();
+            if (!avatar) {
+                $("#preview").attr("src", "/assets/Aimg/u=3838113375,3810336988&fm=253&gp=0.jpg");
+                $("#avatar").val("/assets/Aimg/u=3838113375,3810336988&fm=253&gp=0.jpg");
+            }
+        }
         $.post("/EmployEmp/getEmp", { id: id }, function (res) {
             if (res.code == 200) {
                 res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
                 form.val('empForm', res.data);
+            }
+        });
+        var uploadInst = upload.render({
+            elem: '#test1'
+            , url: '/EmployEmp/img'
+            , done: function (res) {
+                if (res.code == 200) {
+                    $("#demo1").attr("src", res.data);
+                    $("#avatar").val(res.data);
+                    $("#preview").attr("src", "res.data");
+                }
+                console.log(res);
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                layer.msg('上传失败');
             }
         });
         form.on('submit(demo1)', function (data) {
@@ -88,6 +118,7 @@
             }
             else {
                 $.post("/EmployEmp/edit", { employemp: obj }, function (res) {
+                    console.log(obj);
                     if (res.code == 200) {
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);

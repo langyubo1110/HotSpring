@@ -4,12 +4,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <body>
-    <div class="layui-container">
+    <div class="layui-container" style="margin-top:300px">
         <div class="layui-row">
             <div class="layui-col-md-offset3 layui-col-md6" style="margin-top: 50px;">
                 <form class="layui-form" id="checkInForm">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">班次类型</label>
+
+                        <label class="layui-form-label" style="width:100px">班次类型</label>
+
                         <div class="layui-input-block">
                             <select name="shiftType" id="dropList" lay-verify="required">
                                 <option value="">请选择班次类型</option>
@@ -21,7 +23,7 @@
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button class="layui-btn" lay-submit lay-filter="checkIn">上班签到</button>
+                            <button id="checkInBtn" class="layui-btn" lay-submit lay-filter="checkIn">上班签到</button>
                         </div>
                     </div>
                 </form>
@@ -41,8 +43,14 @@
                 var selectedValue = $('#dropList').val();
                 // 调用接口插入数据
                 $.get('/EmployCheckIn/Insert', { selectedValue: selectedValue }, function (res) {
-                    if (res.code === 0) {
-                        layer.msg('签到成功：' + res.msg);
+                    if (res.code === 200) {
+                        $('#checkInBtn').hide();
+                        $('#resultContainer').removeClass('layui-hide');
+                        $('#resultLabel').text('您已成功签到！');
+                        // 设置定时器，10秒后返回主页
+                        setTimeout(function () {
+                            window.location.href = 'Default/index'; // 修改为返回主页的地址
+                        }, 5000);
                     } else {
                         layer.msg('签到失败：' + res.msg, { icon: 2 });
                     }

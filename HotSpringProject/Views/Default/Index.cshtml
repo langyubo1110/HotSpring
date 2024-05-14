@@ -49,16 +49,14 @@
                         @foreach (var item in Model)
                         {
                             <li>
-                                <a class="J_menuItem" href="/user/child"><i class="fa fa-magic"></i> <span class="nav-label">@item.module_name</span></a>
+                                <a class="J_menuItem"><i class="fa fa-magic"></i> <span class="nav-label">@item.module_name</span></a>
                                 <ul class="nav nav-second-level">
                                     @foreach (var p in item.page_list)
                                     {
                                         <li><a class="J_menuItem" href="@p.page_address">@p.page_name</a></li>
                                     }
-
                                 </ul>
                             </li>
-
                         }
                                             
                     </ul>

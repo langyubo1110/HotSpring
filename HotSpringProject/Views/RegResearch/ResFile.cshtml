@@ -4,5 +4,124 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<table class="table table-striped" id="demo" lay-filter="test"></table>
+<script type="text/html" id="typeTpl">
+    {{# if(d.type === 0){ }}
+    调研文件
+    {{# } else if(d.type === 1){ }}
+    设备文件
+    {{# } }}
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="download">下载</a>
+</script>
+<!--js模板  表头组件-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <input type="button" class="layui-btn layui-btn-sm" lay-submit="" lay-filter="btndown" lay-event="downloadselect" value="下载勾选的文件">
+    </div>
+</script>
+<script>
+    layui.use(['form', 'laydate', 'util', 'layedit', 'layer'], function () {
+            var form = layui.form;
+            var laydate = layui.laydate;
+            var util = layui.util;
+            var table = layui.table;
+            var id =@ViewBag.Id;
+        table.render({
+            elem: '#demo'
+            //分页
+            , response: {
+                statusName: 'code' //规定数据状态的字段名称，默认：code
+                , statusCode: 200 //规定成功的状态码，默认：0
+                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                , countName: 'count' //规定数据总数的字段名称，默认：count
+                , dataName: 'data' //规定数据列表的字段名称，默认：data
+            }
+
+            ,id:'idTest'
+            , toolbar: '#toolbarDemo' //开启表格工具栏
+            , cols: [[ //标题栏
+                { type: 'checkbox', fixed: 'left' },
+                { field: 'id', title: '主键', sort: true }
+                , { field: 'reg_buy_id', title: '采购id', sort: true }
+                , { field: 'type', title: '文件类型', templet: '#typeTpl' }
+                , { field: 'file_path_name', title: '文件名' }
+                , {
+                    field: 'create_time', title: '上传时间', sort: true
+                    , templet: function (d) {
+                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    }
+                }
+                , { title: '操作', toolbar: "#barDemo", minWidth: 200 }
+            ]]
+            , url: '/regresearch/getfile/' + id
+            , skin: 'line' //表格风格
+        });
+        table.on('toolbar(test)', function (obj) {
+            //获取选中行的数据
+            var checkStatus = table.checkStatus('idTest'); //idTest 即为基础参数 id 对应的值
+            console.log(checkStatus)
+            let data = checkStatus.data
+            console.log(data)
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/regresearch/downselect', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.responseType = 'blob';
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var blob = xhr.response;
+
+                    // 创建一个 URL 对象
+                    var url = window.URL.createObjectURL(blob);
+
+                    // 创建一个隐藏的<a>元素
+                    var downloadLink = document.createElement('a');
+                    downloadLink.href = url;
+                    downloadLink.download = 'files.zip';
+
+                    // 将<a>元素添加到页面中
+                    document.body.appendChild(downloadLink);
+
+                    // 模拟点击下载链接
+                    downloadLink.click();
+
+                    // 下载完成后释放 URL 对象
+                    window.URL.revokeObjectURL(url);
+
+                    // 移除<a>元素
+                    document.body.removeChild(downloadLink);
+                } else {
+                    console.error('下载文件失败');
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error('下载文件时发生错误');
+            };
+            xhr.send(JSON.stringify(data));
+        });
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            //得到当前行的主键
+            let id = data.id;
+            //判断点击的是那个按钮
+            //单个下载
+            if (obj.event == "download") {
+                console.log(obj.data)
+                let data = obj.data
+               
+                $.post("/regresearch/downloading", { data: data }, function (res) {
+                    layer.msg(res.msg);
+                })
+            }
 
 
+        });
+        
+    })
+
+
+</script>

@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "RepairTaskList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>维修任务列表</h2>
+<table class="layui-hide" id="demo" lay-filter="test"></table>
+<script>
+    layui.use(['table'], function () {
+        var table = layui.table;
+        // 创建渲染实例
+        table.render({
+            elem: '#demo'
+            , url: '/repairtaskreport/list' // 此处为静态模拟数据，实际使用时需换成真实接口
+            , toolbar: '#toolbarDemo'
+            , page: true
+            , cols: [[              
+                , { field: 'reporter_id', title: '维修任务' }
+                , { field: 'reporter_id', title: '状态' }
+                , { field: 'reporter_id', title: '审核状态' }
+            ]]
+            
+        })
+
+    })
+    
+</script>

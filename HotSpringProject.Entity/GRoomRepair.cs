@@ -18,7 +18,7 @@ namespace HotSpringProject.Entity
         public string location { get; set; }
         public DateTime start_time { get; set; }
         public DateTime end_time { get; set; }
-        public string context { get; set; }
+        public string work_context { get; set; }
         public DateTime create_time { get; set; }
     }
 }
