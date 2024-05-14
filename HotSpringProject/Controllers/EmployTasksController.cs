@@ -42,8 +42,8 @@ namespace HotSpringProject.Controllers
         }
         public ActionResult QRimg(int id)
         {
-            List<EquUpkeepTaskVO> list = _dbEqu.getlistnofilter();
-            list = list.Where(x => x.id == id).ToList();
+            List<EquUpkeepTask> list = _dbEqu.GetTaskList();
+            list = list.Where(x => x.equ_plan_id == id).ToList();
             return View(list);
         }
         public ActionResult Index()
@@ -91,6 +91,12 @@ namespace HotSpringProject.Controllers
             {
                 return Json(new { code = 404, message = "No data found for the provided ID." }, JsonRequestBehavior.AllowGet);
             }
+        }
+        [ValidateInput(false)]
+        public JsonResult UpdateTaskinfo(int task_id,string data1)
+        {
+            ResMessage res = _dbTasks.UpdateTask(task_id, data1);
+            return Json(res);
         }
     }
 }

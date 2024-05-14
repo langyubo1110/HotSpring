@@ -69,7 +69,7 @@ inner join Equ_Type y on y.id=i.equ_type");
             return flag;
         }
 
-        ResMessage IEquUpkeepTaskService.upkeepdeit(List<EmployCheckInVO> data, int[] equid, int[] equplanid)
+        public ResMessage upkeepdeit(List<EmployCheckInVO> data, int[] equid, int[] equplanid)
         {
             foreach (var item in equid)
             {

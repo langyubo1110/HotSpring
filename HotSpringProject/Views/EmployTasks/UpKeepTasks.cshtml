@@ -53,8 +53,8 @@
                 }
                 , toolbar: '#toolbarDemo'
                 , cols: [[
-                    { field: 'name', title: '执行人姓名' }
-                    , { field: 'equ_equipment_name', title: '设备名称' }
+                    { field: 'people_name', title: '执行人姓名' }
+                    , { field: 'name', title: '设备名称' }
                     , {
                         field: 'interval', title: '间隔（天）'
                     }
@@ -92,8 +92,9 @@
             });
 
             table.on('tool(test)', function (obj) {
+
                 var data = obj.data;
-                var id = data.id;
+                var id = data.equ_plan_id;
                 if (obj.event === 'edit') {
                     // 显示弹出层
                     layer.open({
