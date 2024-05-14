@@ -77,18 +77,6 @@
                     that.elemList.append(tr);
                     element.render('progress'); //渲染新加的进度条组件
                 });
-                //// 预览文件列表
-                //obj.preview(function (index, file, result) {
-                //    var fileSize = (file.size / 1024).toFixed(2) + 'KB';
-                //    $('#demoList').append('<tr><td>' + file.name + '</td><td>' + fileSize + '</td><td><button class="layui-btn layui-btn-xs layui-btn-danger deleteBtn">删除</button></td></tr>');
-                //    //删除
-                //    fileSize.find('.deleteBtn').on('click', function () {
-                //        delete files[index]; //删除对应的文件
-                //        fileSize.remove();
-                //        uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
-                //    });
-                //    that.elemList.append(fileSize);
-                //});
             }
         , progress: function (n, elem, e, index) { //注意：index 参数为 layui 2.6.6 新增
             element.progress('progress-demo-' + index, n + '%'); //执行进度条。n 即为返回的进度百分比

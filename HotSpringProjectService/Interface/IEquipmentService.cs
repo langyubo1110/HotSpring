@@ -22,5 +22,7 @@ namespace HotSpringProjectService.Interface
         ResMessage GetUsedModel(int id, string use);
         IEnumerable<EquipmentTypeVO> GetListUnion();
         List<Equipment> getList();
+
+        
     }
 }

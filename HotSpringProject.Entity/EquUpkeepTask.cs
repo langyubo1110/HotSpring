@@ -14,6 +14,7 @@ namespace HotSpringProject.Entity
         [Key]
         public int id { get; set; }
         public int equ_plan_id { get; set; }
+        public int equ_id { get; set; }
         public DateTime? upkeep_time { get; set; }
         public DateTime? distribute_time { get; set; }
         public DateTime? feedback_time { get; set; }

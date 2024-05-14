@@ -29,5 +29,7 @@ namespace HotSpringProjectRepository
             int flag = _db.Database.ExecuteSqlCommand(sql);
             return flag;
         }
+
+
     }
 }
