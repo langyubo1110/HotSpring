@@ -22,6 +22,7 @@ namespace HotSpringProject.Entity.VO
         public DateTime? feedback_time { get; set; }
         public int? distribute_id { get; set; }
         public int? exec_id { get; set; }
+        public int? importance { get; set; }
         public string upkeep_feedback_info { get; set; }
         public string QRimg { get; set; }
 
