@@ -17,5 +17,6 @@ namespace HotSpringProject.Controllers
         {
             return View();
         }
+       
     }
 }
