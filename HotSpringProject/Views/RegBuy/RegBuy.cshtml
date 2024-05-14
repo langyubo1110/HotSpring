@@ -104,7 +104,7 @@
         
         laydate.render({
             elem: '#ApplyTime' //指定元素
-            , value: '2024-01-01'
+            
         });
         //构建富文本编辑器
         var index= layedit.build('txtAreaDemo'); //建立编辑器
@@ -124,7 +124,7 @@
 
         form.on('submit(demo1)', function (data) {
             let obj = data.field;
-            obj.basic_info = JSON.stringify(layedit.getContent(1));//富文本取值入库
+            obj.basic_info = layedit.getContent(1);//富文本取值入库
             //console.log(obj.basic_info);
             if (id == 0) {
                 $.post("/regbuy/insert", { regapply: obj }, function (res) {

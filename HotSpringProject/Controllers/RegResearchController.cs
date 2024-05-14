@@ -18,13 +18,15 @@ namespace HotSpringProject.Controllers
         private readonly IRegEquipResService _regEquipResService;
         private readonly IRegVoteService _regVoteService;
         private readonly IRegFileService _regFileService;
+        private readonly IEquipmentService _equipmentService;
 
-        public RegResearchController(IEmployEmpService employEmpService, IRegEquipResService regEquipResService, IRegVoteService regVoteService, IRegFileService regFileService)
+        public RegResearchController(IEmployEmpService employEmpService, IRegEquipResService regEquipResService, IRegVoteService regVoteService, IRegFileService regFileService, IEquipmentService equipmentService)
         {
             _employEmpService = employEmpService;
             _regEquipResService = regEquipResService;
             _regVoteService = regVoteService;
             _regFileService = regFileService;
+            _equipmentService = equipmentService;
         }
         #region 页面
         // GET: RegResearch
@@ -52,6 +54,12 @@ namespace HotSpringProject.Controllers
 
             return View();
         }
+        public ActionResult ResBuy(string name, int resid = 0)
+        {
+            ViewBag.name = name;
+            ViewBag.resid = resid;
+            return View();
+        }
         #endregion
 
         #region 接口
@@ -71,6 +79,7 @@ namespace HotSpringProject.Controllers
             ResMessage res = _regEquipResService.GetListForBind(id);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
+        //查对应文件全表
         public ActionResult GetFile(int id = 0)//采购表id
         {
             ResMessage res = _regFileService.GetListForFile(id);
@@ -107,7 +116,26 @@ namespace HotSpringProject.Controllers
                 return Json(ResMessage.Fail($"文件保存失败：{ex.Message}"));
             }
         }
-        //                return Json(ResMessage.Fail($"文件保存失败：{ex.Message}"));
+        public ActionResult DownloadSingle(RegFileVO data)
+        {
+            // 文件路径
+            string filePath = (Server.MapPath(data.file_path) );
+            // 写入数据到文件
+            try
+            {
+                string type = data.file_path_name.Substring(data.file_path_name.LastIndexOf('.') + 1);
+                // 在此处生成你要下载的文件，或者从某个位置读取文件
+                byte[] fileBytes = System.IO.File.ReadAllBytes(Server.MapPath(data.file_path) );
+                // 将 txt 文件发送给客户端进行下载
+                return File(fileBytes, $"application/{type}", $"{data.file_path_name}");
+            }
+            catch (Exception ex)
+            {
+                return Json(ResMessage.Fail($"{ex.Message}"));
+            }
+
+        }
+        //批量下载
         public ActionResult DownSelect(List<RegFile> data)
         {
             List<string> filesToCompress = new List<string>();
@@ -140,6 +168,10 @@ namespace HotSpringProject.Controllers
             return File(fileBytes, "application/zip", "files.zip");
         }
 
+
+
+
+        //文件批量上传
         public ActionResult Fileimg(int id)//采购表id
         {
             HttpPostedFileBase file = Request.Files[0];
@@ -171,6 +203,7 @@ namespace HotSpringProject.Controllers
 
         }
         //resadd插入调研表
+        [ValidateInput(false)]//关键代码 关闭验证
         public ActionResult Insert(RegEquipRes regEquipRes)
         {
             ResMessage res = _regEquipResService.Add(regEquipRes);
@@ -184,7 +217,11 @@ namespace HotSpringProject.Controllers
             ResMessage res = _regVoteService.UpdateWithVote(regId, resId, userId);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
-        //下载文件
+        public ActionResult EquipAdd(Equipment Equipment)
+        {
+            ResMessage res = _equipmentService.AddWithRes(Equipment);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
 
         #endregion
     }

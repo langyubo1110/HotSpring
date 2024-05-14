@@ -103,22 +103,64 @@
             };
             xhr.send(JSON.stringify(data));
         });
+
+
         table.on('tool(test)', function (obj) {
-            var data = obj.data;
-            //得到当前行的主键
-            let id = data.id;
-            //判断点击的是那个按钮
-            //单个下载
-            if (obj.event == "download") {
-                console.log(obj.data)
-                let data = obj.data
+            //var data = obj.data;
+            ////得到当前行的主键
+            //let id = data.id;
+            ////判断点击的是那个按钮
+            ////单个下载
+            //if (obj.event == "download") {
+            //    console.log(obj.data)
+            //    let data = obj.data
                
-                $.post("/regresearch/downloading", { data: data }, function (res) {
-                    layer.msg(res.msg);
-                })
-            }
+            //    $.post("/regresearch/downloading", { data: data }, function (res) {
+            //        layer.msg(res.msg);
+            //    })
+            //}
+            var data = obj.data;
+            //console.log(data);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/regresearch/downloadsingle', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.responseType = 'blob';
 
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var blob = xhr.response;
 
+                    // 创建一个 URL 对象
+                    var url = window.URL.createObjectURL(blob);
+
+                    // 创建一个隐藏的<a>元素
+                    var downloadLink = document.createElement('a');
+                    downloadLink.href = url;
+                    //let type = data.file_path_name.split('.')[1];
+                    //let type = data.file_path_name.split('.')[1];
+                    //console.log(type);
+                    downloadLink.download = `${data.file_path_name}`;
+
+                    // 将<a>元素添加到页面中
+                    document.body.appendChild(downloadLink);
+
+                    // 模拟点击下载链接
+                    downloadLink.click();
+
+                    // 下载完成后释放 URL 对象
+                    window.URL.revokeObjectURL(url);
+
+                    // 移除<a>元素
+                    document.body.removeChild(downloadLink);
+                } else {
+                    console.error('下载文件失败');
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error('下载文件时发生错误');
+            };
+            xhr.send(JSON.stringify(data));
         });
         
     })

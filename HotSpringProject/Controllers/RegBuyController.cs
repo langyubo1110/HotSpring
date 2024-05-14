@@ -67,6 +67,7 @@ namespace HotSpringProject.Controllers
             }
             return Json(new { code = 200, message = "成功", data = regApply }, JsonRequestBehavior.AllowGet);
         }
+        [ValidateInput(false)]//关键代码 关闭验证
         public JsonResult Insert(RegApply regapply)
         {
             //接收申请实体
