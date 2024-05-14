@@ -1,7 +1,9 @@
-﻿using HotSpringProject.Entity;
+﻿using DotNet.Utilities;
+using HotSpringProject.Entity;
 using HotSpringProject.Entity.VO;
 using HotSpringProjectService;
 using HotSpringProjectService.Interface;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +16,13 @@ namespace HotSpringProject.Controllers
     public class EquUpkeepTaskController : Controller
     {
         private readonly IEquUpkeepTaskService _equUpkeepTaskService;
+        private readonly IEmployCheckInService _employCheckInService;
 
         //构造函数注入
-        public EquUpkeepTaskController(IEquUpkeepTaskService equUpkeepTaskService)
+        public EquUpkeepTaskController(IEquUpkeepTaskService equUpkeepTaskService,IEmployCheckInService employCheckInService)
         {
             _equUpkeepTaskService = equUpkeepTaskService;
+            _employCheckInService= employCheckInService;
         }
 
         // GET: EquUpkeepTask
@@ -30,18 +34,20 @@ namespace HotSpringProject.Controllers
         //弹出二维码
         public ActionResult QRimg(int id)
         {
-            List<EquUpkeepTaskVO> list = _equUpkeepTaskService.getlistnofilter();
-            list = list.Where(x => x.id == id).ToList();
+            List<EquUpkeepTask> list = _equUpkeepTaskService.GetTaskList();
+            list = list.Where(x => x.equ_plan_id == id).ToList();
             return View(list);
         }
         //弹出当日签到人员
-        public ActionResult Sign()
+        public ActionResult Sign(string data)
         {
+            //List<EquUpkeepTaskVO> list = JsonConvert.DeserializeObject<EquUpkeepTaskVO>(data);
             return View();
         }
         //单个保养任务
         public ActionResult upkeeptask(int id)
         {
+            ViewBag.id = id;
             List<EquUpkeepTaskVO> list= _equUpkeepTaskService.getlistnofilter();
             list = list.Where(x => x.id== id).ToList();
             return View(list);
@@ -52,6 +58,17 @@ namespace HotSpringProject.Controllers
         public JsonResult Query(EquUpkeepTaskFilter filter)
         {
             return Json(_equUpkeepTaskService.GetList(filter), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult checkin()
+        {
+            IEnumerable<EmployCheckInVO> list = _employCheckInService.GetListUnionSql();
+            list = list.Where(x => x.create_time == DateTime.Now.Date);
+            return Json(ResMessage.Success(list), JsonRequestBehavior.AllowGet);
+        }
+        //更新保养任务表数据
+        public JsonResult upkeepdistribute(List<EmployCheckInVO> data, int[] equid, int[] equplanid)
+        {
+            return Json(_equUpkeepTaskService.upkeepdeit(data, equid,equplanid), JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

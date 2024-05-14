@@ -14,7 +14,7 @@
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>保养任务表</h5>
+                <h5>保养生成任务表</h5>
             </div>
             <div class="ibox-content">
                 <div class="table-responsive">
@@ -32,7 +32,7 @@
 </script>
 <!--js模板  列组件-->
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="look">查看</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="look">扫码查看详情</a>
 </script>
 
 <script>
@@ -46,7 +46,7 @@
         table.render({
             elem: '#demo'
             , height: 500
-            , width: 1200
+            , width: 1440
             , url: '/equupkeeptask/Query' //数据接口
             , id: 'idTest'
             , response: {
@@ -63,13 +63,16 @@
             , toolbar: "#toolbarDemo"
             , cols: [[ //表头
                 { type: 'checkbox', fixed: 'left' }
-                , { field: 'task_name', title: '保养名称' }
+                , { field: 'name', title: '设备名称' }
+                , { field: 'location', title: '设备位置' }
+                , { field: 'power', title: '设备功率' }
+                , { field: 'type_name', title: '类型名' }
+                , { field: 'task_name', title: '任务名称' }
                 , {
                     field: 'start_time', title: '保养起始时间', templet: function (d) {
                         return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
                 }
-                , { field: 'distribute_id', title: '分发人id' }
                 , {
                     field: 'interval', title: '保养间隔', templet: function (d) {
                         return d.interval + "天"
@@ -80,40 +83,46 @@
                         return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
                 }
-                , {
-                    field: 'feedback_time', title: '反馈时间', templet: function (d) {
-                        return util.toDateString(d.feedback_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                    }
-                }
-                , { field: 'upkeep_feedback_info', title: '保养反馈信息' }
+                , { field: 'upkeep_feedback_info', title: '设备上次状态' }
+                , { field: 'task_info', title: '任务详情' }
+               
                 //添加操作列
                 , { title: '操作', toolbar: "#barDemo", minWidth: 50 }
             ]]
         });
         //表头触发事件
         table.on('toolbar(test)', function (obj) {
-            //获取选中行的数据
-            var checkStatus = table.checkStatus('idTest'); //idTest 即为基础参数 id 对应的值
-            console.log(checkStatus)
-            let data = checkStatus.data
-            console.log(data)
-            //展示今日签到人员信息
-            //弹出弹窗
-            layer.open({
-                type: 2,
-                content: '/equupkeeptask/Sign',
-                area: ['450px', '500px'],
-                //layer层销
-                end: function () {
-
+            //添加
+            if (obj.event == "selectpeople") {
+                //获取选中行的数据
+                var checkStatus = table.checkStatus('idTest'); //idTest 即为基础参数 id 对应的值
+                console.log(checkStatus)
+                let data = checkStatus.data
+                let arrid = []
+                for (var item of data) {
+                    arrid.push(item.id)
                 }
-            });
+                var queryString = Object.keys(data).map(key => key + '=' + data[key].id+","+data[key].equ_id).join('&');
+                console.log(queryString)
+                //展示今日签到人员信息
+                //弹出弹窗
+                layer.open({
+                    type: 2,
+                    content: '/equupkeeptask/Sign?' + queryString,
+                    area: ['500px', '700px'],
+                    //layer层销
+                    end: function () {
+
+                    }
+                });
+            }
         });
         //2.单元格触发事件
         table.on('tool(test)', function (obj) {
             var data = obj.data;
             //得到当前行的主键
             let id = data.id;
+            console.log(id)
             //弹出弹窗
             layer.open({
                 type: 2,

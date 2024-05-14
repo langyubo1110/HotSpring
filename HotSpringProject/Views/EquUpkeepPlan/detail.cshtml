@@ -9,27 +9,21 @@
         <form role="form" class="layui-form form-inline" lay-filter="movieForm">
             <div class="form-group">
                 <input type="hidden" name="id" />
-                &emsp;&emsp;&emsp;  &emsp;&emsp;
-                <span>设备id：&emsp;</span>
-                <div class="layui-input-inline">
-                    <select name="equ_id" lay-verify="required" lay-search="" lay-filter="ddltest">
-                        <option value=""></option>
-                        @foreach (var item in ViewBag.equid)
-                        {
-                            <option value="@item.id">@item.id</option>
-                        }
-                    </select>
-                </div>
+
             </div>
             &emsp;&emsp;&emsp;  &emsp;&emsp;
             <div class="form-group">
                 保养开始时间：<input type="date" name="start_time" class="form-control layui-input">
             </div>
+            &emsp;&emsp; &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            <div class="form-group">
+                保养结束时间：<input type="date" name="end_time" class="form-control">
+            </div>
             <br /> <br />
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
                 <div class="layui-inline">
-                    <span>重要性： &emsp;</span>
+                    <span>重要性： &emsp;&emsp;</span>
                     <div class="layui-input-inline">
                         <select name="importance" lay-verify="required" lay-search="" lay-filter="ddltest">
                             <option value="0">重要</option>
@@ -38,30 +32,28 @@
                     </div>
                 </div>
             </div>
-            &emsp;&emsp;&emsp;  &emsp;&emsp;
-            <div class="form-group">
-                保养结束时间：<input type="date" name="end_time" class="form-control">
-            </div>
-            <br /> <br />
+
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
                 <div class="layui-inline">
                     保养间隔：&nbsp;<input type="text" name="interval" lay-verify="required" placeholder="请输入间隔天数" class="form-control">
                 </div>
             </div>
+            <br /> <br />
+
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
                 <div class="layui-inline">
                     保养任务名：&nbsp;<input type="text" name="task_name" lay-verify="required" placeholder="请输入保养任务名" class="form-control">
                 </div>
             </div>
-            <br /> <br />
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
                 <div class="layui-inline">
                     保养内容：&nbsp;<input type="text" name="task_info" lay-verify="required" placeholder="请输入保养内容" class="form-control">
                 </div>
             </div>
+            <br /> <br />
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     &emsp;&emsp;&emsp;&emsp; &emsp;&emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;
@@ -97,7 +89,8 @@
         $.post("/equupkeepplan/getequip", { id: id }, function (res) {
             console.log(res)
             if (res.code == 200) {
-                   /* res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");*/
+                res.data.end_time = util.toDateString(res.data.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
+                res.data.start_time = util.toDateString(res.data.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
                     //赋值
                     form.val('movieForm', res.data);
              }
