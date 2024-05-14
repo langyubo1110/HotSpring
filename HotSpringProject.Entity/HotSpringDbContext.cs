@@ -35,7 +35,6 @@ namespace HotSpringProject.Entity
         public DbSet<GRoomSpareParts> GRoomSpareParts { get; set; }
         public DbSet<GRoomRepair> GRoomRepair { get; set; }
         public DbSet<EquUpkeepTask> EquUpkeepTask { get; set; }
-        public DbSet<EquUpKeepDistributed> EquUpKeepDistributed { get; set; }
         public DbSet<EquToTask> EquToTask { get; set; }
         public DbSet<EquUpkeepPlan> EquUpkeepPlan { get; set; }
         public DbSet<SystemPageCorrespondence> SystemPageCorrespondences { get; set; }

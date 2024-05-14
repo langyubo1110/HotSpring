@@ -9,6 +9,6 @@ namespace HotSpringProjectService.Interface
 {
     public interface IEmployTasksService
     {
-        //IEnumerable<EquUpkeepTaskVO> GetList(int reportID);
+        IEnumerable<EquUpkeepTaskVO> GetList(int reportID);
     }
 }

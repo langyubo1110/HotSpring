@@ -18,9 +18,13 @@ namespace HotSpringProject.Entity.VO
         public DateTime? end_time { get; set; }
         public int? distribute_id { get; set; }
         public int? exec_id { get; set; }
+        public int? importance { get; set; }
         public string upkeep_feedback_info { get; set; }
+        public string name { get; set; }
+        public string equ_equipment_name { get; set; }
         public string task_name { get; set; }
         public string task_info { get; set; }
         public string QRimg { get; set; }
+        public int? status { get; set; }
     }
 }

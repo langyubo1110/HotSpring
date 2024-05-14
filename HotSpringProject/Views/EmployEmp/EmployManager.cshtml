@@ -93,11 +93,11 @@
                         return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
                 }
-                , {
-                    field: 'account_status', title: '账号状态', templet: function (d) {
-                        return d.gendar === 0 ? '已注销' : '未注销';
-                    }
-                }
+                //, {
+                //    field: 'account_status', title: '账号状态', templet: function (d) {
+                //        return d.gendar === 0 ? '已注销' : '未注销';
+                //    }
+                //}
                 , { field: 'log_count', title: '登录次数' }
                 , {
                     field: 'last_log_time', title: '最后登陆时间', templet: function (d) {

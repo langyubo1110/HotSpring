@@ -18,13 +18,17 @@
             </div>
             <br /> <br />
             &emsp;&emsp;&emsp;&emsp;&emsp;
-                   <div class="form-group">
-                       &emsp;&emsp;
-                       保养任务：<input type="text" name="task_info" class="form-control layui-input" value="@Model[0].task_info">
-                   </div>
+            <div class="form-group">
+                &emsp;&emsp;
+                保养任务：<input type="text" name="task_info" class="form-control layui-input" value="@Model[0].task_info">
+            </div>
             &emsp;&emsp;&emsp;  &emsp;&emsp;
             <div class="form-group">
                 保养结束时间：<input type="text" name="end_time" class="form-control layui-input" value="@Model[0].end_time">
+            </div>
+            <div class="layui-input-inline">
+                <label>反馈信息</label>
+                <textarea id="txtAreaDemo" name="basic_info" style="display: none;"></textarea>
             </div>
             <br /> <br />
         </form>
@@ -38,6 +42,16 @@
         width: 198px;
     }
 </style>
+<script>
+    layui.use(['form', 'laydate', 'util', 'layedit'], function () {
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var util = layui.util;
+        var layedit = layui.layedit;
+
+        var index = layedit.build('txtAreaDemo'); //建立编辑器
+    }
+</script>
 
 
 
