@@ -17,6 +17,7 @@ namespace HotSpringProject.Entity
         }
         public DbSet<Equipment> Equipment { get; set; }
         public DbSet<EmployCheckIn> EmployCheckIn { get; set; }
+        public DbSet<EmployMessage> EmployMessage { get; set; }
         public DbSet<EmployEmp> EmployEmps { get; set; }
         public DbSet<SystemLogs> SystemLogs { get; set; }
         public DbSet<SystemModule> SystemModules { get; set; }
