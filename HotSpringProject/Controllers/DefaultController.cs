@@ -60,7 +60,7 @@ namespace HotSpringProject.Controllers
                 var user = _db.GetList().Where(EmployEmp => EmployEmp.job_number == number).FirstOrDefault();
                 ResMessage res= _db.getModel(user.id);
                 EmployEmp employEmp = (EmployEmp)res.data;
-                Session["User"] = employEmp;
+                HttpContext.Session["User"] = employEmp;
                 _db.Update(employEmp,true);
                 IEnumerable<SystemPages> pages = _dbpages.GetList();
                 UserData data = new UserData();

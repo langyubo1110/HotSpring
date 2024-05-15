@@ -43,7 +43,7 @@ namespace HotSpringProjectService
             int applyId = regApply.id;
             //加审批
             //--1有多少个管理员、
-            IEnumerable<EmployEmp> emplist = _EmployEmpRepository.GetList().ToList().Where(x => x.role_id == 2);
+            IEnumerable<EmployEmp> emplist = _EmployEmpRepository.GetList().Where(x => x.role_id == 2|| x.role_id==1);
             _regApplyRepository.TransBegin();
             try
             {
