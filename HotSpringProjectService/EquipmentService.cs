@@ -33,12 +33,21 @@ namespace HotSpringProjectService
             int flag = _equipmentRepository.Add(equip);
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
+        //调研表结束后插入设备表，部分内容是死值
+        public ResMessage AddWithRes(Equipment equip)
+        {
+            equip.status = 0;
+            equip.equ_type = 1;
+            
+            int flag = _equipmentRepository.Add(equip);
+            return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
+        }
 
         //删
         public ResMessage Delete(int id)
         {
             bool flag = _equipmentRepository.Delete(id);
-            return flag ? ResMessage.Success() : ResMessage.Fail();
+            return flag ? ResMessage.Success() : ResMessage.Fail(); 
         }
         //查类型表
         public List<EquipType> getTypeList()

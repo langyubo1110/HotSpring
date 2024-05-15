@@ -8,10 +8,15 @@ namespace HotSpringProject.Controllers
 {
     public class EmployMessageController : Controller
     {
-        // GET: EmployMessage
-        public ActionResult Index()
+        // GET: Chat 站内信
+        public ActionResult MesIndex()
         {
             return View();
         }
+        public ActionResult MesWrite()
+        {
+            return View();
+        }
+       
     }
 }

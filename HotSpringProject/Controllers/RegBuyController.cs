@@ -42,8 +42,11 @@ namespace HotSpringProject.Controllers
         //立案申请  主页
         public ActionResult RegApply()
         {
-            Session["userID"] = 22;
-            Session["userName"] = "张三";
+            EmployEmp employEmp = (EmployEmp)Session["User"];
+            int userId = employEmp.id;
+            
+            //Session["userID"] = 22;
+            //Session["userName"] = "张三";
             return View();
         }
         #region 接口
@@ -64,6 +67,7 @@ namespace HotSpringProject.Controllers
             }
             return Json(new { code = 200, message = "成功", data = regApply }, JsonRequestBehavior.AllowGet);
         }
+        [ValidateInput(false)]//关键代码 关闭验证
         public JsonResult Insert(RegApply regapply)
         {
             //接收申请实体
@@ -73,7 +77,9 @@ namespace HotSpringProject.Controllers
         }
         public JsonResult Check(int RegId, string txtAdvice)
         {
-            int userID = Convert.ToInt32(Session["userID"]);
+            EmployEmp employEmp = (EmployEmp)Session["User"];
+            int userId = employEmp.id;
+            int userID = Convert.ToInt32(userId);
             return Json(_regApplyService.Check(RegId, txtAdvice, userID), JsonRequestBehavior.AllowGet);
         }
         #endregion

@@ -113,11 +113,13 @@ namespace HotSpringProjectService
         }
         public IEnumerable<RegApplyVO> GetListSqlAudit()
         {
-            List<RegApplyVO> list = _regApplyRepository.QueryBySql<RegApplyVO>($@"SELECT  rb.*,  ee.name, (SELECT COUNT(*) FROM Employ_Emp WHERE role_id = 2) AS count
-                                        FROM  Reg_Buy rb INNER JOIN Employ_Emp ee ON ee.id = rb.apply_id").ToList();
+            //分母通过子查询获得
+            List<RegApplyVO> list = _regApplyRepository.QueryBySql<RegApplyVO>($@"SELECT  rb.*,  ee.name, (select count(*) from Employ_Emp ee inner join Employ_Role er on ee.role_id=er.id 
+        where er.is_leader=1) AS count FROM  Reg_Buy rb INNER JOIN Employ_Emp ee ON ee.id = rb.apply_id").ToList();
            
             foreach (var item in list)
             {
+                //分子
                  List<RegAudit> regAuditList=_regAuditRepository.GetList().ToList().Where(x=>x.reg_equip_reaearch_id==item.id &&x.recheck_opin==1).ToList();
                 int count=regAuditList.Count();
                 item.countAudit=count;
@@ -161,7 +163,7 @@ namespace HotSpringProjectService
             int realCount=realList.Count;
             if (allCount==realCount)
             {
-                IEnumerable<EmployEmp> emplist = _EmployEmpRepository.GetList().ToList().Where(x => x.role_id == 2);
+                IEnumerable<EmployEmp> emplist = _EmployEmpRepository.GetList().ToList().Where(x => x.role_id == 2 ||x.role_id==1);
                 foreach (EmployEmp emp in emplist)
                 {
                     RegVote regVote = new RegVote();
