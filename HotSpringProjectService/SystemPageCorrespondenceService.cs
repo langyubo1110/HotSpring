@@ -23,9 +23,13 @@ namespace HotSpringProjectService
         }
         public ResMessage Add(int roleId, List<int> pageIds)
         {
+            int flag = 0;
             List<EmployRole> list = _rolePageRepository.QueryBySql<EmployRole>($"select * from Employ_Role where is_leader={roleId}").ToList();
-           int id = list[0].id;
-            int flag = _rolePageRepository.Add(id,pageIds);
+            foreach (var item in list)
+            {
+                int id = item.id;
+               flag = _rolePageRepository.Add(id, pageIds);
+            }
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
 
