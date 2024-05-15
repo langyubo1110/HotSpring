@@ -26,8 +26,8 @@ namespace HotSpringProjectService
         }
         public ResMessage UpdateTask(int id,string data)
         {
-            _dbUp.execBySql($"update Equ_Upkeep_Task set upkeep_feedback_info='{data}' , status = 1 where id={id}");
-            return ResMessage.Success("分发成功");
+            _dbUp.execBySql($"update Equ_Upkeep_Task set upkeep_feedback_info='{data}' , status = 1 where equ_plan_id={id}");
+            return ResMessage.Success("反馈成功");
         }
     }
 }
