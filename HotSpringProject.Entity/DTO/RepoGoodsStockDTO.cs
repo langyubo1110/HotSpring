@@ -43,8 +43,8 @@ namespace HotSpringProject.Entity.DTO
         public string threshold { get; set; }
         //厂家
         public string factory { get; set; }
-        //图片
-        public string picture { get; set; }
+        //图片地址
+        public string imgurl { get; set; }
         public int audit { get; set; } 
         //库存数量
         public int goods_number { get; set; }

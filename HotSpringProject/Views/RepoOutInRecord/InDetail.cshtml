@@ -84,6 +84,7 @@
                 上传图片：
                 <button type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
                 <button type="button" class="layui-btn" id="test9">上传</button>
+                <input type="hidden" name="imgurl" id="hdimgurl" value="0"/>
             </div>
             <br /><br /><br />
             <div class="layui-form-item">
@@ -130,7 +131,6 @@
             })
             return false;
         })
-        var typelist = ['jpg','png','gif','jpeg'];
         //图片上传按钮渲染
         upload.render({
             elem: '#test8'
@@ -142,6 +142,8 @@
             //上传后的回调
             , done: function (res) {
                 if (res.code == 200) {
+                    console.log(res)
+                    $("#hdimgurl").val(res.data)
                     layer.msg('上传成功');
                 }
             }
