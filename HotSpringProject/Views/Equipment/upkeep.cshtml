@@ -56,6 +56,7 @@
     let equ_id =@Model[0].id
     $.post('/equipment/equtotask', {}, function (res) {
         data1 = res
+        console.log(data1)
     layui.use(['transfer', 'layer', 'util','table'], function () {
          transfer = layui.transfer
          ,layer = layui.layer
@@ -106,7 +107,7 @@
             console.log(res)
             let defaultValue = []
             for (var item of res.data) {
-                defaultValue.push(item.task_id)
+                defaultValue.push(item.equ_plan_id)
             }
             console.log(defaultValue)
             //数据格式解析
@@ -115,7 +116,8 @@
                 , data: data1
                 , value: defaultValue // 右侧默认值
                 , id: 'demo1'
-                , parseData: function (res) {
+                , parseData: function (res) {   
+                    console.log(res)
                     return {
                         "value": res.id //数据值
                         , "title": res.task_name //数据标题
@@ -127,24 +129,13 @@
                 , onchange: function (data, index) {
                     //获得右侧数据
                     let getData = transfer.getData('demo1');
-                    //右侧不为空 说明进行删除数据添加
-                    //if (getData != "") {
+                    console.log(getData)
                         $.post('/equtotask/AddAfterDelete', { getData: getData, id: equ_id }, function (res) {
                             if (res.code == 200) {
                                 //表格重载
                                 table.reload("demo")
                             }
                         })
-                    //}
-                    //else {
-                    //    //右侧为空 则清空表
-                    //    $.post('/equtotask/Delete', {}, function (res) {
-                    //        if (res.code == 200) {
-                    //            //表格重载
-                    //            table.reload("demo")
-                    //        }
-                    //    })
-                    //}
                 }
             }) //transfer
         })  //post

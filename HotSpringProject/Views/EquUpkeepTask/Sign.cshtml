@@ -1,8 +1,97 @@
-﻿
+﻿@model List<HotSpringProject.Entity.VO.EquUpkeepTaskVO>
 @{
     ViewBag.Title = "Sign";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Sign</h2>
+<form class="layui-form" name="movieform">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>今日签到人员</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table id="demo" lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!--js模板  表头组件-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <input type="button" class="layui-btn layui-btn-sm" lay-submit="" lay-filter="btndown" lay-event="selectpeople" value="发布">
+    </div>
+</script>
+
+<script>
+    //layui 注册多个模块
+    layui.use(['table', 'util','layer'], function () {
+        //实例化多个模块
+        var table = layui.table
+        var util = layui.util
+        var form = layui.form
+        var layer = layui.layer
+        // 解析 query string
+        function getQueryString() {
+            var queryString = window.location.search.substring(1);
+            var params = [];
+            queryString.split('&').forEach(function (pair) {
+                var keyValue = pair.split('=');
+                params[keyValue[0]] = decodeURIComponent(keyValue[1]);
+            });
+            return params;
+        }
+        var params = getQueryString();
+        var equid = []
+        var equplanid=[]
+        for (var item of params) {
+            equid.push(item.split(',')[1])
+            equplanid.push(item.split(',')[0])
+        }
+        console.log(params)
+        console.log(equid)
+        console.log(equplanid)
+        //1.渲染实例
+        table.render({
+            elem: '#demo'
+            , height: 500
+            , width: 413    
+            , url: '/equupkeeptask/checkin' //数据接口
+            , id: 'idTest'
+            , response: {
+                statusName: 'code' //规定数据状态的字段名称，默认：code
+                , statusCode: 200 //规定成功的状态码，默认：0
+                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                , countName: 'count' //规定数据总数的字段名称，默认：count
+                , dataName: 'data' //规定数据列表的字段名称，默认：data
+            }
+            , page: {
+                page: 1,
+                limit: 5
+            }//开启分页
+            , toolbar: "#toolbarDemo"
+            , cols: [[ //表头
+                { type: 'checkbox', fixed: 'left' }
+                , { field: 'emp_name', title: '员工姓名' }
+            ]]
+        });
+        //表头触发事件
+        table.on('toolbar(test)', function (obj) {
+            //获取选中行的数据
+            var checkStatus = table.checkStatus('idTest'); //idTest 即为基础参数 id 对应的值
+            console.log(checkStatus)
+            let data = checkStatus.data
+            console.log(data)
+            //发ajax入库
+            $.post("/equupkeeptask/upkeepdistribute", { data: data, equid: equid,equplanid:equplanid }, function (res) {
+                if (res.code == 200) {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                }
+            })
+        });
+    })
+</script>
 

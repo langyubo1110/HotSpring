@@ -52,12 +52,12 @@ namespace HotSpringProject.Controllers
         }
         public ActionResult Loginverify()
         {
-            string username = Request.Form["txtName"];
+            string number = Request.Form["txtName"];
             string password = Request.Form["txtPassword"];
-            bool isVerify = _db.Verify(username, password);
+            bool isVerify = _db.Verify(number, password);
             if (isVerify)
             {
-                var user = _db.GetList().Where(EmployEmp => EmployEmp.name == username).FirstOrDefault();
+                var user = _db.GetList().Where(EmployEmp => EmployEmp.job_number == number).FirstOrDefault();
                 ResMessage res= _db.getModel(user.id);
                 EmployEmp employEmp = (EmployEmp)res.data;
                 Session["User"] = employEmp;

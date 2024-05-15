@@ -81,7 +81,9 @@ namespace HotSpringProjectService
             List<FaultApp> pagedResult = List.OrderBy(x => x.id).Skip((page - 1) * limit).Take(limit).ToList();
             List<FaultAnalyse> faultAnalyses = _faultAnalyseRepository.GetList().ToList();
             //查故障申报全表
-            List<FaultApp> list = _faultAppRepository.GetList().ToList();
+            //List<FaultApp> list = _faultAppRepository.GetList().ToList();
+            List<FaultAppVO> list = _faultAppRepository.QueryBySql<FaultAppVO>($@"select Rep_Fault_App.id,equip_id,fault_report,fault_describe,fault_time,Rep_Fault_App.create_time,name from Rep_Fault_App inner join Equ_Equipment on Rep_Fault_App.equip_id=Equ_Equipment.id  ").ToList();
+            
             List<FaultAppVO> res = new List<FaultAppVO>();
             foreach(var item in list)
             {
@@ -90,6 +92,7 @@ namespace HotSpringProjectService
                 vo.fault_time= item.fault_time;
                 vo.fault_describe = item.fault_describe;
                 vo.equip_id = item.equip_id;
+                vo.name= item.name;
                 vo.create_time = item.create_time;
                 vo.id = item.id;
                 vo.count = faultAnalyses.Where(x => x.fault_app_id == item.id).ToList().Count;

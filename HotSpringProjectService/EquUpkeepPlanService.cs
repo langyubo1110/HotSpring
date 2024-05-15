@@ -33,18 +33,18 @@ namespace HotSpringProjectService
         /// <param name="list">全表数据</param>
         /// <param name="filter">过滤条件</param>
         /// <returns></returns>
-        public List<EquPlanVO> MakeQuery(IEnumerable<EquPlanVO> list, EquUpkeepPlanFilter filter)
+        public List<EquUpkeepPlan> MakeQuery(IEnumerable<EquUpkeepPlan> list, EquUpkeepPlanFilter filter)
         {
             if (!string.IsNullOrEmpty(filter.name))
             {
-                list = list.Where(x => x.equ_name.Contains(filter.name)).ToList();
+                list = list.Where(x => x.task_name.Contains(filter.name)).ToList();
             }
             //开启分页
             if (filter.page != 0 && filter.limit != 0)
             {
                 list = list.OrderBy(x => x.id).Skip((filter.page - 1) * filter.limit).Take(filter.limit).ToList();
             }
-            List<EquPlanVO> list1 = list.ToList();
+            List<EquUpkeepPlan> list1 = list.ToList();
             return list1;
         }
 
@@ -62,9 +62,8 @@ namespace HotSpringProjectService
 
         ResMessage IEquUpkeepPlanService.GetListUnion(EquUpkeepPlanFilter filter)
         {
-            IEnumerable<EquPlanVO> list = _upkeepPlanRepository.QueryBySql<EquPlanVO>($@"select u.* ,e.name as equ_name  from Equ_Upkeep_Plan as u inner join Equ_Equipment as e
-                                                                                        on e.id=u.equ_id");
-            List<EquPlanVO> list1 = list.ToList();
+            IEnumerable<EquUpkeepPlan> list = _upkeepPlanRepository.QueryBySql<EquUpkeepPlan>($@"select *  from Equ_Upkeep_Plan ");
+            List<EquUpkeepPlan> list1 = list.ToList();
             list = MakeQuery(list, filter);
             return ResMessage.Success(list, list1.Count);
         }

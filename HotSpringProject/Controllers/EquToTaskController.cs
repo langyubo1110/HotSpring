@@ -24,10 +24,10 @@ namespace HotSpringProject.Controllers
         {
             return Json(_equToTaskService.GetList(id,filter), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult AddAfterDelete(List<EquToTaskVO> getData, int id,EquUpkeepPlanFilter filter)
+        public JsonResult AddAfterDelete(List<EquToTaskVO> getData, int id, EquUpkeepPlanFilter filter)
         {
-            return Json(_equToTaskService.AddAfterDelete(getData,filter,id), JsonRequestBehavior.AllowGet);
+            return Json(_equToTaskService.AddAfterDelete(getData, filter, id), JsonRequestBehavior.AllowGet);
         }
-      
+
     }
 }

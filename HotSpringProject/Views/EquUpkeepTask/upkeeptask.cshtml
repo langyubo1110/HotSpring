@@ -12,24 +12,47 @@
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
                 保养任务名称：&nbsp;<input type="text" name="task_name" class="form-control layui-input" value="@Model[0].task_name">
             </div>
-            &emsp;&emsp;&emsp;  &emsp;&emsp;
-            <div class="form-group">
-                上次保养结果：<input type="text" name="upkeep_feedback_info" class="form-control layui-input" value="@Model[0].upkeep_feedback_info">
-            </div>
-            <br /> <br />
             &emsp;&emsp;&emsp;&emsp;&emsp;
-                   <div class="form-group">
-                       &emsp;&emsp;
-                       保养任务：<input type="text" name="task_info" class="form-control layui-input" value="@Model[0].task_info">
-                   </div>
+            <div class="form-group">
+                &emsp;&emsp;
+                保养任务：<input type="text" name="task_info" class="form-control layui-input" value="@Model[0].task_info">
+            </div>
             &emsp;&emsp;&emsp;  &emsp;&emsp;
             <div class="form-group">
                 保养结束时间：<input type="text" name="end_time" class="form-control layui-input" value="@Model[0].end_time">
             </div>
+            <div class="layui-input-inline">
+                <label>反馈信息</label>
+                <textarea id="txtAreaDemo" name="basic_info" style="display: none;"></textarea>
+            </div>
             <br /> <br />
+            <textarea id="demo" style="display: none;"></textarea>
+            <br /> <br />
+            <button type="button" id="send" lay-submit="" class="layui-btn layui-btn-radius">发送</button>
         </form>
     </div>
 </div>
+
+<script>
+
+let task_id=@ViewBag.id;
+layui.use(['layedit'], function () {
+    var layedit = layui.layedit;
+    var index = layedit.build('demo'); //建立编辑器
+    //提交表单
+    $('#send').on('click', function () {
+        //获取富文本内容
+        let data1 = layedit.getContent(index)
+        console.log(data1)
+        console.log(task_id)
+        //调接口赋值
+        $.post("/EmployTasks/UpdateTaskinfo", { task_id: task_id, data1: data1 }, function (res) {
+            console.log(res)
+        })
+    })
+});
+</script>
+
 <style>
     .layui-form-select .layui-input {
         padding-right: 30px;
@@ -38,6 +61,7 @@
         width: 198px;
     }
 </style>
+
 
 
 

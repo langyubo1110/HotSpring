@@ -17,14 +17,6 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
                                 <i class="fa fa-wrench"></i>
                             </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li>
-                                    <a href="table_basic.html#">选项1</a>
-                                </li>
-                                <li>
-                                    <a href="table_basic.html#">选项2</a>
-                                </li>
-                            </ul>
                             <a class="close-link">
                                 <i class="fa fa-times"></i>
                             </a>
@@ -95,17 +87,17 @@
                     }
                 }
                 , { field: 'identity_card', title: '身份证' }
-                , { field: 'avator', title: '头像' }
+                , { field: 'avatar', title: '头像' }
                 , {
                     field: 'onboarding_time', title: '入职时间', templet: function (d) {
                         return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
                 }
-                , {
-                    field: 'account_status', title: '账号状态', templet: function (d) {
-                        return d.gendar === 0 ? '已注销' : '未注销';
-                    }
-                }
+                //, {
+                //    field: 'account_status', title: '账号状态', templet: function (d) {
+                //        return d.gendar === 0 ? '已注销' : '未注销';
+                //    }
+                //}
                 , { field: 'log_count', title: '登录次数' }
                 , {
                     field: 'last_log_time', title: '最后登陆时间', templet: function (d) {
@@ -156,7 +148,7 @@
             layer.open({
                 title: '员工添加',
                 type: 2,
-                area: ['500px', '600px'],
+                area: ['500px', '500px'],
                 content: '/EmployEmp/detail/'
             })
         });

@@ -52,7 +52,7 @@ namespace HotSpringProjectService
                         qrCodeImage.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
 
                         //入库一条数据
-                        _equUpkeepTaskService.insert(item.equ_plan_id, time, imgurl);
+                        _equUpkeepTaskService.insert(item.equ_plan_id, time, imgurl,item.equ_id);
                     }
                 }
             }

@@ -1,5 +1,5 @@
 ﻿using DotNet.Utilities;
-using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectService.Interface
 {
-    public interface IEquUpKeepDistributedService
+    public interface IEmployTasksService
     {
-        IEnumerable<EquUpKeepDistributed> GetList();
-        ResMessage Add(EquUpKeepDistributed EquUpKeepDistributed);
+        IEnumerable<EquUpkeepTaskVO> GetList(int reportID);
+        ResMessage UpdateTask(int id, string data);
     }
 }

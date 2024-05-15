@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,10 +18,12 @@ namespace HotSpringProject.Controllers
          */
         // GET: EmployEmp
         private readonly IEmployEmpService _dbService;
+        private readonly IEmployRoleService _dbRole;
 
-        public EmployEmpController(IEmployEmpService employEmpService)
+        public EmployEmpController(IEmployEmpService employEmpService,IEmployRoleService employRoleService)
         {
             _dbService = employEmpService;
+            _dbRole = employRoleService;
         }
         #region 页面
         //员工管理页面
@@ -35,7 +38,9 @@ namespace HotSpringProject.Controllers
         }
         public ActionResult Detail(int id=0)
         {
-           ViewBag.id = id; 
+            IEnumerable<EmployRole> lsit = _dbRole.GetList();
+            ViewBag.list = lsit;
+            ViewBag.id = id; 
             return View();
         }
         #endregion
@@ -47,7 +52,6 @@ namespace HotSpringProject.Controllers
         [HttpPost]
         public JsonResult Insert(EmployEmp employEmp)
         {
-
             ResMessage result = _dbService.Add(employEmp);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -72,6 +76,21 @@ namespace HotSpringProject.Controllers
         {
             return Json(_dbService.GetListByPager(filter), JsonRequestBehavior.AllowGet);
         }
-        
+        public JsonResult img()
+        {
+            HttpPostedFileBase file = Request.Files[0];
+            try
+            {
+                Directory.CreateDirectory(Server.MapPath("/assets/Aimg"));
+                //判断文件夹
+                //处理图片名称
+                file.SaveAs(Server.MapPath("/Assets/Aimg/") + file.FileName);
+                return Json(ResMessage.Success(data: "/Assets/Aimg/" + file.FileName));
+            }
+            catch (Exception ex)
+            {
+                return Json(ResMessage.Fail(ex.Message));
+            }
+        }
     }
 }
