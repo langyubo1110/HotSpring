@@ -13,7 +13,7 @@
                 <div class="layui-inline">
                     <span>商品名称：</span>
                     <div class="layui-input-inline">
-                        <input type="text" name="goods_name" id="searchName" placeholder="请输入商品名称" class="form-control" />
+                        <input type="text" name="goods_name" id="searchName" lay-verify="required" placeholder="请输入商品名称" class="form-control" />
                     </div>
                 </div>
             </div>
@@ -31,31 +31,10 @@
                     </div>
                 </div>
             </div>
-
             <br /> <br />
-            &emsp;&emsp;&emsp;  &emsp;&emsp;
-                   <div class="form-group">
-                       接收人： &nbsp;&nbsp;&nbsp;<div class="layui-inline">
-                           <div class="layui-input-inline">
-                               <select name="recipient_id" lay-verify="required" lay-search="" lay-filter="ddltest">
-                                   <option value=""></option>
-                                   @foreach (var item in ViewBag.list)
-                                   {
-                                       <option value="@item.id">@item.name</option>
-                                   }
-                               </select>
-                           </div>
-                       </div>
-                   </div>
-
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
-                入库数量：<input type="text" name="oi_number" lay-verify="required" placeholder="请输入入库数量" class="form-control">
-            </div>
-            <br /> <br />
-            &emsp;&emsp;&emsp;  &emsp;&emsp;
-            <div class="form-group">
-                阈值：&emsp;&emsp;<input type="text" name="threshold" id="txtThreshold" placeholder="请输入阈值" class="form-control">
+                入库数量：&nbsp;<input type="text" name="oi_number" lay-verify="required" placeholder="请输入入库数量" class="form-control">
             </div>
 
             <div class="form-group">
@@ -65,21 +44,20 @@
             <br /> <br />
             &emsp;&emsp;&emsp;  &emsp;&emsp;
             <div class="form-group">
-                采购电话：<input type="text" name="buyer_phone" id="txtPhone" lay-verify="required" placeholder="请输入采购电话" class="form-control">
+                采购电话：&nbsp;<input type="tel" name="buyer_phone" id="txtPhone" lay-verify="required" placeholder="请输入采购电话" class="form-control">
             </div>
 
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
-                单价：&emsp;&emsp;&nbsp;<input type="text" name="price" placeholder="请输入商品单价" class="form-control">
+                单价：&emsp;&emsp;&nbsp;<input type="text" name="price" placeholder="请输入商品单价" lay-verify="required" class="form-control">
             </div>
             <br /> <br />
             &emsp;&emsp;&emsp;  &emsp;&emsp;
             <div class="form-group">
-                类型：&emsp;&emsp;<div class="layui-inline">
+                类型：&emsp;&emsp;&nbsp;<div class="layui-inline">
                     <div class="layui-input-inline">
                         <select name="goods_type" id="ddltype">
                             <option value=""></option>
-                            <option value="0">食物</option>
                             <option value="1">备件</option>
                             <option value="2">生活用品</option>
                         </select>
@@ -89,17 +67,23 @@
 
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
-                厂家：&emsp;&emsp;&nbsp;<input type="text" name="factory" id="txtFactory" placeholder="请输入厂家名称" class="form-control">
+                厂家：&emsp;&emsp;&nbsp;<input type="text" name="factory" id="txtFactory" lay-verify="required" placeholder="请输入厂家名称" class="form-control">
             </div>
             <br /><br />
             &emsp;&emsp;&emsp;  &emsp;&emsp;
             <div class="form-group">
-                上传图片：<input type="text" name="picture" id="txtPicture" lay-verify="required" placeholder="请上传图片" class="form-control">
+                阈值：&emsp;&emsp;&nbsp;<input type="text" name="threshold" id="txtThreshold" lay-verify="required" placeholder="请输入阈值" class="form-control">
             </div>
-
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
                 库存数量：&nbsp;<input type="text" name="goods_number" id="txtGoodsNumber" lay-verify="required" readonly="readonly" value="0" class="layui-disabled form-control">
+            </div>
+            <br /><br />
+            &emsp;&emsp;&emsp;  &emsp;&emsp;
+            <div class="form-group">
+                上传图片：
+                <button type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
+                <button type="button" class="layui-btn" id="test9">上传</button>
             </div>
             <br /><br /><br />
             <div class="layui-form-item">
@@ -129,9 +113,9 @@
 <link href="~/assets/layui/css/autocomplete.css" rel="stylesheet" />
 <script src="~/assets/layui/extra/autocomplete.js"></script>
 <script>
-    layui.use(['form', 'util'], function () {
+    layui.use(['form','upload'], function () {
         var form = layui.form;
-        var util = layui.util;
+        var upload = layui.upload;
         var autocomplete = layui.autocomplete;
         form.on('submit(demo1)', function (data) {
             console.log(data)
@@ -146,6 +130,22 @@
             })
             return false;
         })
+        var typelist = ['jpg','png','gif','jpeg'];
+        //图片上传按钮渲染
+        upload.render({
+            elem: '#test8'
+            , url: '/repooutinrecord/upload' //此处配置你自己的上传接口即可
+            , auto: false
+            //,multiple: true
+            , bindAction: '#test9'
+            , size: 1000
+            //上传后的回调
+            , done: function (res) {
+                if (res.code == 200) {
+                    layer.msg('上传成功');
+                }
+            }
+        });
 
         //自动补齐
         autocomplete.render({
@@ -162,6 +162,7 @@
                 console.log(autores);
                 $("#searchName").val(autores.goods_name)
                 $("#hdid").val(autores.id)
+                $("#txtThreshold").attr("class", "layui-disabled form-control").attr("readonly", "readonly");
                 $("#txtFactory").attr("class", "layui-disabled form-control").attr("readonly", "readonly");
                 $("#txtPicture").attr("class", "layui-disabled form-control").attr("readonly", "readonly");
                 $.post("/repogoodsstock/getmodel", { id: autores.id }, function (res) {
@@ -175,7 +176,7 @@
                 })
             }
         });
-        
+
     })
     $("#rebtn").click(function () {
         $("#txtFactory").attr("class", "form-control").removeAttr("readonly");

@@ -92,10 +92,11 @@ namespace HotSpringProject.Controllers
                 return Json(new { code = 404, message = "No data found for the provided ID." }, JsonRequestBehavior.AllowGet);
             }
         }
+
         [ValidateInput(false)]
-        public JsonResult UpdateTaskinfo(int task_id,string data1)
+        public JsonResult UpdateTaskinfo(int plan_id, string data1)
         {
-            ResMessage res = _dbTasks.UpdateTask(task_id, data1);
+            ResMessage res = _dbTasks.UpdateTask(plan_id, data1);
             return Json(res);
         }
     }

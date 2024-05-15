@@ -1,5 +1,6 @@
 ﻿using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace HotSpringProjectService.Interface
         ResMessage Add(EmployAllsalary employAllsalary);
         ResMessage GetModel(int id);
         ResMessage GetList();
+        ResMessage GetListByPager(EmployAllsalaryFilter filter);
     }
 }

@@ -16,10 +16,8 @@ namespace HotSpringProject.Entity.VO
         public int spare_parts_id { get; set; }
         //备件使用数量
         public int used_number { get; set; }
-        //创建时间
-        public DateTime create_time { get; set; }
         //剩余数量
-        public int oi_number { get; set; }
+        public int rest_number { get; set; }
         //库存数量
         public int goods_number { get; set; }
 

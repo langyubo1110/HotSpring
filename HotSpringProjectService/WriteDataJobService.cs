@@ -39,7 +39,7 @@ namespace HotSpringProjectService
                     if (daysDifference % item.interval == 0)
                     {
                         // 生成包含参数的链接
-                        string targetUrl = $"https://localhost:44364/equupkeeptask/upkeeptask?id={item.task_id}";
+                        string targetUrl = $"https://localhost:44364/equupkeeptask/upkeeptask?id={item.equ_plan_id}";
                         // 生成二维码
                         QRCodeGenerator qrGenerator = new QRCodeGenerator();
                         QRCodeData qrCodeData = qrGenerator.CreateQrCode(targetUrl, QRCodeGenerator.ECCLevel.Q);

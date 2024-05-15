@@ -58,7 +58,7 @@
             <br /><br />
             &emsp;&emsp;&emsp;  &emsp;&emsp;
             <div class="form-group">
-                阈值：&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="threshold" placeholder="请输入阈值" class="form-control">
+                阈值：&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="threshold" placeholder="请输入阈值" readonly="readonly" class="layui-disabled form-control">
             </div>
             <div class="form-group">
                 &emsp;&emsp;&emsp;  &emsp;&emsp;
@@ -112,6 +112,11 @@
                     var index = parent.layer.getFrameIndex(window.name);
                     parent.layui.table.reload("demo");
                     parent.layer.msg("出库成功");
+                    parent.layer.close(index);
+                }
+                else {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.msg("库存不足");
                     parent.layer.close(index);
                 }
             })

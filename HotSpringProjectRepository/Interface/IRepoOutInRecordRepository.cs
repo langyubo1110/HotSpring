@@ -10,7 +10,7 @@ namespace HotSpringProjectRepository.Interface
 {
     public interface IRepoOutInRecordRepository
     {
-        IQueryable<RepoOutInRecord> GetList();
+        IEnumerable<RepoOutInRecord> GetList();
         int Delete(int id);
         bool Update(RepoOutInRecord repoOutInRecord);
         bool Add(RepoOutInRecord repoOutInRecord);

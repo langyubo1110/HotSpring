@@ -57,7 +57,6 @@
 </script>
 <!--操作单元格-->
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     {{# if(d.audit==0){ }}
     <a class="layui-btn layui-btn-xs" lay-event="audit">审核</a>
     {{# } }}
@@ -104,22 +103,7 @@
         table.on('tool(test)', function (obj) {
             var id = obj.data.oi_id;
             console.log(obj)
-            if (obj.event === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    $.post('/repooutinrecord/delete', { id: id }, function (res) {
-                        if (res.code = 200) {
-                            layer.msg(res.msg)
-                            obj.del();
-                            table.reload('demo')
-                        }
-                        else {
-                            layer.msg(e.msg)
-                        }
-                    })
-                    layer.close(index)
-                });
-            }
-            else if (obj.event === 'audit') {
+           if (obj.event === 'audit') {
                 $.post("/repogoodsstock/updatebyaudit", { repoGoodsStockDTO: obj.data }, function (res) {
                     if (res.code == 200)
                     {
@@ -144,7 +128,7 @@
                 layer.open({
                     title: '商品入库',
                     type: 2,
-                    area: ['800px', '455px'],
+                    area: ['800px', '460px'],
                     content: '/repooutinrecord/indetail'
                 })
             }

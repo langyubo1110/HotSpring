@@ -1,5 +1,6 @@
 ﻿using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
 using HotSpringProjectService;
 using HotSpringProjectService.Interface;
 using System;
@@ -34,6 +35,11 @@ namespace HotSpringProject.Controllers
         public JsonResult GetList()
         {
             ResMessage resMessage = _employAllsalaryService.GetList();
+            return Json(resMessage, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetListByPager(EmployAllsalaryFilter filter)
+        {
+            ResMessage resMessage = _employAllsalaryService.GetListByPager(filter);
             return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetModel(int id)
