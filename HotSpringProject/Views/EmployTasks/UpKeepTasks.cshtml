@@ -32,5 +32,80 @@
         </div>
     </div>
 </div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">二维码</a>
+</script>
+    <script>
+        layui.use(['table', 'util', "layer", "laytpl"], function () {
+            var table = layui.table;
+            var util = layui.util;
+            var layer = layui.layer;
+            var laytpl = layui.laytpl;
+            table.render({
+                elem: '#demo'
+                , url: '/EmployTasks/UpKeep'
+                , response: {
+                    statusName: 'code' //规定数据状态的字段名称，默认：code
+                    , statusCode: 200 //规定成功的状态码，默认：0
+                    , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                    , countName: 'count' //规定数据总数的字段名称，默认：count
+                    , dataName: 'data' //规定数据列表的字段名称，默认：data
+                }
+                , toolbar: '#toolbarDemo'
+                , cols: [[
+                    { field: 'people_name', title: '执行人姓名' }
+                    , { field: 'name', title: '设备名称' }
+                    , {
+                        field: 'interval', title: '间隔（天）'
+                    }
+                    , {
+                        field: 'importance', title: '重要性', templet: function (d) {
+                            return d.importance === 0 ? '高' : '极高';
+                        }
+                    }
+                    , { field: 'task_name', title: '保养任务名称' }
+                    , { field: 'task_info', title: '保养任务细节' }
+                    , { field: 'task_name', title: '保养任务名称' }
+                    , {
+                        field: 'start_time', title: '开始时间', templet: function (d) {
+                            return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                        }
+                    }
+                    , {
+                        field: 'end_time', title: '结束时间', templet: function (d) {
+                            return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                        }
+                    }
+                    , {
+                        field: 'upkeep_time', title: '保养时间'
+                        , templet: function (d) {
+                            return util.toDateString(d.upkeep_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                        }
+                    }
+                    , {
+                        field: 'status', title: '任务状态', templet: function (d) {
+                            return d.importance === null ? '已完成' : '未完成';
+                        }
+                    }
+                    , { title: '操作', toolbar: "#barDemo" }
+                ]]
+            });
 
+            table.on('tool(test)', function (obj) {
+
+                var data = obj.data;
+                var id = data.equ_plan_id;
+                if (obj.event === 'edit') {
+                    // 显示弹出层
+                    layer.open({
+                        type: 2,
+                        title: '详细信息',
+                        content: "/EmployTasks/QRimg/" + id,
+                        area: ['600px', '500px']
+                    });
+                }
+            });
+        })
+
+    </script>
 

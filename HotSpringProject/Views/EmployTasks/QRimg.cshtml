@@ -1,0 +1,8 @@
+﻿@model List<HotSpringProject.Entity.EquUpkeepTask>
+@{
+    ViewBag.Title = "QRimg";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<img src="@Model[0].QRimg" style="margin:0 auto" />
+

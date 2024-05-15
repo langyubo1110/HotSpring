@@ -99,12 +99,12 @@
         var form = layui.form;
         var laydate = layui.laydate;
         var util = layui.util;
-        var layedit = layui.layedit;
+        let layedit = layui.layedit;
         var id =@ViewBag.Id;
         
         laydate.render({
             elem: '#ApplyTime' //指定元素
-            , value: '2024-01-01'
+            
         });
         //构建富文本编辑器
         var index= layedit.build('txtAreaDemo'); //建立编辑器
@@ -114,7 +114,7 @@
             if (res.code == 200) {
                 res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
                 form.val('editform', res.data);
-                layedit.setContent(index, res.data.basic_info);
+                layedit.setContent(index, res.data.basic_info);//富文本赋值
             }
         })
 
@@ -123,10 +123,8 @@
     
 
         form.on('submit(demo1)', function (data) {
-
-            layedit.getContent(1);
             let obj = data.field;
-            obj.basic_info = layedit.getContent(1);
+            obj.basic_info = layedit.getContent(1);//富文本取值入库
             //console.log(obj.basic_info);
             if (id == 0) {
                 $.post("/regbuy/insert", { regapply: obj }, function (res) {

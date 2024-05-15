@@ -63,7 +63,7 @@
         </form>
     </div>
 </div>
-<div id="result" style="height: 50px;">
+<div id="result" style="margin-left:30px" >
 
 </div>
 
@@ -77,13 +77,14 @@
     </div>
 </script>
 <script type="text/html" id="barDemo">
-   
+
     <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="download">文件下载</a>
     {{# if (d.Is_show==1) { }}
     <a class="layui-btn layui-btn-xs" lay-event="agree">通过</a>
     {{# } }}
-
-
+    {{# if (d.buy_is_show==1) { }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="buyinfo">采购详情</a>
+    {{# } }}
 </script>
 <script>
 
@@ -149,7 +150,6 @@
             //console.log(obj)
             if (obj.event === 'agree') {
                 //console.log(data);
-
                 //向后台发接口，向数据库更改投票意见
                 $.post("/regresearch/voteupdate", { resId: data.id, regId: id }, function (res) {
                     if (res.code == 200) {
@@ -163,7 +163,15 @@
             else if (obj.event === 'download') {
                 layer.open({
                     type: 2,
-                    content: "/regresearch/ResFile/" + id,
+                    content: "/regresearch/resfile/" + id,//采购表id
+                    area: ['800px', '500px'],
+                })
+            }
+            else if (obj.event === 'buyinfo') {
+                console.log(data);
+                layer.open({
+                    type: 2,
+                    content: `/regresearch/resbuy?resid=${data.id}&name=${data.prod_name}` ,//要的是调研表id
                     area: ['800px', '500px'],
                 })
             }

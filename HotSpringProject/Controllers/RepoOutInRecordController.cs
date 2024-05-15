@@ -60,6 +60,13 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _repoOutInRecordService.GetList();
             return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
+        //出库人当天出库多种备件
+        //获取出库人使用备件的链表（商品名称，出库数量）
+        public JsonResult GetListBySpareParts(RepoOutInRecordFilter filter)
+        {
+            ResMessage resMessage = _repoOutInRecordService.GetListBySpareParts(filter);
+            return Json(resMessage, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult GetModel(int id = 0)
         {
             ResMessage resMessage = _repoOutInRecordService.GetModel(id);
@@ -79,6 +86,15 @@ namespace HotSpringProject.Controllers
         {
             ResMessage resMessage = _repoOutInRecordService.GetListBySql(page,limit,filter);
             return Json(resMessage,JsonRequestBehavior.AllowGet);
+        }
+        //入库时商品图片上传
+        public JsonResult UpLoad()
+        {
+            HttpPostedFileBase file = Request.Files[0];
+            string filename = file.FileName;
+            string path = Server.MapPath("/assets/goods/images");
+            ResMessage resMessage = _repoOutInRecordService.UpLoad(filename,path,file);
+            return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

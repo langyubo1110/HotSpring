@@ -1,4 +1,5 @@
 ﻿using DotNet.Utilities;
+using HotSpringProject.Entity;
 using HotSpringProject.Entity.VO;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace HotSpringProjectService.Interface
 {
     public interface IEmployTasksService
     {
-        //IEnumerable<EquUpkeepTaskVO> GetList(int reportID);
+        IEnumerable<EquUpkeepTaskVO> GetList(int reportID);
         ResMessage UpdateTask(int id, string data);
     }
 }

@@ -23,8 +23,11 @@ namespace HotSpringProject.Controllers
             _gRoomSparePartsService=gRoomSparePartsService;
         }
         #region 页面
-        public ActionResult Detail()
+        public ActionResult Detail(int id=0)
         {
+            //如果不选择上报人就点击选择备件按钮，此时id为null，因此默认为0
+            //此处获取的id为上报人id
+            ViewBag.id = id;
             return View();
         }
         #endregion

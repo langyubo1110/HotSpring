@@ -14,5 +14,7 @@ namespace HotSpringProject.Entity.VO
         public string goods_name { get; set; }
         //出库/入库人姓名
         public string name { get; set; }
+        //出库人id（员工id）
+        public int? outin_person_id { get; set; }
     }
 }

@@ -19,10 +19,13 @@ namespace HotSpringProject.Entity.VO
         public string fac_address { get; set; }
         public string prod_img { get; set; }
         public DateTime? create_time { get; set; }
-        public int? vote_status { get; set; }
-        public int? vote_id { get; set; }
+        //public int? vote_status { get; set; }
+        //public int? vote_id { get; set; }
         public string name { get; set; }
         public int Is_show { get; set; }
         public List<ResLessVO> lessList { get; set; }
+        public int voteCount { get; set; }
+        //public int allCount { get; set; }
+        public int buy_is_show { get; set; }
     }
 }

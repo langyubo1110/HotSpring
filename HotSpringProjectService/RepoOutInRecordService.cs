@@ -11,7 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Web;
+using System.Web.UI.WebControls;
+using AutoMapper;
 namespace HotSpringProjectService
 {
     public class RepoOutInRecordService:IRepoOutInRecordService
@@ -50,12 +52,13 @@ namespace HotSpringProjectService
                     repoGoodsStock.threshold = repoGoodsStockDTO.threshold;
                     repoGoodsStock.update_time = DateTime.Now;
                     repoGoodsStock.goods_number = repoGoodsStockDTO.goods_number - repoGoodsStockDTO.oi_number;
+                    if (repoGoodsStock.goods_number < 0)
+                        return ResMessage.Fail();
                     _repoGoodsStockRepository.Update(repoGoodsStock);
                     //库存表更新
                     //出入库表实体的商品id赋值
                     repoOutInRecord.goods_id = repoGoodsStockDTO.id;//商品ID
                     repoOutInRecord.end_number = repoGoodsStock.goods_number;
-
                 }
                 //入库
                 else
@@ -137,7 +140,49 @@ namespace HotSpringProjectService
         public ResMessage GetList()
         {
             List<RepoOutInRecord> list = _repoOutInRecordRepository.GetList().ToList();
-            return list != null ? ResMessage.Success(list) : ResMessage.Fail();
+            int count = list.Count;
+            return list != null ? ResMessage.Success(list,count) : ResMessage.Fail();
+        }
+        //此方法为获取使用备件列表的方法
+        //通过上报人id和当前时间的日期从出入库表中得到符合条件的数据，取goods_id
+        //通过goods_id获取库存表中符合条件的商品信息链表
+        public ResMessage GetListBySpareParts(RepoOutInRecordFilter filter)
+        {
+            IEnumerable<RepoOutInRecord> oi_list = _repoOutInRecordRepository.GetList();
+            if (filter.outin_person_id != null && filter.outin_person_id != 0)
+            {
+                oi_list = oi_list.Where(x => x.recipient_id == filter.outin_person_id).ToList();
+                oi_list = oi_list.Where(x => x.create_time.Date == DateTime.Now.Date).ToList();
+
+                //获取商品id和出库数量对照的对象链表
+                var relationlist = oi_list.Select(x => new { x.goods_id, x.oi_number }).ToList();
+                //获取商品id的数组
+                int[] goods_id = oi_list.Select(x => x.goods_id).ToArray();
+                IEnumerable<RepoGoodsStock> goods_list = _repoGoodsStockRepository.Getlist();
+                List<RepoGoodsStock> list = goods_list.Where(x => goods_id.Contains(x.id)).ToList();
+                int count = list.Count;
+                //拿到商品名称
+                List<RepoGoodsStockDTO> result = Mapper.Map<List<RepoGoodsStockDTO>>(list);
+                //拿到出库数量
+                //循环商品链表
+                //套循环关系对照链表
+                //出库数量赋值
+                foreach (var item in result)
+                {
+                    foreach (var item1 in relationlist)
+                    {
+                        if (item.id == item1.goods_id)
+                        {
+                            item.oi_number = item1.oi_number;
+                        }
+                    }
+                }
+                return result != null ? ResMessage.Success(result, count) : ResMessage.Fail();
+            }
+            else
+            { 
+                return ResMessage.Fail(); 
+            }
         }
         public ResMessage GetModel(int id)
         {
@@ -183,6 +228,16 @@ namespace HotSpringProjectService
                 return result == null ? ResMessage.Fail() : ResMessage.Success(result, count);
             }
             return ResMessage.Fail();
+        }
+
+        public ResMessage UpLoad(string filename,string path,HttpPostedFileBase file)
+        {
+            HttpPostedFileBase filer = file;
+            string  ex =filename.Substring(filename.IndexOf("."));
+            string filernmae = Guid.NewGuid().ToString()+ex;
+            string filepath = path + "/" + filernmae;
+            filer.SaveAs(filepath);
+            return ResMessage.Success();
         }
     }
 }
