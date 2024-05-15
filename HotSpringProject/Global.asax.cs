@@ -15,6 +15,8 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Autofac.Extras.Quartz;
 using HotSpringProject.Filter;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace HotSpringProject
 {
@@ -24,40 +26,42 @@ namespace HotSpringProject
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            SqlDependency.Start(ConfigurationManager.ConnectionStrings["HS"].ConnectionString);
+
             //容器注册
             AutofacRegister();
             /*GlobalFilters.Filters.Add(new AuthorizationFilter());*///拦截器
             AutoMapperConfig.Config();
 
-            //BackUpDataBase.Initialize();
-            //备份数据库
+            ////BackUpDataBase.Initialize();
+            ////备份数据库
             
-            //SalaryPost.Initialize();//定时调度薪资发放
+            ////SalaryPost.Initialize();//定时调度薪资发放
 
-            // 创建 Quartz 调度器
-            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
-            IScheduler scheduler = schedulerFactory.GetScheduler().Result;
-            //设置 Quartz 作业工厂，以便解析作业实例中的依赖项
-            scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
-            // 开启调度器
-            scheduler.Start().Wait();
+            //// 创建 Quartz 调度器
+            //ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            //IScheduler scheduler = schedulerFactory.GetScheduler().Result;
+            ////设置 Quartz 作业工厂，以便解析作业实例中的依赖项
+            //scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
+            //// 开启调度器
+            //scheduler.Start().Wait();
 
-            // 创建 JobDetail
-            IJobDetail writeDatajobDetail = JobBuilder.Create<MyJob>()
-                                            .WithIdentity("myJob")
-                                            .Build();
-            // 创建触发器
-            ITrigger writeDatatrigger = TriggerBuilder.Create()
-                                             .WithIdentity("myTrigger")
-                                             .StartNow()
-                                             .WithCronSchedule("0 0 8 * * ?")
-                                             //.WithSimpleSchedule(x => x
-                                             //.WithIntervalInSeconds(60) // 每 5 秒执行一次
-                                             //.RepeatForever())
-                                             .Build();
+            //// 创建 JobDetail
+            //IJobDetail writeDatajobDetail = JobBuilder.Create<MyJob>()
+            //                                .WithIdentity("myJob")
+            //                                .Build();
+            //// 创建触发器
+            //ITrigger writeDatatrigger = TriggerBuilder.Create()
+            //                                 .WithIdentity("myTrigger")
+            //                                 .StartNow()
+            //                                 .WithCronSchedule("0 0 8 * * ?")
+            //                                 //.WithSimpleSchedule(x => x
+            //                                 //.WithIntervalInSeconds(60) // 每 5 秒执行一次
+            //                                 //.RepeatForever())
+            //                                 .Build();
 
-            // 将 JobDetail 和 Trigger 绑定到调度器
-            scheduler.ScheduleJob(writeDatajobDetail, writeDatatrigger).Wait();
+            //// 将 JobDetail 和 Trigger 绑定到调度器
+            //scheduler.ScheduleJob(writeDatajobDetail, writeDatatrigger).Wait();
         }
 
 
@@ -90,6 +94,11 @@ namespace HotSpringProject
             var container = builder.Build();
             //解析器替换
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+        }
+        protected void Application_End(object sender, EventArgs e)
+        {
+            //当被监测的数据库中的数据发生变化时,SqlDependency会自动触发OnChange事件来通知应用程序,从而达到让系统自动更新数据(或缓存)的目的。
+            SqlDependency.Stop(ConfigurationManager.ConnectionStrings["HS"].ConnectionString);
         }
     }
 }

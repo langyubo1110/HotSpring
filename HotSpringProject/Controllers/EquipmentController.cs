@@ -29,8 +29,6 @@ namespace HotSpringProject.Controllers
 
 
 
-        //多个表注入
-        //private readonly IMovieTypeService _movieTypeService;
 
         //构造函数注入
         public EquipmentController(IEquipmentService equipmentService, IEquToTaskService equToTaskService, IEquUpkeepTaskService equUpkeepTaskService)
@@ -100,7 +98,7 @@ namespace HotSpringProject.Controllers
             }
         }
         //文件下载接口
-        public JsonResult downloading(EquipmentTypeVO data)
+        public ActionResult downloading(EquipmentTypeVO data)
         {
             // 文件路径
             string filePath = (Server.MapPath("/assets/download/") + $" {data.id}.txt");
@@ -108,7 +106,10 @@ namespace HotSpringProject.Controllers
             try
             {
                 DataChange(filePath, data);
-                return Json(ResMessage.Success("数据已成功保存到文件中。"));
+                // 在此处生成你要下载的文件，或者从某个位置读取文件
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                // 将 txt 文件发送给客户端进行下载
+                return File(fileBytes, "application/txt", "files.txt");
             }
             catch (Exception ex)
             {
@@ -133,7 +134,6 @@ namespace HotSpringProject.Controllers
                 filesToCompress.Add(filePath);
             }
             string zipFileName = (Server.MapPath("/assets/download/") + $"{guid}.zip");
-            //string zipname = $"{guid}.zip";
             // 创建一个新的ZIP文件
             using (ZipArchive archive = ZipFile.Open(zipFileName, ZipArchiveMode.Create))
             {

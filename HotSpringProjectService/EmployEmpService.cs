@@ -118,7 +118,7 @@ namespace HotSpringProjectService
             //开启分页
             if (filter.page != 0 && filter.limit != 0)
             {
-                list = list.OrderByDescending(x => x.create_time).Skip((filter.page - 1) * filter.limit).Take(filter.limit);
+                list = list.OrderBy(x => x.create_time).Skip((filter.page - 1) * filter.limit).Take(filter.limit);
             }
             return list.ToList();
         }

@@ -96,7 +96,11 @@
             console.log(checkStatus)
             let data = checkStatus.data
             console.log(data)
-
+            var name = ""
+            for (var item of data) {
+                name+=item.id
+            }
+            console.log(name)
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/equipment/downselect', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -112,7 +116,7 @@
                     // 创建一个隐藏的<a>元素
                     var downloadLink = document.createElement('a');
                     downloadLink.href = url;
-                    downloadLink.download = 'files.zip';
+                    downloadLink.download = `${name}.zip`;
 
                     // 将<a>元素添加到页面中
                     document.body.appendChild(downloadLink);

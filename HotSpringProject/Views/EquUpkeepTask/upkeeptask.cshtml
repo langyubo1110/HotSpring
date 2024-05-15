@@ -34,23 +34,21 @@
 </div>
 
 <script>
-
-let task_id=@ViewBag.id;
-layui.use(['layedit'], function () {
-    var layedit = layui.layedit;
-    var index = layedit.build('demo'); //建立编辑器
-    //提交表单
-    $('#send').on('click', function () {
-        //获取富文本内容
-        let data1 = layedit.getContent(index)
-        console.log(data1)
-        console.log(task_id)
-        //调接口赋值
-        $.post("/EmployTasks/UpdateTaskinfo", { task_id: task_id, data1: data1 }, function (res) {
-            console.log(res)
+    let plan_id=@ViewBag.id
+    layui.use(['layedit'], function () {
+        var layedit = layui.layedit;
+        var index = layedit.build('demo'); //建立编辑器
+        //提交表单
+        $('#send').on('click', function () {
+            //获取富文本内容
+            let data1 = layedit.getContent(index)
+            console.log(data1)
+            //调接口赋值
+            $.post("/EmployTasks/UpdateTaskinfo", { plan_id: plan_id, data1: data1 }, function (res) {
+                console.log(res)
+            })
         })
-    })
-});
+    });
 </script>
 
 <style>

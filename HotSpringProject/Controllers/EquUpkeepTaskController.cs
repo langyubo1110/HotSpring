@@ -39,14 +39,14 @@ namespace HotSpringProject.Controllers
             return View(list);
         }
         //弹出当日签到人员
-        public ActionResult Sign(string data)
+        public ActionResult Sign()
         {
-            //List<EquUpkeepTaskVO> list = JsonConvert.DeserializeObject<EquUpkeepTaskVO>(data);
             return View();
         }
         //单个保养任务
         public ActionResult upkeeptask(int id)
         {
+            //传planid
             ViewBag.id = id;
             List<EquUpkeepTaskVO> list= _equUpkeepTaskService.getlistnofilter();
             list = list.Where(x => x.id== id).ToList();
@@ -61,8 +61,8 @@ namespace HotSpringProject.Controllers
         }
         public JsonResult checkin()
         {
-            IEnumerable<EmployCheckInVO> list = _employCheckInService.GetListUnionSql();
-            list = list.Where(x => x.create_time == DateTime.Now.Date);
+            List<EmployCheckInVO> list = _employCheckInService.GetListUnionSql().ToList();
+            list = list.Where(x => x.create_time >= DateTime.Now.Date).ToList();
             return Json(ResMessage.Success(list), JsonRequestBehavior.AllowGet);
         }
         //更新保养任务表数据
