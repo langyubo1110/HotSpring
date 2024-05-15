@@ -12,5 +12,8 @@ namespace HotSpringProject.Entity.VO
         public string goods_name { get; set; }
         //库存数量
         public int? goods_number { get; set; }
+        //商品类型
+        public int? goods_type { get; set; }
+
     }
 }

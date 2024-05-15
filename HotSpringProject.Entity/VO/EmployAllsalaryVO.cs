@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HotSpringProject.Entity
+namespace HotSpringProject.Entity.VO
 {
-    [Table("Employ_Allsalary")]
-    public class EmployAllsalary
+    public class EmployAllsalaryVO
     {
-        [Key]
         public int id { get; set; }
         public int emp_id { get; set; }
         public int pay_month { get; set; }
@@ -20,6 +16,6 @@ namespace HotSpringProject.Entity
         public decimal salary { get; set; }
         public decimal perform_money { get; set; }
         public DateTime create_time { get; set; }
-
+        public string name { get; set; }
     }
 }

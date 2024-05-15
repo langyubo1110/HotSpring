@@ -95,13 +95,11 @@
             //获取选中行的数据
             var checkStatus = table.checkStatus('idTest'); //idTest 即为基础参数 id 对应的值
             console.log(checkStatus)
-            let data = checkStatus.data
-            console.log(data)
             //展示今日签到人员信息
             //弹出弹窗
             layer.open({
                 type: 2,
-                content: '/equupkeeptask/Sign',
+                content: `/equupkeeptask/Sign?data=${checkStatus.data}`,
                 area: ['450px', '500px'],
                 //layer层销
                 end: function () {

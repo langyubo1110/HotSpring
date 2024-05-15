@@ -57,7 +57,7 @@ namespace HotSpringProjectService
         public ResMessage GetModel(int id)
         {
             RepoBuy repoBuy = _repoBuyRepository.GetModel(id);
-            return repoBuy == null ? ResMessage.Fail() : ResMessage.Success();
+            return repoBuy == null ? ResMessage.Fail() : ResMessage.Success(repoBuy);
         }
 
         public ResMessage Update(RepoBuy repoBuy)

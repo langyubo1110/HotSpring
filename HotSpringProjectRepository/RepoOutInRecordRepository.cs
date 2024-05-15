@@ -35,9 +35,9 @@ namespace HotSpringProjectRepository
             return flag;
         }
         //查全表
-        public IQueryable<RepoOutInRecord> GetList()
+        public IEnumerable<RepoOutInRecord> GetList()
         {
-            IQueryable<RepoOutInRecord> list = _Db.RepoOutInRecord;
+            IEnumerable<RepoOutInRecord> list = _Db.RepoOutInRecord;
             return list;
         }
         //更新

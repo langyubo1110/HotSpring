@@ -55,7 +55,7 @@ namespace HotSpringProjectService
                     gRoomSpareParts.used_number = gRoomSparePartsVO.used_number;
                     gRoomSpareParts.create_time = DateTime.Now;
                     //判断oi_number是否为0，不为0产生入库记录
-                    if (gRoomSparePartsVO.oi_number != 0)
+                    if (gRoomSparePartsVO.rest_number != 0)
                     {
                         RepoOutInRecord repoOutInRecord = new RepoOutInRecord();
                         //入库记录的商品id
@@ -67,8 +67,8 @@ namespace HotSpringProjectService
                         //操作前的库存数量为库存表的库存数量
                         repoOutInRecord.start_number = gRoomSparePartsVO.goods_number;
                         //剩余备件数量就是这里的入库数量
-                        repoOutInRecord.oi_number = gRoomSparePartsVO.oi_number;
-                        repoOutInRecord.end_number = gRoomSparePartsVO.goods_number + gRoomSparePartsVO.oi_number;
+                        repoOutInRecord.oi_number = gRoomSparePartsVO.rest_number;
+                        repoOutInRecord.end_number = gRoomSparePartsVO.goods_number + gRoomSparePartsVO.rest_number;
                         repoOutInRecord.recipient_id = 1;
                         repoOutInRecord.create_time = DateTime.Now;
                         //出入库表插入

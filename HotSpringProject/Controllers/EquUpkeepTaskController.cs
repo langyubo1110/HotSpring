@@ -35,7 +35,7 @@ namespace HotSpringProject.Controllers
             return View(list);
         }
         //弹出当日签到人员
-        public ActionResult Sign()
+        public ActionResult Sign(List<EquUpkeepTaskVO> data)
         {
             return View();
         }
