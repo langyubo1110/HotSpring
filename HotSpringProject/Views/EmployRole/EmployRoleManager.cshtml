@@ -35,8 +35,7 @@
             }
             , toolbar: '#toolbarDemo'
             , cols: [[
-                { field: 'id', title: '主键', sort: true, fixed: 'left' }
-                , { field: 'role_name', title: '职位' }
+                { field: 'role_name', title: '职位' }
                 , {
                     field: 'is_leader', title: '是否领导', templet: function (d) {
                         return d.is_leader === 0 ? '否' : '是'

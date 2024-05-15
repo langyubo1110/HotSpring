@@ -14,14 +14,18 @@ namespace HotSpringProjectService
     public class SystemPageCorrespondenceService : ISystemPageCorrespondenceService
     {
         private readonly ISystemPageCorrespondenceRepository _rolePageRepository;
+        private readonly IEmployRoleRepository _dbRoled;
 
-        public SystemPageCorrespondenceService(ISystemPageCorrespondenceRepository rolePageRepository)
+        public SystemPageCorrespondenceService(ISystemPageCorrespondenceRepository rolePageRepository,IEmployRoleRepository employRoleRepository)
         {
             _rolePageRepository = rolePageRepository;
+            _dbRoled = employRoleRepository;
         }
         public ResMessage Add(int roleId, List<int> pageIds)
         {
-            int flag = _rolePageRepository.Add(roleId,pageIds);
+            List<EmployRole> list = _rolePageRepository.QueryBySql<EmployRole>($"select * from Employ_Role where is_leader={roleId}").ToList();
+           int id = list[0].id;
+            int flag = _rolePageRepository.Add(id,pageIds);
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
 
