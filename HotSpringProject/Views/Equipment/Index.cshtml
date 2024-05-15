@@ -15,6 +15,12 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content" id="d">
+                    </div>
+                </div>
+
             </div>
             <div class="col-sm-10">
                 <div class="ibox float-e-margins">
@@ -79,14 +85,14 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     {{#  if(d.status==1){ }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="used">停用</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="used">停用</a>
     {{# } }}
     {{#  if(d.status==0){ }}
-    <a class="layui-btn layui-btn-xs layui-btn-xs" lay-event="use">启用</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="use">启用</a>
     {{# } }}
     <a class="layui-btn layui-btn-xs layui-btn-xs" lay-event="upload">上传</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="download">下载</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="upkeep">保养</a>
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="upkeep">保养</a>
 </script>
 <script>
     //树形组件加载
@@ -99,7 +105,7 @@
             tree.render({
                 elem: '#menuTree',
                 data: data1,
-                 height: 1000,
+                height: 200,
                 click: function (obj) {
                     var table = layui.table;
                     table.reload("demo", {
@@ -145,7 +151,7 @@
         //1.渲染实例
         table.render({
             elem: '#demo'
-            , height: 450
+            , height: 600
             , url: '/equipment/Query' //数据接口
             , response: {
                 statusName: 'code' //规定数据状态的字段名称，默认：code
@@ -156,12 +162,12 @@
             }
             , page: {
                 page: 1,
-                limit: 8
+                limit: 10
             }//开启分页
             , toolbar: "#toolbarDemo"
             , cols: [[ //表头
-                { field: 'id', title: '主键', sort: true, fixed: 'left' }
-                , { field: 'name', title: '设备名称' }
+                //{ field: 'id', title: '主键', sort: true, fixed: 'left' }
+                { field: 'name', title: '设备名称' }
                 , { field: 'location', title: '位置' }
                 , {
                     field: 'status', title: '运行状态', templet: function (d) {
@@ -252,9 +258,45 @@
                 let data = obj.data
                 data.create_time = util.toDateString(data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                 data.usedtime = util.toDateString(data.usedtime.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                $.post("/equipment/downloading", { data: data }, function (res) {
-                        layer.msg(res.msg);
-                })
+                //$.post("/equipment/downloading", { data: data }, function (res) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/equipment/downloading', true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.responseType = 'blob';
+
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            var blob = xhr.response;
+
+                            // 创建一个 URL 对象
+                            var url = window.URL.createObjectURL(blob);
+
+                            // 创建一个隐藏的<a>元素
+                            var downloadLink = document.createElement('a');
+                            downloadLink.href = url;
+                            downloadLink.download = `${data.id}.txt`;
+
+                            // 将<a>元素添加到页面中
+                            document.body.appendChild(downloadLink);
+
+                            // 模拟点击下载链接
+                            downloadLink.click();
+
+                            // 下载完成后释放 URL 对象
+                            window.URL.revokeObjectURL(url);
+
+                            // 移除<a>元素
+                            document.body.removeChild(downloadLink);
+                        } else {
+                            console.error('下载文件失败');
+                        }
+                    };
+
+                    xhr.onerror = function () {
+                        console.error('下载文件时发生错误');
+                    };
+                    xhr.send(JSON.stringify(data));
+                //})
             }
             //保养信息
             else if (obj.event == "upkeep") {
@@ -262,7 +304,7 @@
                 layer.open({
                     type: 2,
                     content: '/equipment/upkeep/' + obj.data.id,
-                    area: ['1100px', '800px'],
+                    area: ['1100px', '780px'],
                 });
             }
         });
@@ -310,3 +352,8 @@
 </script>
 
 
+<style>
+   #d{
+       height:578px
+   }
+</style>

@@ -30,6 +30,7 @@ namespace HotSpringProject.Entity.VO
         public int equ_type { get; set; }
 
         public string name { get; set; }
+        public string ename { get; set; }
         public string location { get; set; }
         public string type_name { get; set; }
         public string power { get; set; }

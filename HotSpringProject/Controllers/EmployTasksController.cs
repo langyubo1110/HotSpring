@@ -14,11 +14,13 @@ namespace HotSpringProject.Controllers
     {
         private readonly IGRoomRepairService _db;
         private readonly IEmployPerformService _db1;
+        private readonly IEmployTasksService _dbTasks;
 
-        public EmployTasksController(IGRoomRepairService gRoomRepair, IEmployPerformService employPerformService)
+        public EmployTasksController(IGRoomRepairService gRoomRepair, IEmployPerformService employPerformService,IEmployTasksService employTasksService)
         {
             _db = gRoomRepair;
             _db1 = employPerformService;
+            _dbTasks = employTasksService;
         }
         /*员工个人表的控制器
         * 刘星宇
@@ -68,6 +70,13 @@ namespace HotSpringProject.Controllers
             {
                 return Json(new { code = 404, message = "No data found for the provided ID." }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [ValidateInput(false)]
+        public JsonResult UpdateTaskinfo(int plan_id, string data1)
+        {
+            ResMessage res = _dbTasks.UpdateTask(plan_id, data1);
+            return Json(res);
         }
     }
 }

@@ -81,7 +81,6 @@
             }//开启分页
             , cols: [[ //表头
                 { field: 'task_name', title: '任务名称' }
-                , { field: 'upkeep_feedback_info', title: '保养任务反馈' }
                 , {
                     field: 'interval', title: '保养间隔', templet: function (d) {
                         return d.interval + "天"
@@ -94,10 +93,6 @@
                 , {
                     field: 'end_time', title: '保养结束时间', templet: function (d) {
                         return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                    } }
-                , {
-                    field: 'feedback_time', title: '反馈时间', templet: function (d) {
-                        return util.toDateString(d.feedback_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     } }
             ]]
         });  //table
@@ -123,7 +118,7 @@
                         , "title": res.task_name //数据标题
                     }
                 }
-                , height: 250
+                , height: 300
                 , showSearch: true
                 //穿梭时的回调
                 , onchange: function (data, index) {

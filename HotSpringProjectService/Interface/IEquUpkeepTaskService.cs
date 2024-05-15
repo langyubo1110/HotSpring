@@ -18,6 +18,5 @@ namespace HotSpringProjectService.Interface
 
         //保养任务更新
         ResMessage upkeepdeit(List<EmployCheckInVO> data, int[] equid, int[] equplanid);
-
     }
 }
