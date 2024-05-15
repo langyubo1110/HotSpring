@@ -43,7 +43,6 @@
             //获取富文本内容
             let data1 = layedit.getContent(index)
             console.log(data1)
-            console.log(task_id)
             //调接口赋值
             $.post("/EmployTasks/UpdateTaskinfo", { plan_id: plan_id, data1: data1 }, function (res) {
                 console.log(res)

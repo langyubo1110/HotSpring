@@ -23,7 +23,6 @@ namespace HotSpringProject.Entity
         public int? exec_id { get; set; }
         public string upkeep_feedback_info { get; set; }
         public string QRimg { get; set; }
-        public int status { get; set; }
 
     }
 }
