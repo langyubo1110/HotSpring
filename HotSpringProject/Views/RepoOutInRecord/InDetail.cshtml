@@ -164,6 +164,8 @@
                 console.log(autores);
                 $("#searchName").val(autores.goods_name)
                 $("#hdid").val(autores.id)
+                $("#test8").attr("class", "layui-btn layui-btn-normal layui-btn-disabled");
+                $("#test9").attr("class", "layui-btn layui-btn-disabled");
                 $("#txtThreshold").attr("class", "layui-disabled form-control").attr("readonly", "readonly");
                 $("#txtFactory").attr("class", "layui-disabled form-control").attr("readonly", "readonly");
                 $("#txtPicture").attr("class", "layui-disabled form-control").attr("readonly", "readonly");
@@ -183,6 +185,9 @@
     $("#rebtn").click(function () {
         $("#txtFactory").attr("class", "form-control").removeAttr("readonly");
         $("#txtPicture").attr("class", "form-control").removeAttr("readonly");
+        $("#txtThreshold").attr("class", "form-control").removeAttr("readonly");
+        $("#test8").attr("class", "layui-btn layui-btn-normal");
+        $("#test9").attr("class", "layui-btn");
     })
 </script>
 
