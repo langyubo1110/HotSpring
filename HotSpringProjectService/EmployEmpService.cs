@@ -1,5 +1,7 @@
 ﻿using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
+using HotSpringProjectRepository;
 using HotSpringProjectRepository.Interface;
 using HotSpringProjectService.Interface;
 using System;
@@ -16,10 +18,12 @@ namespace HotSpringProjectService
     public class EmployEmpService : IEmployEmpService
     {
         private readonly IEmployEmpRepository _EmployEmpRepository;
+        private readonly IEmployRoleRepository _employRoleRepository;
 
-        public EmployEmpService(IEmployEmpRepository employemprepository )
+        public EmployEmpService(IEmployEmpRepository employemprepository,IEmployRoleRepository employRoleRepository)
         {
             _EmployEmpRepository = employemprepository;
+            _employRoleRepository = employRoleRepository;
         }
         public ResMessage Add(EmployEmp employemp)
         {
@@ -100,20 +104,31 @@ namespace HotSpringProjectService
         /// <returns></returns>
         public ResMessage GetListByPager(EmployEmpFilter filter)
         {
-            IEnumerable<EmployEmp> list = _EmployEmpRepository.GetList();
+            IEnumerable<EmployEmpVO> list = _EmployEmpRepository.GetList().Join(_employRoleRepository.GetList(),x=>x.role_id,y=>y.id,(x,y)=>new EmployEmpVO { 
+                id=x.id,
+                account_status=x.account_status,
+                password=x.password,
+                name = x.name,
+                role_name=y.role_name,
+                is_leader=y.is_leader,
+                gendar=x.gendar,
+                identity_card=x.identity_card,
+                avatar=x.avatar,
+                onboarding_time=x.onboarding_time,
+                log_count=x.log_count,
+                last_log_time=x.last_log_time,
+                create_time=x.create_time,
+                job_number=x.job_number
+            });
             int count = 0;
             list = MakeQuery(list, filter, out count);
             return ResMessage.Success(list, count);
         }
-        public IEnumerable<EmployEmp> MakeQuery(IEnumerable<EmployEmp> list, EmployEmpFilter filter, out int count)
+        public List<EmployEmpVO> MakeQuery(IEnumerable<EmployEmpVO> list, EmployEmpFilter filter, out int count)
         {
             if (!string.IsNullOrEmpty(filter.name))
             {
                 list = list.Where(x => x.name.Contains(filter.name));
-            }
-            if (filter.role_id != 0)
-            {
-                list = list.Where(x => x.role_id == filter.role_id);
             }
             count = list.Count();
             //开启分页

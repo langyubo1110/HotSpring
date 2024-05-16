@@ -27,7 +27,7 @@
                             <div class="col-sm-3">
                                 <div class="input-group">
 
-                                    <input type="text" name="textName" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                    <input type="text" name="textName" placeholder="请输入员工姓名" class="input-sm form-control"> <span class="input-group-btn">
                                         <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="btnSearch">搜索</button>
                                     </span>
                                 </div>
@@ -113,10 +113,10 @@
                         return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
                 }
+                , { field: 'role_name', title: '角色' }
                 , {
-                    field: 'role_id', title: '角色ID', templet: function (d) {
-                        return d.role_id == 1 || d.role_id == 2 ? '管理员' : '员工'
-                    }}
+                    field: 'is_leader', title: '权限', templet: function (d) { return d.is_leader==0?"用户":"管理员" }
+                }
                 , { field: 'job_number', title: '工号' }
                 , { title: '操作', toolbar: "#barDemo" }
             ]]
@@ -139,7 +139,7 @@
             }
             else {
                 layer.open({
-                    title: '员工xi',
+                    title: '员工信息',
                     type: 2,
                     content: "/EmployEmp/detail?id=" + id,
                     area: ['500px', '600px']
