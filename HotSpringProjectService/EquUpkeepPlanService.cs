@@ -57,6 +57,7 @@ namespace HotSpringProjectService
         ResMessage IEquUpkeepPlanService.Delete(int id)
         {
             bool flag = _upkeepPlanRepository.Delete(id);
+            _upkeepPlanRepository.execBySql($"delete from Equ_To_Taskes where equ_plan_id={id}");
             return flag ? ResMessage.Success() : ResMessage.Fail();
         }
 

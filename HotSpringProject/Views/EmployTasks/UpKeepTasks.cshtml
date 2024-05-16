@@ -56,11 +56,13 @@
                     { field: 'people_name', title: '执行人姓名' }
                     , { field: 'name', title: '设备名称' }
                     , {
-                        field: 'interval', title: '间隔（天）'
+                        field: 'interval', title: '间隔', templet: function (d) {
+                            return d.interval + "天"
+                        }
                     }
                     , {
                         field: 'importance', title: '重要性', templet: function (d) {
-                            return d.importance === 0 ? '高' : '极高';
+                            return d.importance === 0 ? '重要' : '超级重要';
                         }
                     }
                     , { field: 'task_name', title: '保养任务名称' }
