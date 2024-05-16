@@ -8,7 +8,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using HotSpringProject.hubs;
 
 namespace HotSpringProject.Controllers
 {
