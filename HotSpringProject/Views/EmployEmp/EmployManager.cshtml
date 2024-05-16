@@ -86,7 +86,11 @@
                     }
                 }
                 , { field: 'identity_card', title: '身份证' }
-                , { field: 'avatar', title: '头像' }
+                , {
+                    field: 'avatar', title: '头像', width: 200, templet: function (d) {
+                        return '<img src="' + d.avatar + '" style="width:140px;height:30px" />';
+                    }
+                }
                 , {
                     field: 'onboarding_time', title: '入职时间', templet: function (d) {
                         return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
@@ -111,7 +115,7 @@
                 }
                 , {
                     field: 'role_id', title: '角色ID', templet: function (d) {
-                        return d.gendar === 0 ? '员工' : '管理员'
+                        return d.role_id == 1 || d.role_id == 2 ? '管理员' : '员工'
                     }}
                 , { field: 'job_number', title: '工号' }
                 , { title: '操作', toolbar: "#barDemo" }
