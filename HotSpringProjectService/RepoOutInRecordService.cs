@@ -90,7 +90,7 @@ namespace HotSpringProjectService
                         repoGoodsStock.goods_number= repoGoodsStockDTO.oi_number;
                         repoGoodsStock.create_time = DateTime.Now;
                         repoGoodsStock.update_time = DateTime.Now;
-                        repoGoodsStock.picture = repoGoodsStockDTO.picture;
+                        repoGoodsStock.imgurl = repoGoodsStockDTO.imgurl;
                         repoGoodsStock.threshold= repoGoodsStockDTO.threshold;
                         repoGoodsStock.factory= repoGoodsStockDTO.factory;
                         repoGoodsStock.goods_type= repoGoodsStockDTO.goods_type;
@@ -230,14 +230,15 @@ namespace HotSpringProjectService
             return ResMessage.Fail();
         }
 
-        public ResMessage UpLoad(string filename,string path,HttpPostedFileBase file)
+        public ResMessage UpLoad(string filename, string path, HttpPostedFileBase file)
         {
             HttpPostedFileBase filer = file;
-            string  ex =filename.Substring(filename.IndexOf("."));
-            string filernmae = Guid.NewGuid().ToString()+ex;
+            string ex = filename.Substring(filename.LastIndexOf("."));
+            string filernmae = Guid.NewGuid().ToString() + ex;
             string filepath = path + "/" + filernmae;
             filer.SaveAs(filepath);
-            return ResMessage.Success();
+            string imgurl = "/assets/goods/images/" + filernmae;
+            return ResMessage.Success(data:imgurl);
         }
     }
 }

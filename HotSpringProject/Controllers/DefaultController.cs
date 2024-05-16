@@ -22,13 +22,14 @@ namespace HotSpringProject.Controllers
         private readonly ISystemPageCorrespondenceService _dbService;
         private readonly IEmployEmpService _db;
         private readonly ISystemPagesService _dbpages;
+        private readonly IEmployRoleService _dbRole;
 
-
-        public DefaultController(ISystemPageCorrespondenceService systemModuleService, IEmployEmpService db, ISystemPagesService systemPagesService)
+        public DefaultController(ISystemPageCorrespondenceService systemModuleService, IEmployEmpService db, ISystemPagesService systemPagesService,IEmployRoleService employRoleService)
         {
             _dbService = systemModuleService;
             _db = db;
             _dbpages = systemPagesService;
+            _dbRole = employRoleService;
         }
         // GET: Default
         #region 页面
@@ -37,14 +38,21 @@ namespace HotSpringProject.Controllers
             if (Session["User"] != null)
             {
                 EmployEmp employEmp = (EmployEmp)Session["User"];
-                int role = employEmp.role_id;
-                return View(_dbService.GetMenu(role));
+                int role_id = employEmp.role_id;
+                ViewBag.roleName = _dbRole.GetList().Where(x=>x.id == role_id).ToList()[0].role_name;
+                ViewBag.name = employEmp.name;
+                ViewBag.pip = employEmp.avatar;
+                return View(_dbService.GetMenu(role_id));
             }
             else
             {
                 return View();  
             }
             
+        }
+        public ActionResult Error()
+        {
+            return View();
         }
         public ActionResult login()
         {
@@ -60,7 +68,7 @@ namespace HotSpringProject.Controllers
                 var user = _db.GetList().Where(EmployEmp => EmployEmp.job_number == number).FirstOrDefault();
                 ResMessage res= _db.getModel(user.id);
                 EmployEmp employEmp = (EmployEmp)res.data;
-                Session["User"] = employEmp;
+                HttpContext.Session["User"] = employEmp;
                 _db.Update(employEmp,true);
                 IEnumerable<SystemPages> pages = _dbpages.GetList();
                 UserData data = new UserData();

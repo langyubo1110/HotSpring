@@ -66,6 +66,7 @@ namespace HotSpringProjectService
             bool flag = _employRoleRepository.Update(employRole);
             return flag ? ResMessage.Success() : ResMessage.Fail();
         }
+
     }
 } 
 

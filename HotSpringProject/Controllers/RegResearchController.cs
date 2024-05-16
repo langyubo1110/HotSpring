@@ -188,8 +188,9 @@ namespace HotSpringProject.Controllers
 
                 //处理图片名称
                 file.SaveAs(Server.MapPath(filepath));
-                string type = ".jpg";
-                if (file.FileName.Contains(type))
+                string type = ".jpg.png.jpeg.gif";
+                string fileType =file.FileName.Substring(file.FileName.LastIndexOf('.') + 1);
+                if (type.Contains(fileType))
                 {
                     return Json(ResMessage.Success(data: $"/assets/upload/research/{id}/" + file.FileName));
                 }
