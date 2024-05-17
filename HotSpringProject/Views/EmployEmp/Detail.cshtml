@@ -38,6 +38,7 @@
             </div>
             <input type="hidden" name="avatar" id="avatar" value="" />
             <input type="hidden" name="log_count" value="" />
+            <input type="hidden" name="create_time" value="" />
             <input type="hidden" name="job_number" value="" />
         </div>
     </div>
@@ -121,10 +122,10 @@
                 $.post("/EmployEmp/edit", { employemp: obj }, function (res) {
                     console.log(obj);
                     if (res.code == 200) {
-                        //var index = parent.layer.getFrameIndex(window.name);
-                        //parent.layer.close(index);
-                        //parent.layui.table.reload('demo');
-                        //parent.layui.layer.msg(res.msg);
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.layui.table.reload('demo');
+                        parent.layui.layer.msg(res.msg);
                     }
                 })
             }

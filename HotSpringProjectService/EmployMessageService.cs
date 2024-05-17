@@ -32,7 +32,6 @@ namespace HotSpringProjectService
                 EmployMessage employMessage = new EmployMessage();
                 employMessage.create_time = DateTime.Now;
                 employMessage.send_time = DateTime.Now;
-                employMessage.link = "abcd";
                 employMessage.part = employMessagevo.part;
                 employMessage.sender_id = employMessagevo.sender_id;
                 employMessage.recipients_id = employMessagevo.recipients_id;
@@ -50,7 +49,6 @@ namespace HotSpringProjectService
                     part = employMessagevo.part,
                     create_time = DateTime.Now,
                     send_time = DateTime.Now,
-                    link = "abcd"
                 }).ToList();
 
                 int flag = _EmployMessageRepository.AddRange(messagesToAdd);
