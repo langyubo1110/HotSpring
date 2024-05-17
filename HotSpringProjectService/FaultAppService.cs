@@ -90,18 +90,10 @@ namespace HotSpringProjectService
             Equipment equipment = _equipmentRepository.GetModel(eid);
             equipment.status = 0;
             _equipmentRepository.Update(equipment);
-            //faultAnalyse.create_time = DateTime.Now;
-            //faultAnalyse.final_scheme = 0;
-            //int flag = _faultAnalyseRepository.Add(faultAnalyse);
-            //return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
-
             //添加故障内容
-            
-                FaultAnalyse existingFaultAnalyse = _faultAnalyseRepository.GetList().Where(x => x.fault_app_id==faultAnalyse.fault_app_id && x.analyse_id==faultAnalyse.analyse_id).FirstOrDefault();
-                existingFaultAnalyse.contents = faultAnalyse.contents;
-                int flag = _faultAnalyseRepository.UpDate(existingFaultAnalyse);
-            
-            
+            FaultAnalyse existingFaultAnalyse = _faultAnalyseRepository.GetList().Where(x => x.fault_app_id==faultAnalyse.fault_app_id && x.analyse_id==faultAnalyse.analyse_id).FirstOrDefault();
+            existingFaultAnalyse.contents = faultAnalyse.contents;
+            int flag = _faultAnalyseRepository.UpDate(existingFaultAnalyse);
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
         //得到领导链表
@@ -112,12 +104,20 @@ namespace HotSpringProjectService
             return list == null ? ResMessage.Fail() : ResMessage.Success(list);
         }
       
-        public ResMessage GetRepairList(int page, int limit)
+        public ResMessage GetRepairList(string name,int page, int limit, int? fault_app_id)
         {
             IQueryable<FaultApp> List = _faultAppRepository.GetList();
             int count = List.Count();
             List<FaultApp> pagedResult = List.OrderBy(x => x.id).Skip((page - 1) * limit).Take(limit).ToList();
+            
             List<FaultAnalyse> faultAnalyses = _faultAnalyseRepository.GetList().ToList();
+            int end_count = 0;
+            if (fault_app_id != null)
+            {
+                
+                end_count = faultAnalyses.Where(x => x.fault_app_id == fault_app_id & x.final_scheme == 1).Count();
+            }
+           
             //查故障申报全表
             List<FaultAppVO> list = _faultAppRepository.QueryBySql<FaultAppVO>($@"select Rep_Fault_App.id,equip_id,fault_report,fault_describe,fault_time,Rep_Fault_App.create_time,name from Rep_Fault_App inner join Equ_Equipment on Rep_Fault_App.equip_id=Equ_Equipment.id  ").ToList();
             
@@ -135,6 +135,7 @@ namespace HotSpringProjectService
                 vo.count = faultAnalyses.Where(x => x.fault_app_id == item.id).ToList().Count;
                 //已审批数量
                 vo.auditcount = faultAnalyses.Where(x => x.contents != "" && x.contents != null && x.fault_app_id==item.id).ToList().Count;
+                vo.end_count = end_count;//最终解决方案数量
                 if (vo.count == vo.auditcount)
                 {
                     //隐藏按钮
@@ -146,8 +147,12 @@ namespace HotSpringProjectService
                 }
                 res.Add(vo);
             }
+            if (!string.IsNullOrEmpty(name)) 
+            {
+                res=res.Where(x=>x.name.Contains(name)).ToList();
+            }
 
-            return  list==null ? ResMessage.Fail() : ResMessage.Success(res,count);
+            return  res==null ? ResMessage.Fail() : ResMessage.Success(res,count);
         }
        
        public ResMessage GetAnalyseContents(int id)

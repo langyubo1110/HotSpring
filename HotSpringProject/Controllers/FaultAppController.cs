@@ -16,7 +16,6 @@ namespace HotSpringProject.Controllers
     public class FaultAppController : Controller
     {
         private readonly IFaultAppService _faultAppService;
-        // GET: FaultApp
         private readonly IRepairTaskReportService _repairTaskReportService;
         private readonly IEquipmentService _equipmentService;
         private readonly IFaultAnalyseService _faultAnalyseService;
@@ -105,9 +104,9 @@ namespace HotSpringProject.Controllers
 
             return Json(_faultAppService.StopAndAdd(eid, faultAnalyse), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetRepairList(int page, int limit)
+        public JsonResult GetRepairList( string name,int page, int limit,int? fault_app_id=null)
         {
-            ResMessage result = _faultAppService.GetRepairList(page ,limit);
+            ResMessage result = _faultAppService.GetRepairList(name,page ,limit,fault_app_id);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetAnalyseContents(int id)

@@ -18,7 +18,7 @@ namespace HotSpringProject.Entity.VO
         public int auditcount {  get; set; }    
         public int show {  get; set; }
         public string name { get; set; }
-        
+        public int end_count {  get; set; }//最终解决方案数量
 
     }
 }

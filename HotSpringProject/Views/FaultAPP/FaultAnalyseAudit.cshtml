@@ -27,10 +27,9 @@
         //表格渲染
         table.render({
             elem: '#demo'
-            , height: 525
+            , height: 400
+           
             , url: `/faultapp/GetAnalyseContents/${fault_app_id}` //数据接口
-            , page: true//开启分页
-            , toolbar: '#toolbarDemo'
             , cols: [[
                   { type: 'checkbox' } 
                 , { field: 'contents', title: '故障内容' }
@@ -48,7 +47,16 @@
         $("#submit").click(function () {
             var checkStatus = table.checkStatus('demo');
             console.log(checkStatus)
-            $.post('')
+            $.post("/FaultAnalyse/UpDateByAudit", { faultAnalyselist: checkStatus.data }, function (res) {
+                if (res.code == 200) {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layui.table.reload("demo", {
+                        where: { fault_app_id: fault_app_id }
+                    });
+                    parent.layer.msg("审核通过");
+                    parent.layer.close(index);
+                }
+            })
         })
 
     })

@@ -17,7 +17,7 @@ namespace HotSpringProjectService.Interface
         ResMessage GetModel(int id);
         ResMessage StopAndAdd(int eid, FaultAnalyse faultAnalyse);
         ResMessage GetListByRole();
-        ResMessage GetRepairList(int page,int limit );
+        ResMessage GetRepairList(string name,int page,int limit,int? fault_app_id);
         ResMessage GetAnalyseContents(int id);
     }
 }

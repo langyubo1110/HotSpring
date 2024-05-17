@@ -1,5 +1,6 @@
 ﻿using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
 using HotSpringProjectService;
 using HotSpringProjectService.Interface;
 using System;
@@ -49,17 +50,18 @@ namespace HotSpringProject.Controllers
         {
             return Json(_faultAnalyseService.Add(faultAnalyse), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult UpDate(FaultAnalyse faultAnalyse) 
+        public JsonResult UpDateByAudit(List<FaultAnalyse> faultAnalyselist) 
         {
             if (Session["User"] != null)
             {
-
                 EmployEmp employEmp = (EmployEmp)Session["User"];
-
-                faultAnalyse.auditor = employEmp.name;
-                faultAnalyse.final_scheme = 1;
+                foreach (var faultAnalyse in faultAnalyselist)
+                {
+                    faultAnalyse.auditor = employEmp.name;
+                    faultAnalyse.final_scheme = 1;
+                }
             }
-            ResMessage resMessage = _faultAnalyseService.Update(faultAnalyse);
+            ResMessage resMessage = _faultAnalyseService.UpDateByAudit(faultAnalyselist);
             return Json(resMessage);
         }
         #endregion

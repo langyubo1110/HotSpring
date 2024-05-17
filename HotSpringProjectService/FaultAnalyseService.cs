@@ -52,5 +52,16 @@ namespace HotSpringProjectService
             
             return _faultAnalyseRepository.UpDate(faultAnalyse) > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
+        public ResMessage UpDateByAudit(List<FaultAnalyse> faultAnalyseslist)
+        {
+            foreach(var item in faultAnalyseslist)
+            {
+                FaultAnalyse faultAnalyse = _faultAnalyseRepository.GetModel(item.id);
+                faultAnalyse.auditor = item.auditor;
+                faultAnalyse.final_scheme = 1;
+                _faultAnalyseRepository.UpDate(faultAnalyse);
+            }
+            return ResMessage.Success();
+        }
     }
 }
