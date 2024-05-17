@@ -112,11 +112,7 @@ namespace HotSpringProjectService
             
             List<FaultAnalyse> faultAnalyses = _faultAnalyseRepository.GetList().ToList();
             int end_count = 0;
-            if (fault_app_id != null)
-            {
-                
-                end_count = faultAnalyses.Where(x => x.fault_app_id == fault_app_id & x.final_scheme == 1).Count();
-            }
+            
            
             //查故障申报全表
             List<FaultAppVO> list = _faultAppRepository.QueryBySql<FaultAppVO>($@"select Rep_Fault_App.id,equip_id,fault_report,fault_describe,fault_time,Rep_Fault_App.create_time,name from Rep_Fault_App inner join Equ_Equipment on Rep_Fault_App.equip_id=Equ_Equipment.id  ").ToList();
@@ -124,6 +120,9 @@ namespace HotSpringProjectService
             List<FaultAppVO> res = new List<FaultAppVO>();
             foreach(var item in list)
             {
+             
+                end_count = faultAnalyses.Where(x => x.fault_app_id == item.id & x.final_scheme == 1).Count();
+                
                 FaultAppVO vo = new FaultAppVO();
                 vo.fault_report = item.fault_report;
                 vo.fault_time= item.fault_time;
