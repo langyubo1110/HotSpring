@@ -83,6 +83,7 @@
             }
         }
         $.post("/EmployEmp/getEmp", { id: id }, function (res) {
+            console.log(res)
             if (res.code == 200) {
                 res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
                 form.val('empForm', res.data);

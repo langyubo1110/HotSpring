@@ -81,6 +81,7 @@
                 , { field: 'post_status', title: '发放状态', sort: true, templet: function (d) { return d.post_status == 0? "未发放":"已发放" } }
                 , { field: 'salary', title: '当月底薪', sort: true, templet: function (d) { return formatNumber(d.salary); }}
                 , { field: 'perform_money', title: '当月绩效', sort: true, templet: function (d) { return formatNumber(d.perform_money); } }
+                , { title: '薪资总额', sort: true, templet: function (d) { return formatNumber(d.perform_money + d.salary); } }
                 , { field: 'create_time', title: '创建时间', sort: true , templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
                 , { title: '操作', toolbar: '#barDemo', templet:'#barDemo' }
             ]]

@@ -65,7 +65,7 @@
         //表格渲染
         table.render({
             elem: '#demo'
-            , height: 525
+            , height: 522
             , url: '/repogoodsstock/getlistbypager' //数据接口
             , page: true//开启分页
             , toolbar: '#toolbarDemo'
@@ -73,9 +73,14 @@
                 { field: 'goods_name', title: '商品名称', }
                 , { field: 'goods_number', title: '商品库存数量' }
                 , { field: 'threshold', title: '阈值' }
-                , { field: 'factory', title: '工厂', }
-                , { field: 'picture', title: '图片', }
-                , { field: 'create_time', title: '创建时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
+                , { field: 'factory', title: '工厂' }
+                , {
+                    field: 'imgurl', title: '图片',width:200, templet: function (d) {
+                        return '<img src="' + d.imgurl + '" style="width:140px;height:30px" />';
+                    }
+}
+                , { field: 'create_time', title: '创建时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss") } }
+                , { field: 'update_time', title: '更新时间', templet: function (d) { return util.toDateString(d.update_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss") } }
                 , { title: '操作', toolbar: '#barDemo' }
             ]]
             , parseData: function (res) { //res 即为原始返回的数据

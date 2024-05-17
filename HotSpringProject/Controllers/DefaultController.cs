@@ -50,6 +50,10 @@ namespace HotSpringProject.Controllers
             }
             
         }
+        public ActionResult Error()
+        {
+            return View();
+        }
         public ActionResult login()
         {
             return View();
