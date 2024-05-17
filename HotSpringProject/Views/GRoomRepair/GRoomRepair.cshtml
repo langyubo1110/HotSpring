@@ -10,7 +10,7 @@
                 <label class="layui-form-label">上报人</label>
                 <div class="layui-input-block">
                     <!--上报人autocomplete-->
-                    <select name="reporter_id" lay-search=""  lay-filter="aihao">
+                    <select name="reporter_id" id="ddlid" lay-search=""  lay-filter="aihao">
                         <option value=""></option>
                         @foreach (var item in ViewBag.list)
                         {
@@ -22,32 +22,32 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">维修地点</label>
                 <div class="layui-input-block">
-                    <input type="text" name="location"  lay-verify="required" placeholder="请输入维修地点" class="layui-input">
+                    <input type="text" name="location"   placeholder="请输入维修地点" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">确认人</label>
                 <div class="layui-input-block">
-                    <input type="text" name="confirmer"  lay-verify="required" placeholder="请输入确认人姓名" class="layui-input">
+                    <input type="text" name="confirmer"   placeholder="请输入确认人姓名" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">开始时间</label>
                 <div class="layui-input-block">
-                    <input type="text" name="start_time"  lay-verify="required" class="layui-input" id="test5" placeholder="yyyy-MM-dd HH:mm:ss">
+                    <input type="text" name="start_time"   class="layui-input" id="test5" placeholder="yyyy-MM-dd HH:mm:ss">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">结束时间</label>
                 <div class="layui-input-block">
-                    <input type="text" name="end_time" lay-verify="required" class="layui-input" id="test6" placeholder="yyyy-MM-dd HH:mm:ss">
+                    <input type="text" name="end_time"  class="layui-input" id="test6" placeholder="yyyy-MM-dd HH:mm:ss">
                 </div>
             </div>
 
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">维修内容</label>
                 <div class="layui-input-block">
-                    <textarea placeholder="请输入维修内容" lay-verify="required" class="layui-textarea" name="work_context"></textarea>
+                    <textarea placeholder="请输入维修内容"  class="layui-textarea" name="work_context"></textarea>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -55,7 +55,7 @@
                 <button type="button" id="selbtn" class="layui-btn layui-btn-sm layui-btn-normal">选择备件</button><br /><br />
                 &emsp;&emsp;<span>已选备件</span>
                 <div style="margin-left:25px">
-                    <table class="layui-hide" id="demo"></table>
+                    <table class="layui-hide" id="demo" lay-filter="test"></table>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -88,18 +88,20 @@
             , type: 'datetime'
         });
         form.on('submit(demo1)', function (data) {
-            console.log(data.field)
             if (data.field.reporter_id == 0)
             {
                 layer.msg("请选择上报人");
                 return false;
             }
-            var datatable = table.getData("demo")
+            var datatable = table.getData('demo')
             console.log(datatable)
             $.post("/groomrepair/add", { gRoomRepair: data.field, gRoomSPVOlist: datatable }, function (res) {
-                if (res.code == 200)
-                {
+                if (res.code == 200) {
                     layer.msg('提交成功');
+                }
+                else
+                {
+                    layer.msg('提交失败');
                 }
             })
             return false;
@@ -107,17 +109,20 @@
         //展示已知数据
         table.render({
             elem: '#demo'
-            , width:606
+            , width: 485
+            , page: false
             , cols: [[ //标题栏
                 { field: 'goods_name', title: '备件名称', width: 120 }
-                , { field: 'goods_number', title: '库存数量', width: 120 }
-                , { field: 'number', title: '出库数量', width: 120, edit: 'text' }
+                , { field: 'oi_number', title: '出库数量', width: 120}
                 , { field: 'used_number', title: '使用数量', width: 120, edit: 'text' }
-                , { field: 'oi_number', title: '剩余数量', width: 120, edit: 'text' }
+                , { field: 'rest_number', title: '剩余数量', width: 120 }
+                   
             ]]
             , data: [{
                 "goods_name": "无"
-                , "goods_number": "无"
+                , "oi_number": 0
+                , "used_number": 0
+                , "rest_number": 0
             }]
             //,skin: 'line' //表格风格
             , even: true
@@ -125,21 +130,49 @@
             //,limits: [5, 7, 10]
             //,limit: 5 //每页默认显示的数量
         });
+        //单元格编辑事件，值发生改变时触发
+        table.on('edit(test)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+            //console.log(obj.value); //得到修改后的值
+            //console.log(obj.field); //当前编辑的字段名
+            //console.log(obj.data); //所在行的所有相关数据
+            if (obj.value > obj.data.oi_number)
+            {
+                //超出提示并赋0
+                layer.msg('请勿超出数额')
+                $(obj.tr.selector + ' td[data-field="used_number"] input').val(0);
+                return false
+            }
+            if (obj.value < 0)
+            {
+                layer.msg('请输入大于等于0的整数')
+                $(obj.tr.selector + ' td[data-field="used_number"] input').val(0);
+                return false
+            }
+            var datatable = table.getData('demo')
+            for (let item of datatable)
+            {
+                item.rest_number = item.oi_number - item.used_number;
+            }
+            table.reload('demo',{ data: datatable })
+        });
         //选择备件按钮
         $("#selbtn").click(function () {
+            var id = $("#ddlid").val();
             layer.open({
                 title: '备件列表',
                 type: 2,
                 area: ['350px', '650px'],
-                content: '/groomspareparts/detail'
+                content: `/groomspareparts/detail/${id}`
             })
         })
         //重置按钮
         $("#rebtn").click(function () {
             table.reload('demo', {
-                data: [{
+                    data: [{
                     "goods_name": "无"
-                    , "goods_number": "无"
+                    , "oi_number": 0
+                    , "used_number": 0
+                    , "rest_number": 0
                 }]
             })
         })

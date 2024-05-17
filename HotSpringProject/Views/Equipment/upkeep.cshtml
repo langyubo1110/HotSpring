@@ -7,7 +7,6 @@
 <table class="layui-table" lay-skin="line">
     <thead>
         <tr>
-            <th>设备主键</th>
             <th>设备昵称</th>
             <th>位置</th>
             <th>功率</th>
@@ -18,7 +17,6 @@
     </thead>
     <tbody>
         <tr>
-            <td>@Model[0].id</td>
             <td>@Model[0].name</td>
             <td>@Model[0].location</td>
             <td>@Model[0].power</td>
@@ -56,6 +54,7 @@
     let equ_id =@Model[0].id
     $.post('/equipment/equtotask', {}, function (res) {
         data1 = res
+        console.log(data1)
     layui.use(['transfer', 'layer', 'util','table'], function () {
          transfer = layui.transfer
          ,layer = layui.layer
@@ -80,7 +79,6 @@
             }//开启分页
             , cols: [[ //表头
                 { field: 'task_name', title: '任务名称' }
-                , { field: 'upkeep_feedback_info', title: '保养任务反馈' }
                 , {
                     field: 'interval', title: '保养间隔', templet: function (d) {
                         return d.interval + "天"
@@ -94,10 +92,6 @@
                     field: 'end_time', title: '保养结束时间', templet: function (d) {
                         return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     } }
-                , {
-                    field: 'feedback_time', title: '反馈时间', templet: function (d) {
-                        return util.toDateString(d.feedback_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                    } }
             ]]
         });  //table
 
@@ -106,7 +100,7 @@
             console.log(res)
             let defaultValue = []
             for (var item of res.data) {
-                defaultValue.push(item.task_id)
+                defaultValue.push(item.equ_plan_id)
             }
             console.log(defaultValue)
             //数据格式解析
@@ -115,36 +109,26 @@
                 , data: data1
                 , value: defaultValue // 右侧默认值
                 , id: 'demo1'
-                , parseData: function (res) {
+                , parseData: function (res) {   
+                    console.log(res)
                     return {
                         "value": res.id //数据值
                         , "title": res.task_name //数据标题
                     }
                 }
-                , height: 250
+                , height: 300
                 , showSearch: true
                 //穿梭时的回调
                 , onchange: function (data, index) {
                     //获得右侧数据
                     let getData = transfer.getData('demo1');
-                    //右侧不为空 说明进行删除数据添加
-                    //if (getData != "") {
+                    console.log(getData)
                         $.post('/equtotask/AddAfterDelete', { getData: getData, id: equ_id }, function (res) {
                             if (res.code == 200) {
                                 //表格重载
                                 table.reload("demo")
                             }
                         })
-                    //}
-                    //else {
-                    //    //右侧为空 则清空表
-                    //    $.post('/equtotask/Delete', {}, function (res) {
-                    //        if (res.code == 200) {
-                    //            //表格重载
-                    //            table.reload("demo")
-                    //        }
-                    //    })
-                    //}
                 }
             }) //transfer
         })  //post

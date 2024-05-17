@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace HotSpringProjectRepository.Interface
 {
-    public interface IEquUpKeepDistributedRepository
+    public interface IEmployMessageRepository
     {
-        IEnumerable<EquUpKeepDistributed> GetList();
-        int Add(EquUpKeepDistributed EquUpKeepDistributed);
+        List<EmployMessage> GetList();
     }
 }

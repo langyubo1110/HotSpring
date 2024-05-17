@@ -17,14 +17,6 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
                                 <i class="fa fa-wrench"></i>
                             </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li>
-                                    <a href="table_basic.html#">选项1</a>
-                                </li>
-                                <li>
-                                    <a href="table_basic.html#">选项2</a>
-                                </li>
-                            </ul>
                             <a class="close-link">
                                 <i class="fa fa-times"></i>
                             </a>
@@ -35,7 +27,7 @@
                             <div class="col-sm-3">
                                 <div class="input-group">
 
-                                    <input type="text" name="textName" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                                    <input type="text" name="textName" placeholder="请输入员工姓名" class="input-sm form-control"> <span class="input-group-btn">
                                         <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="btnSearch">搜索</button>
                                     </span>
                                 </div>
@@ -87,25 +79,28 @@
             }
             , toolbar: '#toolbarDemo'
             , cols: [[
-                { field: 'id', title: '主键', sort: true, fixed: 'left' }
-                , { field: 'name', title: '姓名' }
+                { field: 'name', title: '姓名' }
                 , {
                     field: 'gendar', title: '性别', templet: function (d) {
                         return d.gendar === 0 ? '男' : '女';
                     }
                 }
                 , { field: 'identity_card', title: '身份证' }
-                , { field: 'avator', title: '头像' }
+                , {
+                    field: 'avatar', title: '头像', width: 200, templet: function (d) {
+                        return '<img src="' + d.avatar + '" style="width:140px;height:30px" />';
+                    }
+                }
                 , {
                     field: 'onboarding_time', title: '入职时间', templet: function (d) {
                         return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
                 }
-                , {
-                    field: 'account_status', title: '账号状态', templet: function (d) {
-                        return d.gendar === 0 ? '已注销' : '未注销';
-                    }
-                }
+                //, {
+                //    field: 'account_status', title: '账号状态', templet: function (d) {
+                //        return d.gendar === 0 ? '已注销' : '未注销';
+                //    }
+                //}
                 , { field: 'log_count', title: '登录次数' }
                 , {
                     field: 'last_log_time', title: '最后登陆时间', templet: function (d) {
@@ -118,10 +113,10 @@
                         return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
                 }
+                , { field: 'role_name', title: '角色' }
                 , {
-                    field: 'role_id', title: '角色ID', templet: function (d) {
-                        return d.gendar === 0 ? '员工' : '管理员'
-                    }}
+                    field: 'is_leader', title: '权限', templet: function (d) { return d.is_leader==0?"用户":"管理员" }
+                }
                 , { field: 'job_number', title: '工号' }
                 , { title: '操作', toolbar: "#barDemo" }
             ]]
@@ -144,7 +139,7 @@
             }
             else {
                 layer.open({
-                    title: '员工xi',
+                    title: '员工信息',
                     type: 2,
                     content: "/EmployEmp/detail?id=" + id,
                     area: ['500px', '600px']
@@ -156,7 +151,7 @@
             layer.open({
                 title: '员工添加',
                 type: 2,
-                area: ['500px', '600px'],
+                area: ['500px', '500px'],
                 content: '/EmployEmp/detail/'
             })
         });

@@ -10,6 +10,7 @@ using DotNet.Utilities;
 using HotSpringProject.Entity.VO;
 using HotSpringProject.Entity.DTO;
 using HotSpringProjectRepository;
+using System.Diagnostics.Eventing.Reader;
 namespace HotSpringProjectService
 {
     public class RepoGoodsStockService: IRepoGoodsStockService
@@ -44,9 +45,9 @@ namespace HotSpringProjectService
             {
                 list = list.Where(x => x.goods_name.Contains(filter.goods_name));
             }
-            if (filter.goods_number != null)
+            if (filter.goods_type != null)
             {
-                list = list.Where(x => x.goods_number==filter.goods_number);
+                list = list.Where(x => x.goods_type == filter.goods_type);
             }
             int count = list.Count();
             List<RepoGoodsStock> result = list.OrderBy(x => x.id).Skip((page - 1) * limit).Take(limit).ToList();
@@ -96,25 +97,19 @@ namespace HotSpringProjectService
                 return ResMessage.Fail(ex.Message);
             }
         }
-        public ResMessage GetList(string keywords,int? goods_type)
+        public ResMessage GetList(string keywords,RepoGoodsStockFilter filter)
         {
+            IEnumerable<RepoGoodsStock> ilist = _repoGoodsStockRepository.Getlist();
             //自动补全
             if (!string.IsNullOrEmpty(keywords))
             {
-                List<RepoGoodsStock> list = _repoGoodsStockRepository.Getlist().Where(x => x.goods_name.Contains(keywords)).ToList();
-                int count = list.Count;
-                return list == null ? ResMessage.Fail() : ResMessage.Success(list, count);
-            }
-            //查全表
-            else if (goods_type != null)
-            {
-                List<RepoGoodsStock> list = _repoGoodsStockRepository.Getlist().Where(x => x.goods_type == goods_type).ToList();
+                List<RepoGoodsStock> list = ilist.Where(x => x.goods_name.Contains(keywords)).ToList();
                 int count = list.Count;
                 return list == null ? ResMessage.Fail() : ResMessage.Success(list, count);
             }
             else 
             {
-                List<RepoGoodsStock> list = _repoGoodsStockRepository.Getlist().ToList();
+                List<RepoGoodsStock> list = ilist.ToList();
                 int count = list.Count;
                 return list == null ? ResMessage.Fail() : ResMessage.Success(list, count);
             }

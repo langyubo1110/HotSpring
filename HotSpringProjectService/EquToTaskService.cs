@@ -16,22 +16,27 @@ namespace HotSpringProjectService
     public class EquToTaskService : IEquToTaskService
     {
         private readonly IEquToTaskRepository _equToTaskRepository;
+        private readonly IEquUpkeepTaskService _equUpkeepTaskService;
 
-        public EquToTaskService(IEquToTaskRepository equToTaskRepository)
+        public EquToTaskService(IEquToTaskRepository equToTaskRepository,IEquUpkeepTaskService equUpkeepTaskService)
         {
             _equToTaskRepository = equToTaskRepository;
+            _equUpkeepTaskService= equUpkeepTaskService;
         }
 
         public ResMessage AddAfterDelete(List<EquToTaskVO> getData, EquUpkeepPlanFilter filter, int id)
         {
             //删除全表
             int flag = _equToTaskRepository.delete(id);
+
             //添加右边数据
             if (getData != null)
             {
                 foreach (var item in getData)
                 {
-                    _equToTaskRepository.execBySql($"insert into Equ_To_Taskes(equ_id,task_id)values({id},{item.value})");
+                    //IEnumerable<EquUpkeepTask> tlist= _equUpkeepTaskService.GetTaskList();
+                    //List<EquUpkeepTask> tlists=tlist.Where(t=>t.equ_plan_id==item.value).ToList();
+                    _equToTaskRepository.execBySql($"insert into Equ_To_Taskes(equ_id,equ_plan_id)values({id},{item.value})");
                 }
                 IEnumerable<EquToTaskVO> list = _equToTaskRepository.QueryBySql<EquToTaskVO>("select * from Equ_To_Taskes").ToList();
                 List<EquToTaskVO> list1 = list.ToList();
@@ -39,18 +44,14 @@ namespace HotSpringProjectService
                 list1 = MakeQuery(list1, filter);
                 return ResMessage.Success(list1, count);
             }
-            return ResMessage.Success();
+            return ResMessage.Success();    
         }
 
 
         public ResMessage GetList(int id, EquUpkeepPlanFilter filter)
         {
-            //List<EquToTask> list = _equToTaskRepository.QueryBySql<EquToTask>($"select * from Equ_To_Taskes where equ_id={id}").ToList();
-            //List<EquUpkeepTask> list2 = _equToTaskRepository.QueryBySql<EquUpkeepTask>($"select * from Equ_Upkeep_Task").ToList();
-            List<EquToTaskVO> listvo = _equToTaskRepository.QueryBySql<EquToTaskVO>($@"select t.*,e.upkeep_feedback_info,e.upkeep_time,e.equ_plan_id,
-                                        e.distribute_time,e.feedback_time,u.start_time,u.end_time,u.interval,u.task_name from Equ_To_Taskes t 
-                                        inner join Equ_Upkeep_Task e on t.task_id=e.id
-                                        inner join Equ_Upkeep_Plan as u on u.id=e.equ_plan_id where t.equ_id={id}").ToList();
+            List<EquToTaskVO> listvo = _equToTaskRepository.QueryBySql<EquToTaskVO>($@"select t.equ_id,t.equ_plan_id,s.task_name,s.start_time,s.end_time,s.interval,s.importance,s.task_info from Equ_To_Taskes t inner join Equ_Upkeep_Plan s
+                                                        on t.equ_plan_id=s.id where equ_id={id}").ToList();
             int count = listvo.Count;
             listvo = MakeQuery(listvo, filter);
             return ResMessage.Success(listvo, count);
@@ -59,10 +60,8 @@ namespace HotSpringProjectService
         //查vo全表
         public List<EquToTaskVO> GetListAll()
         {
-            List<EquToTaskVO> listvo = _equToTaskRepository.QueryBySql<EquToTaskVO>($@"select t.*,e.upkeep_feedback_info,e.upkeep_time,e.equ_plan_id,
-                                        e.distribute_time,e.feedback_time,u.start_time,u.end_time,u.interval,u.task_name from Equ_To_Taskes t 
-                                        inner join Equ_Upkeep_Task e on t.task_id=e.id
-                                        inner join Equ_Upkeep_Plan as u on u.id=e.equ_plan_id ").ToList();
+            List<EquToTaskVO> listvo = _equToTaskRepository.QueryBySql<EquToTaskVO>($@"select t.*,u.start_time,u.end_time,u.interval,u.task_name 
+                                       from Equ_To_Taskes t inner join Equ_Upkeep_Plan as u on u.id=t.equ_plan_id ").ToList();
             return listvo;
         }
 

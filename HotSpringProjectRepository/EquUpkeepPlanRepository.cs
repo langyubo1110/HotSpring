@@ -21,14 +21,14 @@ namespace HotSpringProjectRepository
             return _db.EquUpkeepPlan;
         }
 
-        int IEquUpkeepPlanRepository.Add(EquUpkeepPlan equUpkeepPlan)
+        public int Add(EquUpkeepPlan equUpkeepPlan)
         {
             _db.Entry(equUpkeepPlan).State = System.Data.Entity.EntityState.Added;
             int flag = _db.SaveChanges();
             return flag;
         }
 
-        bool IEquUpkeepPlanRepository.Delete(int id)
+        public bool Delete(int id)
         {
             EquUpkeepPlan equUpkeepPlan = _db.EquUpkeepPlan.Find(id);
             if (equUpkeepPlan != null)
@@ -40,19 +40,24 @@ namespace HotSpringProjectRepository
             return false;
         }
 
+        public int execBySql(string sql)
+        {
+            int flag = _db.Database.ExecuteSqlCommand(sql);
+            return flag;
+        }
 
-        EquUpkeepPlan IEquUpkeepPlanRepository.GetModel(int id)
+        public EquUpkeepPlan GetModel(int id)
         {
             EquUpkeepPlan equUpkeepPlan = _db.EquUpkeepPlan.Find(id);
             return equUpkeepPlan;
         }
 
-        IEnumerable<T> IEquUpkeepPlanRepository.QueryBySql<T>(string sql)
+        public IEnumerable<T> QueryBySql<T>(string sql)
         {
             return _db.Database.SqlQuery<T>(sql);
         }
 
-        int IEquUpkeepPlanRepository.Update(EquUpkeepPlan equUpkeepPlan)
+        public int Update(EquUpkeepPlan equUpkeepPlan)
         {
             _db.Entry(equUpkeepPlan).State = System.Data.Entity.EntityState.Modified;
             int flag = _db.SaveChanges();

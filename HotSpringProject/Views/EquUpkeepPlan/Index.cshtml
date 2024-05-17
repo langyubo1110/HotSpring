@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="input-group">
-                                    <input type="text" name="txtequipmet" placeholder="请输入设备名称" class="input-sm form-control"> <span class="input-group-btn">
+                                    <input type="text" name="txtequipmet" placeholder="请输入计划名称" class="input-sm form-control"> <span class="input-group-btn">
                                         <button type="submit" class="btn btn-sm btn-primary" lay-submit="" lay-filter="btnsearch"> 搜索</button>
                                     </span>
                                 </div>
@@ -36,7 +36,7 @@
 <!--js模板  表头组件-->
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <input type="button" class="layui-btn layui-btn-sm" lay-event="add" value="添加">
+        <input type="button" class="layui-btn layui-btn-sm" lay-event="add" value="添加保养任务">
     </div>
 </script>
 <!--js模板  列组件-->
@@ -67,11 +67,11 @@
             }
             , page: {
                 page: 1,
-                limit: 3
+                limit: 10
             }//开启分页
             , toolbar: "#toolbarDemo"
             , cols: [[ //表头
-                 { field: 'equ_name', title: '设备名称' }
+                 { field: 'task_name', title: '任务名称' }
                 , {
                     field: 'start_time', title: '保养开始时间', templet: function (d) {
                         return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
@@ -92,6 +92,7 @@
                         return d.importance == 0 ? "重要" : "超级重要"
                     }
                 }
+                , { field: 'task_info', title: '任务详情' }
                 //添加操作列
                 , { title: '操作', toolbar: "#barDemo" }
             ]]

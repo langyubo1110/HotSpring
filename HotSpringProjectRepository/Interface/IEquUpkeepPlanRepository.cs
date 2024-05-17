@@ -20,5 +20,6 @@ namespace HotSpringProjectRepository.Interface
         bool Delete(int id);
         //查实体
         EquUpkeepPlan GetModel(int id);
+        int execBySql(string sql);
     }
 }

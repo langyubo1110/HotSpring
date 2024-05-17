@@ -17,6 +17,7 @@ namespace HotSpringProject.Entity
         }
         public DbSet<Equipment> Equipment { get; set; }
         public DbSet<EmployCheckIn> EmployCheckIn { get; set; }
+        public DbSet<EmployMessage> EmployMessage { get; set; }
         public DbSet<EmployEmp> EmployEmps { get; set; }
         public DbSet<SystemLogs> SystemLogs { get; set; }
         public DbSet<SystemModule> SystemModules { get; set; }
@@ -35,7 +36,6 @@ namespace HotSpringProject.Entity
         public DbSet<GRoomSpareParts> GRoomSpareParts { get; set; }
         public DbSet<GRoomRepair> GRoomRepair { get; set; }
         public DbSet<EquUpkeepTask> EquUpkeepTask { get; set; }
-        public DbSet<EquUpKeepDistributed> EquUpKeepDistributed { get; set; }
         public DbSet<EquToTask> EquToTask { get; set; }
         public DbSet<EquUpkeepPlan> EquUpkeepPlan { get; set; }
         public DbSet<SystemPageCorrespondence> SystemPageCorrespondences { get; set; }

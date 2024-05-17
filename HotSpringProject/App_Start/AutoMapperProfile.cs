@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace OA_AutoWork.App_Start
     {
         public AutoMapperProfile()
         {
-            //CreateMap<Module, ModuleVO>();
+            CreateMap<RepoGoodsStock, RepoGoodsStockDTO>();
+            CreateMap<RepoGoodsStockDTO, RepoGoodsStock>();
         }
     }
 }

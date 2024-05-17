@@ -69,9 +69,10 @@ namespace HotSpringProjectRepository
         }
 
 
-        public bool Varfy(string username, string password)
+        public bool Varfy(string number, string pwd)
         {
-            var user = _db.EmployEmps.FirstOrDefault(u => u.name == username && u.password == password);
+
+            var user = _db.EmployEmps.FirstOrDefault(u => u.job_number == number && u.password == pwd);
             if (user != null)
             {
                 return true;

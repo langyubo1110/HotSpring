@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 
 namespace HotSpringProject.Entity
 {
-    [Table("Equ_UpKeep_Distributed")]
-    public class EquUpKeepDistributed
+    [Table("Employ_Message")]
+    public class EmployMessage
     {
         public int id { get; set; }
-        public int emp_id { get; set; }
-        public DateTime? upkeep_time { get; set; }
-        public int equ_plan_id { get; set; }
+        public DateTime? send_time { get; set; }
+        public string part { get; set; }
+        public string link { get; set; }
+        public int? sender_id { get; set; }
+        public int? recipients_id { get; set; }
         public DateTime? create_time { get; set; }
-
     }
 }

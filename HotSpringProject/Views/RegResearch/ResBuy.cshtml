@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "ResBuy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="ibox-content">
+    <form class="layui-form" action="" lay-filter="editform">
+        <div class="layui-form-item">
+            <div class="form-group layui-inline">
+                <label>设备名称</label>
+                <input type="text" name="name" value="@ViewBag.name" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>位置</label>
+                <input type="text" name="location" value="上游" placeholder="请输入位置" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>功率</label>
+                <input type="text" name="power" value="1000w" placeholder="请输入xxW" class="form-control">
+            </div>
+            <div class="form-group layui-inline">
+                <label>采购时间</label>
+                <input type="text" name="create_time" placeholder="请输入时间" lay-verify="required" id="ApplyTime" class="form-control">
+            </div>
+
+            @*隐藏控件 调研表id*@
+            <div class="form-group layui-inline">
+                <input type="hidden" id="id" name="used_time" value="@ViewBag.resid">
+            </div>
+            <button type="submit" class="layui-btn" id="btnSubmit" lay-submit="" lay-filter="demo">采购提交</button>
+        </div>
+        
+
+    </form>
+</div>
+
+<script>
+
+
+    layui.use([ 'element', 'layer'], function () {
+        var $ = layui.jquery;
+        var name='@ViewBag.name';
+            
+        var resid =@ViewBag.resid;
+        var form = layui.form;
+        var layedit = layui.layedit;
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#ApplyTime' 
+
+        });
+        
+
+        //插入设备表
+        form.on('submit(demo)', function (data) {
+            let obj = data.field;
+            console.log(obj);
+            if (id != 0) {
+
+                $.post("/regresearch/equipadd", { Equipment: obj }, function (res) {
+                    if (res.code == 200) {
+                        
+                        console.log(res);
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        //方案2  当关闭后让父页面的table重载
+                        parent.layui.table.reload('demo');
+                        layer.msg("已插入数据库");
+                        
+                    }
+                })
+            }
+            return false;
+        });
+    });
+</script>

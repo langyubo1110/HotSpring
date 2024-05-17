@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,12 +43,16 @@ namespace HotSpringProject.Entity.DTO
         public string threshold { get; set; }
         //厂家
         public string factory { get; set; }
-        //图片
-        public string picture { get; set; }
+        //图片地址
+        public string imgurl { get; set; }
         public int audit { get; set; } 
         //库存数量
         public int goods_number { get; set; }
         //出入库记录创建时间
         public DateTime create_time { get; set; }
+        //使用数量
+        public int used_number { get; set; }
+        //剩余数量
+        public int rest_number { get; set; }
     }
 }

@@ -41,10 +41,10 @@ namespace HotSpringProjectService
         
         //采购表id  用户id
         public ResMessage GetListById(int id,int userId)
-        {
+        {//查出一个对应采购id下的调研表全表数据
             List<RegResVO> regResList = _regEquipResRepositpry.QueryBySql<RegResVO>($@"select * from Reg_Equip_Research rr where rr.reg_buy_id={id}").ToList();
-            foreach(var item in regResList)
-            {
+            foreach(var item in regResList)//处理投票表的字段，以及对应采购id，立案id，投票人id的按钮展示
+            {//item 是 RegResVO
                 RegVote regVote=_regVoteRepository.GetList().Where(x=>x.equip_research_id==item.id&&x.reg_buy_id==item.reg_buy_id&&x.vote_id==userId).FirstOrDefault();
                 if (regVote != null)
                 {
@@ -55,6 +55,29 @@ namespace HotSpringProjectService
                 }
                 else
                     item.Is_show = 1;
+            }
+            foreach(var item in regResList)
+            {
+                 List<RegVote> list= _regVoteRepository.GetList().Where(x => x.equip_research_id == item.id && x.reg_buy_id == item.reg_buy_id ).ToList();
+                int count =list.Count;
+                if (list != null)
+                    item.voteCount = count;
+                else
+                    item.voteCount = 0;
+            }
+            //总票数
+            int allCount =_regVoteRepository.GetList().Where(x=>x.reg_buy_id==id).Count();
+            int realCount = _regVoteRepository.GetList().Where(x => x.reg_buy_id == id&&x.vote_status==1).Count();
+            if (allCount == realCount)//最后一票
+            {
+                // 使用 LINQ 查询找出具有最大 VoteCount 的 RegResVO 对象
+                RegResVO regResVO = regResList.OrderByDescending(x=>x.voteCount).FirstOrDefault();
+                regResVO.buy_is_show = 1;
+                // 将所有 RegResVO 对象的 is_show 字段设置为 0
+                foreach (var vo in regResList)
+                {
+                    vo.Is_show = 0;
+                }
             }
             return regResList == null ? ResMessage.Fail() : ResMessage.Success(regResList, 0);
         }

@@ -77,8 +77,7 @@
                             }
                             , toolbar: '#toolbarDemo' //开启表格工具栏
                             , cols: [[ //标题栏
-                                { field: 'id', title: '主键', width: 80, sort: true }
-                                , { field: 'name', title: '申请人', width: 120 }
+                                { field: 'name', title: '申请人', width: 120 }
                                 , { field: 'equip_name', title: '设备名', width: 120 }
                                 , { field: 'buy_reason', title: '采购原因', minWidth: 150 }
                                 , {
@@ -97,7 +96,7 @@
 
                                 , { field: 'score', title: '进度', templet: function (d) { return d.countAudit + ' / ' + d.count; } }
 
-                                , { title: '操作', toolbar: "#barDemo" }
+                                , { title: '操作', toolbar: "#barDemo", minWidth: 200 }
                             ]]
                             , url: '/regbuy/getlist'
                             , skin: 'line' //表格风格
@@ -128,6 +127,17 @@
                                     type: 2,
                                     content: "/regbuy/regbuy/" + data.id,
                                     area: ['800px', '500px'],
+                                    success: function (layero, index) {
+                                        // 获取弹出层内部的文档对象
+                                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                                        // 禁用弹出层内的所有文本框
+                                        $(iframeWin.document).find('input[type="text"]').prop('disabled', true);
+                                        $(iframeWin.document).find('textarea').prop('disabled', true);
+                                        // 如果有其他类型的表单元素，也可以一并禁用
+                                         $(iframeWin.document).find('select').prop('disabled', true);
+                                        // 根据文本框的 id 判断是否需要启用输入
+                                        $(iframeWin.document).find('#recheck_advice').prop('disabled', false);
+                                    }
                                 });
                             }
                         });

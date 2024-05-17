@@ -6,6 +6,7 @@ using HotSpringProjectService.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,19 +23,26 @@ namespace HotSpringProjectService
 
         public ResMessage GetList(EquUpkeepTaskFilter filter)
         {
-            IEnumerable<EquUpkeepTaskVO> list = _upkeepTaskRepository.QueryBySql<EquUpkeepTaskVO>($@"select t.task_name,s.*,t.start_time,t.end_time,t.interval,t.task_info
-                                                from Equ_Upkeep_Task s inner join Equ_Upkeep_Plan t on s.equ_plan_id=t.id");
+            IEnumerable<EquUpkeepTaskVO> list = _upkeepTaskRepository.QueryBySql<EquUpkeepTaskVO>($@"select s.*,p.task_name,p.start_time,p.end_time,p.interval,p.task_info,e.name,e.location,e.power,o.name as ename
+from Equ_Upkeep_Task s
+inner join Equ_Equipment e on e.id=s.equ_id
+inner join Equ_Upkeep_Plan p on p.id=s.equ_plan_id
+inner join Employ_Emp o on o.id=s.exec_id");
 
             List<EquUpkeepTaskVO> list1 = list.ToList();
-            int count=list1.Count;
+            int count = list1.Count;
             list = MakeQuery(list, filter);
-            return ResMessage.Success(list,count);
+            return ResMessage.Success(list, count);
         }
 
         public List<EquUpkeepTaskVO> getlistnofilter()
         {
-                IEnumerable<EquUpkeepTaskVO> list = _upkeepTaskRepository.QueryBySql<EquUpkeepTaskVO>($@"select t.task_name,s.*,t.start_time,t.end_time,t.interval,t.task_info
-                                                    from Equ_Upkeep_Task s inner join Equ_Upkeep_Plan t on s.equ_plan_id=t.id");
+            IEnumerable<EquUpkeepTaskVO> list = _upkeepTaskRepository.QueryBySql<EquUpkeepTaskVO>($@"select * from Equ_Upkeep_Plan ");
+            return list.ToList();
+        }
+        public List<EquUpkeepTask> GetTaskList()
+        {
+            IEnumerable<EquUpkeepTask> list = _upkeepTaskRepository.QueryBySql<EquUpkeepTask>($@"select * from Equ_Upkeep_Task ");
             return list.ToList();
         }
         /// <summary>
@@ -54,11 +62,22 @@ namespace HotSpringProjectService
             return list1;
         }
 
-        public int insert(int id,DateTime time,string img)
+        public int insert(int id, DateTime time, string img, int equ_id)
         {
-            int flag= _upkeepTaskRepository.execBySql($"insert into Equ_Upkeep_Task(equ_plan_id,upkeep_time,QRimg)values({id},'{time}','{img}')");
+            int flag = _upkeepTaskRepository.execBySql($"insert into Equ_Upkeep_Task(equ_plan_id,upkeep_time,QRimg,equ_id,exec_id)values({id},'{time}','{img}',{equ_id},40)");
             return flag;
         }
 
+        public ResMessage upkeepdeit(List<EmployCheckInVO> data, int[] equid, int[] equplanid)
+        {
+            foreach (var item in equid)
+            {
+                foreach(var i in equplanid)
+                {
+                    _upkeepTaskRepository.execBySql($"update Equ_Upkeep_Task set exec_id={data[0].emp_Id} where equ_id={item} and equ_plan_id={i}");
+                }
+            }
+            return ResMessage.Success("分发成功");
+        }
     }
 }

@@ -23,8 +23,10 @@ namespace HotSpringProject.Controllers
             _employPerformService=employPerformService;
         }
         #region 页面
-        public ActionResult Detail()
+        public ActionResult Detail(int id=0)
         {
+            //此处接收id为薪资页传入的薪资id
+            ViewBag.id = id;
             return View();
         }
         #endregion
@@ -54,6 +56,12 @@ namespace HotSpringProject.Controllers
         {
             ResMessage resMessage = _employPerformService.Update(employPerform);
             return Json(resMessage);
+        }
+        public JsonResult GetListByPager(int page, int limit, int id=0)
+        {
+            
+            ResMessage resMessage = _employPerformService.GetListByPager(page,limit,id);
+            return Json(resMessage,JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

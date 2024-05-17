@@ -19,7 +19,7 @@ namespace HotSpringProjectService.Interface
         ResMessage UpdateByAudit(RepoGoodsStockDTO repoGoodsStockDTO);
         ResMessage Add(RepoGoodsStock repoGoodsStock);
         ResMessage GetModel(int id);
-        ResMessage GetList(string keywords, int? goods_type);
+        ResMessage GetList(string keywords,RepoGoodsStockFilter filter);
 
     }
 }

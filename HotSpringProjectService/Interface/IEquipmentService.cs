@@ -16,11 +16,14 @@ namespace HotSpringProjectService.Interface
         ResMessage GetListByPager(EquipmentFilter filter);
 
         ResMessage Add(Equipment equip);
+        ResMessage AddWithRes(Equipment equip);
         ResMessage Delete(int id);
         ResMessage Update(Equipment equip);
         List<EquipType> getTypeList();
         ResMessage GetUsedModel(int id, string use);
         IEnumerable<EquipmentTypeVO> GetListUnion();
         List<Equipment> getList();
+
+        
     }
 }
