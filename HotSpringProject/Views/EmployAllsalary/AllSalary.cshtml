@@ -49,12 +49,12 @@
     </div>
 </div>
 <!--js模版表头工具栏-->
-@*<script type="text/html" id="toolbarDemo">
+<script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="out"></button>
-        <button class="layui-btn layui-btn-sm" lay-event="in">入库</button>
+        <button class="layui-btn layui-btn-sm" lay-event="out">测试</button>
+        @*<button class="layui-btn layui-btn-sm" lay-event="in">入库</button>*@
     </div>
-</script>*@
+</script>
 @*操作单元格*@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="detail">绩效详情</a>
@@ -110,15 +110,12 @@
             }
         });
         //表格工具栏点击事件
-        //table.on('toolbar(test)', function (obj) {
-        //    if (obj.event == "out") {
-        //        layer.open({
-        //            title: '商品出库',
-        //            type: 2,
-        //            area: ['800px', '305px'],
-        //            content: '/repooutinrecord/outdetail'
-        //        })
-        //    }
+        table.on('toolbar(test)', function (obj) {
+            if (obj.event == "out") {
+                $.post("/employallsalary/test", {}, function (res) {
+                    console.log(res)
+                })
+            }
         //    else if (obj.event == "in")
         //    {
         //        layer.open({
@@ -128,7 +125,7 @@
         //            content: '/repooutinrecord/indetail'
         //        })
         //    }
-        //})
+        })
         //搜索工具栏
         form.on('submit(btnSearch)', function (data) {
             //表格重载 where 再加一个参数name

@@ -57,6 +57,14 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _employAllsalaryService.Update(employAllsalary);
             return Json(resMessage);
         }
+        
+        
+        //测试
+        public JsonResult test()
+        {
+            ResMessage resMessage = _employAllsalaryService.test();
+            return Json(resMessage);
+        }
         #endregion
     }
 }
