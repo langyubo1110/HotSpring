@@ -151,8 +151,8 @@ namespace HotSpringProjectService
 
         public bool Verify(string number, string password)
         {
-            string numberJob = GetMD5Hash(number.ToString());
-            return _EmployEmpRepository.Varfy(number, password);
+            string pwd = GetMD5Hash(password.ToString());
+            return _EmployEmpRepository.Varfy(number, pwd);
         }
 
         public ResMessage Update(EmployEmp movies)

@@ -91,14 +91,14 @@
         if (id == 0) {
             //ajax请求添加
             //设备表添加功能不投入使用
-            //$.post("/equipment/add", { equipment: obj }, function (res) {
-            //    if (res.code == 200) {
-            //        //插入成功，关闭layer
-            //        //找到父页面的自己  拿到index 让父页面关掉自己
-            //        var index = parent.layer.getFrameIndex(window.name);
-            //        parent.layer.close(index);
-            //    }
-            //})
+            $.post("/equipment/add", { equipment: obj }, function (res) {
+                if (res.code == 200) {
+                    //插入成功，关闭layer
+                    //找到父页面的自己  拿到index 让父页面关掉自己
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                }
+            })
         }
         else {
             obj.id = id

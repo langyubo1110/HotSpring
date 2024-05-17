@@ -35,33 +35,30 @@ namespace HotSpringProject
 
             ////BackUpDataBase.Initialize();
             ////备份数据库
-            
+
             ////SalaryPost.Initialize();//定时调度薪资发放
 
-            //// 创建 Quartz 调度器
-            //ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
-            //IScheduler scheduler = schedulerFactory.GetScheduler().Result;
-            ////设置 Quartz 作业工厂，以便解析作业实例中的依赖项
-            //scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
-            //// 开启调度器
-            //scheduler.Start().Wait();
+            // 创建 Quartz 调度器
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            IScheduler scheduler = schedulerFactory.GetScheduler().Result;
+            //设置 Quartz 作业工厂，以便解析作业实例中的依赖项
+            scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
+            // 开启调度器
+            scheduler.Start().Wait();
 
-            //// 创建 JobDetail
-            //IJobDetail writeDatajobDetail = JobBuilder.Create<MyJob>()
-            //                                .WithIdentity("myJob")
-            //                                .Build();
-            //// 创建触发器
-            //ITrigger writeDatatrigger = TriggerBuilder.Create()
-            //                                 .WithIdentity("myTrigger")
-            //                                 .StartNow()
-            //                                 .WithCronSchedule("0 0 8 * * ?")
-            //                                 //.WithSimpleSchedule(x => x
-            //                                 //.WithIntervalInSeconds(60) // 每 5 秒执行一次
-            //                                 //.RepeatForever())
-            //                                 .Build();
+            // 创建 JobDetail
+            IJobDetail writeDatajobDetail = JobBuilder.Create<MyJob>()
+                                            .WithIdentity("myJob")
+                                            .Build();
+            // 创建触发器
+            ITrigger writeDatatrigger = TriggerBuilder.Create()
+                                             .WithIdentity("myTrigger")
+                                             .WithCronSchedule("0 0 8 * * ?")
+                                             .WithSimpleSchedule(x => x.WithIntervalInHours(24).RepeatForever()) // 设置触发频率为每24小时
+                                             .Build();
 
-            //// 将 JobDetail 和 Trigger 绑定到调度器
-            //scheduler.ScheduleJob(writeDatajobDetail, writeDatatrigger).Wait();
+            // 将 JobDetail 和 Trigger 绑定到调度器
+            scheduler.ScheduleJob(writeDatajobDetail, writeDatatrigger).Wait();
         }
 
 
@@ -70,28 +67,34 @@ namespace HotSpringProject
         {
             //容器注册
             var builder = new ContainerBuilder();
+
             //1.单个依赖注入  
             builder.RegisterType<HotSpringDbContext>();
+
             //2.依赖注入当前应用程序下的所有Controller
             builder.RegisterControllers(typeof(MvcApplication).Assembly).PropertiesAutowired();//指定注入方式为属性注入
+
             //3.依赖注入按程序集注入
             Assembly asmService = Assembly.Load("HotSpringProjectService");
             builder.RegisterAssemblyTypes(asmService).Where(t => !t.IsAbstract).AsImplementedInterfaces().PropertiesAutowired();
             Assembly asmRepository = Assembly.Load("HotSpringProjectRepository");
             builder.RegisterAssemblyTypes(asmRepository).Where(t => !t.IsAbstract).AsImplementedInterfaces().PropertiesAutowired();
 
-            ////注入任务类
+            //注入任务类
             builder.RegisterModule(new QuartzAutofacFactoryModule());
+
             //把任务类注入到autofac
             builder.RegisterModule(new QuartzAutofacJobsModule(typeof(MyJob).Assembly));
 
-            ////注入任务类
+            //注入任务类
             builder.RegisterModule(new QuartzAutofacFactoryModule());
+
             //把任务类注入到autofac
             builder.RegisterModule(new QuartzAutofacJobsModule(typeof(DataBaseJob).Assembly));
 
             //容器构建
             var container = builder.Build();
+
             //解析器替换
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
