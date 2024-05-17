@@ -43,9 +43,13 @@ namespace HotSpringProject.Controllers
             ViewBag.userId = user.id;
             return View();
         }
+        public ActionResult MesHistory()
+        {
+            return View();
+        }
         //public ActionResult GetNumber()
         //{
-           
+
         //    return Content(GetMessage().Count().ToString());
         //}
         public JsonResult GetList()
