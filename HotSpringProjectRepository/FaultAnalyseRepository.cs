@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
 using HotSpringProjectRepository.Interface;
 namespace HotSpringProjectRepository
 {
@@ -14,7 +15,7 @@ namespace HotSpringProjectRepository
         public FaultAnalyseRepository(HotSpringDbContext hotSpringDbContext) { 
         _Db= hotSpringDbContext;
         }
-
+       
         public int Add(FaultAnalyse faultAnalyse)
         {
             _Db.Entry<FaultAnalyse>(faultAnalyse).State=System.Data.Entity.EntityState.Added;
@@ -26,9 +27,9 @@ namespace HotSpringProjectRepository
             throw new NotImplementedException();
         }
 
-        public IQueryable<FaultAnalyse> GetList()
+        public IEnumerable<FaultAnalyse> GetList()
         {
-            IQueryable<FaultAnalyse> list = _Db.FaultAnalyse;
+            IEnumerable<FaultAnalyse> list = _Db.FaultAnalyse;
             return list;
         }
 
@@ -46,7 +47,9 @@ namespace HotSpringProjectRepository
 
         public int UpDate(FaultAnalyse faultAnalyse)
         {
-            throw new NotImplementedException();
+            _Db.Entry(faultAnalyse).State = System.Data.Entity.EntityState.Modified;
+            int flag = _Db.SaveChanges();
+            return flag;
         }
 
        

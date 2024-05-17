@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "FaultAnalyseAudit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="layui-container">
+    <div class="table-responsive">
+        <div class="table-responsive">
+
+            <table id="demo" lay-filter="test"></table>
+
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1" id="submit">通过</button>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['table'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var fault_app_id =@ViewBag.id;
+        
+        //表格渲染
+        table.render({
+            elem: '#demo'
+            , height: 525
+            , url: `/faultapp/GetAnalyseContents/${fault_app_id}` //数据接口
+            , page: true//开启分页
+            , toolbar: '#toolbarDemo'
+            , cols: [[
+                  { type: 'checkbox' } 
+                , { field: 'contents', title: '故障内容' }
+                
+            ]]
+            , parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
+        });
+        $("#submit").click(function () {
+            var checkStatus = table.checkStatus('demo');
+            console.log(checkStatus)
+            $.post('')
+        })
+
+    })
+</script>

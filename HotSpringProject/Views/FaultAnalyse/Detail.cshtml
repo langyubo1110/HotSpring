@@ -7,18 +7,20 @@
 <link href="~/assets/layui/css/modules/laydate/default/laydate.css" rel="stylesheet" />
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="layui-form" action="">
+        <form class="layui-form" action="" lay-filter="dom">
             @*//申报表ID*@
             <input type="hidden" name="fault_app_id" value="@ViewBag.id" />
             <div class="layui-form-item">
                 <label class="layui-form-label">设备名称</label>
                 <div class="layui-input-block">
                     <select name="equ_id" lay-verify="required">
+                        <option value=""></option>
                         @foreach (var item in ViewBag.equipmentNames)
                         {
                             <option value="@item.id">@item.name</option>
                         }
                     </select>
+                    
                 </div>
             </div>
             <div class="layui-form-item">
@@ -35,13 +37,13 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">故障分析</label>
                 <div class="layui-input-block">
-                    <textarea id="demo" name="contents" placeholder="请输入" class="layui-textarea"></textarea>
+                    <textarea id="demo" name="contents" placeholder="请输入"  class="layui-textarea"></textarea>
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
@@ -49,27 +51,38 @@
     </div>
 </div>
         <script>
+            //var deviceName = "name";
+            //document.getElementById("deviceName").value = deviceName;
             layui.use(['form', 'layedit', 'layer'], function (res) {
-                var form = layui.form;
-                var layedit = layui.layedit;
-                var layer = layui.layer;
-                layedit.build('demo'); //建立编辑器
-
+                var form = layui.form
+                var layedit = layui.layedit
+                var layer = layui.layer
+                layedit.build('demo') //建立编辑器
+                var AppId =@ViewBag.id;//申报id
+                var eid=@ViewBag.eid;
                 //提交
+                form.val('dom', {
+                     equ_id:eid
+                })
                 form.on('submit(formDemo)', function (data) {
-                    console.log(data.field)
                     var index = parent.layer.getFrameIndex(window.name);
-                    data.field.contents = layedit.getContent(1)
+                    data.field.contents = layedit.getContent(1);
+                    data.field.fault_app_id = AppId;
+                    console.log(data.field);
                     //更改设备状态
-                    $.post("/faultapp/StopAndAdd", { eid: data.field.equ_id, faultAnalyse: data.field }, function (res) {
+                    $.post("/faultapp/StopAndAdd", { eid: data.field.equ_id, FaultAnalyse :data.field}, function (res) {
                         if (res.code == 200) {
                             layer.msg("停用成功")
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layui.table.reload("demo");
+                            parent.layer.msg(res.msg);
+                            parent.layer.close(index);
                         }
                     });
                     return false;
                 });
 
-            });
+            })
         </script>
 
 

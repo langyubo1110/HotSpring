@@ -16,7 +16,6 @@ namespace HotSpringProject.Controllers
     public class FaultAppController : Controller
     {
         private readonly IFaultAppService _faultAppService;
-
         // GET: FaultApp
         private readonly IRepairTaskReportService _repairTaskReportService;
         private readonly IEquipmentService _equipmentService;
@@ -35,16 +34,44 @@ namespace HotSpringProject.Controllers
         {
             return View();
         }
-        public ActionResult Detail(int id = 0)
+        public ActionResult Detail(int id=0)
         {
-            ViewBag.id = id;
+            if (Session["User"] != null)
+            {
+                EmployEmp employEmp = (EmployEmp)Session["User"];
+                ViewBag.UserName = employEmp.name;
+            }
+            //ViewBag.emList = (List<EmployEmp>)_repairTaskReportService.GetListByRole().data;
+            if (id!=0)
+            {
+                ViewBag.id=id;
+            }
+            ResMessage resMessage = _repairTaskReportService.GetEquipmentList();
+            ViewBag.equipmentNames = resMessage.data;
             return View();
         }
         public ActionResult RepairTaskReport()
         {
+            if (Session["User"]!=null)
+            {
+
+                EmployEmp employEmp = (EmployEmp)Session["User"];
+                ViewBag.UserName=employEmp.name;
+                ViewBag.ID=employEmp.id;
+            }
             return View();
         }
-       
+        
+        public ActionResult FaultAnalyseAudit(int id=0)
+        {
+            if (id > 0)
+            {
+                ViewBag.id=id;
+            }
+            ResMessage resmessage = _faultAppService.GetAnalyseContents(id);
+            ViewBag.contents=resmessage.data;
+            return View();
+        }
         #endregion
         //接口
         #region
@@ -67,8 +94,10 @@ namespace HotSpringProject.Controllers
         {
             return Json(_faultAppService.UpDate(faultApp), JsonRequestBehavior.AllowGet);
         }
+        //故障申请表添加一条数据，故障分析表添加N条数据
         public JsonResult Add(FaultApp faultApp)
-        {
+        {   
+           
             return Json(_faultAppService.Add(faultApp), JsonRequestBehavior.AllowGet);
         }
         public JsonResult StopAndAdd(int eid, FaultAnalyse faultAnalyse)
@@ -76,12 +105,16 @@ namespace HotSpringProject.Controllers
 
             return Json(_faultAppService.StopAndAdd(eid, faultAnalyse), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetRepairList( int page, int limit)
+        public JsonResult GetRepairList(int page, int limit)
         {
             ResMessage result = _faultAppService.GetRepairList(page ,limit);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-      
+        public JsonResult GetAnalyseContents(int id)
+        {
+            
+            return Json(_faultAppService.GetAnalyseContents(id), JsonRequestBehavior.AllowGet);
+        }
         #endregion
     }
 }

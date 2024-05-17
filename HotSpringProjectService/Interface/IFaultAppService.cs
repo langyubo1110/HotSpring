@@ -18,5 +18,6 @@ namespace HotSpringProjectService.Interface
         ResMessage StopAndAdd(int eid, FaultAnalyse faultAnalyse);
         ResMessage GetListByRole();
         ResMessage GetRepairList(int page,int limit );
+        ResMessage GetAnalyseContents(int id);
     }
 }

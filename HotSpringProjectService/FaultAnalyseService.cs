@@ -8,19 +8,25 @@ using HotSpringProject.Entity;
 using HotSpringProjectService.Interface;
 using HotSpringProjectRepository.Interface;
 using HotSpringProjectRepository;
+using HotSpringProject.Entity.VO;
 namespace HotSpringProjectService
 {
     public class FaultAnalyseService :IFaultAnalyseService
     {
         private readonly IFaultAnalyseRepository _faultAnalyseRepository;
+        private readonly IEmployEmpRepository _employEmpRepository;
+        private readonly IEmployRoleRepository _employRoleRepository;
 
-        public FaultAnalyseService(IFaultAnalyseRepository faultAnalyseRepository) {
+        public FaultAnalyseService(IFaultAnalyseRepository faultAnalyseRepository,IEmployEmpRepository employEmpRepository,IEmployRoleRepository employRoleRepository) {
             _faultAnalyseRepository=faultAnalyseRepository;
+            _employEmpRepository=employEmpRepository;
+            _employRoleRepository=employRoleRepository;
         }
-
+       
         public ResMessage Add(FaultAnalyse faultAnalyse)
         {
-            return _faultAnalyseRepository.Add(faultAnalyse) > 0 ? ResMessage.Success() : ResMessage.Fail();
+            
+            return ResMessage.Success();
            
         }
 
@@ -43,7 +49,8 @@ namespace HotSpringProjectService
        
         public ResMessage Update(FaultAnalyse faultAnalyse)
         {
-            throw new NotImplementedException();
+            
+            return _faultAnalyseRepository.UpDate(faultAnalyse) > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
     }
 }

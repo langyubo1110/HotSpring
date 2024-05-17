@@ -8,32 +8,32 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    @*<div class="layui-card">
-                        <div class="layui-card-body">
-                            <form class="layui-form" action="" lay-filter="searchForm">
-                                <div class="layui-form-item">
-                                    <div class="layui-form-item layui-inline">
-                                        <div class="layui-input-inline">
-                                            <input type="text" name="txtSName" placeholder="上报人ID" class="layui-input">
+                    <div class="layui-card">
+                            <div class="layui-card-body">
+                                <form class="layui-form" action="" lay-filter="searchForm">
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-item layui-inline">
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="txtSName" placeholder="设备名称" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item layui-inline">
+                                            <button class="layui-btn" lay-submit="" lay-filter="btnSearch">
+                                                <i class="layui-icon layui-icon-search"></i>
+                                                查询
+                                            </button>
+                                            <button type="reset" class="layui-btn">
+                                                <i class="layui-icon layui-icon-refresh"></i>
+                                                重置
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="layui-form-item layui-inline">
-                                        <button class="layui-btn" lay-submit="" lay-filter="btnSearch">
-                                            <i class="layui-icon layui-icon-search"></i>
-                                            查询
-                                        </button>
-                                        <button type="reset" class="layui-btn">
-                                            <i class="layui-icon layui-icon-refresh"></i>
-                                            重置
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
-                    </div>*@
 
                     <div class="table-responsive">
-                        <input type="hidden" name="fault_app_id" value="@ViewBag.id" />
+
                         <table id="demo" lay-filter="test"></table>
 
                     </div>
@@ -56,17 +56,18 @@
     <a class="layui-btn layui-btn-sm btn-report" lay-event="report">故障分析</a>
     {{# } }}
 </script>
-  @*auditcount=0都不显示，1/4时显示维修任务添加，4/4时显示维修任务上报*@ 
+@*auditcount=0都不显示，1/4时显示维修任务上报，4/4时显示故障分析审核*@
 <script type="text/html" id="repair">
-    <a class="layui-btn layui-btn-xs" lay-event="repairReport">维修任务上报</a>
+    @*<a class="layui-btn layui-btn-xs" lay-event="repairReport">维修任务上报</a>
+    <a class="layui-btn layui-btn-xs" lay-event="faultAnalyseAudit">审核</a>*@
     {{#if (d.auditcount === 0) { }}
-    <!-- 不显示 -->
+    
     {{# } else{ }}
     {{#if (d.auditcount === d.count){ }}
-    <a class="layui-btn layui-btn-xs" lay-event="repairReport">维修任务上报</a>
-    {{# }else{ }}
-    @*<a class="layui-btn layui-btn-xs" lay-event="repairAdd">维修记录上报</a>*@
+    <a class="layui-btn layui-btn-xs" lay-event="faultAnalyseAudit">审核</a>
     {{# } }}
+    
+  
     {{# } }}
 </script>
 <script>
@@ -85,7 +86,7 @@
             , page: true//开启分页/
             , toolbar: '#toolbarDemo'
             , cols: [[ //表头
-                 { field: 'name', title: '设备名称', }
+                { field: 'name', title: '设备名称', }
                 , { field: 'fault_report', title: '故障申报人' }
                 , { field: 'fault_describe', title: '故障描述' }
                 , { field: 'fault_time', title: '故障时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
@@ -107,6 +108,7 @@
         table.on('tool(test)', function (obj) {
             var data = obj.data;
             var id = obj.data.id;
+            var eid = obj.data.equip_id
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     $.post('/faultapp/delete', { id: id }, function (res) {
@@ -129,7 +131,7 @@
                         type: 2,
                         area: ['800px', '615px'],
                         //这里传申报表id
-                        content: `/faultanalyse/detail/${id}`
+                        content: `/faultanalyse/detail?id=${id}&eid=${eid}`
                     })
                 }
                 if (obj.event === 'edit') {
@@ -156,6 +158,14 @@
                         content: '/faultapp/repairAdd/' + id
                     })
                 }
+                if (obj.event === 'faultAnalyseAudit') {
+                    layer.open({
+                        title: '故障分析审核',
+                        type: 2,
+                        area: ['500px', '700px'],
+                        content: '/faultapp/faultAnalyseAudit/' + id
+                    })
+                }
             }
         });
         table.on('toolbar(test)', function (obj) {
@@ -169,16 +179,16 @@
             }
         })
         //搜索工具栏
-        //form.on('submit(btnSearch)', function (data) {
-        //    //表格重载 where 再加一个参数name
-        //    console.log(data)
-        //    table.reload('demo', {
-        //        where: {
-        //            equip_id: data.field.txtSName,
-        //        }
-        //    })
-        //    return false;
-        //});
+        form.on('submit(btnSearch)', function (data) {
+            //表格重载 where 再加一个参数name
+            console.log(data)
+            table.reload('demo', {
+                where: {
+                    name: data.field.name,
+                }
+            })
+            return false;
+        });
     })
 </script>
 
