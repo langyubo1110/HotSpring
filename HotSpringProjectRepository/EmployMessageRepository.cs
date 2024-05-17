@@ -23,7 +23,26 @@ namespace HotSpringProjectRepository
         {
             return _db.EmployMessage.ToList();
         }
+        public int Add(EmployMessage employMessage)
+        {
 
-        
+            _db.Entry(employMessage).State = System.Data.Entity.EntityState.Added;
+            int flag = _db.SaveChanges();
+            return flag;
+        }
+
+        public IEnumerable<T> QueryBySql<T>(string sql)
+        {
+
+             return _db.Database.SqlQuery<T>(sql);
+        }
+        public int AddRange( List<EmployMessage> messages)
+        {
+            _db.EmployMessage.AddRange(messages);
+            int flag = _db.SaveChanges();
+            return flag;
+        }
+
     }
 }
+

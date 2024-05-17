@@ -1,6 +1,7 @@
 ﻿using DotNet.Utilities;
 using HotSpringProject.Entity;
 using HotSpringProject.Entity.VO;
+using HotSpringProjectRepository;
 using HotSpringProjectRepository.Interface;
 using HotSpringProjectService.Interface;
 using System;
@@ -15,10 +16,12 @@ namespace HotSpringProjectService
     public class EquUpkeepTaskService : IEquUpkeepTaskService
     {
         private readonly IEquUpkeepTaskRepository _upkeepTaskRepository;
+        private readonly IEmployMessageRepository _EmployMessagerepository;
 
-        public EquUpkeepTaskService(IEquUpkeepTaskRepository upkeepTaskRepository)
+        public EquUpkeepTaskService(IEquUpkeepTaskRepository upkeepTaskRepository, IEmployMessageRepository EmployMessagerepository)
         {
             _upkeepTaskRepository = upkeepTaskRepository;
+            _EmployMessagerepository = EmployMessagerepository;
         }
 
         public ResMessage GetList(EquUpkeepTaskFilter filter)
@@ -70,13 +73,26 @@ inner join Employ_Emp o on o.id=s.exec_id");
 
         public ResMessage upkeepdeit(List<EmployCheckInVO> data, int[] equid, int[] equplanid)
         {
+            List<EmployMessage> list = new List<EmployMessage>();
             foreach (var item in equid)
             {
                 foreach(var i in equplanid)
                 {
                     _upkeepTaskRepository.execBySql($"update Equ_Upkeep_Task set exec_id={data[0].emp_Id} where equ_id={item} and equ_plan_id={i}");
                 }
+                EmployMessage message = new EmployMessage
+                {
+                    sender_id = 40,
+                         link = "/employtasks/upkeeptasks",
+                    recipients_id= data[0].emp_Id,
+                    send_time=DateTime.Now,
+                    create_time=DateTime.Now,
+                    part="您有新的保养任务请前往查看"
+
+                };
+                list.Add(message);
             }
+            _EmployMessagerepository.AddRange(list);
             return ResMessage.Success("分发成功");
         }
     }

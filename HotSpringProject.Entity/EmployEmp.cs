@@ -19,7 +19,7 @@ namespace HotSpringProject.Entity
         public string avatar { get; set; }
         public DateTime? onboarding_time { get; set; }
         public int account_status { get; set; }
-        public string log_count { get; set; }
+        public int log_count { get; set; }
         public DateTime? last_log_time { get; set; }
         public DateTime? create_time { get; set; }
         public int role_id { get; set; }

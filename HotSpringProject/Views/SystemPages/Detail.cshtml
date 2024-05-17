@@ -84,6 +84,7 @@
             }
             else {
                 $.post("/SystemPages/edit", { systemPages: obj }, function (res) {
+                    console.log(obj);
                     if (res.code == 200) {
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);

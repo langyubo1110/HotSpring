@@ -40,7 +40,7 @@ namespace HotSpringProjectService
             employemp.account_status = 1;
             employemp.last_log_time = DateTime.Now;
             int pwd = 123;
-            employemp.log_count = "0";
+            employemp.log_count = 0;
             employemp.password = GetMD5Hash(pwd.ToString());
             int flag = _EmployEmpRepository.Add(employemp);
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
@@ -150,8 +150,8 @@ namespace HotSpringProjectService
             if (isLoginRequest==true)
             {
                 DateTime currentDateTime = DateTime.Now;
-                int log_count = int.Parse(employemp.log_count) + 1;
-                employemp.log_count = log_count.ToString();
+                int log_count = employemp.log_count + 1;
+                employemp.log_count = log_count;
                 employemp.last_log_time = currentDateTime;
                 int pwd = 123;
                 employemp.password = GetMD5Hash(pwd.ToString());
@@ -159,11 +159,9 @@ namespace HotSpringProjectService
             else
             {
                 employemp.onboarding_time = DateTime.Now;
-                employemp.create_time = DateTime.Now;
                 employemp.account_status = 1;
                 employemp.last_log_time = DateTime.Now;
                 int pwd = 123;
-                employemp.log_count = "0";
                 employemp.password = GetMD5Hash(pwd.ToString());
             }
             bool flag = _EmployEmpRepository.Update(employemp);
