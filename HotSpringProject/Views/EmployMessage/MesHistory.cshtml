@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "MesIndex";
+    ViewBag.Title = "MesHistory";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -30,7 +30,7 @@
                             </li>
 
                             <li>
-                                <a href="mailbox.html"> <i class="fa fa-certificate"></i> 历史记录</a>
+                                <a href="/employmessage/meshistory"> <i class="fa fa-certificate"></i> 历史记录</a>
                             </li>
                         </ul>
 
@@ -53,30 +53,9 @@
                     </div>
                 </form>
                 <h2>
-                    收件箱 (16)
+                    历史记录 
                 </h2>
-                <div class="mail-tools tooltip-demo m-t-md">
-                    <div class="btn-group pull-right">
-                        <button class="btn btn-white btn-sm">
-                            <i class="fa fa-arrow-left"></i>
-                        </button>
-                        <button class="btn btn-white btn-sm">
-                            <i class="fa fa-arrow-right"></i>
-                        </button>
 
-                    </div>
-                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="刷新邮件列表"><i class="fa fa-refresh"></i> 刷新</button>
-                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="标为已读">
-                        <i class="fa fa-eye"></i>
-                    </button>
-                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="标为重要">
-                        <i class="fa fa-exclamation"></i>
-                    </button>
-                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="标为垃圾邮件">
-                        <i class="fa fa-trash-o"></i>
-                    </button>
-
-                </div>
             </div>
             <div class="mail-box">
 
@@ -84,8 +63,7 @@
                     <thead>
                         <tr>
                             <th><input class="cbx" type="checkbox" name="" id="cbxAll"></th>
-                            <th>发送人</th>
-                            <th>接受人</th>
+                            <th>收件人</th>
                             <th>内容</th>
                             <th>链接</th>
                             <th>发送时间</th>
@@ -104,17 +82,17 @@
 
 <script>
     $(function () {
-        
+
         init();
         var proxy = $.connection.EmpMessageService;
 
-       
+
         proxy.client.getList = function (data) {
             var list = JSON.parse(data);
-            
+
             $("#tb").empty();
             for (var item of list) {
-                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.sender_name}</td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${item.send_time}</td></tr>`);
+                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${item.send_time}</td></tr>`);
             }
         }
         $.connection.hub.start();
@@ -127,10 +105,10 @@
     //    })
     //}
     function init() {
-        $.get("/employmessage/GetList", function (res) {
+        $.get("/employmessage/sendList", function (res) {
             console.log(res);
             for (var item of res) {
-                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.sender_name}</td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${formatDate(item.send_time)}</td></tr>`);
+                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${formatDate(item.send_time)}</td></tr>`);
             }
         })
     }
@@ -142,8 +120,4 @@
         return `${year}-${month}-${day}`; // 格式化为 yyyy-MM-dd
     }
 </script>
-
-
-
-
 

@@ -20,7 +20,7 @@ namespace HotSpringProjectRepository
         {
             return _db.EquUpkeepTask;
         }
-        IEnumerable<T> IEquUpkeepTaskRepository.QueryBySql<T>(string sql)
+        public IEnumerable<T> QueryBySql<T>(string sql)
         {
             return _db.Database.SqlQuery<T>(sql);
         }

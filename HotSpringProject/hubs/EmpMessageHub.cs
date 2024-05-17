@@ -18,7 +18,7 @@ namespace HotSpringProject.hubs
             content.Clients.All.getNumber(number);
         }
         //推全表数据
-        public static void List(List<EmployMessage> list)
+        public static void List(List<EmployMessageVO> list)
         {
             IHubContext content = GlobalHost.ConnectionManager.GetHubContext<EmpMessageHub>();
             content.Clients.All.getList(JsonConvert.SerializeObject(list));
