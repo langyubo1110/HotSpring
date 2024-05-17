@@ -1,167 +1,230 @@
 ﻿
 @{
     ViewBag.Title = "MesWrite";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
 
 
-  
-    <link href="/assets/hplus/css/bootstrap.min.css?v=3.3.7" rel="stylesheet">
-    <link href="/assets/hplus/css/font-awesome.css?v=4.4.0" rel="stylesheet">
-    <link href="/assets/hplus/css/plugins/iCheck/custom.css" rel="stylesheet">
-    <link href="/assets/hplus/css/plugins/summernote/summernote.css" rel="stylesheet">
-    <link href="/assets/hplus/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
-    <link href="/assets/hplus/css/animate.css" rel="stylesheet">
-    <link href="/assets/hplus/css/style.css?v=4.1.0" rel="stylesheet">
-    <div class="wrapper wrapper-content">
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-content mailbox-content">
-                        <div class="file-manager">
-                            <a class="btn btn-block btn-primary compose-mail" href="/employmessage/meswrite">写信</a>
-                            <div class="space-25"></div>
-                            <h5>文件夹</h5>
-                            <ul class="folder-list m-b-md" style="padding: 0;">
-                                <li>
-                                    <a href="/employmessage/mesindex"> <i class="fa fa-inbox"></i> 收件箱 <span class="label label-warning pull-right">16</span> </a>
-                                </li>
-                                
-                                <li>
-                                    <a href="mailbox.html"> <i class="fa fa-certificate"></i> 历史记录</a>
-                                </li>
-                                
-                            </ul>
-                           
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-9 animated fadeInRight">
-                <div class="mail-box-header">
-                    <div class="pull-right tooltip-demo">
-                        <a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="存为草稿"><i class="fa fa-pencil"></i> 存为草稿</a>
-                        <a href="mailbox.html" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="放弃"><i class="fa fa-times"></i> 放弃</a>
-                    </div>
-                    <h2>
-                        写信
-                    </h2>
-                </div>
-                <div class="mail-box">
-                    <div class="mail-body">
-                        <form class="form-horizontal" method="get">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">发送到：</label>
 
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" value="i@zi-han.net">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">主题：</label>
+<link href="/assets/hplus/css/bootstrap.min.css?v=3.3.7" rel="stylesheet">
+<link href="/assets/hplus/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+<link href="/assets/hplus/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/assets/hplus/css/plugins/summernote/summernote.css" rel="stylesheet">
+<link href="/assets/hplus/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+<link href="/assets/hplus/css/animate.css" rel="stylesheet">
+<link href="/assets/hplus/css/style.css?v=4.1.0" rel="stylesheet">
+<link href="~/assets/layui/css/layui.css" rel="stylesheet" />
+<script src="~/assets/layui/layui.js"></script>
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content mailbox-content">
+                    <div class="file-manager">
+                        <a class="btn btn-block btn-primary compose-mail" href="/employmessage/meswrite">写信</a>
+                        <div class="space-25"></div>
+                        <h5>文件夹</h5>
+                        <ul class="folder-list m-b-md" style="padding: 0;">
+                            <li>
+                                <a href="/employmessage/mesindex"> <i class="fa fa-inbox"></i> 收件箱 <span class="label label-warning pull-right">16</span> </a>
+                            </li>
 
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                            <li>
+                                <a href="/employmessage/meshistory"> <i class="fa fa-certificate"></i> 历史记录</a>
+                            </li>
 
-                    <div class="mail-text h-200">
-                        <div class="summernote" style="display: none;">
-                           
-                        </div>
-                        
+                        </ul>
+
                         <div class="clearfix"></div>
                     </div>
-                    <div class="mail-body text-right tooltip-demo">
-                        <a href="mailbox.html" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Send"><i class="fa fa-reply"></i> 发送</a>
-                        @*<a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Discard email"><i class="fa fa-times"></i> 放弃</a>
-                        <a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to draft folder"><i class="fa fa-pencil"></i> 存为草稿</a>*@
-                    </div>
-                    <div class="clearfix"></div>
                 </div>
             </div>
         </div>
+        <div class="col-sm-9 animated fadeInRight">
+            <div class="mail-box-header">
+                @*<div class="pull-right tooltip-demo">
+                        <a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="存为草稿"><i class="fa fa-pencil"></i> 存为草稿</a>
+                        <a href="mailbox.html" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="放弃"><i class="fa fa-times"></i> 放弃</a>
+                    </div>*@
+                <h2>
+                    写信
+                </h2>
+            </div>
+            <form class="layui-form" action="" lay-filter="editform">
+                <div class="mail-box">
+                    <div class="mail-body">
+                        @*<form class="form-horizontal layui-form" method="get">*@
+                        <label class="col-sm-2 control-label">发送到：</label>
+                        <div class="form-group">
+
+
+                            <div class="layui-input-inline">
+                                <select class="11" name="recipients_id" lay-search="" lay-filter="ddltest">
+                                    <option value="">选择收件人(员工)</option>
+                                    @foreach (var item in ViewBag.list)
+                                    {
+                                        <option value="@item.id">@item.name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <select class="22" name="apply_id" lay-search="" lay-filter="ddltest1">
+                                    <option value="">选择角色</option>
+                                    @foreach (var item in ViewBag.roleList)
+                                    {
+                                        <option value="@item.id">@item.role_name</option>
+                                    }
+                                </select>
+                            </div>
+                            @*<div class="col-sm-10">
+                <input type="text" class="form-control" value="i@zi-han.net">
+            </div>*@
+                        </div>
+
+
+                    </div>
+
+                    <div class="mail-text h-200">
+                        <div id="editor" class="summernote" style="display: none;">
+
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="mail-body text-right tooltip-demo">
+                        <button type="submit" lay-submit="" lay-filter="demo1" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Send"><i class="fa fa-reply"></i> 发送</button>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 
-    <!-- 全局js -->
-    <script src="/assets/hplus/js/jquery.min.js?v=2.1.4"></script>
-    <script src="/assets/hplus/js/bootstrap.min.js?v=3.3.7"></script>
+<!-- 全局js -->
+<script src="/assets/hplus/js/jquery.min.js?v=2.1.4"></script>
+<script src="/assets/hplus/js/bootstrap.min.js?v=3.3.7"></script>
 
-    <!-- 自定义js -->
-    <script src="/assets/hplus/js/content.js?v=1.0.0"></script><div class="gohome"><a class="animated bounceInUp" href="index.html?v=4.0" title="返回首页"><i class="fa fa-home"></i></a></div>
+<!-- 自定义js -->
+<script src="/assets/hplus/js/content.js?v=1.0.0"></script><div class="gohome"><a class="animated bounceInUp" href="index.html?v=4.0" title="返回首页"><i class="fa fa-home"></i></a></div>
 
-    <!-- iCheck -->
-    <script src="/assets/hplus/js/plugins/iCheck/icheck.min.js"></script>
+<!-- iCheck -->
+<script src="/assets/hplus/js/plugins/iCheck/icheck.min.js"></script>
 
-    <!-- SUMMERNOTE -->
-    <script src="/assets/hplus/js/plugins/summernote/summernote.min.js"></script>
-    <script src="/assets/hplus/js/plugins/summernote/summernote-zh-CN.js"></script>
-   
+<!-- SUMMERNOTE -->
+<script src="/assets/hplus/js/plugins/summernote/summernote.min.js"></script>
+<script src="/assets/hplus/js/plugins/summernote/summernote-zh-CN.js"></script>
 
 
-        <script>
-            $(document).ready(function () {
-                $('.i-checks').iCheck({
-                    checkboxClass: 'icheckbox_square-green',
-                    radioClass: 'iradio_square-green'
-                });
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+        console.log($(".layui-input-inline").prev());
+        // 监听下拉框的选择事件
+        form.on('select(ddltest)', function (data) {
+            // 获取选中的值
+            var selectedValue = data.value;
+            // 打印选中的值
+            console.log("选中的值为：" + selectedValue);
+            if (selectedValue != null) {
+                $(".layui-input-inline").next().css("visibility", "hidden");
+                console.log(1)
+            }
+        });
+        form.on('select(ddltest1)', function (data) {
+            // 获取选中的值
+            var selectedValue = data.value;
+            // 打印选中的值
+            console.log("选中的值为：" + selectedValue);
+            if (selectedValue != null) {
+                $(".layui-input-inline").prev().css("visibility", "hidden");
+            }
+        })
+    });
+</script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+        //站内信息插入
+        form.on('submit(demo1)', function (data) {
+            let employMessagevo = data.field;
+            employMessagevo.sender_id=@ViewBag.userId;
+            employMessagevo.part  = $('#editor').summernote('code'); // 获取编辑器的内容
+            console.log(employMessagevo);
+            $.post("/employmessage/insert", { employMessagevo: employMessagevo }, function (res) {
+                if (res.code == 200) {
+                    window.location.href ="/employmessage/meshistory"
+                }
+            })
 
-                $('.summernote').summernote({
-                    lang: 'zh-CN'
-                });
-            });
-            var edit = function () {
-                $('.click2edit').summernote({
-                    focus: true
-                });
-            };
-            var save = function () {
-                var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
-                $('.click2edit').destroy();
-            };
-        </script>
+            return false;
+        });
+    })
+</script>
 
-        <!-- Code injected by live-server -->
-        <script>
-            // <![CDATA[  <-- For SVG support
-            if ('WebSocket' in window) {
-                (function () {
-                    function refreshCSS() {
-                        var sheets = [].slice.call(document.getElementsByTagName("link"));
-                        var head = document.getElementsByTagName("head")[0];
-                        for (var i = 0; i < sheets.length; ++i) {
-                            var elem = sheets[i];
-                            var parent = elem.parentElement || head;
-                            parent.removeChild(elem);
-                            var rel = elem.rel;
-                            if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-                                var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-                                elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-                            }
-                            parent.appendChild(elem);
+
+<script>
+    //别动，富文本编辑器
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        });
+
+        $('.summernote').summernote({
+            lang: 'zh-CN'
+        });
+    });
+    var edit = function () {
+        $('.click2edit').summernote({
+            focus: true
+        });
+    };
+    var save = function () {
+        var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
+        $('.click2edit').destroy();
+    };
+</script>
+
+<!-- Code injected by live-server -->
+@*<script>
+        // <![CDATA[  <-- For SVG support
+        if ('WebSocket' in window) {
+            (function () {
+                function refreshCSS() {
+                    var sheets = [].slice.call(document.getElementsByTagName("link"));
+                    var head = document.getElementsByTagName("head")[0];
+                    for (var i = 0; i < sheets.length; ++i) {
+                        var elem = sheets[i];
+                        var parent = elem.parentElement || head;
+                        parent.removeChild(elem);
+                        var rel = elem.rel;
+                        if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+                            var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+                            elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
                         }
+                        parent.appendChild(elem);
                     }
-                    var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-                    var address = protocol + window.location.host + window.location.pathname + '/ws';
-                    var socket = new WebSocket(address);
-                    socket.onmessage = function (msg) {
-                        if (msg.data == 'reload') window.location.reload();
-                        else if (msg.data == 'refreshcss') refreshCSS();
-                    };
-                    if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-                        console.log('Live reload enabled.');
-                        sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-                    }
-                })();
-            }
-            else {
-                console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-            }
-            // ]]>
-        </script>
+                }
+                var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+                var address = protocol + window.location.host + window.location.pathname + '/ws';
+                var socket = new WebSocket(address);
+                socket.onmessage = function (msg) {
+                    if (msg.data == 'reload') window.location.reload();
+                    else if (msg.data == 'refreshcss') refreshCSS();
+                };
+                if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+                    console.log('Live reload enabled.');
+                    sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+                }
+            })();
+        }
+        else {
+            console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+        }
+                // ]]>
+    </script>*@
 
 
-        <div class="note-popover popover in note-link-popover bottom">  <div class="arrow"></div>  <div class="popover-content note-children-container"><span><a target="_blank"></a>&nbsp;</span><div class="note-btn-group btn-group note-link"><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="编辑链接" data-original-title="编辑链接"><i class="note-icon-link"></i></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="去除链接" data-original-title="去除链接"><i class="note-icon-chain-broken"></i></button></div></div></div><div class="note-popover popover in note-image-popover bottom">  <div class="arrow"></div>  <div class="popover-content note-children-container"><div class="note-btn-group btn-group note-resize"><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="缩放至 100%" data-original-title="缩放至 100%"><span class="note-fontsize-10">100%</span></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="缩放至 50%" data-original-title="缩放至 50%"><span class="note-fontsize-10">50%</span></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="缩放至 25%" data-original-title="缩放至 25%"><span class="note-fontsize-10">25%</span></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="Original size" data-original-title="Original size"><i class="note-icon-rollback"></i></button></div><div class="note-btn-group btn-group note-float"><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="靠左浮动" data-original-title="靠左浮动"><i class="note-icon-float-left"></i></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="靠右浮动" data-original-title="靠右浮动"><i class="note-icon-float-right"></i></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="取消浮动" data-original-title="取消浮动"><i class="note-icon-rollback"></i></button></div><div class="note-btn-group btn-group note-remove"><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="移除图片" data-original-title="移除图片"><i class="note-icon-trash"></i></button></div></div></div><div class="note-popover popover in note-table-popover bottom">  <div class="arrow"></div>  <div class="popover-content note-children-container"><div class="note-btn-group btn-group note-add"><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="在下方插入行" data-original-title="在下方插入行"><i class="note-icon-row-below"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="在上方插入行" data-original-title="在上方插入行"><i class="note-icon-row-above"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="在左侧插入列" data-original-title="在左侧插入列"><i class="note-icon-col-before"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="在右侧插入列" data-original-title="在右侧插入列"><i class="note-icon-col-after"></i></button></div><div class="note-btn-group btn-group note-delete"><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="删除行" data-original-title="删除行"><i class="note-icon-row-remove"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="删除列" data-original-title="删除列"><i class="note-icon-col-remove"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="删除表格" data-original-title="删除表格"><i class="note-icon-trash"></i></button></div></div></div>
+<div class="note-popover popover in note-link-popover bottom">  <div class="arrow"></div>  <div class="popover-content note-children-container"><span><a target="_blank"></a>&nbsp;</span><div class="note-btn-group btn-group note-link"><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="编辑链接" data-original-title="编辑链接"><i class="note-icon-link"></i></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="去除链接" data-original-title="去除链接"><i class="note-icon-chain-broken"></i></button></div></div></div><div class="note-popover popover in note-image-popover bottom">  <div class="arrow"></div>  <div class="popover-content note-children-container"><div class="note-btn-group btn-group note-resize"><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="缩放至 100%" data-original-title="缩放至 100%"><span class="note-fontsize-10">100%</span></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="缩放至 50%" data-original-title="缩放至 50%"><span class="note-fontsize-10">50%</span></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="缩放至 25%" data-original-title="缩放至 25%"><span class="note-fontsize-10">25%</span></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="Original size" data-original-title="Original size"><i class="note-icon-rollback"></i></button></div><div class="note-btn-group btn-group note-float"><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="靠左浮动" data-original-title="靠左浮动"><i class="note-icon-float-left"></i></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="靠右浮动" data-original-title="靠右浮动"><i class="note-icon-float-right"></i></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="取消浮动" data-original-title="取消浮动"><i class="note-icon-rollback"></i></button></div><div class="note-btn-group btn-group note-remove"><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="移除图片" data-original-title="移除图片"><i class="note-icon-trash"></i></button></div></div></div><div class="note-popover popover in note-table-popover bottom">  <div class="arrow"></div>  <div class="popover-content note-children-container"><div class="note-btn-group btn-group note-add"><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="在下方插入行" data-original-title="在下方插入行"><i class="note-icon-row-below"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="在上方插入行" data-original-title="在上方插入行"><i class="note-icon-row-above"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="在左侧插入列" data-original-title="在左侧插入列"><i class="note-icon-col-before"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="在右侧插入列" data-original-title="在右侧插入列"><i class="note-icon-col-after"></i></button></div><div class="note-btn-group btn-group note-delete"><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="删除行" data-original-title="删除行"><i class="note-icon-row-remove"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="删除列" data-original-title="删除列"><i class="note-icon-col-remove"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="删除表格" data-original-title="删除表格"><i class="note-icon-trash"></i></button></div></div></div>

@@ -38,6 +38,7 @@
             </div>
             <input type="hidden" name="avatar" id="avatar" value="" />
             <input type="hidden" name="log_count" value="" />
+            <input type="hidden" name="create_time" value="" />
             <input type="hidden" name="job_number" value="" />
         </div>
     </div>
@@ -107,7 +108,6 @@
         });
         form.on('submit(demo1)', function (data) {
             let obj = data.field;
-            console.log(data);
             if (id == 0) {
                 $.post("/EmployEmp/insert", { employemp: obj }, function (res) {
                     if (res.code == 200) {
