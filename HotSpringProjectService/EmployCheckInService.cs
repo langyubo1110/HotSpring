@@ -35,5 +35,18 @@ namespace HotSpringProjectService
             IEnumerable<EmployCheckInVO> list = _db.QueryBySql<EmployCheckInVO>($@"SELECT ci.*, e.name AS emp_name FROM Employ_Check_In AS ci JOIN Employ_Emp AS e ON ci.emp_id = e.id WHERE ci.check_event = 1;");
             return list;
         }
+        //获取出勤天数
+        public decimal GetWorkRate(int id)
+        {
+            //每月1号调度执行，这里-1小时拿到上月的天数
+            DateTime dtNow = DateTime.Now.AddHours(-1);
+            //获取上月天数
+            int days = DateTime.DaysInMonth(dtNow.Year, dtNow.Month);
+            //linq 时间段筛选
+            //上月第一天00:00:00到本月第一天00:00:00时间内该员工的出勤天数
+            int workday = _db.GetList().Where(x=>x.create_time<DateTime.UtcNow.AddMonths(-1)&&x.create_time<DateTime.UtcNow&&x.emp_Id==id).Count();
+            decimal rate = workday/days;
+            return rate;
+        }
     }
 }

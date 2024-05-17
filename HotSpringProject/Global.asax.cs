@@ -53,7 +53,7 @@ namespace HotSpringProject
             // 创建触发器
             ITrigger writeDatatrigger = TriggerBuilder.Create()
                                              .WithIdentity("myTrigger")
-                                             .StartNow()
+                                             .WithSimpleSchedule(x => x.WithIntervalInHours(24).RepeatForever())//设置触发频率为每24小时
                                              .WithCronSchedule("0 0 8 * * ?")
                                              //.WithSimpleSchedule(x => x
                                              //.WithIntervalInSeconds(60) // 每 5 秒执行一次
