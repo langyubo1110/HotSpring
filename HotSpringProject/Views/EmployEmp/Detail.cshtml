@@ -37,6 +37,7 @@
                 <p id="demoText"></p>
             </div>
             <input type="hidden" name="avatar" id="avatar" value="" />
+            <input type="hidden" name="log_count" value="" />
             <input type="hidden" name="job_number" value="" />
         </div>
     </div>
@@ -82,6 +83,7 @@
             }
         }
         $.post("/EmployEmp/getEmp", { id: id }, function (res) {
+            console.log(res)
             if (res.code == 200) {
                 res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
                 form.val('empForm', res.data);

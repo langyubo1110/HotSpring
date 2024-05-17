@@ -14,5 +14,6 @@ namespace HotSpringProjectService.Interface
         ResMessage Add(int empId, int type);
         IEnumerable<EmployCheckIn> GetList();
         IEnumerable<EmployCheckInVO> GetListUnionSql();
+        decimal GetWorkRate(int id);
     }
 }

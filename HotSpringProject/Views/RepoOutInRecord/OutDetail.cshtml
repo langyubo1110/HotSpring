@@ -26,7 +26,7 @@
             <div class="form-group">
                 出库人： &nbsp;&nbsp;<div class="layui-inline">
                     <div class="layui-input-inline">
-                        <select name="outin_person_id" lay-verify="required" lay-search="" lay-filter="ddltest">
+                        <select name="outin_person_id" lay-verify="required" lay-search="" lay-filter="ddltest1">
                             <option value=""></option>
                             @foreach (var item in ViewBag.employlist)
                             {
@@ -41,8 +41,8 @@
             <div class="form-group">
                 接收人： &nbsp;&nbsp;&nbsp;&nbsp;<div class="layui-inline">
                     <div class="layui-input-inline">
-                        <select name="recipient_id" lay-verify="required" lay-search="" lay-filter="ddltest">
-                            <option value=""></option>
+                        <select name="recipient_id" id="ddl3" lay-verify="required" lay-search="" lay-filter="ddltest2">
+                            <option value="">请选择接收人</option>
                             @foreach (var item in ViewBag.employlist)
                             {
                                 <option value="@item.id">@item.name</option>
@@ -96,6 +96,7 @@
         form.on('select(ddltest)', function (data) {
             var id = data.value;
             console.log(data.value)
+            console.log(data.othis)
             $.post("/repogoodsstock/getmodel", { id: id }, function (res) {
                 form.val("editform", {
                     "threshold": res.data.threshold,

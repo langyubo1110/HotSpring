@@ -69,22 +69,6 @@
                     , { field: 'task_info', title: '保养任务细节' }
                     , { field: 'task_name', title: '保养任务名称' }
                     , {
-                        field: 'start_time', title: '开始时间', templet: function (d) {
-                            return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                        }
-                    }
-                    , {
-                        field: 'end_time', title: '结束时间', templet: function (d) {
-                            return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                        }
-                    }
-                    , {
-                        field: 'upkeep_time', title: '保养时间'
-                        , templet: function (d) {
-                            return util.toDateString(d.upkeep_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                        }
-                    }
-                    , {
                         field: 'status', title: '任务状态', templet: function (d) {
                             return d.importance === null ? '已完成' : '未完成';
                         }
