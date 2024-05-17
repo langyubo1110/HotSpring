@@ -30,7 +30,7 @@
                             </li>
 
                             <li>
-                                <a href="mailbox.html"> <i class="fa fa-certificate"></i> 历史记录</a>
+                                <a href="/employmessage/meshistory"> <i class="fa fa-certificate"></i> 历史记录</a>
                             </li>
 
                         </ul>
@@ -154,7 +154,7 @@
             console.log(employMessagevo);
             $.post("/employmessage/insert", { employMessagevo: employMessagevo }, function (res) {
                 if (res.code == 200) {
-
+                    window.location.href ="/employmessage/meshistory"
                 }
             })
 
