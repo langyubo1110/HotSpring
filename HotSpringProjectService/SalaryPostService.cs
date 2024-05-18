@@ -41,10 +41,10 @@ namespace HotSpringProjectService
             {
                 //计算每个员工的当月底薪，去签到表确认出勤
                 //获取上月该员工出勤比例
-                decimal rate = _employCheckInService.GetWorkRate(item.emp_id);
+                double rate = _employCheckInService.GetWorkRate(item.emp_id);
                 item.salary = 0;
                 slist = slist.Where(s => s.emp_id == item.emp_id).ToList();
-                item.salary = slist[0].salary * rate;
+                //item.salary = slist[0].salary * rate;
                 //计算每个员工的当月绩效，去绩效表
                 item.perform_money = 0;
                 plist = plist.Where(x => x.emp_id == item.emp_id).ToList();

@@ -17,5 +17,6 @@ namespace HotSpringProjectService.Interface
         ResMessage Update(RegFile regFile);
         ResMessage Delete(int id);
         RegFile GetModel(int id);
+        ResMessage addequid(int equid, string filepath);
     }
 }

@@ -57,12 +57,12 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _employPerformService.Update(employPerform);
             return Json(resMessage);
         }
-        public JsonResult GetListByPager(int page, int limit, int id=0)
-        {
+        //public JsonResult GetListByPager(int page, int limit, int id=0)
+        //{
             
-            ResMessage resMessage = _employPerformService.GetListByPager(page,limit,id);
-            return Json(resMessage,JsonRequestBehavior.AllowGet);
-        }
+        //    ResMessage resMessage = _employPerformService.GetListByPager(page,limit,id);
+        //    return Json(resMessage,JsonRequestBehavior.AllowGet);
+        //}
         #endregion
     }
 }

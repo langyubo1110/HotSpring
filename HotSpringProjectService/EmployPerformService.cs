@@ -40,28 +40,28 @@ namespace HotSpringProjectService
             List<EmployPerform> list = _employPerformRepository.GetList().ToList();
             return list==null?ResMessage.Fail():ResMessage.Success();
         }
-        public ResMessage GetListByPager(int page, int limit, int id)
-        {
-            //此处接收id为薪资id
-            IEnumerable<EmployPerform> plist = _employPerformRepository.GetList();
-            IEnumerable<EmployPerformVO> list = plist.Join(_gRoomRepairRepository.GetList(),x=>x.repair_id,y=>y.id,(x,y)=>new EmployPerformVO { 
-                allsalary_id = x.allsalary_id,
-                start_time=y.start_time,
-                end_time=y.end_time,
-                confirmer=y.confirmer,
-                create_time=x.create_time,
-                repair_up_money=x.repair_up_money,
-            });
-            //查找符合薪资id条件的绩效数据
-            if (id != 0) 
-            {
-                list = list.Where(x => x.allsalary_id == id).ToList();
-            }
-            //分页
-            List<EmployPerformVO> result = list.OrderBy(x => x.create_time).Skip((page - 1) * limit).Take(limit).ToList();
-            int count = result.Count;
-            return result == null ? ResMessage.Fail() : ResMessage.Success(result, count);
-        }
+        //public ResMessage GetListByPager(int page, int limit, int id)
+        //{
+        //    //此处接收id为薪资id
+        //    IEnumerable<EmployPerform> plist = _employPerformRepository.GetList();
+        //    IEnumerable<EmployPerformVO> list = plist.Join(_gRoomRepairRepository.GetList(),x=>x.repair_id,y=>y.id,(x,y)=>new EmployPerformVO { 
+        //        allsalary_id = x.allsalary_id,
+        //        start_time=y.start_time,
+        //        end_time=y.end_time,
+        //        confirmer=y.confirmer,
+        //        create_time=x.create_time,
+        //        repair_up_money=x.repair_up_money,
+        //    });
+        //    //查找符合薪资id条件的绩效数据
+        //    if (id != 0) 
+        //    {
+        //        list = list.Where(x => x.allsalary_id == id).ToList();
+        //    }
+        //    //分页
+        //    List<EmployPerformVO> result = list.OrderBy(x => x.create_time).Skip((page - 1) * limit).Take(limit).ToList();
+        //    int count = result.Count;
+        //    return result == null ? ResMessage.Fail() : ResMessage.Success(result, count);
+        //}
         public List<EmployPerform> GetListByRepairId(int id)
         {
             List<EmployPerform> list = _employPerformRepository.GetList().Where(item => item.repair_id == id).ToList();
