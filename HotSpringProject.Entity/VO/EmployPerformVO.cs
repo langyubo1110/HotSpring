@@ -10,12 +10,10 @@ namespace HotSpringProject.Entity.VO
     {
         //绩效id
         public int id { get; set; }
-        //薪资id
+        //员工id
         public int emp_id { get; set; }
         //维修任务id
         public int repair_id { get; set; }
-
-        public int emp_id { get; set; }
         //提成金额
         public decimal repair_up_money { get; set; }
         //创建时间
