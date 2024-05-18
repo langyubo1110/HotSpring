@@ -11,7 +11,7 @@ namespace HotSpringProject.Entity.VO
         //绩效id
         public int id { get; set; }
         //薪资id
-        public int allsalary_id { get; set; }
+        public int emp_id { get; set; }
         //维修任务id
         public int repair_id { get; set; }
         //提成金额

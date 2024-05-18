@@ -40,22 +40,24 @@ namespace HotSpringProjectService
             List<EmployPerform> list = _employPerformRepository.GetList().ToList();
             return list==null?ResMessage.Fail():ResMessage.Success();
         }
-        public ResMessage GetListByPager(int page, int limit, int id)
+        public ResMessage GetListByPager(int page, int limit, string yyyy_MM,int emp_id)
         {
-            //此处接收id为薪资id
+            //此处接收id为员工id
             IEnumerable<EmployPerform> plist = _employPerformRepository.GetList();
             IEnumerable<EmployPerformVO> list = plist.Join(_gRoomRepairRepository.GetList(),x=>x.repair_id,y=>y.id,(x,y)=>new EmployPerformVO { 
-                allsalary_id = x.allsalary_id,
+                emp_id = x.emp_id,
                 start_time=y.start_time,
                 end_time=y.end_time,
                 confirmer=y.confirmer,
                 create_time=x.create_time,
                 repair_up_money=x.repair_up_money,
             });
-            //查找符合薪资id条件的绩效数据
-            if (id != 0) 
+            //查找符合员工id条件的绩效数据
+            //还有当月月份条件
+            
+            if (emp_id != 0 && !string.IsNullOrEmpty(yyyy_MM)) 
             {
-                list = list.Where(x => x.allsalary_id == id).ToList();
+                list = list.Where(x => x.emp_id == emp_id && x.create_time.ToString("yyyy-MM")==yyyy_MM ).ToList();  
             }
             //分页
             List<EmployPerformVO> result = list.OrderBy(x => x.create_time).Skip((page - 1) * limit).Take(limit).ToList();

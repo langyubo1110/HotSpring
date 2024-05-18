@@ -98,14 +98,19 @@
         //删除应该同添加，同时删除出入库表，库存表和采购表
         //详情展示相应采购信息
         table.on('tool(test)', function (obj) {
-            var id = obj.data.id;
+            var emp_id = obj.data.emp_id;
+            var create_time = obj.create_time;
+            //获取当前行薪资数据的年月
+            var yyyy_MM = util.toDateString(create_time,"yyyy-MM"); 
+            console.log(yyyy_MM)
+            console.log(obj.data)
             if (obj.event === 'detail')
             {
                 layer.open({
                     title: '绩效详细信息',
                     type: 2,
                     area: ['1000px', '578px'],
-                    content: '/employperform/detail/' + id
+                    content: `/employperform/detail?yyyy_MM=${yyyy_MM}&emp_id=${emp_id}`
                 })
             }
         });
