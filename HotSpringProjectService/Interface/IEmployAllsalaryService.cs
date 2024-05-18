@@ -17,8 +17,6 @@ namespace HotSpringProjectService.Interface
         ResMessage GetModel(int id);
         ResMessage GetList();
         ResMessage GetListByPager(EmployAllsalaryFilter filter);
-
-        //测试
-        ResMessage test();
+        List<EmployAllsalaryVO> GetExcel(string yyyy_MM);
     }
 }

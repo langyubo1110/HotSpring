@@ -3,6 +3,7 @@ using HotSpringProject.Entity;
 using HotSpringProject.Entity.VO;
 using HotSpringProjectService;
 using HotSpringProjectService.Interface;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +58,39 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _employAllsalaryService.Update(employAllsalary);
             return Json(resMessage);
         }
-        
+
+        //报表导出接口
+        public ActionResult excel()
+        {
+            //获取上个月份
+            DateTime time=DateTime.Now.AddMonths(-1);
+            string yyyy_MM=time.ToString("yyyy-MM");
+            List<EmployAllsalaryVO> list= _employAllsalaryService.GetExcel(yyyy_MM);
+            // 创建Excel文件
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("薪资");
+                // 合并单元格
+                worksheet.Cells["A1:AK1"].Merge = true;
+                // 添加表头
+                worksheet.Cells["A1"].Value = "工资表";
+                worksheet.Cells["e3"].Value = "所属月份";
+                worksheet.Cells["e4"].Value = $"{yyyy_MM}";
+                worksheet.Cells["e5"].Value = "发放日期";
+                worksheet.Cells["e6"].Value = $"{list[0].pay_time}";
+
+                // 填充薪资数据
+                //int rowIndex = 2;
+                //worksheet.Cells[string.Format("A{0}", rowIndex)].Value = data.EmployeeName;
+                //worksheet.Cells[string.Format("B{0}", rowIndex)].Value = data.SalaryAmount;
+
+                // 将Excel文件转换为字节数组
+                byte[] excelBytes = package.GetAsByteArray();
+
+                // 返回Excel文件
+                return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Salary.xlsx");
+            }
+        }
         #endregion
     }
 }

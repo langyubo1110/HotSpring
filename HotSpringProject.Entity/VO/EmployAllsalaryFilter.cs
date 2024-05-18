@@ -12,5 +12,6 @@ namespace HotSpringProject.Entity.VO
         public int? limit { get; set; }
         public string name { get; set; }
         public int? pay_month { get; set; }
+        public string yyyy_MM { get; set; }
     }
 }

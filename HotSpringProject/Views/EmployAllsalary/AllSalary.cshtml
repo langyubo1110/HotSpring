@@ -48,18 +48,18 @@
         </div>
     </div>
 </div>
-<!--js模版表头工具栏-->
-<script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="out">测试</button>
-    </div>
-</script>
+
 @*操作单元格*@
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="detail">绩效详情</a>
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="detail">绩效详情</a>
 </script>
 
-
+<!--js模板  表头组件-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <input type="button" class="layui-btn layui-btn-sm" lay-event="excel" value="薪资报表导出">
+    </div>
+</script>
 <script>
     layui.use(['table', 'form', 'util', 'layer'], function () {
         var table = layui.table;
@@ -72,17 +72,19 @@
             , height: 525
             , url: '/employallsalary/getlistbypager' //数据接口
             , page: true//开启分页
+            ,id:'idTest'
             , toolbar: '#toolbarDemo'
             , cols: [[ //表头
-                { field: 'name', title: '员工姓名', sort: true,  fixed: 'left' }
-                , {field: 'pay_month', title: '发放月份', sort: true, templet: function (d) { return d.pay_month+"月" }}
+                { type: 'checkbox', fixed: 'left' }
+                ,{ field: 'name', title: '员工姓名', sort: true, fixed: 'left' }
+                , { field: 'pay_month', title: '发放月份', sort: true, templet: function (d) { return d.pay_month + "月" } }
                 , { field: 'pay_time', title: '发放日期', sort: true, templet: function (d) { return util.toDateString(d.pay_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
-                , { field: 'post_status', title: '发放状态', sort: true, templet: function (d) { return d.post_status == 0? "未发放":"已发放" } }
-                , { field: 'salary', title: '当月底薪', sort: true, templet: function (d) { return formatNumber(d.salary); }}
+                , { field: 'post_status', title: '发放状态', sort: true, templet: function (d) { return d.post_status == 0 ? "未发放" : "已发放" } }
+                , { field: 'salary', title: '当月底薪', sort: true, templet: function (d) { return formatNumber(d.salary); } }
                 , { field: 'perform_money', title: '当月绩效', sort: true, templet: function (d) { return formatNumber(d.perform_money); } }
                 , { title: '薪资总额', sort: true, templet: function (d) { return formatNumber(d.perform_money + d.salary); } }
-                , { field: 'create_time', title: '创建时间', sort: true , templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
-                , { title: '操作', toolbar: '#barDemo', templet:'#barDemo' }
+                , { field: 'create_time', title: '创建时间', sort: true, templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
+                , { title: '操作', toolbar: '#barDemo', templet: '#barDemo'}
             ]]
             , parseData: function (res) { //res 即为原始返回的数据
                 return {
@@ -99,12 +101,11 @@
         table.on('tool(test)', function (obj) {
             var emp_id = obj.data.emp_id;
             var create_time = obj.data.create_time;
-            console.log(create_time);
+            var data = obj.data
+            console.log(data);
             //获取当前行薪资数据的年月
-            var yyyy_MM = util.toDateString(create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM"); 
-            console.log(yyyy_MM)
-            if (obj.event === 'detail')
-            {
+            var yyyy_MM = util.toDateString(create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM");
+            if (obj.event === 'detail') {
                 layer.open({
                     title: '绩效详细信息',
                     type: 2,
@@ -112,14 +113,10 @@
                     content: `/employperform/detail?yyyy_MM=${yyyy_MM}&emp_id=${emp_id}`
                 })
             }
+            
         });
-        //表格工具栏点击事件
+        //表头触发事件
         table.on('toolbar(test)', function (obj) {
-            if (obj.event == "out") {
-                $.post("/employallsalary/test", {}, function (res) {
-                    console.log(res)
-                })
-            }
         })
         //搜索工具栏
         form.on('submit(btnSearch)', function (data) {
@@ -131,7 +128,7 @@
                     pay_month: data.field.txtPayMonth,
                 }
             })
-             return false;
+            return false;
         });
     })
 </script>
