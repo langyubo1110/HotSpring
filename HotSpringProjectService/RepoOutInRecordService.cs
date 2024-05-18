@@ -213,15 +213,16 @@ namespace HotSpringProjectService
                 int ipage = (int)page;//将可空整形转为不可空整形
                 int ilimit = (int)limit;
                 IEnumerable<RepoGoodsStockDTO> list = _repoOutInRecordRepository.GetListBySql<RepoGoodsStockDTO>("select s.id,s.goods_name,s.threshold,s.goods_type,oi.id oi_id,oi.start_number,oi.oi_number,oi.end_number,oi.type,oi.audit,e.name,oi.create_time from Repo_Goods_Stock s inner join Repo_Out_In_Record oi on s.id=oi.goods_id inner join Employ_Emp e on oi.outin_person_id=e.id");
+                List<RepoGoodsStockDTO> list2 = list.ToList();
                 //商品名称搜索
                 if (!String.IsNullOrEmpty(filter.goods_name))
                 {
-                    list = list.Where(x => x.goods_name.Contains(filter.goods_name));
+                    list = list.Where(x => x.goods_name.Contains(filter.goods_name)).ToList();
                 }
                 //出库/入库人姓名搜索
                 if (!String.IsNullOrEmpty(filter.name))
                 {
-                    list = list.Where(x => x.name.Contains(filter.name));
+                    list = list.Where(x => x.name.Contains(filter.name)).ToList();
                 }
                 int count = list.Count();
                 List<RepoGoodsStockDTO> result = list.OrderBy(x => x.create_time).Skip((ipage - 1) * ilimit).Take(ilimit).ToList();

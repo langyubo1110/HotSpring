@@ -10,7 +10,7 @@ namespace HotSpringProject.Entity.VO
     {
         //绩效id
         public int id { get; set; }
-        //薪资id
+        //员工id
         public int emp_id { get; set; }
         //维修任务id
         public int repair_id { get; set; }

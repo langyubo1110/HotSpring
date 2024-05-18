@@ -99,11 +99,11 @@
         //详情展示相应采购信息
         table.on('tool(test)', function (obj) {
             var emp_id = obj.data.emp_id;
-            var create_time = obj.create_time;
+            var create_time = obj.data.create_time;
+            console.log(create_time);
             //获取当前行薪资数据的年月
-            var yyyy_MM = util.toDateString(create_time,"yyyy-MM"); 
+            var yyyy_MM = util.toDateString(create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM"); 
             console.log(yyyy_MM)
-            console.log(obj.data)
             if (obj.event === 'detail')
             {
                 layer.open({
