@@ -17,5 +17,6 @@ namespace HotSpringProjectRepository.Interface
         bool Delete(int id);
         EmployEmp GetModel(int id);
         bool Varfy(string username, string password);
+        
     }
 }

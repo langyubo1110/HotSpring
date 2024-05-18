@@ -8,7 +8,7 @@ namespace HotSpringProjectRepository.Interface
 {
     public interface IFaultAnalyseRepository
     {
-        IQueryable<FaultAnalyse> GetList();
+        IEnumerable<FaultAnalyse> GetList();
         int Delete(int id);
         int UpDate(FaultAnalyse faultAnalyse);
 

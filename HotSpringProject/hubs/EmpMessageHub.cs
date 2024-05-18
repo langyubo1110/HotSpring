@@ -9,6 +9,7 @@ using System.Web;
 
 namespace HotSpringProject.hubs
 {
+
     [HubName("EmpMessageService")]
     public class EmpMessageHub:Hub
     {

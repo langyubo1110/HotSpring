@@ -79,12 +79,8 @@ namespace HotSpringProjectService
                 }
                 //获取员工id(维修任务上报人id)
                 int employ_id = gRoomRepair.reporter_id;
-                //获取当前月份
-                int current_month = DateTime.Now.Month;
-                //薪资id通过当前月份和员工id去薪资表查询得到
-                int allsalary_id = _employAllsalaryRepository.GetList().Where(x => x.emp_id == employ_id && x.pay_month == current_month).ToList()[0].id; 
                 EmployPerform employPerform = new EmployPerform();
-                //employPerform.allsalary_id = allsalary_id;
+                employPerform.emp_id = employ_id;
                 employPerform.repair_id = last_id;
                 //通过员工id查询员工表获取role_id
                 int role_id = _employEmpRepository.GetList().Where(x => x.id == employ_id).ToList()[0].role_id;

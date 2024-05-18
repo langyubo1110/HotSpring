@@ -1,5 +1,6 @@
 ﻿using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
 using HotSpringProjectService;
 using HotSpringProjectService.Interface;
 using System;
@@ -24,21 +25,45 @@ namespace HotSpringProject.Controllers
             _equipmentService = equipmentService;
             _faultAnalyseService = faultAnalyseService;
         }
-        public ActionResult Detail(int id=0)
+        //页面
+        #region
+        public ActionResult Detail(int id=0,int eid=0)
         {
             if(id > 0)
             {
                 ViewBag.id=id;
+            }
+            if (eid > 0)
+            {
+                ViewBag.eid = eid;
             }
             ViewBag.emList = (List<EmployEmp>)_repairTaskReportService.GetListByRole().data;
             ResMessage resMessage = _repairTaskReportService.GetEquipmentList();
             ViewBag.equipmentNames = resMessage.data;
             return View();
         }
+        #endregion
+        //接口
+        #region
+        
         public JsonResult Add(FaultAnalyse  faultAnalyse)
         {
             return Json(_faultAnalyseService.Add(faultAnalyse), JsonRequestBehavior.AllowGet);
         }
-
+        public JsonResult UpDateByAudit(List<FaultAnalyse> faultAnalyselist) 
+        {
+            if (Session["User"] != null)
+            {
+                EmployEmp employEmp = (EmployEmp)Session["User"];
+                foreach (var faultAnalyse in faultAnalyselist)
+                {
+                    faultAnalyse.auditor = employEmp.name;
+                    faultAnalyse.final_scheme = 1;
+                }
+            }
+            ResMessage resMessage = _faultAnalyseService.UpDateByAudit(faultAnalyselist);
+            return Json(resMessage);
+        }
+        #endregion
     }
 }

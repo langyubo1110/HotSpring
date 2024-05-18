@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>维修记录</h2> <div class="table-responsive">
+    <table id="demo" lay-filter="test"></table>
+</div>
+<script>
+    layui.use(['demo'], function () {
+        table.render({
+            elem: '#demo'
+            , height: 525
+            , url: '' //数据接口
+            , page: true//开启分页
+            , toolbar: '#toolbarDemo'
+            , cols: [[
+                { field: '', title: '维修人' }
+                , { field: '', title: '维修花费' }
+                , { field: '', title: '维修时间' }
+                , { field: '', title: '维修结果' }
+                
+            ]]
+        })
+    })
+</script>

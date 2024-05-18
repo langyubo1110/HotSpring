@@ -15,5 +15,6 @@ namespace HotSpringProjectService.Interface
         ResMessage Update(FaultAnalyse faultAnalyse);
         ResMessage Add(FaultAnalyse faultAnalyse);
         ResMessage GetModel(int id);
+        ResMessage UpDateByAudit(List<FaultAnalyse> faultAnalyseslist);
     }
 }
