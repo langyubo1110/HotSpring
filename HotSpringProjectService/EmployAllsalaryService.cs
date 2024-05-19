@@ -106,7 +106,8 @@ namespace HotSpringProjectService
             int days = DateTime.DaysInMonth(years, months);
             foreach(var item in list)
             {
-               item.workdays = (int)_employCheckInService.GetWorkRate(item.emp_id)*days;
+               decimal day = (decimal)_employCheckInService.GetWorkRate(item.emp_id)*(decimal)days;
+                item.workdays=(int)day;
             }
             return list;
         }
