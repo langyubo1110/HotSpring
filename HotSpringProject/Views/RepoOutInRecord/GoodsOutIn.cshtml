@@ -21,7 +21,12 @@
                                     </div>
                                     <div class="layui-form-item layui-inline">
                                         <div class="layui-input-inline">
-                                            <input type="text" name="txtSName" placeholder="请输入出库/入库人姓名" class="layui-input">
+                                            <input type="text" name="txtSName" placeholder="请输入出入库人姓名" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="txtSRName" placeholder="请输入接收人姓名" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-inline">
@@ -79,8 +84,9 @@
             , toolbar: '#toolbarDemo'
             , cols: [[ //表头
                 { field: 'goods_name', title: '商品名称', sort: true,  fixed: 'left' }
-                , { field: 'name', title: '出库/入库人', sort: true }
-                , { field: 'type', title: '出库/入库', sort: true, templet: function (d) { return d.type == 0 ? "入库" : "出库" } }
+                , { field: 'oi_name', title: '出入库人' }
+                , { field: 'r_name', title: '接收人' }
+                , { field: 'type', title: '出库|入库', sort: true, templet: function (d) { return d.type == 0 ? "入库" : "出库" } }
                 , { field: 'start_number', title: '操作前库存数量', sort: true }
                 , { field: 'oi_number', title: '出库/入库数量', sort: true }
                 , { field: 'end_number', title: '操作后库存数量', sort: true }
@@ -140,7 +146,8 @@
             table.reload('demo', {
                 where: {
                     goods_name: data.field.txtSGoodsName,
-                    name: data.field.txtSName,
+                    oi_name: data.field.txtSName,
+                    r_name: data.field.txtSRName
                 }
             })
              return false;

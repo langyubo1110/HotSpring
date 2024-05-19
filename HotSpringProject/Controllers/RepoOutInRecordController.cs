@@ -35,6 +35,9 @@ namespace HotSpringProject.Controllers
         }
         public ActionResult OutDetail()
         {
+            EmployEmp emp = (EmployEmp)Session["User"];
+            ViewBag.id = emp.id;
+            ViewBag.name = emp.name;
             List<RepoGoodsStock> goodslist = (List<RepoGoodsStock>)_repoGoodsStockService.GetList(null,null).data;
             ViewBag.goodslist = goodslist;
             List<EmployEmp> employlist = _employEmpService.GetList().ToList();
@@ -43,8 +46,9 @@ namespace HotSpringProject.Controllers
         }
         public ActionResult InDetail()
         {
-            List<EmployEmp> employlist = _employEmpService.GetList().ToList();
-            ViewBag.list = employlist;
+            EmployEmp emp = (EmployEmp)Session["User"];
+            ViewBag.id = emp.id;
+            ViewBag.name = emp.name;
             return View();
         }
         #endregion
