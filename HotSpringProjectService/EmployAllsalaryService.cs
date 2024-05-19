@@ -94,7 +94,7 @@ namespace HotSpringProjectService
         {
             string year = yyyy_MM.Split('-')[0];
             string month = yyyy_MM.Split('-')[1];
-            List<EmployAllsalaryVO> list=_employAllsalaryRepository.QueryBySql<EmployAllsalaryVO>($@"select a.*,e.name,e.role_id,o.role_name  from Employ_Allsalary a
+            List<EmployAllsalaryVO> list=_employAllsalaryRepository.QueryBySql<EmployAllsalaryVO>($@"select a.*,e.name,e.role_id,o.role_name as role from Employ_Allsalary a
                                                             inner join Employ_Emp e on a.emp_id=e.id
                                                             inner join Employ_Role o on o.id=e.role_id
                                                             where month(a.create_time)={month} and YEAR(a.create_time)={year} ").ToList();

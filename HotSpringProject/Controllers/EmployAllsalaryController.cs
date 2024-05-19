@@ -75,14 +75,28 @@ namespace HotSpringProject.Controllers
                 // 添加表头
                 worksheet.Cells["A1"].Value = "工资表";
                 worksheet.Cells["e3"].Value = "所属月份";
-                worksheet.Cells["e4"].Value = $"{yyyy_MM}";
-                worksheet.Cells["e5"].Value = "发放日期";
-                worksheet.Cells["e6"].Value = $"{list[0].pay_time}";
+                worksheet.Cells["f3"].Value = $"{yyyy_MM}";
+                worksheet.Cells["g3"].Value = "发放日期";
+                worksheet.Cells["h3"].Value = $"{list[0].pay_time}";
+                worksheet.Cells["a4"].Value = "序号";
+                worksheet.Cells["b4"].Value = "姓名";
+                worksheet.Cells["c4"].Value = "职务";
+                worksheet.Cells["d4"].Value = "基本工资";
+                worksheet.Cells["e4"].Value = "出勤天数";
+                worksheet.Cells["f4"].Value = "绩效薪资";
+                worksheet.Cells["g4"].Value = "实发金额";
 
                 // 填充薪资数据
-                //int rowIndex = 2;
-                //worksheet.Cells[string.Format("A{0}", rowIndex)].Value = data.EmployeeName;
-                //worksheet.Cells[string.Format("B{0}", rowIndex)].Value = data.SalaryAmount;
+                for(int i = 5; i < list.Count+5; i++)
+                {
+                    worksheet.Cells[$"a{i}"].Value = $"{list[i-5].id}";
+                    worksheet.Cells[$"b{i}"].Value = $"{list[i-5].name}";
+                    worksheet.Cells[$"c{i}"].Value = $"{list[i-5].role}";
+                    worksheet.Cells[$"d{i}"].Value = $"{list[i-5].salary}";
+                    worksheet.Cells[$"e{i}"].Value = $"{list[i-5].workdays}";
+                    worksheet.Cells[$"f{i}"].Value = $"{list[i-5].perform_money}";
+                    worksheet.Cells[$"g{i}"].Value = $"{list[i - 5].perform_money + list[i-5].salary}";
+                }
 
                 // 将Excel文件转换为字节数组
                 byte[] excelBytes = package.GetAsByteArray();
