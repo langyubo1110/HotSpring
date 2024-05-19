@@ -67,7 +67,7 @@ inner join Employ_Emp o on o.id=s.exec_id");
 
         public int insert(int id, DateTime time, string img, int equ_id)
         {
-            int flag = _upkeepTaskRepository.execBySql($"insert into Equ_Upkeep_Task(equ_plan_id,upkeep_time,QRimg,equ_id,exec_id)values({id},'{time}','{img}',{equ_id},40)");
+            int flag = _upkeepTaskRepository.execBySql($"insert into Equ_Upkeep_Task(equ_plan_id,upkeep_time,QRimg,equ_id,exec_id)values({id},'{time}','{img}',{equ_id},49)");
             return flag;
         }
 
@@ -82,7 +82,7 @@ inner join Employ_Emp o on o.id=s.exec_id");
                 }
                 EmployMessage message = new EmployMessage
                 {
-                    sender_id = 40,
+                    sender_id = 49,
                          link = "/employtasks/upkeeptasks",
                     recipients_id= data[0].emp_Id,
                     send_time=DateTime.Now,

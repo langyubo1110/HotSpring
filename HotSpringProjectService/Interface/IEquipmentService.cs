@@ -16,6 +16,7 @@ namespace HotSpringProjectService.Interface
         ResMessage GetListByPager(EquipmentFilter filter);
 
         ResMessage Add(Equipment equip);
+        ResMessage Queryfile(int id);
         ResMessage AddWithRes(Equipment equip);
         ResMessage Delete(int id);
         ResMessage Update(Equipment equip);

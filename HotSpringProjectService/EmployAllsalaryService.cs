@@ -16,11 +16,13 @@ namespace HotSpringProjectService
     {
         private readonly IEmployAllsalaryRepository _employAllsalaryRepository;
         private readonly IEmployEmpRepository _employEmpRepository;
+        private readonly IEmployCheckInService _employCheckInService;
 
-        public EmployAllsalaryService(IEmployAllsalaryRepository employAllsalaryRepository, IEmployEmpRepository employEmpRepository)
+        public EmployAllsalaryService(IEmployAllsalaryRepository employAllsalaryRepository, IEmployEmpRepository employEmpRepository, IEmployCheckInService employCheckInService)
         {
             _employAllsalaryRepository = employAllsalaryRepository;
             _employEmpRepository = employEmpRepository;
+            _employCheckInService= employCheckInService;
         }
 
         public ResMessage Add(EmployAllsalary employAllsalary)
@@ -69,10 +71,11 @@ namespace HotSpringProjectService
                 if(filter.pay_month !=null)
                 {
                     list = list.Where(x => x.pay_month == filter.pay_month);
-                }
+                } 
                 List<EmployAllsalaryVO> result = list.OrderBy(x => x.post_status).Skip((page - 1) * limit).Take(limit).ToList();
                 return result == null ? ResMessage.Fail() : ResMessage.Success(result, count);
             }
+
             return ResMessage.Fail();
         }
 
@@ -87,5 +90,30 @@ namespace HotSpringProjectService
             bool result = _employAllsalaryRepository.Update(employAllsalary);
             return result == true ? ResMessage.Success() : ResMessage.Fail();
         }
+        public List<EmployAllsalaryVO> GetExcel(string yyyy_MM)
+        {
+            string year = yyyy_MM.Split('-')[0];
+            string month = yyyy_MM.Split('-')[1];
+            List<EmployAllsalaryVO> list=_employAllsalaryRepository.QueryBySql<EmployAllsalaryVO>($@"select a.*,e.name,e.role_id,o.role_name as role from Employ_Allsalary a
+                                                            inner join Employ_Emp e on a.emp_id=e.id
+                                                            inner join Employ_Role o on o.id=e.role_id
+                                                            where month(a.create_time)={month} and YEAR(a.create_time)={year} ").ToList();
+            //每月1号调度执行，这里-1小时拿到上月的天数
+            DateTime time = DateTime.Now.AddMonths(-1);
+            //获取上月天数
+            int months = time.Month;
+            int years = time.Year;
+            int days = DateTime.DaysInMonth(years, months);
+            foreach(var item in list)
+            {
+               decimal day = (decimal)_employCheckInService.GetWorkRate(item.emp_id)*(decimal)days;
+                item.workdays=(int)day;
+            }
+            return list;
+        }
+
+
+
+
     }
 }

@@ -48,19 +48,18 @@
         </div>
     </div>
 </div>
-<!--js模版表头工具栏-->
-@*<script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="out"></button>
-        <button class="layui-btn layui-btn-sm" lay-event="in">入库</button>
-    </div>
-</script>*@
+
 @*操作单元格*@
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="detail">绩效详情</a>
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="detail">绩效详情</a>
 </script>
 
-
+<!--js模板  表头组件-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <input type="button" class="layui-btn layui-btn-sm" lay-event="excel" value="薪资报表导出">
+    </div>
+</script>
 <script>
     layui.use(['table', 'form', 'util', 'layer'], function () {
         var table = layui.table;
@@ -73,17 +72,18 @@
             , height: 525
             , url: '/employallsalary/getlistbypager' //数据接口
             , page: true//开启分页
+            , id: 'idTest'
             , toolbar: '#toolbarDemo'
             , cols: [[ //表头
-                { field: 'name', title: '员工姓名', sort: true,  fixed: 'left' }
-                , {field: 'pay_month', title: '发放月份', sort: true, templet: function (d) { return d.pay_month+"月" }}
+                 { field: 'name', title: '员工姓名', sort: true, fixed: 'left' }
+                , { field: 'pay_month', title: '发放月份', sort: true, templet: function (d) { return d.pay_month + "月" } }
                 , { field: 'pay_time', title: '发放日期', sort: true, templet: function (d) { return util.toDateString(d.pay_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
-                , { field: 'post_status', title: '发放状态', sort: true, templet: function (d) { return d.post_status == 0? "未发放":"已发放" } }
-                , { field: 'salary', title: '当月底薪', sort: true, templet: function (d) { return formatNumber(d.salary); }}
+                , { field: 'post_status', title: '发放状态', sort: true, templet: function (d) { return d.post_status == 0 ? "未发放" : "已发放" } }
+                , { field: 'salary', title: '当月底薪', sort: true, templet: function (d) { return formatNumber(d.salary); } }
                 , { field: 'perform_money', title: '当月绩效', sort: true, templet: function (d) { return formatNumber(d.perform_money); } }
                 , { title: '薪资总额', sort: true, templet: function (d) { return formatNumber(d.perform_money + d.salary); } }
-                , { field: 'create_time', title: '创建时间', sort: true , templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
-                , { title: '操作', toolbar: '#barDemo', templet:'#barDemo' }
+                , { field: 'create_time', title: '创建时间', sort: true, templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
+                , { title: '操作', toolbar: '#barDemo', templet: '#barDemo' }
             ]]
             , parseData: function (res) { //res 即为原始返回的数据
                 return {
@@ -100,12 +100,11 @@
         table.on('tool(test)', function (obj) {
             var emp_id = obj.data.emp_id;
             var create_time = obj.data.create_time;
-            console.log(create_time);
+            var data = obj.data
+            console.log(data);
             //获取当前行薪资数据的年月
-            var yyyy_MM = util.toDateString(create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM"); 
-            console.log(yyyy_MM)
-            if (obj.event === 'detail')
-            {
+            var yyyy_MM = util.toDateString(create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM");
+            if (obj.event === 'detail') {
                 layer.open({
                     title: '绩效详细信息',
                     type: 2,
@@ -113,27 +112,54 @@
                     content: `/employperform/detail?yyyy_MM=${yyyy_MM}&emp_id=${emp_id}`
                 })
             }
+
         });
-        //表格工具栏点击事件
-        //table.on('toolbar(test)', function (obj) {
-        //    if (obj.event == "out") {
-        //        layer.open({
-        //            title: '商品出库',
-        //            type: 2,
-        //            area: ['800px', '305px'],
-        //            content: '/repooutinrecord/outdetail'
-        //        })
-        //    }
-        //    else if (obj.event == "in")
-        //    {
-        //        layer.open({
-        //            title: '商品入库',
-        //            type: 2,
-        //            area: ['800px', '455px'],
-        //            content: '/repooutinrecord/indetail'
-        //        })
-        //    }
-        //})
+        //表头触发事件
+        table.on('toolbar(test)', function (obj) {
+            var now = new Date();  // 创建一个Date对象，其值为当前时间
+            var year = now.getFullYear();  // 获取当前年份
+            var month = now.getMonth();  // 获取当前上个月的月份
+            console.log(now)
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/employallsalary/excel', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.responseType = 'blob';
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var blob = xhr.response;
+
+                    // 创建一个 URL 对象
+                    var url = window.URL.createObjectURL(blob);
+
+                    // 创建一个隐藏的<a>元素
+                    var downloadLink = document.createElement('a');
+                    downloadLink.href = url;
+                    downloadLink.download = `${year}-${month}.xlsx`;
+
+                    // 将<a>元素添加到页面中
+                    document.body.appendChild(downloadLink);
+
+                    // 模拟点击下载链接
+                    downloadLink.click();
+
+                    // 下载完成后释放 URL 对象
+                    window.URL.revokeObjectURL(url);
+
+                    // 移除<a>元素
+                    document.body.removeChild(downloadLink);
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                } else {
+                    console.error('下载文件失败');
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error('下载文件时发生错误');
+            };
+            xhr.send();
+        })
         //搜索工具栏
         form.on('submit(btnSearch)', function (data) {
             //表格重载 where 再加一个参数name
@@ -144,7 +170,7 @@
                     pay_month: data.field.txtPayMonth,
                 }
             })
-             return false;
+            return false;
         });
     })
 </script>

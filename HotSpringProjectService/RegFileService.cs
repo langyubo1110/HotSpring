@@ -35,7 +35,16 @@ namespace HotSpringProjectService
             regFile.file_path = filepath;
             int flag = _regFileRepository.Add(regFile);
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
-            
+        }
+        public ResMessage addequid(int equid, string filepath)
+        {
+            RegFile regFile = new RegFile();
+            regFile.create_time = DateTime.Now;
+            regFile.type = 1;
+            regFile.equ_id = equid;
+            regFile.file_path = filepath;
+            int flag = _regFileRepository.Add(regFile);
+            return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
 
         public ResMessage Delete(int id)
