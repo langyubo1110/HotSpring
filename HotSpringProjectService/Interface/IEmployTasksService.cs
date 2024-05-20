@@ -12,6 +12,6 @@ namespace HotSpringProjectService.Interface
     public interface IEmployTasksService
     {
         IEnumerable<EquUpkeepTaskVO> GetList(int reportID);
-        ResMessage UpdateTask(int id, string data,int equId);
+        ResMessage UpdateTask(int id, string data,int equ_id);
     }
 }
