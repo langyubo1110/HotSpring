@@ -14,5 +14,6 @@ namespace HotSpringProject.Entity
         public string page_name { get; set; }
         public string page_address { get; set; }
         public string module_name { get; set; }
+        public string icon { get; set; }
     }
 }
