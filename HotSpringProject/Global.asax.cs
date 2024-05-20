@@ -38,27 +38,8 @@ namespace HotSpringProject
 
             ////SalaryPost.Initialize();//定时调度薪资发放
 
-            // 创建 Quartz 调度器
-            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
-            IScheduler scheduler = schedulerFactory.GetScheduler().Result;
-            //设置 Quartz 作业工厂，以便解析作业实例中的依赖项
-            scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
-            // 开启调度器
-            scheduler.Start().Wait();
-
-            // 创建 JobDetail
-            IJobDetail writeDatajobDetail = JobBuilder.Create<MyJob>()
-                                            .WithIdentity("myJob")
-                                            .Build();
-            // 创建触发器
-            ITrigger writeDatatrigger = TriggerBuilder.Create()
-                                             .WithIdentity("myTrigger")
-                                             .WithCronSchedule("0 0 8 * * ?")
-                                             .WithSimpleSchedule(x => x.WithIntervalInHours(24).RepeatForever()) // 设置触发频率为每24小时
-                                             .Build();
-
-            // 将 JobDetail 和 Trigger 绑定到调度器
-            scheduler.ScheduleJob(writeDatajobDetail, writeDatatrigger).Wait();
+            // 设备保养生成调度器
+            EquipUpKeep.Initialize();
         }
 
 
