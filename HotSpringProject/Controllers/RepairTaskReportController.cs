@@ -39,14 +39,25 @@ namespace HotSpringProject.Controllers
             ViewBag.id = id;
             return View( );
         }
-        
+        //故障分析页
         public ActionResult RepairTaskReport()
         {
+           
             ViewBag.emList = (List<EmployEmp>)_repairTaskReportService.GetListByRole().data;
             ResMessage resMessage = _repairTaskReportService.GetEquipmentList();
             ViewBag.equipmentNames = resMessage.data;
+
             return View( );
         }
+        //！！！！！！！！！！！！！！！！！！真正的维修任务上报页
+        public ActionResult TrueReport()
+        {
+            EmployEmp emp = (EmployEmp)Session["User"];
+            ViewBag.id = emp.id;
+            ViewBag.name = emp.name;
+            return View();
+        }
+
         //维修任务列表页
         public ActionResult RepairTaskList()
         {
