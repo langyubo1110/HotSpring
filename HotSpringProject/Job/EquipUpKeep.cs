@@ -8,7 +8,7 @@ using System.Web;
 
 namespace HotSpringProject.Job
 {
-    public class SalaryPost
+    public class EquipUpKeep
     {
         private static IScheduler _scheduler;
 
@@ -22,32 +22,28 @@ namespace HotSpringProject.Job
             // 配置和调度任务
             ConfigureScheduledJobs();
         }
-
-        private static void ConfigureScheduledJobs()
+        private static void ConfigureScheduledJobs() 
         {
-            // 创建 JobDetail
-            IJobDetail salaryjobDetail = JobBuilder.Create<SalaryPostJob>()
-                                             .WithIdentity("SalaryPostJob")
-                                             .Build();
-
+            IJobDetail writeDatajobDetail = JobBuilder.Create<MyJob>()
+                                            .WithIdentity("myJob")
+                                            .Build();
             // 创建触发器
-            ITrigger DataBasetrigger = TriggerBuilder.Create()
-                                             .WithIdentity("salaryTrigger")
-                                             .WithCronSchedule("0 0 0 1 * ? *")
-                                             //秒 分 时 日 月 周 年
-                                             //每月1号0点执行
+            ITrigger writeDatatrigger = TriggerBuilder.Create()
+                                             .WithIdentity("myTrigger")
+                                             .WithCronSchedule("0 0 8 * * ?")
+                                             .WithSimpleSchedule(x => x.WithIntervalInHours(24).RepeatForever()) // 设置触发频率为每24小时
                                              .Build();
 
-            ScheduleJob(salaryjobDetail, salarytrigger);
+            ScheduleJob(writeDatajobDetail, writeDatatrigger);
         }
 
-        private static void ScheduleJob(IJobDetail salaryjobDetail, ITrigger salarytrigger)
+        private static void ScheduleJob(IJobDetail writeDatajobDetail, ITrigger writeDatatrigger)
         {
             if (_scheduler == null)
             {
                 throw new InvalidOperationException("Scheduler has not been started. Call Initialize method first.");
             }
-            _scheduler.ScheduleJob(salaryjobDetail, salarytrigger).Wait();
+            _scheduler.ScheduleJob(writeDatajobDetail, writeDatatrigger).Wait();
         }
     }
 }

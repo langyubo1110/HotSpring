@@ -36,7 +36,8 @@
 </div>
 
 <script>
-    let plan_id=@ViewBag.id
+    let plan_id =@ViewBag.id
+    let equ_id = @ViewBag.equ_id
     layui.use(['layedit'], function () {
         var layedit = layui.layedit;
         var index = layedit.build('demo'); //建立编辑器
@@ -46,7 +47,7 @@
             let data1 = layedit.getContent(index)
             console.log(data1)
             //调接口赋值
-            $.post("/EmployTasks/UpdateTaskinfo", { plan_id: plan_id, data1: data1 }, function (res) {
+            $.post("/EmployTasks/UpdateTaskinfo", { plan_id: plan_id, data1: data1 ,equ_id:equ_id}, function (res) {
                 console.log(res)
                 if (res.code == 200) {
                     alert(res.msg)
