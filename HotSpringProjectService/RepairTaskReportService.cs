@@ -20,13 +20,15 @@ namespace HotSpringProjectService
         private readonly IEquipmentRepository _equipmentRepository;
         private readonly IFaultAnalyseRepository _faultAnalyseRepository;
         private readonly IEmployEmpRepository _employEmpRepository;
+        private readonly IEmployRoleRepository _employRoleRepository;
 
-        public RepairTaskReportService(IRepairTaskReportRepository repairTaskReportRepository, IEquipmentRepository equipmentRepository, IFaultAnalyseRepository faultAnalyseRepository,IEmployEmpRepository  employEmpRepository)
+        public RepairTaskReportService(IRepairTaskReportRepository repairTaskReportRepository, IEquipmentRepository equipmentRepository, IFaultAnalyseRepository faultAnalyseRepository,IEmployEmpRepository  employEmpRepository,IEmployRoleRepository employRoleRepository)
         {
             _repairTaskReportRepository = repairTaskReportRepository;
             _equipmentRepository = equipmentRepository;
             _faultAnalyseRepository = faultAnalyseRepository;
             _employEmpRepository=employEmpRepository;
+            _employRoleRepository=employRoleRepository;
         }
 
         public ResMessage Add(RepaieTaskReport repaieTaskReport)
@@ -92,51 +94,6 @@ namespace HotSpringProjectService
             }
             return ResMessage.Success(equipmentList);
         }
-
-        
-        //public IEnumerable<RepairTaskReportVO> GetAllList()
-        //{
-        //    List<RepairTaskReportVO> list = _repairTaskReportRepository.QueryBySql<RepairTaskReportVO>($@"SELECT *, (SELECT COUNT(*) FROM Employ_Emp WHERE Employ_Role.id=1) AS count
-        //   FROM Employ_Emp
-        //   INNER JOIN Employ_Role ON Employ_Emp.role_id = Employ_Role.id
-        //   WHERE Employ_Role.id = 1; ").ToList();
-
-        //     foreach(var item in list)
-        //     {
-        //        List<RepaieTaskReport> ManageCount = _repairTaskReportRepository.GetList().ToList().Where(x => x.reporter_id == item.id ).ToList();
-
-        //        int count=ManageCount.Count;
-        //        item.audited = count;
-        //     }
-        //    var result = list.ToList();
-        //    return list.ToList();
-        //}
-        //public ResMessage GetAllList()
-        //{
-        // List<RepairTaskReportVO> list = _repairTaskReportRepository.QueryBySql<RepairTaskReportVO>($@"SELECT *, (SELECT COUNT(*) FROM Employ_Emp WHERE Employ_Role.id=1) AS count
-        //FROM Employ_Emp
-        //INNER JOIN Employ_Role ON Employ_Emp.role_id = Employ_Role.id
-        //WHERE Employ_Role.role = 1 ").ToList();
-
-        ////维修上报全表（已经审核人数/应该审核的总人数）
-        ////1查到维修全表 vo X  Y
-        //foreach ()
-        //{
-        //    HttpItem.x =;
-        //    yield.Y =;
-
-        //}
-        ////2缺已审核人数  应审核的总人数
-        //    foreach (var item in list)
-        //    {
-        //        List<RepaieTaskReport> ManageCount = _repairTaskReportRepository.GetList().ToList().Where(x => x.reporter_id == item.id).ToList();
-
-        //        int count = ManageCount.Count;
-        //        item.audited = count;
-        //    }
-        //    var result = list.ToList();
-        //    return ResMessage.Success(result) ;
-        //}
         //修改和增加
         public ResMessage StopAndAdd(int id,string contents)
         {
@@ -149,8 +106,14 @@ namespace HotSpringProjectService
         //得到领导链表
         public ResMessage GetListByRole()
         {
-            int[] RoleList = {1,2,3,25};
-            List <EmployEmp> list=_employEmpRepository.GetList().Where(x=>RoleList.Contains(x.role_id) ).ToList();
+            //int[] RoleList = { 1, 2, 3, 25 };
+            //List<EmployEmp> list = _employEmpRepository.GetList().Where(x => RoleList.Contains(x.role_id)).ToList();
+            //return list == null ? ResMessage.Fail() : ResMessage.Success(list);
+
+            //得到role_id
+            int[] Role_Id = _employRoleRepository.GetList().Where(x => x.is_leader == 1).Select(x => x.id).ToArray();
+            //根据Role_Id 在员工表找到员工Id
+            List<EmployEmp> list = _employEmpRepository.GetList().Where(x => Role_Id.Contains(x.role_id)).ToList();
             return list==null?ResMessage.Fail():ResMessage.Success(list);
         }
         //查维修上报全表
@@ -158,5 +121,6 @@ namespace HotSpringProjectService
         //{
         //    List<FaultAnalyseVO> list=_faultAnalyseRepository.QueryBySql<FaultAnalyseVO>($@)
         //}
+
     }
 }

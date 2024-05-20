@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Record";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+
+
+                    <div class="table-responsive">
+
+                        <table id="demo" lay-filter="test"></table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+   
+</script>
+<script>
+    layui.use(['form','table'], function () {
+        var form = layui.form;
+        var table = layui.table;
+        var id=@ViewBag.id;
+        //表格渲染
+        table.render({
+            elem: '#demo'
+            , height: 525
+            , url: '/FaultAnalyse/GetRecord/'+id //数据接口
+            , page: false//开启分页
+            , cols: [[ //表头
+                { field: 'auditor', title: '审核人' }
+                , { field: 'analyse_name', title: '分析人' }
+                , { field: 'contents', title: '分析内容' }
+            ]]
+            , parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
+        });
+    })
+</script>

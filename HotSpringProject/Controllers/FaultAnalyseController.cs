@@ -29,13 +29,21 @@ namespace HotSpringProject.Controllers
         #region
         public ActionResult Detail(int id=0,int eid=0)
         {
+            //申报
             if(id > 0)
             {
-                ViewBag.id=id;
+                ViewBag.app_id=id;
             }
+            //设备
             if (eid > 0)
             {
                 ViewBag.eid = eid;
+            }
+            if (Session["User"] != null)
+            {
+                EmployEmp employEmp = (EmployEmp)Session["User"];
+                ViewBag.id=employEmp.id;
+                ViewBag.UserName = employEmp.name;
             }
             ViewBag.emList = (List<EmployEmp>)_repairTaskReportService.GetListByRole().data;
             ResMessage resMessage = _repairTaskReportService.GetEquipmentList();
@@ -63,6 +71,11 @@ namespace HotSpringProject.Controllers
             }
             ResMessage resMessage = _faultAnalyseService.UpDateByAudit(faultAnalyselist);
             return Json(resMessage);
+        }
+        public JsonResult GetRecord(int id)
+        {
+            ResMessage resMessage = _faultAnalyseService.GetRecord(id);
+            return Json(resMessage,JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

@@ -13,6 +13,7 @@ namespace HotSpringProject.Entity.VO
         public int analyse_id {  get; set; }
         public string contents {  get; set; }
         public int final_scheme {  get; set; }  
-
+        public string analyse_name {  get; set; }
+        public string auditor {  get; set; }  
     }
 }
