@@ -10,6 +10,7 @@ namespace HotSpringProject.Entity
     public class MenuVO
     {
         public string module_name { get; set; }
+        public string icon { get; set; }
         public List<SystemPages> page_list { get; set; }
     }
 }

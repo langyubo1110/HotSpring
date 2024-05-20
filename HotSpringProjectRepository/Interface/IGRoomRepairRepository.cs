@@ -15,5 +15,6 @@ namespace HotSpringProjectRepository.Interface
         int Add(GRoomRepair gRoomRepair);
         GRoomRepair GetModel(int id);
         IEnumerable<GRoomRepair> GetList();
+        IEnumerable<T> QueryBySql<T>(string sql);
     }
 }
