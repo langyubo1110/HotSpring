@@ -93,7 +93,7 @@
                 }
                 , {
                     field: 'onboarding_time', title: '入职时间', templet: function (d) {
-                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                        return util.toDateString(d.onboarding_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
                 }
                 //, {
@@ -104,7 +104,7 @@
                 , { field: 'log_count', title: '登录次数' }
                 , {
                     field: 'last_log_time', title: '最后登陆时间', templet: function (d) {
-                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                        return util.toDateString(d.last_log_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
                     }
                 }
                 , {
@@ -142,7 +142,7 @@
                     title: '员工信息',
                     type: 2,
                     content: "/EmployEmp/detail?id=" + id,
-                    area: ['500px', '610px']
+                    area: ['800px', '300px'],
                 });
             }
         })
@@ -151,7 +151,7 @@
             layer.open({
                 title: '员工添加',
                 type: 2,
-                area: ['500px', '610px'],
+                area: ['800px', '300px'],
                 content: '/EmployEmp/detail/'
             })
         });

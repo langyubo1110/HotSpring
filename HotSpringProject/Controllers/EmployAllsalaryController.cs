@@ -67,6 +67,7 @@ namespace HotSpringProject.Controllers
             string yyyy_MM=time.ToString("yyyy-MM");
             List<EmployAllsalaryVO> list= _employAllsalaryService.GetExcel(yyyy_MM);
             // 创建Excel文件
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var package = new ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add("薪资");

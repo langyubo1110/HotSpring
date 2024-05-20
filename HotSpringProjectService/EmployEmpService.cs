@@ -7,6 +7,7 @@ using HotSpringProjectService.Interface;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -31,9 +32,18 @@ namespace HotSpringProjectService
             //查询数据库中最大id数据对象，将id+1，为基础号码
             //再用000000加上基础号码拼成工号
             //employemp.identity_card = "FX" ;
-            int baseNumber = GenerateRandomBaseNumber();
+            int baseNumber;
+            string employeeNumber;
             // 生成员工的工号
-            string employeeNumber = GenerateEmployeeNumber(baseNumber);
+            do
+            {
+                // 生成随机数作为基础号码
+                baseNumber = GenerateRandomBaseNumber();
+
+                // 根据基础号码生成工号
+                employeeNumber = GenerateEmployeeNumber(baseNumber);
+            } while (_EmployEmpRepository.Check(employeeNumber));
+
             employemp.job_number = employeeNumber;
             employemp.onboarding_time = DateTime.Now;
             employemp.create_time = DateTime.Now;
@@ -69,7 +79,7 @@ namespace HotSpringProjectService
         {
             // 这里假设你要生成一个 6 位数的随机数作为基础号码
             Random random = new Random();
-            int baseNumber = random.Next(100000, 999999); // 生成 100000 到 999999 之间的随机数
+            int baseNumber = random.Next(000000, 999999); // 生成 100000 到 999999 之间的随机数
 
             return baseNumber;
         }
@@ -158,7 +168,7 @@ namespace HotSpringProjectService
             }
             else
             {
-                employemp.onboarding_time = DateTime.Now;
+                employemp.onboarding_time = employemp.create_time;
                 employemp.account_status = 1;
                 employemp.last_log_time = DateTime.Now;
                 int pwd = 123;

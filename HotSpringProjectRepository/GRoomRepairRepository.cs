@@ -49,5 +49,9 @@ namespace HotSpringProjectRepository
              int flag=_Db.SaveChanges();
             return flag>=0?true:false;
         }
+        public IEnumerable<T> QueryBySql<T>(string sql)
+        {
+            return _Db.Database.SqlQuery<T>(sql);
+        }
     }
 }

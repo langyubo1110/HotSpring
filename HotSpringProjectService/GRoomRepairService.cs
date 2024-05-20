@@ -119,7 +119,7 @@ namespace HotSpringProjectService
 
         public ResMessage GetListById(int id)
         {
-            List<GRoomRepair> list = _gRoomRepairRepository.GetList().Where(x => x.reporter_id ==id ).ToList();
+            IEnumerable<RepairVO> list = _gRoomRepairRepository.QueryBySql<RepairVO>($@"SELECT GRoom_Repair.*, Employ_Emp.name FROM GRoom_Repair JOIN Employ_Emp ON GRoom_Repair.reporter_id = Employ_Emp.id where GRoom_Repair.reporter_id={id}");
             return list == null ? ResMessage.Fail() : ResMessage.Success(list);
         }
 

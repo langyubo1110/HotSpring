@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZXing;
 
 namespace HotSpringProjectService
 {
@@ -65,6 +64,12 @@ namespace HotSpringProjectService
             decimal workday = _db.GetList().Where(x=>x.create_time> firstDayOfLastMonth && x.create_time< lastDayOfLastMonth && x.emp_Id==id).Count();
             double rate = Math.Round(Convert.ToDouble(workday) / Convert.ToDouble(days),2);
             return rate;
+        }
+
+        public ResMessage Verify(int empId)
+        {
+            return _db.Verify(empId) == true ? ResMessage.Success() : ResMessage.Fail();
+
         }
     }
 }

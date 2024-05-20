@@ -37,5 +37,21 @@ namespace HotSpringProjectRepository
         {
             return _db.Database.SqlQuery<T>(sql);
         }
+
+        public bool Verify(int empId)
+        {
+            DateTime currentDate = DateTime.Today;
+
+            // 将当前日期转换为数据库中存储时间戳的格式
+            DateTime currentDateStartOfDay = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day);
+
+            // 获取明天的日期的零时零分零秒
+            DateTime nextDayStart = currentDateStartOfDay.AddDays(1);
+
+            // 检查数据库中是否存在与 empId 和当前日期相对应的记录
+            bool alreadySignedIn = _db.EmployCheckIn.Any(s => s.emp_Id == empId && s.create_time >= currentDateStartOfDay && s.create_time < nextDayStart);
+
+            return alreadySignedIn;
+        }
     }
 }

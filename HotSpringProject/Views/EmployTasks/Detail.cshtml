@@ -11,7 +11,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">工作内容</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="context" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                    <input type="text" name="work_context" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
         $.post("/EmployTasks/RepairByID", { id: id }, function (res) {
         if (res.code == 200) {
             form.val('empForm', {
-                "context": res.data[0]["context"]
+                "context": res.data[0]["work_context"]
             })
         }
         })

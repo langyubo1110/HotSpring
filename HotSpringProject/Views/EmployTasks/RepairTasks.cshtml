@@ -68,8 +68,7 @@
             }
             , toolbar: '#toolbarDemo'
             , cols: [[
-                { field: 'id', title: '主键', sort: true, fixed: 'left' }
-                , { field: 'reporter_id', title: '上报人ID' }
+                { field: 'name', title: '上报人' }
                 , {
                     field: 'location', title: '维修地点'
                 }
@@ -103,7 +102,7 @@
                     type: 2,
                     title: '详细信息',
                     content: "/EmployTasks/Detail/" + id,
-                    area: ['600px', '500px'] 
+                    area: ['800px', '300px'] 
                 });
             }
         });

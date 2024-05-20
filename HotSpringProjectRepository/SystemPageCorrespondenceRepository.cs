@@ -26,7 +26,11 @@ namespace HotSpringProjectRepository
 
         public bool Delete(int roleId)
         {
-            var pagesToDelete = _db.SystemPageCorrespondences.Where(p => p.role_id == roleId);
+            var isLeader = _db.EmployRole.Where(r => r.id == roleId).Select(r => r.is_leader).FirstOrDefault();
+            // 获取具有相同 isLeader 值的所有 roleId
+            var rolesToDelete = _db.EmployRole.Where(r => r.is_leader == isLeader).Select(r => r.id).ToList();
+            // 删除所有 rolesToDelete 对应的 SystemPageCorrespondences 表内的项
+            var pagesToDelete = _db.SystemPageCorrespondences.Where(p => rolesToDelete.Contains(p.role_id));
             _db.SystemPageCorrespondences.RemoveRange(pagesToDelete);
             int flag = _db.SaveChanges();
             if (flag > 0)
