@@ -32,7 +32,7 @@
         $.post("/EmployTasks/RepairByID", { id: id }, function (res) {
         if (res.code == 200) {
             form.val('empForm', {
-                "context": res.data[0]["work_context"]
+                "work_context": res.data[0]["work_context"]
             })
         }
         })
