@@ -86,9 +86,9 @@ namespace HotSpringProject.Controllers
         }
 
         [ValidateInput(false)]
-        public JsonResult UpdateTaskinfo(int plan_id, string data1,int equId)
+        public JsonResult UpdateTaskinfo(int plan_id, string data1,int equ_id)
         {
-            ResMessage res = _dbTasks.UpdateTask(plan_id, data1,equId);
+            ResMessage res = _dbTasks.UpdateTask(plan_id, data1,equ_id);
             return Json(res);
         }
     }
