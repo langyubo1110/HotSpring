@@ -32,8 +32,10 @@ namespace HotSpringProject.Job
 
             // 创建触发器
             ITrigger DataBasetrigger = TriggerBuilder.Create()
-                                             .WithIdentity("myTrigger")
-                                             .WithCronSchedule("0 0 0 1 * *")//每月1号0点执行
+                                             .WithIdentity("salaryTrigger")
+                                             .WithCronSchedule("0 0 0 1 * ? *")
+                                             //秒 分 时 日 月 周 年
+                                             //每月1号0点执行
                                              .Build();
 
             ScheduleJob(DataBasejobDetail, DataBasetrigger);
