@@ -65,5 +65,11 @@ namespace HotSpringProjectService
             double rate = Math.Round(Convert.ToDouble(workday) / Convert.ToDouble(days),2);
             return rate;
         }
+
+        public ResMessage Verify(int empId)
+        {
+            return _db.Verify(empId) == true ? ResMessage.Success() : ResMessage.Fail();
+
+        }
     }
 }

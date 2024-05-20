@@ -3,91 +3,111 @@
     ViewBag.Title = "Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<form class="layui-form" lay-filter="empForm">
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <input type="hidden" name="id" value="0" />
-            <label class="layui-form-label">姓名</label>
-            <div class="layui-input-inline">
-                <input type="text" name="name" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form role="form" class="layui-form form-inline" lay-filter="empForm">
+            <div class="form-group">
+                <input type="hidden" name="id" value="0" />
+                &emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;
+                姓名：<input type="text" name="name" lay-verify="required" class="form-control">
             </div>
-        </div>
-    </div>
-   <div class="layui-form-item" style="margin-left:34px">
-        <div class="layui-inline">
-            <input type="radio" name="gendar" value="0" title="男">
-            <input type="radio" name="gendar" value="1" title="女" checked>
-        </div>
-    </div>
-    <div class="layui-form-item" style="margin-left:0px">
-        <div class="layui-inline">
-            <label class="layui-form-label">身份证</label>
-            <div class="layui-input-inline">
-                <input type="text" name="identity_card" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            &emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            <div class="form-group">
+                <div class="layui-inline">
+                    <span>性别：</span>
+                    <div class="layui-inline">
+                        <input type="radio" name="gendar" value="0" title="男">
+                        <input type="radio" name="gendar" value="1" title="女" checked>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-upload">
-            <label class="layui-form-label">头像</label>
-            <button type="button" class="layui-btn" id="test1">上传图片</button>
-            <div class="layui-upload-list">
-                <img class="layui-upload-img" id="preview" style="width: 200px; height: 200px;">
-                <p id="demoText"></p>
+            <br /> <br />
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;
+                身份证：<input type="text" name="identity_card" lay-verify="required" class="form-control">
             </div>
-            <input type="hidden" name="avatar" id="avatar" value="" />
-            <input type="hidden" name="log_count" value="" />
-            <input type="hidden" name="create_time" value="" />
-            <input type="hidden" name="job_number" value="" />
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">角色</label>
-            <div class="layui-input-inline">
-                    <select name="role_id" lay-verify="required" lay-search="" lay-filter="ddltest">
-                        <option value=""></option>
-                        @foreach (var item in ViewBag.list)
-                        {
-                            <option value="@item.id">@item.role_name</option>
-                        }
-                    </select>
-                @*<input type="text" name="role_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">*@
+            &emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            <div class="form-group">
+                <div class="layui-inline">
+                    <span>角色：</span>
+                    <div class="layui-inline">
+                        <select name="role_id" lay-verify="required" lay-search="" lay-filter="ddltest">
+                            <option value=""></option>
+                            @foreach (var item in ViewBag.list)
+                            {
+                                <option value="@item.id">@item.role_name</option>
+                            }
+                        </select>
+                        @*<input type="text" name="role_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">*@
+                    </div>
+                </div>
             </div>
+            <br /> <br />
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;
+                <div class="layui-upload" style="display: flex; align-items: center">
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    <div style="display: flex; align-items: center; flex-grow: 1;">
+                        头像:&emsp;<button type="button" class="layui-btn" id="test1">上传图片</button>
+                        &emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                        <div class="layui-upload-list">
+                            <img class="layui-upload-img" name="avatar" src="" id="preview" style="width: 100px; height: 100px;">
+                            <p id="demoText"></p>
+                        </div>
+                    </div>
+                    <input type="hidden" name="log_count" value="" />
+                    <input type="hidden" name="create_time" value="" />
+                    <input type="hidden" name="job_number" value="" />
+                </div>
+            </div>
+            <br /> <br />
+            <div class="form-group">
+                &emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                <div class="layui-input-block">
+                    &emsp;&emsp;&emsp;  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    <input type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" value="提交" />
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
         </div>
     </div>
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <input type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" value="提交" />
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
-    </div>
-</form>
-<script>
+<style>
+    .layui-form-select .layui-input {
+        padding-right: 30px;
+        cursor: pointer;
+        height: 34px;
+        width: 198px;
+    }
+</style>
+        <script>
     layui.use(['form', 'util','layer','upload'], function () {
         var form = layui.form;
         var util = layui.util;
         var layer = layui.layer;
         var upload = layui.upload;
         var id =@ViewBag.Id;
-        $(document).ready(function () {
-            checkAvatar();
-        });
+        //$(document).ready(function () {
+        //    checkAvatar();
+        //});
 
         // 检查头像是否为空，若为空则设置默认图片
-        function checkAvatar() {
-            var avatar = $("#avatar").val();
+        function checkAvatar(avatar) {
             if (!avatar) {
                 $("#preview").attr("src", "/assets/Aimg/u=3838113375,3810336988&fm=253&gp=0.jpg");
                 $("#avatar").val("/assets/Aimg/u=3838113375,3810336988&fm=253&gp=0.jpg");
+                console.log(1)
+            }
+            else {
+                $("#preview").attr("src", `${avatar}`);
+                console.log(avatar)
             }
         }
         $.post("/EmployEmp/getEmp", { id: id }, function (res) {
-            console.log(res)
             if (res.code == 200) {
                 res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
                 form.val('empForm', res.data);
+                checkAvatar(res.data.avatar);
             }
         });
         var uploadInst = upload.render({
@@ -131,8 +151,8 @@
             }
             return false;
         });
-        
+
     })
 
-</script>
+        </script>
 

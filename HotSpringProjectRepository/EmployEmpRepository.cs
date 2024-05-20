@@ -34,6 +34,11 @@ namespace HotSpringProjectRepository
             return flag;
         }
 
+        public bool Check(string employeeNumber)
+        {
+            return _db.EmployEmps.Any(e => e.job_number == employeeNumber);
+        }
+
         public bool Delete(int id)
         {
             EmployEmp employEmp = _db.EmployEmps.Find(id);
