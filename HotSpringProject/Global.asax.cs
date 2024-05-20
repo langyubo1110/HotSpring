@@ -38,7 +38,7 @@ namespace HotSpringProject
 
             //SalaryPost.Initialize();//定时调度薪资发放
 
-            创建 Quartz 调度器
+            //创建 Quartz 调度器
            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
             IScheduler scheduler = schedulerFactory.GetScheduler().Result;
             //设置 Quartz 作业工厂，以便解析作业实例中的依赖项
