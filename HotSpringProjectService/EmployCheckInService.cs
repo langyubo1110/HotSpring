@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZXing;
 
 namespace HotSpringProjectService
 {
@@ -35,17 +36,34 @@ namespace HotSpringProjectService
             IEnumerable<EmployCheckInVO> list = _db.QueryBySql<EmployCheckInVO>($@"SELECT ci.*, e.name AS emp_name FROM Employ_Check_In AS ci JOIN Employ_Emp AS e ON ci.emp_id = e.id WHERE ci.check_event = 1;");
             return list;
         }
+
         //获取出勤天数
-        public decimal GetWorkRate(int id)
+        public double GetWorkRate(int id)
         {
             //每月1号调度执行，这里-1小时拿到上月的天数
             DateTime dtNow = DateTime.Now.AddHours(-1);
             //获取上月天数
-            int days = DateTime.DaysInMonth(dtNow.Year, dtNow.Month);
+            int month = dtNow.Month;
+            int year = dtNow.Year;
+
+            // 检查当前月份是否为1月
+            if (month == 1)
+            {
+                month = 12; // 上个月是12月
+                --year; // 减去1年
+            }
+            else
+            {
+                --month; // 上个月
+            }
+            decimal days = DateTime.DaysInMonth(year, month);
+            // 获取上个月的第一天和最后一天
+            DateTime firstDayOfLastMonth = new DateTime(dtNow.Year, dtNow.Month - 1, 1);
+            DateTime lastDayOfLastMonth = firstDayOfLastMonth.AddMonths(1).AddDays(-1);
             //linq 时间段筛选
             //上月第一天00:00:00到本月第一天00:00:00时间内该员工的出勤天数
-            int workday = _db.GetList().Where(x=>x.create_time<DateTime.UtcNow.AddMonths(-1)&&x.create_time<DateTime.UtcNow&&x.emp_Id==id).Count();
-            decimal rate = workday/days;
+            decimal workday = _db.GetList().Where(x=>x.create_time> firstDayOfLastMonth && x.create_time< lastDayOfLastMonth && x.emp_Id==id).Count();
+            double rate = Math.Round(Convert.ToDouble(workday) / Convert.ToDouble(days),2);
             return rate;
         }
 

@@ -1,6 +1,7 @@
 ﻿
 using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
 using HotSpringProjectRepository;
 using HotSpringProjectRepository.Interface;
 using HotSpringProjectService.Interface;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZXing;
 
 
 namespace HotSpringProjectService
@@ -167,6 +169,16 @@ namespace HotSpringProjectService
             equipment.used_time = list[0].used_time;
             int flag = _equipmentRepository.Update(equipment);
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
+        }
+
+        public ResMessage Queryfile(int id)
+        {
+            List<RegFileVO> plist = _equipmentRepository.QueryBySql<RegFileVO>($"select * from Reg_Files where equ_id={id}").ToList();
+            foreach (var regFile in plist)
+            {
+                regFile.file_path_name = regFile.file_path.Substring(regFile.file_path.LastIndexOf('/') + 1);
+            }
+            return plist == null ? ResMessage.Fail() : ResMessage.Success(plist, 0);
         }
     }
 }

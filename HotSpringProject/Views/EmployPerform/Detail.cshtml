@@ -23,12 +23,13 @@
         var table = layui.table;
         var util = layui.util;
         var layer = layui.layer;
-        var id =@ViewBag.id;
+        var emp_id =@ViewBag.emp_id;
+        let yyyy_MM = "@ViewBag.yyyy_MM";
         //表格渲染
         table.render({
             elem: '#demo'
             , height: 472
-            , url: '/employperform/getlistbypager/' + id //数据接口
+            , url: `/employperform/getlistbypager?yyyy_MM=${yyyy_MM}&emp_id=${emp_id}` //数据接口
             , page: true//开启分页
             , cols: [[ //表头
                 { field: 'start_time', title: '开始时间', sort: true, templet: function (d) { return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss") } }

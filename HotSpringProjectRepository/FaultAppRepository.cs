@@ -19,7 +19,9 @@ namespace HotSpringProjectRepository
         {
             _Db.Entry<FaultApp>(faultApp).State = System.Data.Entity.EntityState.Added;
             int flag = _Db.SaveChanges();
-            return flag;
+            int last_id=faultApp.id;
+            
+            return flag>0?last_id:0;
         }
 
         public int Delete(int id)

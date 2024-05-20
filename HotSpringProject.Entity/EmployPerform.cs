@@ -13,7 +13,7 @@ namespace HotSpringProject.Entity
     {
         [Key]
         public int id { get; set; }
-        public int allsalary_id { get; set; }
+        public int emp_id { get; set; }
         public int repair_id { get; set; }
         public decimal repair_up_money { get; set; }
         public DateTime create_time { get; set; }

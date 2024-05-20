@@ -15,7 +15,7 @@ namespace HotSpringProjectService.Interface
         ResMessage Add(EmployPerform employPerform);
         ResMessage GetModel(int id);
         ResMessage GetList();
-        ResMessage GetListByPager(int page, int limit, int id);
+        ResMessage GetListByPager(int page, int limit,string yyyy_MM, int emp_id);
         List<EmployPerform> GetListByRepairId(int id);
     }
 }

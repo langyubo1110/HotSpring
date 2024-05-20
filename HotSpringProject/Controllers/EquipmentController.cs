@@ -26,16 +26,18 @@ namespace HotSpringProject.Controllers
         private readonly IEquipmentService _equipmentService;
         private readonly IEquToTaskService _equToTaskService;
         private readonly IEquUpkeepTaskService _equUpkeepTaskService;
+        private readonly IRegFileService _regFileService;
 
 
 
 
         //构造函数注入
-        public EquipmentController(IEquipmentService equipmentService, IEquToTaskService equToTaskService, IEquUpkeepTaskService equUpkeepTaskService)
+        public EquipmentController(IEquipmentService equipmentService, IEquToTaskService equToTaskService, IEquUpkeepTaskService equUpkeepTaskService, IRegFileService regFileService)
         {
             _equipmentService = equipmentService;
             _equToTaskService = equToTaskService;
             _equUpkeepTaskService = equUpkeepTaskService;
+            _regFileService = regFileService;
         }
 
         #region 页面
@@ -59,6 +61,11 @@ namespace HotSpringProject.Controllers
         {
             return View();
         }
+        public ActionResult filedownload(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
         public ActionResult upkeep(int id)
         {
             List<EquipmentTypeVO> list = _equipmentService.GetListUnion().ToList();
@@ -79,6 +86,11 @@ namespace HotSpringProject.Controllers
             List<EquUpkeepTaskVO> list1 = _equUpkeepTaskService.getlistnofilter();
             return Json(list1, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult Queryfile(int id)
+        {
+            ResMessage res = _equipmentService.Queryfile(id);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
 
         //文件上传接口
         public JsonResult uploading(int id)
@@ -86,11 +98,18 @@ namespace HotSpringProject.Controllers
             HttpPostedFileBase file = Request.Files[0];
             try
             {
-                //判断文件夹
-                Directory.CreateDirectory(Server.MapPath("/assets/upload/") + id);
+                if (Directory.Exists(Server.MapPath("/assets/upload/") + id) == false)
+                {
+                    //判断文件夹
+                    Directory.CreateDirectory(Server.MapPath("/assets/upload/") + id);
+                }
+                //向文件表里插入数据
+                string filepath = $"/assets/upload/{id}/" + file.FileName;
+                _regFileService.addequid(id, filepath);
+
                 //处理图片名称
-                file.SaveAs(Server.MapPath($"/assets/upload/{id}/") + file.FileName);
-                return Json(ResMessage.Success(data: "/assets/upload/" + file.FileName));
+                file.SaveAs(Server.MapPath(filepath));
+                return Json(ResMessage.Success(data: $"/assets/upload/{id}/" + file.FileName));
             }
             catch (Exception ex)
             {
@@ -98,18 +117,18 @@ namespace HotSpringProject.Controllers
             }
         }
         //文件下载接口
-        public ActionResult downloading(EquipmentTypeVO data)
+        public ActionResult downloading(RegFileVO data)
         {
             // 文件路径
-            string filePath = (Server.MapPath("/assets/download/") + $" {data.id}.txt");
+            string filePath = (Server.MapPath(data.file_path));
             // 写入数据到文件
             try
             {
-                DataChange(filePath, data);
+                string type = data.file_path_name.Substring(data.file_path_name.LastIndexOf('.') + 1);
                 // 在此处生成你要下载的文件，或者从某个位置读取文件
-                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                byte[] fileBytes = System.IO.File.ReadAllBytes(Server.MapPath(data.file_path));
                 // 将 txt 文件发送给客户端进行下载
-                return File(fileBytes, "application/txt", "files.txt");
+                return File(fileBytes, $"application/{type}", $"{data.file_path_name}");
             }
             catch (Exception ex)
             {
@@ -117,7 +136,7 @@ namespace HotSpringProject.Controllers
             }
         }
 
-        //文件多选下载接口
+        //设备多选下载接口
         public ActionResult downselect(List<EquipmentTypeVO> data)
         {
             List<string> filesToCompress = new List<string>();
@@ -132,6 +151,7 @@ namespace HotSpringProject.Controllers
                 // 写入数据到文件
                 DataChange(filePath, item);
                 filesToCompress.Add(filePath);
+
             }
             string zipFileName = (Server.MapPath("/assets/download/") + $"{guid}.zip");
             // 创建一个新的ZIP文件
@@ -150,6 +170,38 @@ namespace HotSpringProject.Controllers
             return File(fileBytes, "application/zip", "files.zip");
         }
 
+        //文件批量下载
+        public ActionResult DownSelectfile(List<RegFile> data)
+        {
+            List<string> filesToCompress = new List<string>();
+            //获取当前guid避免id重复
+            string guid = Guid.NewGuid().ToString();
+
+            //循环遍历勾选的行数据
+            foreach (var item in data)
+            {
+                // 文件路径
+                string filePath = (Server.MapPath(item.file_path));
+
+                filesToCompress.Add(filePath);
+            }
+            string zipFileName = (Server.MapPath("/assets/download/") + $"{guid}.zip");
+            //string zipname = $"{guid}.zip";
+            // 创建一个新的ZIP文件
+            using (ZipArchive archive = ZipFile.Open(zipFileName, ZipArchiveMode.Create))
+            {
+                foreach (string file in filesToCompress)
+                {
+                    // 将每个文件添加到ZIP存档中
+                    string entryName = Path.GetFileName(file);
+                    archive.CreateEntryFromFile(file, entryName);
+                }
+            }
+            // 在此处生成你要下载的文件，或者从某个位置读取文件
+            byte[] fileBytes = System.IO.File.ReadAllBytes(Server.MapPath("/assets/download/") + $"{guid}.zip");
+            // 将 ZIP 文件发送给客户端进行下载
+            return File(fileBytes, "application/zip", "files.zip");
+        }
 
         //数据转换
         public void DataChange(string filePath, EquipmentTypeVO data)
