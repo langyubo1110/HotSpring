@@ -16,7 +16,7 @@ namespace HotSpringProjectService.Interface
         ResMessage GetListBySpareParts(RepoOutInRecordFilter filter);
         ResMessage Delete(int id);
         ResMessage Update(RepoOutInRecord repoOutInRecord);
-        ResMessage Add(RepoGoodsStockDTO repoGoodsStockDTO);
+        ResMessage Add(RepoGoodsStockDTO repoGoodsStockDTO,int userId);
         ResMessage GetModel(int id);
         ResMessage GetListBySql(int? page, int? limit,RepoOutInRecordFilter filter);
         ResMessage UpLoad(string filename,string path,HttpPostedFileBase file);

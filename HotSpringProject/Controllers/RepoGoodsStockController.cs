@@ -1,4 +1,5 @@
 ﻿using DotNet.Utilities;
+using HotSpringProject.DependencyDB;
 using HotSpringProject.Entity;
 using HotSpringProject.Entity.DTO;
 using HotSpringProject.Entity.VO;
@@ -16,13 +17,15 @@ namespace HotSpringProject.Controllers
     public class RepoGoodsStockController : Controller
     {
         private readonly IRepoGoodsStockService _repoGoodsStockService;
+       
 
-/* 商品库存表控制器
-* 裴晨旭
-* 2024-04-25
-*/
+        /* 商品库存表控制器
+        * 裴晨旭
+        * 2024-04-25
+        */
         public RepoGoodsStockController(IRepoGoodsStockService repoGoodsStockService) {
             _repoGoodsStockService=repoGoodsStockService;
+            
         }
         #region 页面
         public ActionResult GoodsStock()
@@ -47,6 +50,13 @@ namespace HotSpringProject.Controllers
             ResMessage resMessage = _repoGoodsStockService.GetListByPager(page,limit,filter);
             return Json(resMessage, JsonRequestBehavior.AllowGet);
         }
+        //public JsonResult GetListByPager1(int page, int limit, RepoGoodsStockFilter filter)
+        //{
+        //    var messageService = new ThresholdDepency(page, limit, filter);
+        //    List<RepoGoodsStock> res =messageService.PagerAndMakeQuery(page, limit, filter);
+            
+        //    return Json(new {data=res ,code=200,count=res.Count,msg=""} , JsonRequestBehavior.AllowGet);
+        //}
         public JsonResult GetModel(int id = 0)
         {
             ResMessage resMessage = _repoGoodsStockService.GetModel(id);
@@ -59,6 +69,7 @@ namespace HotSpringProject.Controllers
         }
         public JsonResult Update(RepoGoodsStock repoGoodsStock)
         {
+           
             ResMessage resMessage = _repoGoodsStockService.Update(repoGoodsStock);
             return Json(resMessage);
         }

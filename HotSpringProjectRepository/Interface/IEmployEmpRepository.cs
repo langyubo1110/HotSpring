@@ -13,6 +13,7 @@ namespace HotSpringProjectRepository.Interface
         IEnumerable<EmployEmp> GetList();
         //IEnumerable<EmployEmp> GetListByID(int id);
         int Add(EmployEmp employemp);
+        IEnumerable<T> QueryBySql<T>(string sql);
         bool Update(EmployEmp employemp);
         bool Delete(int id);
         EmployEmp GetModel(int id);

@@ -24,5 +24,10 @@ namespace HotSpringProject.hubs
             IHubContext content = GlobalHost.ConnectionManager.GetHubContext<EmpMessageHub>();
             content.Clients.All.getList(JsonConvert.SerializeObject(list));
         }
+        public static void StockList(List<RepoGoodsStock> list)
+        {
+            IHubContext content = GlobalHost.ConnectionManager.GetHubContext<EmpMessageHub>();
+            content.Clients.All.getList(JsonConvert.SerializeObject(list));
+        }
     }
 }
