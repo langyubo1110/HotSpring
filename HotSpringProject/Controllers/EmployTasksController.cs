@@ -42,10 +42,6 @@ namespace HotSpringProject.Controllers
             list = list.Where(x => x.equ_plan_id == id).ToList();
             return View(list);
         }
-        public ActionResult Index()
-        {
-            return View();
-        }
         public ActionResult UpKeepTasks() 
         {
             return View();

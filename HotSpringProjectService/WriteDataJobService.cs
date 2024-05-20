@@ -39,7 +39,7 @@ namespace HotSpringProjectService
                     if (daysDifference % item.interval == 0)
                     {
                         // 生成包含参数的链接
-                        string targetUrl = $"https://localhost:44364/equupkeeptask/upkeeptask?id={item.equ_plan_id}";
+                        string targetUrl = $"https://localhost:44364/equupkeeptask/upkeeptask?id={item.equ_plan_id}&equ_id={item.equ_id}";
                         // 生成二维码
                         QRCodeGenerator qrGenerator = new QRCodeGenerator();
                         QRCodeData qrCodeData = qrGenerator.CreateQrCode(targetUrl, QRCodeGenerator.ECCLevel.Q);
@@ -47,8 +47,8 @@ namespace HotSpringProjectService
                         Bitmap qrCodeImage = qrCode.GetGraphic(10);
 
                         // 保存二维码图片到文件夹
-                        string imagePath = HostingEnvironment.MapPath($"/assets/QRimg/{item.task_id}.png");
-                        string imgurl = $"/assets/QRimg/{item.task_id}.png";
+                        string imagePath = HostingEnvironment.MapPath($"/assets/QRimg/{item.equ_id}_{item.equ_plan_id}.png");
+                        string imgurl = $"/assets/QRimg/{item.equ_id}_{item.equ_plan_id}.png";
                         qrCodeImage.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
 
                         //入库一条数据
