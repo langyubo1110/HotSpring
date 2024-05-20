@@ -33,13 +33,13 @@ namespace HotSpringProject
             GlobalFilters.Filters.Add(new AuthorizationFilter());//拦截器
             AutoMapperConfig.Config();
 
-            ////BackUpDataBase.Initialize();
-            ////备份数据库
+            //BackUpDataBase.Initialize();
+            //备份数据库
 
-            ////SalaryPost.Initialize();//定时调度薪资发放
+            //SalaryPost.Initialize();//定时调度薪资发放
 
-            // 创建 Quartz 调度器
-            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            创建 Quartz 调度器
+           ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
             IScheduler scheduler = schedulerFactory.GetScheduler().Result;
             //设置 Quartz 作业工厂，以便解析作业实例中的依赖项
             scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
