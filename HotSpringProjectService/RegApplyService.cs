@@ -43,7 +43,8 @@ namespace HotSpringProjectService
             int applyId = regApply.id;
             //加审批
             //--1有多少个管理员、
-            IEnumerable<EmployEmp> emplist = _EmployEmpRepository.GetList().Where(x => x.role_id == 2|| x.role_id==1);
+            IEnumerable<EmployEmp> emplist = _EmployEmpRepository.QueryBySql<EmployEmp>(@"select ee.*  from Employ_Emp ee inner join Employ_Role er on ee.role_id=er.id 
+                            where er.is_leader = 1");
             _regApplyRepository.TransBegin();
             try
             {
@@ -85,26 +86,28 @@ namespace HotSpringProjectService
             List<RegApplyVO> result = list.OrderBy(x => x.id).Skip((filter.page - 1) * filter.limit).Take(filter.limit).ToList();
             return  result==null?ResMessage.Fail():ResMessage.Success(result, count);
         }
-        public List<RegApplyVO> GetListUnion()
-        {
-            IEnumerable<EmployEmp> employEmp = _EmployEmpRepository.GetList();
-            IEnumerable<RegApply> regApply = _regApplyRepository.GetList();
-            IEnumerable<RegApplyVO> list = regApply.Join(employEmp, x => x.apply_id, y => y.id, (x, y) => new RegApplyVO
-            {
-                id = x.id,
-                name = y.name,
-                equip_name = x.equip_name,
-                fac_name = x.fac_name,
-                price = x.price,
-                batch_number = x.batch_number,
-                basic_info = x.basic_info,
-                buy_reason = x.buy_reason,
-                income = x.income,
-                apply_id = x.apply_id,
-                create_time = x.create_time,
-            });
-            return list.ToList();
-        }
+        #region 注释代码
+        //public List<RegApplyVO> GetListUnion()
+        //{
+        //    IEnumerable<EmployEmp> employEmp = _EmployEmpRepository.GetList();
+        //    IEnumerable<RegApply> regApply = _regApplyRepository.GetList();
+        //    IEnumerable<RegApplyVO> list = regApply.Join(employEmp, x => x.apply_id, y => y.id, (x, y) => new RegApplyVO
+        //    {
+        //        id = x.id,
+        //        name = y.name,
+        //        equip_name = x.equip_name,
+        //        fac_name = x.fac_name,
+        //        price = x.price,
+        //        batch_number = x.batch_number,
+        //        basic_info = x.basic_info,
+        //        buy_reason = x.buy_reason,
+        //        income = x.income,
+        //        apply_id = x.apply_id,
+        //        create_time = x.create_time,
+        //    });
+        //    return list.ToList();
+        //}
+        #endregion
         public IEnumerable<RegApplyVO> GetListUnionSql()
         {
             IEnumerable<RegApplyVO> list = _regApplyRepository.QueryBySql<RegApplyVO>($@"SELECT  rb.*,  ee.name, (SELECT COUNT(*) FROM Employ_Emp WHERE role_id = 2) AS count
@@ -141,9 +144,11 @@ namespace HotSpringProjectService
             return list.ToList();
         }
 
-        public RegApply GetModel(int id)
+        public RegApplyVO GetModel(int id)
         {
-            return _regApplyRepository.GetModel(id);
+            RegApplyVO regApplyVO=_regApplyRepository.QueryBySql<RegApplyVO>($@"select rb.*,ee.name from Reg_Buy rb inner join Employ_Emp ee on rb.apply_id=ee.id  where rb.id={id}").FirstOrDefault();
+            return regApplyVO;
+
         }
 
         public bool Update(RegApply regApply)
@@ -152,7 +157,7 @@ namespace HotSpringProjectService
         }
         public bool Check(int RegId, string txtAdvice,int userID)
         {
-            RegAudit regAudit= _regAuditRepository.GetList().ToList().Where(x => x.reg_equip_reaearch_id == RegId && x.recheck_id == userID).FirstOrDefault();
+            RegAudit regAudit= _regAuditRepository.GetList().Where(x => x.reg_equip_reaearch_id == RegId && x.recheck_id == userID).FirstOrDefault();
             regAudit.recheck_opin = 1;
             regAudit.recheck_advice=txtAdvice;
             bool flag = _regAuditRepository.Update(regAudit);
@@ -163,7 +168,8 @@ namespace HotSpringProjectService
             int realCount=realList.Count;
             if (allCount==realCount)
             {
-                IEnumerable<EmployEmp> emplist = _EmployEmpRepository.GetList().ToList().Where(x => x.role_id == 2 ||x.role_id==1);
+                IEnumerable<EmployEmp> emplist = _EmployEmpRepository.QueryBySql<EmployEmp>(@"select ee.*  from Employ_Emp ee inner join Employ_Role er on ee.role_id=er.id 
+                            where er.is_leader = 1");
                 foreach (EmployEmp emp in emplist)
                 {
                     RegVote regVote = new RegVote();

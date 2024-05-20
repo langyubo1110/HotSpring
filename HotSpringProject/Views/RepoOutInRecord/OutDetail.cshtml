@@ -12,6 +12,7 @@
                 <div class="layui-inline">
                     <span>商品名称：</span>
                     <div class="layui-input-inline">
+                        <input type="hidden" id="hdGName" name="goods_name" value="" />
                         <select name="id" lay-verify="required" lay-search="" lay-filter="ddltest">
                             <option value=""></option>
                             @foreach (var item in ViewBag.goodslist)
@@ -95,7 +96,7 @@
         var $ = layui.jquery;
         form.on('select(ddltest)', function (data) {
             var id = data.value;
-            console.log(data.value)
+            console.log(data)
             console.log(data.othis)
             $.post("/repogoodsstock/getmodel", { id: id }, function (res) {
                 form.val("editform", {

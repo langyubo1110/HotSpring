@@ -8,12 +8,10 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="layui-form" action="" lay-filter="dom">
-            @*//申报表ID*@
-            <input type="hidden" name="fault_app_id" value="@ViewBag.id" />
             <div class="layui-form-item">
                 <label class="layui-form-label">设备名称</label>
                 <div class="layui-input-block">
-                    <select name="equ_id" lay-verify="required">
+                    <select name="equ_id" lay-verify="required" disabled>
                         <option value=""></option>
                         @foreach (var item in ViewBag.equipmentNames)
                         {
@@ -26,11 +24,10 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">分析人</label>
                 <div class="layui-input-block">
-                    <select name="analyse_id" lay_search="" lay-verify="required">
-                        @foreach (var item in ViewBag.emList)
-                        {
-                            <option value="@item.id">@item.name</option>
-                        }
+                    <select name="analyse_id" lay_search="" lay-verify="required" disabled>
+                       
+                            <option value="@ViewBag.id">@ViewBag.UserName</option>
+                        
                     </select>
                 </div>
             </div>
@@ -58,8 +55,9 @@
                 var layedit = layui.layedit
                 var layer = layui.layer
                 layedit.build('demo') //建立编辑器
-                var AppId =@ViewBag.id;//申报id
-                var eid=@ViewBag.eid;
+                var AppId =@ViewBag.app_id;//申报id
+                var eid =@ViewBag.eid;
+                console.log(AppId)
                 //提交
                 form.val('dom', {
                      equ_id:eid
@@ -69,6 +67,7 @@
                     data.field.contents = layedit.getContent(1);
                     data.field.fault_app_id = AppId;
                     console.log(data.field);
+
                     //更改设备状态
                     $.post("/faultapp/StopAndAdd", { eid: data.field.equ_id, FaultAnalyse :data.field}, function (res) {
                         if (res.code == 200) {

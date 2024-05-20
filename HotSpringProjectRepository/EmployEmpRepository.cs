@@ -63,6 +63,11 @@ namespace HotSpringProjectRepository
             return _db.EmployEmps.Find(id);
         }
 
+        public IEnumerable<T> QueryBySql<T>(string sql)
+        {
+            return _db.Database.SqlQuery<T>(sql);
+        }
+
         public bool Update(EmployEmp employemp)
         {
             if (employemp != null)
