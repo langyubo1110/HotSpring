@@ -51,12 +51,11 @@
 <!--操作单元格-->
 <script type="text/html" id="barDemo">
     @*<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>*@
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    @*<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>*@
     {{# if(d.show === 1){ }}
     <a class="layui-btn layui-btn-sm btn-report" lay-event="report">故障分析</a>
     {{# } }}
 </script>
-@*auditcount=0都不显示，1/4时显示维修任务上报，4/4时显示故障分析审核*@
 <script type="text/html" id="repair">
     @*<a class="layui-btn layui-btn-xs" lay-event="repairReport">维修任务上报</a>
         <a class="layui-btn layui-btn-xs" lay-event="faultAnalyseAudit">审核</a>*@
@@ -67,9 +66,10 @@
     {{# if (d.end_count==0){ }}
 
     <a class="layui-btn layui-btn-xs" lay-event="faultAnalyseAudit">审核</a>
-    {{#  } }}
+    {{#  }else{ }}
+    <a class="layui-btn layui-btn-xs" lay-event="faultAnalyseRecord">审核记录</a>
     {{# } }}
-
+    {{# } }}
 
     {{# } }}
 </script>
@@ -80,7 +80,7 @@
         var layer = layui.layer;
         var form = layui.form;
         var $ = layui.jquery;
-
+        
         //表格渲染
         table.render({
             elem: '#demo'
@@ -95,7 +95,7 @@
                 , { field: 'fault_time', title: '故障时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
                 , { field: 'create_time', title: '创建时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd") } }
                 , { title: '操作', toolbar: '#barDemo' }
-                , { field: 'count', title: '审核状态', templet: function (d) { return d.auditcount + ' / ' + d.count; } }
+                , { field: 'count', title: '审核状态', templet: function (d) { return d.auditcount + ' / ' + d.count; }}
                 , { title: '维修任务', toolbar: '#repair' }
             ]]
             , parseData: function (res) { //res 即为原始返回的数据
@@ -111,7 +111,8 @@
         //行单击事件
         table.on('tool(test)', function (obj) {
             var data = obj.data;
-            var id = obj.data.id;
+            var id = obj.data.id;//申报id
+            console.log(id)
             var eid = obj.data.equip_id
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
@@ -170,6 +171,14 @@
                         content: '/faultapp/faultAnalyseAudit/' + id
                     })
                 }
+                if (obj.event === 'faultAnalyseRecord') {
+                    layer.open({
+                        title: '审核记录',
+                        type: 2,
+                        area: ['500px', '550px'],
+                        content: '/faultapp/Record/' + id
+                    })
+                }
             }
         });
         table.on('toolbar(test)', function (obj) {
@@ -178,7 +187,7 @@
                     title: '添加',
                     type: 2,
                     area: ['500px', '455px'],
-                    content: '/faultapp/detail/'
+                    content: '/faultapp/detail'
                 })
             }
         })

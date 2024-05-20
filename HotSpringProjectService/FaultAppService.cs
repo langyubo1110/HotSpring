@@ -30,7 +30,7 @@ namespace HotSpringProjectService
         public ResMessage Add(FaultApp faultApp)
         {
             try
-            {  //1,22,25,26
+            {  
                IEnumerable<EmployEmpVO> ilist= _employEmpRepository.GetList().Join(_employRoleRepository.GetList(), x => x.role_id, y => y.id, (x, y) => new EmployEmpVO
                 {
                     id = x.id,
@@ -40,6 +40,7 @@ namespace HotSpringProjectService
 
                //申报表最新ID
                 int[] a =ilist.Select(x => x.id).ToArray();
+                faultApp.create_time= DateTime.Now;
                 int last_id = _faultAppRepository.Add(faultApp);
                 foreach (var item in a)
                 {

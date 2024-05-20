@@ -71,6 +71,15 @@ namespace HotSpringProject.Controllers
             ViewBag.contents=resmessage.data;
             return View();
         }
+        //审核记录
+        public ActionResult Record(int id=0)
+        {
+            if (id > 0)
+            {
+                ViewBag.id = id;
+            }
+            return View();
+        }
         #endregion
         //接口
         #region
