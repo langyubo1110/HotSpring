@@ -59,7 +59,6 @@ namespace HotSpringProject.Controllers
         {
 
             ResMessage result = _dbService.Update(employemp);
-
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult del(int id)

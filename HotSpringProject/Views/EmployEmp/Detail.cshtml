@@ -55,6 +55,7 @@
                             <p id="demoText"></p>
                         </div>
                     </div>
+                    <input type="hidden" id="avatar" name="avatar" value="" />
                     <input type="hidden" name="log_count" value="" />
                     <input type="hidden" name="create_time" value="" />
                     <input type="hidden" name="job_number" value="" />
@@ -87,20 +88,19 @@
         var layer = layui.layer;
         var upload = layui.upload;
         var id =@ViewBag.Id;
-        //$(document).ready(function () {
-        //    checkAvatar();
-        //});
+        $(document).ready(function () {
+            checkAvatar();
+        });
 
         // 检查头像是否为空，若为空则设置默认图片
         function checkAvatar(avatar) {
             if (!avatar) {
                 $("#preview").attr("src", "/assets/Aimg/u=3838113375,3810336988&fm=253&gp=0.jpg");
                 $("#avatar").val("/assets/Aimg/u=3838113375,3810336988&fm=253&gp=0.jpg");
-                console.log(1)
             }
             else {
                 $("#preview").attr("src", `${avatar}`);
-                console.log(avatar)
+                $("#avatar").val(`${avatar}`);
             }
         }
         $.post("/EmployEmp/getEmp", { id: id }, function (res) {
@@ -117,9 +117,8 @@
                 if (res.code == 200) {
                     $("#demo1").attr("src", res.data);
                     $("#avatar").val(res.data);
-                    $("#preview").attr("src", "res.data");
+                    $("#preview").attr("src", `${res.data}`);
                 }
-                console.log(res);
             }
             , error: function () {
                 //演示失败状态，并实现重传
