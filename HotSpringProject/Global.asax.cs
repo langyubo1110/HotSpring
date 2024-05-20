@@ -30,7 +30,7 @@ namespace HotSpringProject
 
             //容器注册
             AutofacRegister();
-            /*GlobalFilters.Filters.Add(new AuthorizationFilter());*///拦截器
+            GlobalFilters.Filters.Add(new AuthorizationFilter());//拦截器
             AutoMapperConfig.Config();
 
             ////BackUpDataBase.Initialize();

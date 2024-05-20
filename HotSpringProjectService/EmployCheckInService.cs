@@ -48,5 +48,11 @@ namespace HotSpringProjectService
             decimal rate = workday/days;
             return rate;
         }
+
+        public ResMessage Verify(int empId)
+        {
+            return _db.Verify(empId) == true ? ResMessage.Success() : ResMessage.Fail();
+
+        }
     }
 }

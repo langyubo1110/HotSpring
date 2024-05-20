@@ -1,4 +1,5 @@
 ﻿using DotNet.Utilities;
+using HotSpringProject.Entity;
 using HotSpringProjectService.Interface;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,20 @@ namespace HotSpringProject.Controllers
         public JsonResult Insert()
         {
             int type = Convert.ToInt32(Request.QueryString["selectedValue"]);
-            int empId = 1;
-            ResMessage res = _db.Add(empId, type);
-            return Json(res, JsonRequestBehavior.AllowGet);
+            EmployEmp employEmp = (EmployEmp)Session["User"];
+            int empId = employEmp.id;
+            ResMessage res = _db.Verify(empId);
+            if (res.code==200)
+            {
+                return Json(ResMessage.Success("请勿重复签到"), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                ResMessage res1 = _db.Add(empId, type);
+                return Json(res1, JsonRequestBehavior.AllowGet);
+
+            }
+
         }
     }
 }

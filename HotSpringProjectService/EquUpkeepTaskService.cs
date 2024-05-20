@@ -80,14 +80,17 @@ inner join Employ_Emp o on o.id=s.exec_id");
                 {
                     _upkeepTaskRepository.execBySql($"update Equ_Upkeep_Task set exec_id={data[0].emp_Id} where equ_id={item} and equ_plan_id={i}");
                 }
+            }
+            foreach (var item in equid)
+            {
                 EmployMessage message = new EmployMessage
                 {
                     sender_id = 40,
-                         link = "/employtasks/upkeeptasks",
-                    recipients_id= data[0].emp_Id,
-                    send_time=DateTime.Now,
-                    create_time=DateTime.Now,
-                    part="您有新的保养任务请前往查看"
+                    link = "/employtasks/upkeeptasks",
+                    recipients_id = data[0].emp_Id,
+                    send_time = DateTime.Now,
+                    create_time = DateTime.Now,
+                    part = "您有新的保养任务请前往查看"
 
                 };
                 list.Add(message);
