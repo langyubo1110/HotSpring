@@ -93,7 +93,7 @@
         var $ = layui.jquery;
         form.on('select(ddltest)', function (data) {
             var id = data.value;
-            console.log(data.value)
+            console.log(data)
             console.log(data.othis)
             $.post("/repogoodsstock/getmodel", { id: id }, function (res) {
                 form.val("editform", {

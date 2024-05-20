@@ -1,5 +1,6 @@
 ﻿using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
 using HotSpringProjectService;
 using HotSpringProjectService.Interface;
 using System;
@@ -36,7 +37,9 @@ namespace HotSpringProject.Controllers
             List<EmployEmp> list=_employEmpService.GetList().ToList();
             ViewBag.Id = id;
             ViewBag.list = list;
-
+            EmployEmp employEmp = (EmployEmp)Session["User"];
+            ViewBag.userId = employEmp.id;
+            ViewBag.userName=employEmp.name;
             return View();
         }
         //立案申请  主页
@@ -60,7 +63,7 @@ namespace HotSpringProject.Controllers
             {
                 return Json(new { code = 500, message = "主键不能为空" });
             }
-            RegApply regApply = _regApplyService.GetModel(id);
+            RegApplyVO regApply = _regApplyService.GetModel(id);
             if (regApply == null)
             {
                 return Json(new { code = 500, message = "通过该主键获取的实体为空" });

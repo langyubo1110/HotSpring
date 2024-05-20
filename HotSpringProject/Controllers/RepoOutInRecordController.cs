@@ -78,7 +78,9 @@ namespace HotSpringProject.Controllers
         }
         public JsonResult Add(RepoGoodsStockDTO repoGoodsStockDTO)
         {
-            ResMessage resMessage = _repoOutInRecordService.Add(repoGoodsStockDTO);
+            EmployEmp user = (EmployEmp)Session["User"];
+            int userId = user.id;
+            ResMessage resMessage = _repoOutInRecordService.Add(repoGoodsStockDTO,userId);
             return Json(resMessage);
         }
         public JsonResult Update(RepoOutInRecord repoGoodsStock)
