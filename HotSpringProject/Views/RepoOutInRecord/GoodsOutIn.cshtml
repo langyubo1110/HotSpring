@@ -144,7 +144,11 @@
             //表格重载 where 再加一个参数name
             console.log(data)
             table.reload('demo', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                },
                 where: {
+                    
                     goods_name: data.field.txtSGoodsName,
                     oi_name: data.field.txtSName,
                     r_name: data.field.txtSRName

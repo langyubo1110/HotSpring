@@ -16,7 +16,7 @@ using System.Web.UI.WebControls;
 using AutoMapper;
 namespace HotSpringProjectService
 {
-    public class RepoOutInRecordService:IRepoOutInRecordService
+    public class RepoOutInRecordService : IRepoOutInRecordService
     {
         private readonly IRepoOutInRecordRepository _repoOutInRecordRepository;
         private readonly IRepoGoodsStockRepository _repoGoodsStockRepository;
@@ -24,11 +24,11 @@ namespace HotSpringProjectService
         private readonly IEmployEmpRepository _employEmpRepository;
         private readonly IEmployMessageRepository _employMessageRepository;
 
-        public RepoOutInRecordService(IRepoOutInRecordRepository repoOutInRecordRepository,IRepoGoodsStockRepository repoGoodsStockRepository,IRepoBuyRepository repoBuyRepository,IEmployEmpRepository employEmpRepository,IEmployMessageRepository employMessageRepository) 
+        public RepoOutInRecordService(IRepoOutInRecordRepository repoOutInRecordRepository, IRepoGoodsStockRepository repoGoodsStockRepository, IRepoBuyRepository repoBuyRepository, IEmployEmpRepository employEmpRepository, IEmployMessageRepository employMessageRepository)
         {
-            _repoOutInRecordRepository=repoOutInRecordRepository;
-            _repoGoodsStockRepository=repoGoodsStockRepository;
-            _repoBuyRepository=repoBuyRepository;
+            _repoOutInRecordRepository = repoOutInRecordRepository;
+            _repoGoodsStockRepository = repoGoodsStockRepository;
+            _repoBuyRepository = repoBuyRepository;
             _employEmpRepository = employEmpRepository;
             _employMessageRepository = employMessageRepository;
         }
@@ -37,26 +37,29 @@ namespace HotSpringProjectService
         //入库商品库存表如果没有该商品,则添加一条数据
         //出库商品采购表不操作
         //入库商品采购表添加一条数据
-        public ResMessage Add(RepoGoodsStockDTO repoGoodsStockDTO,int userId)
+        public ResMessage Add(RepoGoodsStockDTO repoGoodsStockDTO, int userId)
         {
-            int endNumber = repoGoodsStockDTO.goods_number - repoGoodsStockDTO.oi_number;
-            if (Convert.ToInt32(repoGoodsStockDTO.threshold) >= endNumber)
+            if (repoGoodsStockDTO.type == 1)//出库时阈值判断
             {
-                List<EmployMessage> msgList = new List<EmployMessage>();
-                List<EmployEmp> people = _employEmpRepository.GetList().Where(x => x.role_id == 30).ToList();
-                string goods_name = _repoGoodsStockRepository.GetModel(repoGoodsStockDTO.id).goods_name;
-                foreach (EmployEmp employEmp in people)
+                int endNumber = repoGoodsStockDTO.goods_number - repoGoodsStockDTO.oi_number;
+                if (Convert.ToInt32(repoGoodsStockDTO.threshold) >= endNumber)
                 {
-                    EmployMessage message = new EmployMessage();
-                    message.part = $"{goods_name}数量低于阈值";
-                    message.send_time = DateTime.Now;
-                    message.create_time = DateTime.Now;
-                    message.sender_id = userId;
-                    message.link = "abcde";
-                    message.recipients_id = employEmp.id;
-                    msgList.Add(message);
+                    List<EmployMessage> msgList = new List<EmployMessage>();
+                    List<EmployEmp> people = _employEmpRepository.GetList().Where(x => x.role_id == 30).ToList();
+                    string goods_name = _repoGoodsStockRepository.GetModel(repoGoodsStockDTO.id).goods_name;
+                    foreach (EmployEmp employEmp in people)
+                    {
+                        EmployMessage message = new EmployMessage();
+                        message.part = $"{goods_name}数量低于阈值";
+                        message.send_time = DateTime.Now;
+                        message.create_time = DateTime.Now;
+                        message.sender_id = userId;
+                        message.link = "abcde";
+                        message.recipients_id = employEmp.id;
+                        msgList.Add(message);
+                    }
+                    int flag = _employMessageRepository.AddRange(msgList);
                 }
-                int flag = _employMessageRepository.AddRange(msgList);
             }
             //使用EF事务，保证原子性
             _repoOutInRecordRepository.TransBegin();
@@ -64,7 +67,7 @@ namespace HotSpringProjectService
             {
                 //商品库存表最新插入的数据的ID
                 //默认为0,插入时赋值
-                int last_id=0;
+                int last_id = 0;
                 //创建商品出入库表实体
                 RepoOutInRecord repoOutInRecord = new RepoOutInRecord();
                 //出库
@@ -91,7 +94,7 @@ namespace HotSpringProjectService
                     RepoBuy repoBuy = new RepoBuy();
                     //如果为入库商品库存表判断商品是否存在
                     //1.存在,更新
-                    if (repoGoodsStockDTO.id !=0)
+                    if (repoGoodsStockDTO.id != 0)
                     {
                         RepoGoodsStock repoGoodsStock = _repoGoodsStockRepository.GetModel(repoGoodsStockDTO.id);
                         repoGoodsStock.threshold = repoGoodsStockDTO.threshold;
@@ -109,14 +112,14 @@ namespace HotSpringProjectService
                     else
                     {
                         RepoGoodsStock repoGoodsStock = new RepoGoodsStock();
-                        repoGoodsStock.goods_name= repoGoodsStockDTO.goods_name;
-                        repoGoodsStock.goods_number= repoGoodsStockDTO.oi_number;
+                        repoGoodsStock.goods_name = repoGoodsStockDTO.goods_name;
+                        repoGoodsStock.goods_number = repoGoodsStockDTO.oi_number;
                         repoGoodsStock.create_time = DateTime.Now;
                         repoGoodsStock.update_time = DateTime.Now;
                         repoGoodsStock.imgurl = repoGoodsStockDTO.imgurl;
-                        repoGoodsStock.threshold= repoGoodsStockDTO.threshold;
-                        repoGoodsStock.factory= repoGoodsStockDTO.factory;
-                        repoGoodsStock.goods_type= repoGoodsStockDTO.goods_type;
+                        repoGoodsStock.threshold = repoGoodsStockDTO.threshold;
+                        repoGoodsStock.factory = repoGoodsStockDTO.factory;
+                        repoGoodsStock.goods_type = repoGoodsStockDTO.goods_type;
                         _repoGoodsStockRepository.Add(repoGoodsStock);
                         last_id = repoGoodsStock.id;
                         //库存表插入
@@ -164,7 +167,7 @@ namespace HotSpringProjectService
         {
             List<RepoOutInRecord> list = _repoOutInRecordRepository.GetList().ToList();
             int count = list.Count;
-            return list != null ? ResMessage.Success(list,count) : ResMessage.Fail();
+            return list != null ? ResMessage.Success(list, count) : ResMessage.Fail();
         }
         //此方法为获取使用备件列表的方法
         //通过上报人id和当前时间的日期从出入库表中得到符合条件的数据，取goods_id
@@ -203,8 +206,8 @@ namespace HotSpringProjectService
                 return result != null ? ResMessage.Success(result, count) : ResMessage.Fail();
             }
             else
-            { 
-                return ResMessage.Fail(); 
+            {
+                return ResMessage.Fail();
             }
         }
         public ResMessage GetModel(int id)
@@ -225,13 +228,13 @@ namespace HotSpringProjectService
         {
             repoOutInRecord.create_time = DateTime.Now;
             bool result = _repoOutInRecordRepository.Update(repoOutInRecord);
-            return result==true? ResMessage.Success("修改成功"):ResMessage.Fail();
+            return result == true ? ResMessage.Success("修改成功") : ResMessage.Fail();
         }
 
         //三表联合数据
-        public ResMessage GetListBySql(int? page,int? limit,RepoOutInRecordFilter filter)
+        public ResMessage GetListBySql(int? page, int? limit, RepoOutInRecordFilter filter)
         {
-            if (page != null && limit != null) 
+            if (page != null && limit != null)
             {
                 int ipage = (int)page;//将可空整形转为不可空整形
                 int ilimit = (int)limit;
@@ -247,6 +250,7 @@ namespace HotSpringProjectService
                 {
                     list = list.Where(x => x.oi_name.Contains(filter.oi_name)).ToList();
                 }
+                //接收人搜索
                 if (!string.IsNullOrEmpty(filter.r_name))
                 {
                     list = list.Where(x => x.r_name.Contains(filter.r_name)).ToList();
@@ -266,7 +270,7 @@ namespace HotSpringProjectService
             string filepath = path + "/" + filernmae;
             filer.SaveAs(filepath);
             string imgurl = "/assets/goods/images/" + filernmae;
-            return ResMessage.Success(data:imgurl);
+            return ResMessage.Success(data: imgurl);
         }
     }
 }
