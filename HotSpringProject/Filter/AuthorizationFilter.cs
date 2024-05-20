@@ -16,7 +16,7 @@ namespace HotSpringProject.Filter
             string requestedAction = filterContext.ActionDescriptor.ActionName;
             string requestedPage = $"/{username}/{requestedAction}";
             EmployEmp employEmp = (EmployEmp)HttpContext.Current.Session["User"];
-            if (requestedPage == "/Default/Login" || requestedPage == "/Default/Loginverify")
+            if (requestedPage == "/Default/Login" || requestedPage == "/Default/Loginverify"|| requestedPage == "/EquUpkeepTask/upkeeptask")
             {
                 return;
             }
