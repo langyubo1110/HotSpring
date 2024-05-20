@@ -14,5 +14,6 @@ namespace HotSpringProjectRepository.Interface
         bool Add(EmployAllsalary employAllsalary);
         EmployAllsalary GetModel(int id);
         IEnumerable<EmployAllsalary> GetList();
+        IEnumerable<T> QueryBySql<T>(string sql);
     }
 }

@@ -10,6 +10,7 @@ namespace HotSpringProject.Entity.VO
     {
         public int id { get; set; }
         public int? reg_buy_id { get; set; }
+        
         public string prod_name { get; set; }
         public string fac_name { get; set; }
         public decimal price { get; set; }

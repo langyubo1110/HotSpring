@@ -16,6 +16,8 @@
     <link href="/assets/hplus/css/animate.css" rel="stylesheet" />
     <link href="/assets/hplus/css/style.css" rel="stylesheet" />
     <link href="/assets/hplus/css/jquery.contextMenu.min.css" rel="stylesheet" />
+    <link href="~/assets/layui/css/layui.css" rel="stylesheet" />
+    <script src="/assets/layui/layui.js"></script>
 </head>
 
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow: hidden;">
@@ -49,7 +51,7 @@
                         @foreach (var item in Model)
                         {
                             <li>
-                                <a class="J_menuItem"><i class="fa fa-magic"></i> <span class="nav-label">@item.module_name</span></a>
+                                <a class="J_menuItem"><i class="layui-icon @item.icon"></i> <span class="nav-label">@item.module_name</span></a>
                                 <ul class="nav nav-second-level">
                                     @foreach (var p in item.page_list)
                                     {

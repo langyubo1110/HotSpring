@@ -16,6 +16,11 @@ namespace HotSpringProject.Entity.VO
         public decimal salary { get; set; }
         public decimal perform_money { get; set; }
         public DateTime create_time { get; set; }
+        //员工姓名
         public string name { get; set; }
+        //职位
+        public string role { get; set; }
+        //出勤天数
+        public int? workdays { get; set; }
     }
 }

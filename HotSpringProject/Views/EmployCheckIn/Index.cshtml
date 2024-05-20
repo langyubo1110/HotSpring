@@ -46,11 +46,7 @@
                     if (res.code === 200) {
                         $('#checkInBtn').hide();
                         $('#resultContainer').removeClass('layui-hide');
-                        $('#resultLabel').text('您已成功签到！');
-                        // 设置定时器，10秒后返回主页
-                        setTimeout(function () {
-                            window.location.href = 'Default/index'; // 修改为返回主页的地址
-                        }, 5000);
+                        layer.msg(res.msg);
                     } else {
                         layer.msg('签到失败：' + res.msg, { icon: 2 });
                     }

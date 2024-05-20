@@ -75,7 +75,7 @@
 <!--js模板  表头组件-->
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <input type="button" class="layui-btn layui-btn-sm" lay-event="selectdown" value="批量下载">
+        <input type="button" class="layui-btn layui-btn-sm" lay-event="selectdown" value="设备信息批量下载">
     </div>
 </script>
 
@@ -248,48 +248,12 @@
             //单个下载
             else if (obj.event == "download") {
                 console.log(obj.data)
-                let data = obj.data
-                data.create_time = util.toDateString(data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                data.usedtime = util.toDateString(data.usedtime.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                //$.post("/equipment/downloading", { data: data }, function (res) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/equipment/downloading', true);
-                    xhr.setRequestHeader('Content-Type', 'application/json');
-                    xhr.responseType = 'blob';
-
-                    xhr.onload = function () {
-                        if (xhr.status === 200) {
-                            var blob = xhr.response;
-
-                            // 创建一个 URL 对象
-                            var url = window.URL.createObjectURL(blob);
-
-                            // 创建一个隐藏的<a>元素
-                            var downloadLink = document.createElement('a');
-                            downloadLink.href = url;
-                            downloadLink.download = `${data.id}.txt`;
-
-                            // 将<a>元素添加到页面中
-                            document.body.appendChild(downloadLink);
-
-                            // 模拟点击下载链接
-                            downloadLink.click();
-
-                            // 下载完成后释放 URL 对象
-                            window.URL.revokeObjectURL(url);
-
-                            // 移除<a>元素
-                            document.body.removeChild(downloadLink);
-                        } else {
-                            console.error('下载文件失败');
-                        }
-                    };
-
-                    xhr.onerror = function () {
-                        console.error('下载文件时发生错误');
-                    };
-                    xhr.send(JSON.stringify(data));
-                //})
+                //弹出弹窗
+                layer.open({
+                    type: 2,
+                    content: '/equipment/filedownload/' + obj.data.id,
+                    area: ['700px', '551px'],
+                });
             }
             //保养信息
             else if (obj.event == "upkeep") {
@@ -347,6 +311,6 @@
 
 <style>
    #d{
-       height:578px
+       height:636px
    }
 </style>
