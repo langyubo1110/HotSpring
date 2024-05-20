@@ -63,5 +63,18 @@ namespace HotSpringProjectService
             }
             return ResMessage.Success();
         }
+        //获取审核记录
+        public ResMessage GetRecord(int id)
+        {
+            //接收的id为申报id
+            IEnumerable<FaultAnalyse> ilist = _faultAnalyseRepository.GetList().Where(x => x.fault_app_id==id & x.final_scheme==1);
+            List<FaultAnalyseVO> list = ilist.Join(_employEmpRepository.GetList(),x=>x.fault_app_id,y=>y.id,(x,y)=>new FaultAnalyseVO
+            {
+                auditor= x.auditor,
+                analyse_name=y.name,
+                contents=x.contents
+            }).ToList();
+            return list != null ? ResMessage.Success(list) : ResMessage.Fail();
+        }
     }
 }

@@ -17,10 +17,14 @@ namespace HotSpringProjectService
     {
         private readonly IRepoGoodsStockRepository _repoGoodsStockRepository;
         private readonly IRepoOutInRecordRepository _repoOutInRecordRepository;
+        private readonly IEmployMessageRepository _employMessageRepository;
+        private readonly IEmployEmpRepository _employEmpRepository;
 
-        public RepoGoodsStockService(IRepoGoodsStockRepository repo_Goods_StockRepository,IRepoOutInRecordRepository repoOutInRecordRepository) {
+        public RepoGoodsStockService(IRepoGoodsStockRepository repo_Goods_StockRepository,IRepoOutInRecordRepository repoOutInRecordRepository,IEmployMessageRepository employMessageRepository,IEmployEmpRepository employEmpRepository) {
             _repoGoodsStockRepository = repo_Goods_StockRepository;
             _repoOutInRecordRepository=repoOutInRecordRepository;
+            _employMessageRepository = employMessageRepository;
+            _employEmpRepository = employEmpRepository;
         }
 
         public ResMessage Add(RepoGoodsStock repoGoodsStock)
@@ -66,6 +70,7 @@ namespace HotSpringProjectService
 
         public ResMessage Update(RepoGoodsStock repoGoodsStock)
         {
+            
             repoGoodsStock.update_time = DateTime.Now;
             bool result = _repoGoodsStockRepository.Update(repoGoodsStock);
             return result==true? ResMessage.Success("修改成功"):ResMessage.Fail();

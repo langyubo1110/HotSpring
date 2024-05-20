@@ -56,5 +56,27 @@ namespace HotSpringProjectService
             }
 
         }
+        
+        public ResMessage AddWithRoleId(int roleId)
+        {
+            List<EmployEmp> employ = _dbEmp.GetList().Where(x => x.role_id == roleId).ToList();//所有仓管人员
+            List<EmployMessage> msgList=new List<EmployMessage>();
+           foreach(EmployEmp item in employ)
+            {
+                EmployMessage msg = new EmployMessage();
+                msg.recipients_id = item.id;
+                msg.sender_id = 1;
+                msg.create_time = DateTime.Now;
+                msg.send_time = DateTime.Now;
+                msg.link = "abcde";
+                msg.part = "xx商品低于阈值";
+                msgList.Add(msg);
+            }
+
+            int flag = _EmployMessageRepository.AddRange(msgList);
+            return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
+
+
+        }
     }
 }

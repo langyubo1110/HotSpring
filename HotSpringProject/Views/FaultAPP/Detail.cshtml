@@ -10,7 +10,7 @@
             <div class="layui-form-item">
                 <div class="layui-inline">
                     <input type="hidden" name="id" value="0" />
-                    @*<label class="layui-form-label">设备名称</label>*@
+                    <label class="layui-form-label">设备名称</label>
                     <div class="layui-input-inline">
                         <select name="equip_id">
                             @foreach (var item in ViewBag.equipmentNames)
@@ -27,7 +27,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">申报人</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="fault_report"value="@ViewBag.UserName" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                        <input type="text" name="fault_report"value="@ViewBag.UserName" lay-verify="required" autocomplete="off" class="layui-input demo-phone layui-disabled"  readonly="readonly">
                     </div>
                 </div>
             </div>
@@ -44,14 +44,6 @@
                     <label class="layui-form-label">故障时间</label>
                     <div class="layui-input-inline">
                         <input type="text" name="fault_time" id="faulttime"placeholder="yyyy-MM-dd" lay-verify="required|date" autocomplete="off" class="layui-input demo-phone">
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">创建时间</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="create_time" id="time" placeholder="yyyy-MM-dd"  lay-verify="required|date" autocomplete="off" class="layui-input demo-phone" >
                     </div>
                 </div>
             </div>
@@ -81,25 +73,21 @@
         var util = layui.util;
         var $ = layui.jquery;
         var laydate = layui.laydate;
+       
         laydate.render({
             elem: '#faulttime' 
         });
-        //$.post("/faultapp/getmodel", { id: id }, function (res) {
-        //    if (res.code == 200) {
-        //        res.data.create_time = util.toDateString(res.data.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
-        //        res.data.fault_time = util.toDateString(res.data.fault_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd");
-        //        form.val('editform', res.data);
-        //    }
-        //})
-        var currentDate = new Date();
-        var year = currentDate.getFullYear();
-        var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
-        var day = ('0' + currentDate.getDate()).slice(-2);
-        var formattedCurrentDate = year + '-' + month + '-' + day;
-        // 将当前日期填充到创建时间输入框中
-        document.getElementById('time').value = formattedCurrentDate;
+       
+            var currentDate = new Date();
+            var year = currentDate.getFullYear();
+            var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+            var day = ('0' + currentDate.getDate()).slice(-2);
+            var formattedCurrentDate = year + '-' + month + '-' + day;
+            // 将当前日期填充到创建时间输入框中
+        document.getElementById('faulttime').value = formattedCurrentDate;
+       
         form.on('submit(demo1)', function (data) {
-                
+                console.log(1)
                 $.post("/faultapp/add", { faultapp: data.field }, function (res) {
                     console.log(res)
                     if (res.code == 200)
@@ -110,18 +98,6 @@
                         parent.layer.close(index);
                     }
                 })
-            //{
-            //    $.post("/faultapp/update", { faultapp: data.field }, function (res) {
-            //        console.log(res)
-            //        if (res.code == 200) {
-            //            //找到父页面的自己  拿到index 让父页面关掉自己
-            //            var index = parent.layer.getFrameIndex(window.name);
-            //            parent.layer.close(index);
-            //            parent.layui.table.reload("demo");//子窗体让父窗体table重载
-            //            parent.layer.msg(res.msg)
-            //        }
-            //    })
-            //}
             return false;
         })
     })

@@ -26,27 +26,26 @@ namespace HotSpringProject.Job
         private static void ConfigureScheduledJobs()
         {
             // 创建 JobDetail
-            IJobDetail DataBasejobDetail = JobBuilder.Create<SalaryPostJob>()
+            IJobDetail salaryjobDetail = JobBuilder.Create<SalaryPostJob>()
                                              .WithIdentity("SalaryPostJob")
                                              .Build();
 
             // 创建触发器
-            ITrigger DataBasetrigger = TriggerBuilder.Create()
+            ITrigger salarytrigger = TriggerBuilder.Create()
                                              .WithIdentity("myTrigger")
-                                             .WithSimpleSchedule(x => x.WithIntervalInHours(24).RepeatForever())//设置触发频率为每24小时
                                              .WithCronSchedule("0 0 0 1 * *")//每月1号0点执行
                                              .Build();
 
-            ScheduleJob(DataBasejobDetail, DataBasetrigger);
+            ScheduleJob(salaryjobDetail, salarytrigger);
         }
 
-        private static void ScheduleJob(IJobDetail DataBasejobDetail, ITrigger DataBasetrigger)
+        private static void ScheduleJob(IJobDetail salaryjobDetail, ITrigger salarytrigger)
         {
             if (_scheduler == null)
             {
                 throw new InvalidOperationException("Scheduler has not been started. Call Initialize method first.");
             }
-            _scheduler.ScheduleJob(DataBasejobDetail, DataBasetrigger).Wait();
+            _scheduler.ScheduleJob(salaryjobDetail, salarytrigger).Wait();
         }
     }
 }

@@ -21,20 +21,43 @@ namespace HotSpringProjectService
         private readonly IRepoOutInRecordRepository _repoOutInRecordRepository;
         private readonly IRepoGoodsStockRepository _repoGoodsStockRepository;
         private readonly IRepoBuyRepository _repoBuyRepository;
+        private readonly IEmployEmpRepository _employEmpRepository;
+        private readonly IEmployMessageRepository _employMessageRepository;
 
-        public RepoOutInRecordService(IRepoOutInRecordRepository repoOutInRecordRepository,IRepoGoodsStockRepository repoGoodsStockRepository,IRepoBuyRepository repoBuyRepository) 
+        public RepoOutInRecordService(IRepoOutInRecordRepository repoOutInRecordRepository,IRepoGoodsStockRepository repoGoodsStockRepository,IRepoBuyRepository repoBuyRepository,IEmployEmpRepository employEmpRepository,IEmployMessageRepository employMessageRepository) 
         {
             _repoOutInRecordRepository=repoOutInRecordRepository;
             _repoGoodsStockRepository=repoGoodsStockRepository;
             _repoBuyRepository=repoBuyRepository;
+            _employEmpRepository = employEmpRepository;
+            _employMessageRepository = employMessageRepository;
         }
         //商品出入库表添加
         //出库商品库存表更新
         //入库商品库存表如果没有该商品,则添加一条数据
         //出库商品采购表不操作
         //入库商品采购表添加一条数据
-        public ResMessage Add(RepoGoodsStockDTO repoGoodsStockDTO)
+        public ResMessage Add(RepoGoodsStockDTO repoGoodsStockDTO,int userId)
         {
+            int endNumber = repoGoodsStockDTO.goods_number - repoGoodsStockDTO.oi_number;
+            if (Convert.ToInt32(repoGoodsStockDTO.threshold) >= endNumber)
+            {
+                List<EmployMessage> msgList = new List<EmployMessage>();
+                List<EmployEmp> people = _employEmpRepository.GetList().Where(x => x.role_id == 30).ToList();
+                string goods_name = _repoGoodsStockRepository.GetModel(repoGoodsStockDTO.id).goods_name;
+                foreach (EmployEmp employEmp in people)
+                {
+                    EmployMessage message = new EmployMessage();
+                    message.part = $"{goods_name}数量低于阈值";
+                    message.send_time = DateTime.Now;
+                    message.create_time = DateTime.Now;
+                    message.sender_id = userId;
+                    message.link = "abcde";
+                    message.recipients_id = employEmp.id;
+                    msgList.Add(message);
+                }
+                int flag = _employMessageRepository.AddRange(msgList);
+            }
             //使用EF事务，保证原子性
             _repoOutInRecordRepository.TransBegin();
             try
