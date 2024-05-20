@@ -86,17 +86,11 @@ inner join Employ_Emp o on o.id=s.exec_id");
                 EmployMessage message = new EmployMessage
                 {
                     sender_id = 49,
-                         link = "/employtasks/upkeeptasks",
+                    link = "/employtasks/upkeeptasks",
                     recipients_id= data[0].emp_Id,
                     send_time=DateTime.Now,
                     create_time=DateTime.Now,
-                    part="您有新的保养任务请前往查看"
-                    sender_id = 40,
-                    link = "/employtasks/upkeeptasks",
-                    recipients_id = data[0].emp_Id,
-                    send_time = DateTime.Now,
-                    create_time = DateTime.Now,
-                    part = "您有新的保养任务请前往查看"
+                    part="您有新的保养任务请前往查看",
 
                 };
                 list.Add(message);
