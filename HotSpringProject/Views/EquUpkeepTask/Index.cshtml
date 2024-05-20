@@ -45,7 +45,7 @@
         //1.渲染实例
         table.render({
             elem: '#demo'
-            , height: 500
+            , height: 550
             , width: 1220
             , url: '/equupkeeptask/Query' //数据接口
             , id: 'idTest'
@@ -58,7 +58,7 @@
             }
             , page: {
                 page: 1,
-                limit: 5
+                limit: 10
             }//开启分页
             , toolbar: "#toolbarDemo"
             , cols: [[ //表头
@@ -127,7 +127,7 @@
             layer.open({
                 type: 2,
                 content: '/equupkeeptask/QRimg/' + id,
-                area: ['450px', '500px'],
+                area: ['500px', '540px'],
                 //layer层销
                 end: function () {
                    
