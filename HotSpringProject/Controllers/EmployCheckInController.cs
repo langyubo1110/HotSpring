@@ -41,6 +41,7 @@ namespace HotSpringProject.Controllers
             else
             {
                 ResMessage res1 = _db.Add(empId, type);
+                ViewBag.IsSignedIn = (res1.code == 200);
                 return Json(res1, JsonRequestBehavior.AllowGet);
 
             }
