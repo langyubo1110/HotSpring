@@ -15,5 +15,7 @@ namespace HotSpringProject.Entity
         public int check_event { get; set; }
         public int work_type { get; set; }
         public DateTime? create_time { get; set; }
+        [NotMapped]
+        public int status { get; set; }
     }
 }

@@ -23,7 +23,10 @@
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button id="checkInBtn" class="layui-btn" lay-submit lay-filter="checkIn">上班签到</button>
+                            @if (!ViewBag.IsSignedIn)
+                            {
+                        <button id="checkInBtn" class="layui-btn" lay-submit lay-filter="checkIn">上班签到</button>
+                            }
                         </div>
                     </div>
                 </form>
