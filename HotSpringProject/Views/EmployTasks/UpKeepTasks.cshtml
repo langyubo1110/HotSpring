@@ -25,7 +25,7 @@
                     <div class="row">
                     </div>
                     <div class="layui-card-body">
-                        <table id="demo" lay-filter="test"></table>
+                        <table id="demo2" lay-filter="test"></table>
                     </div>
                     <div class="layui-card-body">
                         <span>保养任务历史记录</span>
@@ -46,7 +46,7 @@
             var layer = layui.layer;
             var laytpl = layui.laytpl;
             table.render({
-                elem: '#demo'
+                elem: '#demo2'
                 , url: '/EmployTasks/UpKeep'
                 , response: {
                     statusName: 'code' //规定数据状态的字段名称，默认：code
@@ -59,11 +59,6 @@
                     { field: 'people_name', title: '执行人姓名' }
                     , { field: 'name', title: '设备名称' }
                     , {
-                        field: 'interval', title: '间隔', templet: function (d) {
-                            return d.interval + "天"
-                        }
-                    }
-                    , {
                         field: 'importance', title: '重要性', templet: function (d) {
                             return d.importance === 0 ? '重要' : '超级重要';
                         }
@@ -75,7 +70,6 @@
                     }
                     , { field: 'task_name', title: '保养任务名称' }
                     , { field: 'task_info', title: '保养任务细节' }
-                    , { field: 'task_name', title: '保养任务名称' }
                     , {
                         field: 'status', title: '任务状态', templet: function (d) {
                             return d.status === 1 ? '已完成' : '未完成';
@@ -120,15 +114,9 @@
                 , countName: 'count' //规定数据总数的字段名称，默认：count
                 , dataName: 'data' //规定数据列表的字段名称，默认：data
             }
-            , toolbar: '#toolbarDemo'
             , cols: [[
                 { field: 'people_name', title: '执行人姓名' }
                 , { field: 'name', title: '设备名称' }
-                , {
-                    field: 'interval', title: '间隔', templet: function (d) {
-                        return d.interval + "天"
-                    }
-                }
                 , {
                     field: 'importance', title: '重要性', templet: function (d) {
                         return d.importance === 0 ? '重要' : '超级重要';
@@ -141,7 +129,6 @@
                 }
                 , { field: 'task_name', title: '保养任务名称' }
                 , { field: 'task_info', title: '保养任务细节' }
-                , { field: 'task_name', title: '保养任务名称' }
                 , {
                     field: 'status', title: '任务状态', templet: function (d) {
                         return d.status === 1 ? '已完成' : '未完成';
