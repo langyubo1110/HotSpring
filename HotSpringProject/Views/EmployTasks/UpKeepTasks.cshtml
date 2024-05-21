@@ -27,6 +27,10 @@
                     <div class="layui-card-body">
                         <table id="demo" lay-filter="test"></table>
                     </div>
+                    <div class="layui-card-body">
+                        <span>保养任务历史记录</span>
+                        <table id="demo1" lay-filter="test"></table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -35,7 +39,7 @@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">二维码</a>
 </script>
-    <script>
+<script>
         layui.use(['table', 'util', "layer", "laytpl"], function () {
             var table = layui.table;
             var util = layui.util;
@@ -65,9 +69,13 @@
                             return d.importance === 0 ? '重要' : '超级重要';
                         }
                     }
+                    , {
+                        field: 'upkeep_time', title: '保养生成时间', templet: function (d) {
+                            return util.toDateString(d.upkeep_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                        }
+                    }
                     , { field: 'task_name', title: '保养任务名称' }
                     , { field: 'task_info', title: '保养任务细节' }
-                    , { field: 'task_name', title: '保养任务名称' }
                     , {
                         field: 'status', title: '任务状态', templet: function (d) {
                             return d.status === 1 ? '已完成' : '未完成';
@@ -88,7 +96,7 @@
                     layer.open({
                         type: 2,
                         title: '详细信息',
-                        content: "/EmployTasks/QRimg/" + id,
+                        content: `/EmployTasks/QRimg?planid=${id}&&equid=${equid}`,
                         area: ['480px', '500px']
                     });
                 }
@@ -96,4 +104,51 @@
         })
 
     </script>
+<script>
+    layui.use(['table', 'util', "layer", "laytpl"], function () {
+        var table = layui.table;
+        var util = layui.util;
+        var layer = layui.layer;
+        var laytpl = layui.laytpl;
+        table.render({
+            elem: '#demo1'
+            , url: '/EmployTasks/UpKeepHistory'
+            , response: {
+                statusName: 'code' //规定数据状态的字段名称，默认：code
+                , statusCode: 200 //规定成功的状态码，默认：0
+                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                , countName: 'count' //规定数据总数的字段名称，默认：count
+                , dataName: 'data' //规定数据列表的字段名称，默认：data
+            }
+            , toolbar: '#toolbarDemo'
+            , cols: [[
+                { field: 'people_name', title: '执行人姓名' }
+                , { field: 'name', title: '设备名称' }
+                , {
+                    field: 'interval', title: '间隔', templet: function (d) {
+                        return d.interval + "天"
+                    }
+                }
+                , {
+                    field: 'importance', title: '重要性', templet: function (d) {
+                        return d.importance === 0 ? '重要' : '超级重要';
+                    }
+                }
+                , {
+                    field: 'upkeep_time', title: '保养生成时间', templet: function (d) {
+                        return util.toDateString(d.upkeep_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    }
+                }
+                , { field: 'task_name', title: '保养任务名称' }
+                , { field: 'task_info', title: '保养任务细节' }
+                , {
+                    field: 'status', title: '任务状态', templet: function (d) {
+                        return d.status === 1 ? '已完成' : '未完成';
+                    }
+                }
+            ]]
+        });
+    })
+
+</script>
 
