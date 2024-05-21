@@ -36,7 +36,7 @@ namespace HotSpringProject
             //BackUpDataBase.Initialize();
             //备份数据库
 
-            //SalaryPost.Initialize();//定时调度薪资发放
+            SalaryPost.Initialize();//定时调度薪资发放
 
             // 设备保养生成调度器
             EquipUpKeep.Initialize();

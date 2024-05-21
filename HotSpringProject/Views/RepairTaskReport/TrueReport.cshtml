@@ -10,42 +10,42 @@
                 <label class="layui-form-label">上报人</label>
                 <div class="layui-input-block">
                     <!--上报人autocomplete-->
-                    <select name="reporter_id" id="ddlid" disabled lay-search=""  lay-filter="aihao">
-                       
+                    <select name="reporter_id" id="ddlid" disabled lay-search="" lay-filter="aihao">
+
                         <option value="@ViewBag.id">@ViewBag.name</option>
-                       
+
                     </select>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">维修地点</label>
                 <div class="layui-input-block">
-                    <input type="text" name="location"   placeholder="请输入维修地点" class="layui-input">
+                    <input type="text" name="location" placeholder="请输入维修地点" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">确认人</label>
                 <div class="layui-input-block">
-                    <input type="text" name="confirmer"   placeholder="请输入确认人姓名" class="layui-input">
+                    <input type="text" name="confirmer" placeholder="请输入确认人姓名" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">开始时间</label>
                 <div class="layui-input-block">
-                    <input type="text" name="start_time"   class="layui-input" id="test5" placeholder="yyyy-MM-dd HH:mm:ss">
+                    <input type="text" name="start_time" class="layui-input" id="test5" placeholder="yyyy-MM-dd HH:mm:ss">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">结束时间</label>
                 <div class="layui-input-block">
-                    <input type="text" name="end_time"  class="layui-input" id="test6" placeholder="yyyy-MM-dd HH:mm:ss">
+                    <input type="text" name="end_time" class="layui-input" id="test6" placeholder="yyyy-MM-dd HH:mm:ss">
                 </div>
             </div>
 
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">维修内容</label>
                 <div class="layui-input-block">
-                    <textarea placeholder="请输入维修内容"  class="layui-textarea" name="work_context"></textarea>
+                    <textarea placeholder="请输入维修内容" class="layui-textarea" name="work_context"></textarea>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -114,7 +114,7 @@
                 , { field: 'oi_number', title: '出库数量', width: 120}
                 , { field: 'used_number', title: '使用数量', width: 120, edit: 'text' }
                 , { field: 'rest_number', title: '剩余数量', width: 120 }
-                   
+
             ]]
             , data: [{
                 "goods_name": "无"
@@ -175,5 +175,6 @@
             })
         })
     })
-    
+
 </script>
+

@@ -49,17 +49,6 @@ namespace HotSpringProject.Controllers
             ViewBag.equipmentNames = resMessage.data;
             return View();
         }
-        public ActionResult RepairTaskReport()
-        {
-            if (Session["User"]!=null)
-            {
-
-                EmployEmp employEmp = (EmployEmp)Session["User"];
-                ViewBag.UserName=employEmp.name;
-                ViewBag.ID=employEmp.id;
-            }
-            return View();
-        }
         
         public ActionResult FaultAnalyseAudit(int id=0)
         {
