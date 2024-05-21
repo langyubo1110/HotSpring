@@ -24,6 +24,8 @@ namespace HotSpringProject.Controllers
         // GET: EmoloyCheckIn
         public ActionResult Index()
         {
+            EmployEmp employEmp = (EmployEmp)Session["User"];
+            ViewBag.name = employEmp.name;
             return View();
         }
         public JsonResult Insert()

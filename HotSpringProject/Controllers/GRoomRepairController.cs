@@ -29,6 +29,9 @@ namespace HotSpringProject.Controllers
         #region 页面
         public ActionResult GRoomRepair()
         {
+            EmployEmp emp =(EmployEmp)Session["User"];
+            ViewBag.id = emp.id;
+            ViewBag.name = emp.name;
             List<EmployEmp> list = _employEmpService.GetList().ToList();
             ViewBag.list = list;
             return View();

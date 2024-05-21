@@ -130,7 +130,9 @@
         laydate.render({
             elem: '#date' //指定元素
             , range: true
+            , type: 'datetime'
             , theme: '#393D49'
+            , range: ['#test-startDate-1', '#test-endDate-1']
             , done: function (value) {
                 let dateStart,dateEnd
                 if (value != "") {
