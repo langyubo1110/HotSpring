@@ -38,19 +38,19 @@
                 , { field: 'confirmer', title: '确认人' }
                 , {
                     field: 'start_time', title: '开始时间', templet: function (d) {
-                        return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                        return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss")
                     }
                 }
                 , {
                     field: 'end_time', title: '结束时间', templet: function (d) {
-                        return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                        return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss")
                     }
                 }
                 , {
                     field: 'create_time', title: '创建时间'
                     , templet: function (d) {
-                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                    }
+                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss")
+                    
                 }
                 , { title: '操作', toolbar: "#barDemo" }
             ]]
