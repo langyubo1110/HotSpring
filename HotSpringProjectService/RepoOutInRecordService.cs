@@ -85,6 +85,7 @@ namespace HotSpringProjectService
                     //出入库表实体的商品id赋值
                     repoOutInRecord.goods_id = repoGoodsStockDTO.id;//商品ID
                     repoOutInRecord.end_number = repoGoodsStock.goods_number;
+                    repoOutInRecord.recipient_id = repoGoodsStockDTO.recipient_id;
                 }
                 //入库
                 else
@@ -107,6 +108,7 @@ namespace HotSpringProjectService
                         //采购表实体的商品id赋值
                         repoBuy.goods_id = repoGoodsStockDTO.id;
                         repoOutInRecord.end_number = repoGoodsStock.goods_number;
+                        repoOutInRecord.recipient_id = 1;
                     }
                     //2.不存在,插入
                     else
@@ -128,6 +130,7 @@ namespace HotSpringProjectService
                         repoOutInRecord.end_number = repoGoodsStock.goods_number;
                         //采购表实体id赋值库存表最新插入id
                         repoBuy.goods_id = last_id;
+                        repoOutInRecord.recipient_id = 1;
                     }
                     //如果为入库，商品采购表插入
                     repoBuy.price = repoGoodsStockDTO.price;
@@ -144,7 +147,6 @@ namespace HotSpringProjectService
                 repoOutInRecord.outin_person_id = repoGoodsStockDTO.outin_person_id;
                 repoOutInRecord.type = repoGoodsStockDTO.type;//出入库
                 repoOutInRecord.start_number = repoGoodsStockDTO.goods_number;
-                repoOutInRecord.recipient_id = repoGoodsStockDTO.recipient_id;
                 repoOutInRecord.audit = 1;
                 _repoOutInRecordRepository.Add(repoOutInRecord);
                 _repoOutInRecordRepository.Commit();

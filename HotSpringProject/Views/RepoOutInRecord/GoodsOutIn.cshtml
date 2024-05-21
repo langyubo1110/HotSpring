@@ -84,7 +84,7 @@
             , toolbar: '#toolbarDemo'
             , cols: [[ //表头
                 { field: 'goods_name', title: '商品名称', sort: true,  fixed: 'left' }
-                , { field: 'oi_name', title: '出入库人' }
+                , { field: 'oi_name', title: '出库|入库人' }
                 , { field: 'r_name', title: '接收人' }
                 , { field: 'type', title: '出库|入库', sort: true, templet: function (d) { return d.type == 0 ? "入库" : "出库" } }
                 , { field: 'start_number', title: '操作前库存数量', sort: true }
