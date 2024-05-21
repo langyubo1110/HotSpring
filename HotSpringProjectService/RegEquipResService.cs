@@ -15,15 +15,34 @@ namespace HotSpringProjectService
     {
         private readonly IRegEquipResRepositpry _regEquipResRepositpry;
         private readonly IRegVoteRepository _regVoteRepository;
+        private readonly IEquipmentRepository _equipmentRepository;
 
-        public RegEquipResService(IRegEquipResRepositpry regEquipResRepositpry,IRegVoteRepository regVoteRepository)
+        public RegEquipResService(IRegEquipResRepositpry regEquipResRepositpry,IRegVoteRepository regVoteRepository,IEquipmentRepository equipmentRepository)
         {
             _regEquipResRepositpry = regEquipResRepositpry;
             _regVoteRepository = regVoteRepository;
+            _equipmentRepository = equipmentRepository;
         }
         public ResMessage Add(RegEquipRes regEquipRes)
         {
+            regEquipRes.is_buy = 0;
             int flag = _regEquipResRepositpry.Add(regEquipRes);
+            return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
+        }
+        public ResMessage AddWithEquip(int resId)
+        {
+            RegEquipRes regRes =_regEquipResRepositpry.GetModel(resId);
+            Equipment equipment = new Equipment();
+            equipment.used_time = resId;
+            equipment.power = "0";
+            equipment.name = regRes.prod_name;
+            equipment.location = "0";
+            equipment.status = 0;
+            equipment.equ_type = 1;
+            equipment.create_time=DateTime.Now;
+            int flag = _equipmentRepository.Add(equipment);
+            regRes.is_buy = 1;
+            _regEquipResRepositpry.Update(regRes);
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
 
@@ -42,9 +61,11 @@ namespace HotSpringProjectService
         //采购表id  用户id
         public ResMessage GetListById(int id,int userId)
         {//查出一个对应采购id下的调研表全表数据
+
             List<RegResVO> regResList = _regEquipResRepositpry.QueryBySql<RegResVO>($@"select * from Reg_Equip_Research rr where rr.reg_buy_id={id}").ToList();
             foreach(var item in regResList)//处理投票表的字段，以及对应采购id，立案id，投票人id的按钮展示
             {//item 是 RegResVO
+                
                 RegVote regVote=_regVoteRepository.GetList().Where(x=>x.equip_research_id==item.id&&x.reg_buy_id==item.reg_buy_id&&x.vote_id==userId).FirstOrDefault();
                 if (regVote != null)
                 {
@@ -58,6 +79,7 @@ namespace HotSpringProjectService
             }
             foreach(var item in regResList)
             {
+                //votecount代表的是这个调研表被投了几票，方便下一步去统计谁最多
                  List<RegVote> list= _regVoteRepository.GetList().Where(x => x.equip_research_id == item.id && x.reg_buy_id == item.reg_buy_id ).ToList();
                 int count =list.Count;
                 if (list != null)
@@ -84,7 +106,7 @@ namespace HotSpringProjectService
         public ResMessage GetListForBind(int id)
         {
             RegResVO regResVO = new RegResVO();
-            List<ResLessVO> lessList = _regEquipResRepositpry.QueryBySql<ResLessVO>($@"select rr.fac_name,ee.name,rb.id from Reg_Equip_Research rr left join Reg_Research_Vote_Record v on rr.id=v.equip_research_id
+            List<ResLessVO> lessList = _regEquipResRepositpry.QueryBySql<ResLessVO>($@"select rr.fac_name,rr.prod_name,ee.name,rb.id from Reg_Equip_Research rr left join Reg_Research_Vote_Record v on rr.id=v.equip_research_id
                                     inner join Employ_Emp ee on ee.id=v.vote_id
                                     inner join Reg_Buy rb on rr.reg_buy_id=rb.id
                                     where rr.reg_buy_id={id}").ToList();

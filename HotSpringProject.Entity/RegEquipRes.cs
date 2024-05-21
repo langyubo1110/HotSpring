@@ -23,5 +23,6 @@ namespace HotSpringProject.Entity
         public string fac_address { get; set; }
         public string prod_img { get; set; }
         public DateTime? create_time { get; set; }
+        public int is_buy { get; set; }
     }
 }

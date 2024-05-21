@@ -35,12 +35,18 @@ namespace HotSpringProjectRepository
 
         public RegEquipRes GetModel(int id)
         {
-            throw new NotImplementedException();
+            RegEquipRes regEquipRes = _db.RegEquipRes.Find(id);
+            return regEquipRes;
         }
 
         public bool Update(RegEquipRes regEquipRes)
         {
-            throw new NotImplementedException();
+            _db.Entry(regEquipRes).State = System.Data.Entity.EntityState.Modified;
+            int flag = _db.SaveChanges();
+            if (flag > 0)
+                return true;
+            else
+                return false;
         }
         public IEnumerable<T> QueryBySql<T>(string sql)
         {
