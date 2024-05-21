@@ -15,6 +15,7 @@ namespace HotSpringProjectService.Interface
 
         ResMessage GetList();
         ResMessage Add(RegEquipRes regEquipRes);
+        ResMessage AddWithEquip(int resId);
         ResMessage Delete(int id);
         ResMessage Update(RegEquipRes regEquipRes);
         ResMessage GetListById(int id, int userId);

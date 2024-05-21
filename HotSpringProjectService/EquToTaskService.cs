@@ -60,8 +60,8 @@ namespace HotSpringProjectService
         //查vo全表
         public List<EquToTaskVO> GetListAll()
         {
-            List<EquToTaskVO> listvo = _equToTaskRepository.QueryBySql<EquToTaskVO>($@"select t.*,u.start_time,u.end_time,u.interval,u.task_name 
-                                       from Equ_To_Taskes t inner join Equ_Upkeep_Plan as u on u.id=t.equ_plan_id ").ToList();
+            List<EquToTaskVO> listvo = _equToTaskRepository.QueryBySql<EquToTaskVO>($@"select t.*,u.start_time,u.end_time,u.interval,u.task_name ,e.status
+                                        from Equ_To_Taskes t  inner join Equ_Upkeep_Plan as u on u.id=t.equ_plan_id inner join Equ_Equipment as e on e.id=t.equ_id").ToList();
             return listvo;
         }
 

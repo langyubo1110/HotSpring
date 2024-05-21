@@ -150,7 +150,8 @@
         form.on('submit(demo1)', function (data) {
             let employMessagevo = data.field;
             employMessagevo.sender_id=@ViewBag.userId;
-            employMessagevo.part  = $('#editor').summernote('code'); // 获取编辑器的内容
+            employMessagevo.part = $('#editor').summernote('code');
+            console.log(employMessagevo)// 获取编辑器的内容
             $.post("/employmessage/insert", { employMessagevo: employMessagevo }, function (res) {
                 if (res.code == 200) {
                     window.location.href ="/employmessage/meshistory"

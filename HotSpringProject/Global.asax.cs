@@ -33,15 +33,15 @@ namespace HotSpringProject
             GlobalFilters.Filters.Add(new AuthorizationFilter());//拦截器
             AutoMapperConfig.Config();
 
-            //BackUpDataBase.Initialize();
+            BackUpDataBase.Initialize();
             //备份数据库
 
-            SalaryPost.Initialize();//定时调度薪资发放
-
-            // 设备保养生成调度器
-            //EquipUpKeep.Initialize();
-
+            //定时调度薪资发放
+            SalaryPost.Initialize();
             
+            // 设备保养生成调度器
+            EquipUpKeep.Initialize();
+
         }
 
 
@@ -71,6 +71,9 @@ namespace HotSpringProject
 
             //把任务类注入到autofac
             builder.RegisterModule(new QuartzAutofacJobsModule(typeof(DataBaseJob).Assembly));
+            
+            //把任务类注入到autofac
+            builder.RegisterModule(new QuartzAutofacJobsModule(typeof(SalaryPostJob).Assembly));
 
             //容器构建
             var container = builder.Build();

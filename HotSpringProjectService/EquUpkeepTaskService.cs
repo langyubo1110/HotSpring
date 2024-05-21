@@ -27,14 +27,11 @@ namespace HotSpringProjectService
         public ResMessage GetList(EquUpkeepTaskFilter filter)
         {
             IEnumerable<EquUpkeepTaskVO> list = _upkeepTaskRepository.QueryBySql<EquUpkeepTaskVO>($@"select s.*,p.task_name,p.start_time,p.end_time,p.interval,p.task_info,e.name,e.location,e.power,o.name as ename
-from Equ_Upkeep_Task s
-inner join Equ_Equipment e on e.id=s.equ_id
-inner join Equ_Upkeep_Plan p on p.id=s.equ_plan_id
-inner join Employ_Emp o on o.id=s.exec_id");
+            from Equ_Upkeep_Task s inner join Equ_Equipment e on e.id=s.equ_id inner join Equ_Upkeep_Plan p on p.id=s.equ_plan_id inner join Employ_Emp o on o.id=s.exec_id");
 
             List<EquUpkeepTaskVO> list1 = list.ToList();
-            int count = list1.Count;
-            list = MakeQuery(list, filter);
+            int count = 0;
+            list = MakeQuery(list, filter,out count);
             return ResMessage.Success(list, count);
         }
 
@@ -54,13 +51,20 @@ inner join Employ_Emp o on o.id=s.exec_id");
         /// <param name="list">全表数据</param>
         /// <param name="filter">过滤条件</param>
         /// <returns></returns>
-        public List<EquUpkeepTaskVO> MakeQuery(IEnumerable<EquUpkeepTaskVO> list, EquUpkeepTaskFilter filter)
+        public List<EquUpkeepTaskVO> MakeQuery(IEnumerable<EquUpkeepTaskVO> list, EquUpkeepTaskFilter filter, out int count)
         {
+            //时间筛选
+            if (filter.time.ToString() != "0001/1/1 0:00:00")
+            {
+              list = list.Where(x => x.upkeep_time >= filter.time && x.upkeep_time < filter.time.AddDays(1));
+            }
+            count = list.Count();
             //开启分页
             if (filter.page != 0 && filter.limit != 0)
             {
                 list = list.OrderBy(x => x.id).Skip((filter.page - 1) * filter.limit).Take(filter.limit).ToList();
             }
+            
             List<EquUpkeepTaskVO> list1 = list.ToList();
             return list1;
         }
@@ -74,11 +78,13 @@ inner join Employ_Emp o on o.id=s.exec_id");
         public ResMessage upkeepdeit(List<EmployCheckInVO> data, int[] equid, int[] equplanid)
         {
             List<EmployMessage> list = new List<EmployMessage>();
+            DateTime now= DateTime.Now.Date;
             foreach (var item in equid)
             {
                 foreach(var i in equplanid)
                 {
-                    _upkeepTaskRepository.execBySql($"update Equ_Upkeep_Task set exec_id={data[0].emp_Id} where equ_id={item} and equ_plan_id={i}");
+                    _upkeepTaskRepository.execBySql($@"update Equ_Upkeep_Task set exec_id={data[0].emp_Id} where equ_id={item} and equ_plan_id={i} 
+                    and upkeep_time>={now} and upkeep_time<{now.AddDays(1)}");
                 }
             }
             foreach (var item in equid)

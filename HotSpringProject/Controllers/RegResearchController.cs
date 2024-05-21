@@ -218,9 +218,9 @@ namespace HotSpringProject.Controllers
             ResMessage res = _regVoteService.UpdateWithVote(regId, resId, userId);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult EquipAdd(Equipment Equipment)
+        public ActionResult EquipAdd(int resId)
         {
-            ResMessage res = _equipmentService.AddWithRes(Equipment);
+            ResMessage res =_regEquipResService.AddWithEquip(resId);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 

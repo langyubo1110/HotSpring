@@ -24,7 +24,7 @@
                 <tbody id="demoList"></tbody>
             </table>
         </div>
-        <div style="position:absolute; left:250px; top:200px">
+        <div style="position:absolute; left:250px; top:400px">
             <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
             <button type="button" class="layui-btn" id="testListAction">开始上传</button>
         </div>
@@ -62,10 +62,6 @@
                         , '</td>'
                         , '</tr>'].join(''));
 
-                    //单个重传
-                    tr.find('.demo-reload').on('click', function () {
-                        obj.upload(index, file);
-                    });
 
                     //删除
                     tr.find('.demo-delete').on('click', function () {
@@ -80,10 +76,13 @@
             }
         , progress: function (n, elem, e, index) { //注意：index 参数为 layui 2.6.6 新增
             element.progress('progress-demo-' + index, n + '%'); //执行进度条。n 即为返回的进度百分比
-                var index = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(index);
-            
-        }
+            }
+            , allDone: function (obj) { //当文件全部被提交后，才触发
+                console.log(obj); //得到总文件数
+                var index = parent.layer.getFrameIndex(window.name)
+                parent.layer.close(index)
+            }
         });//render
+       
     })//layui
 </script>

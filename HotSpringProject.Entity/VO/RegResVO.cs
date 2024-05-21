@@ -28,5 +28,7 @@ namespace HotSpringProject.Entity.VO
         public int voteCount { get; set; }
         //public int allCount { get; set; }
         public int buy_is_show { get; set; }
+        
+        public int is_buy { get; set; }
     }
 }
