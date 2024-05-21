@@ -31,7 +31,7 @@ namespace HotSpringProject.Job
                                              .Build();
 
             // 创建触发器
-            ITrigger DataBasetrigger = TriggerBuilder.Create()
+            ITrigger salarytrigger = TriggerBuilder.Create()
                                              .WithIdentity("salaryTrigger")
                                              .WithCronSchedule("0 0 0 1 * ? *")
                                              //秒 分 时 日 月 周 年
