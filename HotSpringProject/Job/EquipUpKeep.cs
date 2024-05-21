@@ -30,10 +30,14 @@ namespace HotSpringProject.Job
             // 创建触发器
             ITrigger writeDatatrigger = TriggerBuilder.Create()
                                              .WithIdentity("myTrigger")
-                                             .WithCronSchedule("0 0 8 * * ?")
-                                             .WithSimpleSchedule(x => x.WithIntervalInHours(24).RepeatForever()) // 设置触发频率为每24小时
+                                             //.StartNow()
+                                             .WithDailyTimeIntervalSchedule(x => x
+                                             .OnEveryDay()
+                                             .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(15, 40))
+                                             .WithIntervalInHours(24))
+                                             //.StartAt(DateTime.UtcNow) // 设置触发器的开始时间为当前时间
+                                             //.WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute(30, 0, 0))
                                              .Build();
-
             ScheduleJob(writeDatajobDetail, writeDatatrigger);
         }
 
