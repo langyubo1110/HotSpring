@@ -35,6 +35,9 @@ namespace HotSpringProject.Controllers
         }
         public ActionResult OutDetail()
         {
+            EmployEmp emp = (EmployEmp)Session["User"];
+            ViewBag.id = emp.id;
+            ViewBag.name = emp.name;
             List<RepoGoodsStock> goodslist = (List<RepoGoodsStock>)_repoGoodsStockService.GetList(null,null).data;
             ViewBag.goodslist = goodslist;
             List<EmployEmp> employlist = _employEmpService.GetList().ToList();
@@ -43,8 +46,9 @@ namespace HotSpringProject.Controllers
         }
         public ActionResult InDetail()
         {
-            List<EmployEmp> employlist = _employEmpService.GetList().ToList();
-            ViewBag.list = employlist;
+            EmployEmp emp = (EmployEmp)Session["User"];
+            ViewBag.id = emp.id;
+            ViewBag.name = emp.name;
             return View();
         }
         #endregion
@@ -74,7 +78,9 @@ namespace HotSpringProject.Controllers
         }
         public JsonResult Add(RepoGoodsStockDTO repoGoodsStockDTO)
         {
-            ResMessage resMessage = _repoOutInRecordService.Add(repoGoodsStockDTO);
+            EmployEmp user = (EmployEmp)Session["User"];
+            int userId = user.id;
+            ResMessage resMessage = _repoOutInRecordService.Add(repoGoodsStockDTO,userId);
             return Json(resMessage);
         }
         public JsonResult Update(RepoOutInRecord repoGoodsStock)

@@ -30,7 +30,9 @@ namespace HotSpringProject.Entity.DTO
         //出入库人id
         public int outin_person_id { get; set; }
         //出入库人
-        public string name { get; set; }
+        public string oi_name { get; set; }
+        //接收人
+        public string r_name { get; set; }
         //出入库数量
         public int oi_number { get; set; }
         //出入库类型

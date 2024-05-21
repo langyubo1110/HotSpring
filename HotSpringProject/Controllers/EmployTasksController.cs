@@ -42,10 +42,6 @@ namespace HotSpringProject.Controllers
             list = list.Where(x => x.equ_plan_id == id).ToList();
             return View(list);
         }
-        public ActionResult Index()
-        {
-            return View();
-        }
         public ActionResult UpKeepTasks() 
         {
             return View();
@@ -90,9 +86,9 @@ namespace HotSpringProject.Controllers
         }
 
         [ValidateInput(false)]
-        public JsonResult UpdateTaskinfo(int plan_id, string data1)
+        public JsonResult UpdateTaskinfo(int plan_id, string data1,int equ_id)
         {
-            ResMessage res = _dbTasks.UpdateTask(plan_id, data1);
+            ResMessage res = _dbTasks.UpdateTask(plan_id, data1,equ_id);
             return Json(res);
         }
     }

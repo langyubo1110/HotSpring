@@ -44,10 +44,12 @@ namespace HotSpringProject.Controllers
             return View();
         }
         //单个保养任务
-        public ActionResult upkeeptask(int id)
+        public ActionResult upkeeptask(int id,int equ_id)
         {
             //传planid
             ViewBag.id = id;
+            //传equ_id
+            ViewBag.equ_id=equ_id;
             List<EquUpkeepTaskVO> list= _equUpkeepTaskService.getlistnofilter();
             list = list.Where(x => x.id== id).ToList();
             return View(list);

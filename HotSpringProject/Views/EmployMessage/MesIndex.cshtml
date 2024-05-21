@@ -111,7 +111,7 @@
        
         proxy.client.getList = function (data) {
             var list = JSON.parse(data);
-            
+            console.log(data);
             $("#tb").empty();
             for (var item of list) {
                 $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.sender_name}</td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${item.send_time}</td></tr>`);

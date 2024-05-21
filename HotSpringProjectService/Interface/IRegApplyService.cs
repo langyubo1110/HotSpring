@@ -19,7 +19,7 @@ namespace HotSpringProjectService
         bool Update(RegApply regApply);
         bool Check(int RegId, string txtAdvice, int userID);
         ResMessage Delete(int id);
-        RegApply GetModel(int id);
+        RegApplyVO GetModel(int id);
         IEnumerable<RegApplyVO> GetListUnionSql();
     }
 }

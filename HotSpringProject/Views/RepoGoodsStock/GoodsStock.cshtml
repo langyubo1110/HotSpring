@@ -3,7 +3,8 @@
     ViewBag.Title = "GoodsStock";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script src="~/Scripts/jquery.signalR-2.4.0.min.js"></script>
+<script src="/signalr/hubs" type="text/javascript"></script>
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
@@ -33,7 +34,7 @@
                                             <i class="layui-icon layui-icon-search"></i>
                                             查询
                                         </button>
-                                        <button type="reset" class="layui-btn">
+                                        <button type="reset" id="rebtn" class="layui-btn">
                                             <i class="layui-icon layui-icon-refresh"></i>
                                             重置
                                         </button>
@@ -57,6 +58,12 @@
     <a class="layui-btn layui-btn-xs" lay-event="detail">采购详情</a>
 </script>
 <script>
+    $(function () {
+
+
+       
+
+    })
     layui.use(['table', 'form', 'util', 'layer'], function () {
         var table = layui.table;
         var util = layui.util;
@@ -75,10 +82,10 @@
                 , { field: 'threshold', title: '阈值' }
                 , { field: 'factory', title: '工厂' }
                 , {
-                    field: 'imgurl', title: '图片',width:200, templet: function (d) {
+                    field: 'imgurl', title: '图片', width: 200, templet: function (d) {
                         return '<img src="' + d.imgurl + '" style="width:140px;height:30px" />';
                     }
-}
+                }
                 , { field: 'create_time', title: '创建时间', templet: function (d) { return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss") } }
                 , { field: 'update_time', title: '更新时间', templet: function (d) { return util.toDateString(d.update_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss") } }
                 , { title: '操作', toolbar: '#barDemo' }
@@ -115,8 +122,22 @@
                     goods_type: data.field.txtGType
                 }
             })
-             return false;
+            return false;
         });
+
+        //依赖检测
+        var proxy = $.connection.EmpMessageService;
+
+        proxy.client.getList = function (data) {
+            var list = JSON.parse(data);
+            console.log(list);
+            console.log(1);
+            table.reload('demo', {
+                data: list
+            })
+
+        }
+        $.connection.hub.start();
     })
 </script>
 

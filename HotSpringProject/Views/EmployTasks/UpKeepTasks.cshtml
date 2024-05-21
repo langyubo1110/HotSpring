@@ -70,7 +70,7 @@
                     , { field: 'task_name', title: '保养任务名称' }
                     , {
                         field: 'status', title: '任务状态', templet: function (d) {
-                            return d.importance === null ? '已完成' : '未完成';
+                            return d.status === 1 ? '已完成' : '未完成';
                         }
                     }
                     , { title: '操作', toolbar: "#barDemo" }
@@ -81,6 +81,8 @@
 
                 var data = obj.data;
                 var id = data.equ_plan_id;
+                var equid = data.equ_id;
+                console.log(data)
                 if (obj.event === 'edit') {
                     // 显示弹出层
                     layer.open({

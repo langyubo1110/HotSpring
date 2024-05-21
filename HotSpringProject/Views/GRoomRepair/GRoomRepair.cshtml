@@ -10,12 +10,10 @@
                 <label class="layui-form-label">上报人</label>
                 <div class="layui-input-block">
                     <!--上报人autocomplete-->
-                    <select name="reporter_id" id="ddlid" lay-search=""  lay-filter="aihao">
-                        <option value=""></option>
-                        @foreach (var item in ViewBag.list)
-                        {
-                            <option value="@item.id">@item.name</option>
-                        }
+                    <select name="reporter_id" id="ddlid" disabled lay-search=""  lay-filter="aihao">
+                       
+                        <option value="@ViewBag.id">@ViewBag.name</option>
+                       
                     </select>
                 </div>
             </div>
