@@ -33,10 +33,14 @@ namespace HotSpringProject.Job
             // 创建触发器
             ITrigger salarytrigger = TriggerBuilder.Create()
                                              .WithIdentity("salaryTrigger")
-                                             .WithCronSchedule("0 0 0 1 * ? *")
-                                             //秒 分 时 日 月 周 年
-                                             //每月1号0点执行
-                                             .Build();
+                                             //.WithCronSchedule("0 0 0 1 * ? *")
+                                             ////秒 分 时 日 月 周 年
+                                             ////每月1号0点执行
+                                             //.Build();
+
+                .WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute(1, 0, 0)) // 设置为每月1日的0点0分触发
+                .Build();
+
 
             ScheduleJob(salaryjobDetail, salarytrigger);
         }

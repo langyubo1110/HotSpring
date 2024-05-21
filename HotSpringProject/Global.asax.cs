@@ -33,35 +33,15 @@ namespace HotSpringProject
             GlobalFilters.Filters.Add(new AuthorizationFilter());//拦截器
             AutoMapperConfig.Config();
 
-            //BackUpDataBase.Initialize();
+            BackUpDataBase.Initialize();
             //备份数据库
 
-            SalaryPost.Initialize();//定时调度薪资发放
-
+            //定时调度薪资发放
+            SalaryPost.Initialize();
+            
             // 设备保养生成调度器
             EquipUpKeep.Initialize();
 
-            // 创建 Quartz 调度器
-            //ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
-            //IScheduler scheduler = schedulerFactory.GetScheduler().Result;
-            ////设置 Quartz 作业工厂，以便解析作业实例中的依赖项
-            //scheduler.JobFactory = new Job.AutofacJobFactory(AutofacDependencyResolver.Current.RequestLifetimeScope);
-            //// 开启调度器
-            //scheduler.Start().Wait();
-
-            //// 创建 JobDetail
-            //IJobDetail writeDatajobDetail = JobBuilder.Create<MyJob>()
-            //                                .WithIdentity("myJob")
-            //                                .Build();
-            //// 创建触发器
-            //ITrigger writeDatatrigger = TriggerBuilder.Create()
-            //                                 .WithIdentity("myTrigger")
-            //                                 .WithCronSchedule("0 0 8 * * ?")
-            //                                 .WithSimpleSchedule(x => x.WithIntervalInHours(24).RepeatForever()) // 设置触发频率为每24小时
-            //                                 .Build();
-
-            //// 将 JobDetail 和 Trigger 绑定到调度器
-            //scheduler.ScheduleJob(writeDatajobDetail, writeDatatrigger).Wait();
         }
 
 
@@ -89,11 +69,11 @@ namespace HotSpringProject
             //把任务类注入到autofac
             builder.RegisterModule(new QuartzAutofacJobsModule(typeof(MyJob).Assembly));
 
-            //注入任务类
-            builder.RegisterModule(new QuartzAutofacFactoryModule());
-
             //把任务类注入到autofac
             builder.RegisterModule(new QuartzAutofacJobsModule(typeof(DataBaseJob).Assembly));
+            
+            //把任务类注入到autofac
+            builder.RegisterModule(new QuartzAutofacJobsModule(typeof(SalaryPostJob).Assembly));
 
             //容器构建
             var container = builder.Build();

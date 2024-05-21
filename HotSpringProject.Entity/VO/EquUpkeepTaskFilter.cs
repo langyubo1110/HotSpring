@@ -11,5 +11,6 @@ namespace HotSpringProject.Entity.VO
         //过滤条件
         public int page { get; set; }
         public int limit { get; set; }
+        public DateTime time { get; set; }
     }
 }

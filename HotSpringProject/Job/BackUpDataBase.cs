@@ -32,7 +32,7 @@ namespace HotSpringProject.Job
 
             // 创建触发器
             ITrigger DataBasetrigger = TriggerBuilder.Create()
-                                             .WithIdentity("myTrigger")
+                                             .WithIdentity("DataBaseTrigger")
                                              .StartNow()
                                              //.StartAt(DateTime.UtcNow) // 设置触发器的开始时间为当前时间
                                              //.WithSchedule(CronScheduleBuilder.MonthlyOnDayAndHourAndMinute(30, 0, 0))
