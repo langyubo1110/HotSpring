@@ -59,10 +59,9 @@ namespace HotSpringProjectService
                 _employAllsalaryRepository.Update(item);
                 EmployAllsalary employ = new EmployAllsalary();
                 employ.emp_id = item.emp_id;
-                //判断是不是12月
-                if (item.pay_month == 12) employ.pay_month = 1;
-                else employ.pay_month = item.pay_month + 1;
-                employ.pay_time = lastDayOfLastMonth.AddMonths(1);
+                DateTime time1 = DateTime.Now;
+                employ.pay_month = time1.Month;
+                employ.pay_time = time1.AddMonths(1).AddDays(15);
                 employ.post_status = 0;
                 employ.salary = (decimal)0.00;
                 employ.perform_money = (decimal)0.00;
