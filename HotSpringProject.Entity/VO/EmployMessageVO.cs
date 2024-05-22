@@ -18,5 +18,6 @@ namespace HotSpringProject.Entity
         public string sender_name { get; set; }
         public string recipients_name { get; set; }
         public int? apply_id { get; set; }
+        public int? state { get; set; }
     }
 }

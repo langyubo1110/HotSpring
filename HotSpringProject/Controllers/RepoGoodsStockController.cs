@@ -32,11 +32,6 @@ namespace HotSpringProject.Controllers
         {
             return View();
         }
-        public ActionResult Detail(int id=0) 
-        {
-            ViewBag.id = id;
-            return View();
-        }
         #endregion
 
         #region 接口

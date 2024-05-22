@@ -26,6 +26,12 @@ namespace HotSpringProject.Controllers
         {
             EmployEmp employEmp = (EmployEmp)Session["User"];
             ViewBag.name = employEmp.name;
+            int empId = employEmp.id;
+            ResMessage res = _db.Verify(empId);
+            if (res.code==200)
+            {
+                ViewBag.status = 1;
+            }
             return View();
         }
         public JsonResult Insert()

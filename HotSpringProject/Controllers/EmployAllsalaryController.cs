@@ -75,10 +75,10 @@ namespace HotSpringProject.Controllers
                 worksheet.Cells["A1:AK1"].Merge = true;
                 // 添加表头
                 worksheet.Cells["A1"].Value = "工资表";
-                worksheet.Cells["e3"].Value = "所属月份";
-                worksheet.Cells["f3"].Value = $"{yyyy_MM}";
-                worksheet.Cells["g3"].Value = "发放日期";
-                worksheet.Cells["h3"].Value = $"{list[0].pay_time}";
+                worksheet.Cells["b3"].Value = "所属月份";
+                worksheet.Cells["c3"].Value = $"{yyyy_MM}";
+                worksheet.Cells["d3"].Value = "发放日期";
+                worksheet.Cells["e3"].Value = $"{list[0].pay_time}";
                 worksheet.Cells["a4"].Value = "序号";
                 worksheet.Cells["b4"].Value = "姓名";
                 worksheet.Cells["c4"].Value = "职务";

@@ -15,6 +15,6 @@ namespace HotSpringProjectService.Interface
         List<EquUpkeepTaskVO> getlistnofilter();
         List<EquUpkeepTask> GetTaskList();
         int insert(int id, DateTime time, string img,int equ_id);
-        ResMessage upkeepdeit(List<EmployCheckInVO> data, int[] equid, int[] equplanid);
+        ResMessage upkeepdeit(List<EmployCheckInVO> data, int[] equid, int[] equplanid,int empid);
     }
 }

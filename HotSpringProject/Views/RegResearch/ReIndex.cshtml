@@ -86,8 +86,10 @@
     {{# if (d.Is_show==1) { }}
     <a class="layui-btn layui-btn-xs" lay-event="agree">通过</a>
     {{# } }}
-    {{# if (d.buy_is_show==1) { }}
-    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="buyinfo">采购详情</a>
+    {{# if (d.buy_is_show==1&&d.is_buy==0) { }}
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="buyinfo">采购</a>
+    {{# }else if(d.buy_is_show==1&&d.is_buy==1){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-disabled" lay-event="buyinfo">已采购</a>
     {{# } }}
 </script>
 <script>
@@ -117,8 +119,9 @@
             , cols: [[ //标题栏
                  { field: 'prod_name', title: '设备名称'}
                 , { field: 'fac_name', title: '厂商' }
-                , {field: 'prod_img', title: '图片', templet: function (d) {
-                        return '<img src="' + d.prod_img + '" height="100"/>';
+                , {
+                    field: 'prod_img', title: '图片', minWidth: 150, templet: function (d) {
+                        return '<img src="' + d.prod_img + '" style="max-width: 140px; max-height: 30px;" />';
                     }}
                 , {field: 'price', title: '价格', templet: function (d) {
                         // 在 templet 中调用 formatNumber() 方法来格式化价格
@@ -170,41 +173,84 @@
                 })
             }
             else if (obj.event === 'buyinfo') {
-                console.log(data);
-                layer.open({
-                    type: 2,
-                    content: `/regresearch/resbuy?resid=${data.id}&name=${data.prod_name}` ,//要的是调研表id
-                    area: ['800px', '500px'],
+                /*console.log(data);*/
+                $.post("/regresearch/equipadd", { resId: data.id }, function (res) {
+                    if (res.code == 200) {
+                        layer.msg("已采购")
+                        table.reload("demo")
+                    }
+
                 })
+
             }
         });
         //写一个去VO查询数据的方法，页面打开调用，按钮点击调用
+        //function getVOdata() {
+        //    $.post("/regresearch/getdata", { id: id }, function (res) {
+
+        //        if (res.code == 200) {
+        //            console.log(res.data.lessList);
+        //            // 假设 res.data.lessList 是一个包含 ResLessVO 对象的数组
+        //            var lessList = res.data.lessList;
+        //            // 获取 id 为 test 的大 div 元素
+        //            var resultDiv = document.getElementById('result');
+                    
+        //            while (resultDiv.firstChild) {
+        //                resultDiv.removeChild(resultDiv.firstChild);
+        //            }
+        //            // 遍历 lessList 中的每个对象
+        //            lessList.forEach(function (item) {
+        //               // 清空 id 为 test 的大 div 元素的内容
+        //                //testDiv.innerHTML = '';
+        //                // 创建一个新的 div 元素
+        //                var div = document.createElement('div');
+        //                // 设置 div 的内容为 ResLessVO 对象的某些属性，假设 name 和 fac_name 是 ResLessVO 的属性
+        //                div.textContent = '设备名称: ' + item.prod_name + ' 已通过用户: ' + item.name;
+        //                // 将创建的 div 插入到 id 为 test 的大 div 下
+        //                resultDiv.appendChild(div);
+        //            });
+        //        }
+        //    })
+        //}
         function getVOdata() {
             $.post("/regresearch/getdata", { id: id }, function (res) {
-
                 if (res.code == 200) {
                     console.log(res.data.lessList);
                     // 假设 res.data.lessList 是一个包含 ResLessVO 对象的数组
                     var lessList = res.data.lessList;
                     // 获取 id 为 test 的大 div 元素
                     var resultDiv = document.getElementById('result');
-                    
                     while (resultDiv.firstChild) {
                         resultDiv.removeChild(resultDiv.firstChild);
                     }
-                    // 遍历 lessList 中的每个对象
+
+                    // 对 lessList 进行预处理，按照厂商名字进行分组
+                    var groupedData = {};
                     lessList.forEach(function (item) {
-                       // 清空 id 为 test 的大 div 元素的内容
-                        //testDiv.innerHTML = '';
-                        // 创建一个新的 div 元素
-                        var div = document.createElement('div');
-                        // 设置 div 的内容为 ResLessVO 对象的某些属性，假设 name 和 fac_name 是 ResLessVO 的属性
-                        div.textContent = '厂商: ' + item.fac_name + ' 已通过用户: ' + item.name;
-                        // 将创建的 div 插入到 id 为 test 的大 div 下
-                        resultDiv.appendChild(div);
+                        if (!groupedData[item.prod_name]) {
+                            groupedData[item.prod_name] = [];
+                        }
+                        groupedData[item.prod_name].push(item);
                     });
+
+                    // 遍历分组后的数据
+                    for (var prod_name in groupedData) {
+                        var users = groupedData[prod_name];
+                        // 创建一个新的 div 元素来显示厂商名字
+                        var prodDiv = document.createElement('div');
+                        prodDiv.textContent = '设备名称: ' + prod_name;
+                        resultDiv.appendChild(prodDiv);
+
+                        // 遍历同一厂商的用户
+                        users.forEach(function (user) {
+                            // 创建一个新的 div 元素来显示用户信息
+                            var userDiv = document.createElement('div');
+                            userDiv.textContent = '已通过用户: ' + user.name;
+                            resultDiv.appendChild(userDiv);
+                        });
+                    }
                 }
-            })
+            });
         }
         // 工具栏事件 添加
         table.on('toolbar(test)', function (obj) {

@@ -18,6 +18,12 @@
             </div>
             <div class="ibox-content">
                 <div class="table-responsive">
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width:90px">选择日期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" id="selecttime" placeholder="yyyy-MM-dd">
+                        </div>
+                    </div>
                     <table id="demo" lay-filter="test"></table>
                 </div>
             </div>
@@ -30,18 +36,23 @@
         <input type="button" class="layui-btn layui-btn-sm" lay-submit="" lay-filter="btndown" lay-event="selectpeople" value="选择实施人">
     </div>
 </script>
-<!--js模板  列组件-->
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="look">扫码查看详情</a>
-</script>
 
 <script>
+    
+   
     //layui 注册多个模块
-    layui.use(['table', 'util'], function () {
+    layui.use(['table', 'util', 'laydate'], function () {
         //实例化多个模块
         var table = layui.table
         var util = layui.util
-        var form = layui.form
+        var laydate = layui.laydate;
+        //var now = new Date() - 86400000
+        //now = util.toDateString(now)
+        var date = new Date()
+        const year = date.getFullYear().toString().padStart(4, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        console.log(`${year}-${month}-${day}`)
         //1.渲染实例
         table.render({
             elem: '#demo'
@@ -63,30 +74,24 @@
             , toolbar: "#toolbarDemo"
             , cols: [[ //表头
                 { type: 'checkbox', fixed: 'left' }
-                , { field: 'name', title: '设备名称' }
-                , { field: 'location', title: '设备位置' }
-                , { field: 'power', title: '设备功率' }
-                , { field: 'ename', title: '执行人' }
-                , { field: 'task_name', title: '任务名称' }
+                , { field: 'name', title: '设备名称', width: 220}
+                , { field: 'location', title: '设备位置', width: 130 }
+                , { field: 'ename', title: '执行人',width:75}
                 , {
-                    field: 'start_time', title: '保养起始时间', templet: function (d) {
-                        return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                    }
+                    field: 'task_name', title: '任务名称',width:125}
+                , {
+                    field: 'upkeep_time', title: '保养生成时间', templet: function (d) {
+                        return util.toDateString(d.upkeep_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss")
+                    }, width: 170
                 }
                 , {
                     field: 'interval', title: '保养间隔', templet: function (d) {
                         return d.interval + "天"
                     }
                 }
-                , {
-                    field: 'end_time', title: '保养结束时间', templet: function (d) {
-                        return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                    }
-                }
-                , { field: 'task_info', title: '任务详情' }
+                , { field: 'task_info', title: '任务详情', width: 175   }
+                , { field: 'upkeep_feedback_info', title: '反馈信息', width: 200 }
                
-                //添加操作列
-                , { title: '操作', toolbar: "#barDemo" }
             ]]
         });
         //表头触发事件
@@ -114,26 +119,27 @@
                         table.reload("idTest")
                     }
                 });
+            }//button
+        });//表头触发事件
+
+        //日期渲染
+        laydate.render({
+            elem: '#selecttime'
+            , theme: '#393D49'
+            , value: null
+            , isInitValue: true
+            , done: function (value) {
+                console.log(value)
+                table.reload("idTest", {
+                    //获取文本款的值
+                    where: {
+                        //传参 文本框 设定异步数据接口参数外的值
+                        time:value
+                    }
+                })
             }
+
         });
-        //2.单元格触发事件
-        table.on('tool(test)', function (obj) {
-            var data = obj.data;
-            //得到当前行的主键
-            let id = data.equ_plan_id;
-            console.log(id)
-            console.log(data)
-            //弹出弹窗
-            layer.open({
-                type: 2,
-                content: '/equupkeeptask/QRimg/' + id,
-                area: ['500px', '540px'],
-                //layer层销
-                end: function () {
-                   
-                }
-            });
-        })
     })
 </script>
 

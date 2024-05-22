@@ -77,7 +77,10 @@
             , page: true//开启分页
             , toolbar: '#toolbarDemo'
             , cols: [[ //表头
-                { field: 'goods_name', title: '商品名称', }
+                {
+                    field: 'goods_name', title: '商品名称',width:300, templet: function (d) {
+                        return d.goods_number <= d.threshold ? d.goods_name + '<span class="label label-danger pull-right">缺货</span>' : d.goods_name;
+                    } }
                 , { field: 'goods_number', title: '商品库存数量' }
                 , { field: 'threshold', title: '阈值' }
                 , { field: 'factory', title: '工厂' }
@@ -117,6 +120,9 @@
             //表格重载 where 再加一个参数name
             console.log(data)
             table.reload('demo', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                },
                 where: {
                     goods_name: data.field.txtSName,
                     goods_type: data.field.txtGType

@@ -29,6 +29,9 @@ namespace HotSpringProjectService
             List<EquToTaskVO> list= _equToTaskService.GetListAll();
             foreach(var item in list)
             {
+                //设备停用不能生成保养信息
+                if (item.status == 1)
+                {
                 //保养未过期
                 if (item.end_time >= time&&item.start_time<=time)
                 {
@@ -55,6 +58,9 @@ namespace HotSpringProjectService
                         _equUpkeepTaskService.insert(item.equ_plan_id, time, imgurl,item.equ_id);
                     }
                 }
+
+                }
+
             }
             return Task.CompletedTask;
         }

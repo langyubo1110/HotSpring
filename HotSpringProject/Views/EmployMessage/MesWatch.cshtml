@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "MesWrite";
+    ViewBag.Title = "MesWatch";
     Layout = null;
 }
 
@@ -42,23 +42,20 @@
         </div>
         <div class="col-sm-9 animated fadeInRight">
             <div class="mail-box-header">
-                @*<div class="pull-right tooltip-demo">
-                        <a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="存为草稿"><i class="fa fa-pencil"></i> 存为草稿</a>
-                        <a href="mailbox.html" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="放弃"><i class="fa fa-times"></i> 放弃</a>
-                    </div>*@
+               
                 <h2>
-                    写信
+                    查看信件
                 </h2>
             </div>
             <form class="layui-form" action="" lay-filter="editform">
                 <div class="mail-box">
                     <div class="mail-body">
                         @*<form class="form-horizontal layui-form" method="get">*@
-                        <label class="col-sm-2 control-label">发送到：</label>
+                        @*<label class="col-sm-2 control-label">发送到：</label>*@
                         <div class="form-group">
 
 
-                            <div class="layui-input-inline">
+                            @*<div class="layui-input-inline">
                                 <select class="11" name="recipients_id" lay-search="" lay-filter="ddltest">
                                     <option value="">选择收件人(员工)</option>
                                     @foreach (var item in ViewBag.list)
@@ -75,10 +72,8 @@
                                         <option value="@item.id">@item.role_name</option>
                                     }
                                 </select>
-                            </div>
-                            @*<div class="col-sm-10">
-                <input type="text" class="form-control" value="i@zi-han.net">
-            </div>*@
+                            </div>*@
+                           
                         </div>
 
 
@@ -149,7 +144,7 @@
         //站内信息插入
         form.on('submit(demo1)', function (data) {
             let employMessagevo = data.field;
-            employMessagevo.sender_id=@ViewBag.userId;
+            @*employMessagevo.sender_id=@ViewBag.userId;*@
             employMessagevo.part = $('#editor').summernote('code');
             console.log(employMessagevo)// 获取编辑器的内容
             $.post("/employmessage/insert", { employMessagevo: employMessagevo }, function (res) {
@@ -187,44 +182,8 @@
     };
 </script>
 
-<!-- Code injected by live-server -->
-@*<script>
-        // <![CDATA[  <-- For SVG support
-        if ('WebSocket' in window) {
-            (function () {
-                function refreshCSS() {
-                    var sheets = [].slice.call(document.getElementsByTagName("link"));
-                    var head = document.getElementsByTagName("head")[0];
-                    for (var i = 0; i < sheets.length; ++i) {
-                        var elem = sheets[i];
-                        var parent = elem.parentElement || head;
-                        parent.removeChild(elem);
-                        var rel = elem.rel;
-                        if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-                            var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-                            elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-                        }
-                        parent.appendChild(elem);
-                    }
-                }
-                var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-                var address = protocol + window.location.host + window.location.pathname + '/ws';
-                var socket = new WebSocket(address);
-                socket.onmessage = function (msg) {
-                    if (msg.data == 'reload') window.location.reload();
-                    else if (msg.data == 'refreshcss') refreshCSS();
-                };
-                if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-                    console.log('Live reload enabled.');
-                    sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-                }
-            })();
-        }
-        else {
-            console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-        }
-                // ]]>
-    </script>*@
+
 
 
 <div class="note-popover popover in note-link-popover bottom">  <div class="arrow"></div>  <div class="popover-content note-children-container"><span><a target="_blank"></a>&nbsp;</span><div class="note-btn-group btn-group note-link"><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="编辑链接" data-original-title="编辑链接"><i class="note-icon-link"></i></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="去除链接" data-original-title="去除链接"><i class="note-icon-chain-broken"></i></button></div></div></div><div class="note-popover popover in note-image-popover bottom">  <div class="arrow"></div>  <div class="popover-content note-children-container"><div class="note-btn-group btn-group note-resize"><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="缩放至 100%" data-original-title="缩放至 100%"><span class="note-fontsize-10">100%</span></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="缩放至 50%" data-original-title="缩放至 50%"><span class="note-fontsize-10">50%</span></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="缩放至 25%" data-original-title="缩放至 25%"><span class="note-fontsize-10">25%</span></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="Original size" data-original-title="Original size"><i class="note-icon-rollback"></i></button></div><div class="note-btn-group btn-group note-float"><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="靠左浮动" data-original-title="靠左浮动"><i class="note-icon-float-left"></i></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="靠右浮动" data-original-title="靠右浮动"><i class="note-icon-float-right"></i></button><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="取消浮动" data-original-title="取消浮动"><i class="note-icon-rollback"></i></button></div><div class="note-btn-group btn-group note-remove"><button type="button" class="note-btn btn btn-default btn-sm" role="button" tabindex="-1" title="" aria-label="移除图片" data-original-title="移除图片"><i class="note-icon-trash"></i></button></div></div></div><div class="note-popover popover in note-table-popover bottom">  <div class="arrow"></div>  <div class="popover-content note-children-container"><div class="note-btn-group btn-group note-add"><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="在下方插入行" data-original-title="在下方插入行"><i class="note-icon-row-below"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="在上方插入行" data-original-title="在上方插入行"><i class="note-icon-row-above"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="在左侧插入列" data-original-title="在左侧插入列"><i class="note-icon-col-before"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="在右侧插入列" data-original-title="在右侧插入列"><i class="note-icon-col-after"></i></button></div><div class="note-btn-group btn-group note-delete"><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="删除行" data-original-title="删除行"><i class="note-icon-row-remove"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="删除列" data-original-title="删除列"><i class="note-icon-col-remove"></i></button><button type="button" class="note-btn btn btn-default btn-sm btn-md" role="button" tabindex="-1" title="" aria-label="删除表格" data-original-title="删除表格"><i class="note-icon-trash"></i></button></div></div></div>
+
