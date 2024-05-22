@@ -114,8 +114,8 @@ $(function () {
             console.log(data);
             $("#tb").empty();
             for (var item of list) {
-                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.sender_name}</td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${formatDate(item.send_time)}</td><td>${item.state === 0 ? '未读' : '已读'}</td><td><a onclick="updateRead(${item.id})">查看</a></td></tr>`);
-                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.sender_name}</td><td>${item.recipients_name}</td><td>${item.part}</td><td><a href="${item.link}">${item.link}</a></td><td>${formatDate(item.send_time)}</td><td>${item.state === 0 ? '未读' : '已读'}</td><td><a></a></td></tr>`);
+                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.sender_name}</td><td>${item.recipients_name}</td><td>${item.part}</td><td><a href="${item.link}">${item.link}</a></td><td>${formatDate(item.send_time)}</td><td>${item.state === 0 ? '未读' : '已读'}</td><td><a onclick="updateRead(${item.id})">查看</a></td></tr>`);
+
             }
             
         }
@@ -131,7 +131,7 @@ $(function () {
         $.get("/employmessage/GetList", function (res) {
             console.log(res);
             for (var item of res) {
-                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.sender_name}</td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${formatDate(item.send_time)}</td><td>${item.state === 0 ? '未读' : '已读'}</td><td><a onclick="updateRead(${item.id})">查看</a></td></tr>`);
+                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.sender_name}</td><td>${item.recipients_name}</td><td>${item.part}</td><td><a href="${item.link}">${item.link}</a></td><td>${formatDate(item.send_time)}</td><td>${item.state === 0 ? '未读' : '已读'}</td><td><a onclick="updateRead(${item.id})">查看</a></td></tr>`);
             }
         })
     }
