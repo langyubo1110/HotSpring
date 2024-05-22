@@ -54,7 +54,7 @@ namespace HotSpringProjectService
                         message.send_time = DateTime.Now;
                         message.create_time = DateTime.Now;
                         message.sender_id = userId;
-                        message.link = "abcde";
+                        message.link = "/repogoodsstock/goodsstock";
                         message.recipients_id = employEmp.id;
                         msgList.Add(message);
                     }
