@@ -14,5 +14,6 @@ namespace HotSpringProjectService.Interface
         List<EmployMessage> GetList();
         ResMessage Add(EmployMessageVO employMessagevo);
         ResMessage AddWithRoleId(int roleId);
+        EmployMessage GetModel(int id);
     }
 }

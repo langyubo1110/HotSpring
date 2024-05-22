@@ -17,5 +17,6 @@ namespace HotSpringProject.Entity
         public int? sender_id { get; set; }
         public int? recipients_id { get; set; }
         public DateTime? create_time { get; set; }
+        public int? state { get; set; }
     }
 }

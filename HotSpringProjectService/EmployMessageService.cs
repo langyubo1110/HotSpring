@@ -35,6 +35,7 @@ namespace HotSpringProjectService
                 employMessage.part = employMessagevo.part;
                 employMessage.sender_id = employMessagevo.sender_id;
                 employMessage.recipients_id = employMessagevo.recipients_id;
+                employMessage.state = 0;
                 int flag = _EmployMessageRepository.Add(employMessage);
                 return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
             }
@@ -49,6 +50,7 @@ namespace HotSpringProjectService
                     part = employMessagevo.part,
                     create_time = DateTime.Now,
                     send_time = DateTime.Now,
+                    state = 0
                 }).ToList();
 
                 int flag = _EmployMessageRepository.AddRange(messagesToAdd);
@@ -77,6 +79,11 @@ namespace HotSpringProjectService
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
 
 
+        }
+
+        public EmployMessage GetModel(int id)
+        {
+            return _EmployMessageRepository.GetModel(id);
         }
     }
 }
