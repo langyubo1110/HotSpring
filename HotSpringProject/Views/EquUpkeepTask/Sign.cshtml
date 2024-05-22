@@ -85,12 +85,12 @@
             let data = checkStatus.data
             console.log(data)
             //发ajax入库
-            //$.post("/equupkeeptask/upkeepdistribute", { data: data, equid: equid,equplanid:equplanid }, function (res) {
-            //    if (res.code == 200) {
-            //        var index = parent.layer.getFrameIndex(window.name);
-            //        parent.layer.close(index);
-            //    }
-            //})
+            $.post("/equupkeeptask/upkeepdistribute", { data: data, equid: equid,equplanid:equplanid }, function (res) {
+                if (res.code == 200) {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                }
+            })
         });
     })
 </script>

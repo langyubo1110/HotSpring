@@ -26,7 +26,9 @@ namespace HotSpringProjectService
         }
         public ResMessage UpdateTask(int id, string data,int equ_id)
         {
-            _dbUp.execBySql($"update Equ_Upkeep_Task set upkeep_feedback_info='{data}' , status = 1 where equ_plan_id={id} and equ_id={equ_id}");
+            DateTime now = DateTime.Now.Date;
+            _dbUp.execBySql($@"update Equ_Upkeep_Task set upkeep_feedback_info='{data}' , status = 1 where equ_plan_id={id} and equ_id={equ_id} 
+                            and upkeep_time>='{now}' and upkeep_time<'{now.AddDays(1)}'");
             return ResMessage.Success("反馈成功");
         }
     }
