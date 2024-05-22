@@ -14,7 +14,7 @@ namespace HotSpringProjectService.Interface
         bool Delete(int id);
         ResMessage UpDate(RepaieTaskReport repaieTaskReport);
 
-        ResMessage Add(RepaieTaskReport repaieTaskReport);
+        ResMessage Add(RepairTaskReportVO repairTaskReportVO);
         ResMessage GetModel(int id);
         
         ResMessage GetEquipmentList();

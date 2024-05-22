@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using DotNet.Utilities;
 using HotSpringProject.Entity;
+using HotSpringProject.Entity.VO;
 using HotSpringProjectService;
 using HotSpringProjectService.Interface;
 namespace HotSpringProject.Controllers
@@ -50,11 +51,13 @@ namespace HotSpringProject.Controllers
             return View( );
         }
         //！！！！！！！！！！！！！！！！！！真正的维修任务上报页
-        public ActionResult TrueReport()
+        public ActionResult TrueReport(int id=0,int equip_id=0)
         {
             EmployEmp emp = (EmployEmp)Session["User"];
             ViewBag.id = emp.id;
             ViewBag.name = emp.name;
+            ViewBag.fault_app_id=id;
+            ViewBag.equip_id=equip_id;
             return View();
         }
 
@@ -87,9 +90,9 @@ namespace HotSpringProject.Controllers
         {
             return Json(_repairTaskReportService.UpDate(repaieTaskReport), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult Add(RepaieTaskReport repaieTaskReport)
+        public JsonResult Add(RepairTaskReportVO repairTaskReportVO)
         {
-            return Json(_repairTaskReportService.Add(repaieTaskReport), JsonRequestBehavior.AllowGet);
+            return Json(_repairTaskReportService.Add(repairTaskReportVO), JsonRequestBehavior.AllowGet);
         }
         //更新设备状态接口
         public JsonResult StopAndAdd(int id,string contents )
