@@ -50,7 +50,7 @@
             $.post("/EmployTasks/UpdateTaskinfo", { plan_id: plan_id, data1: data1 ,equ_id:equ_id}, function (res) {
                 console.log(res)
                 if (res.code == 200) {
-                    alert(res.msg)
+                    window.location.href = "/#";
                 }
             })
         })

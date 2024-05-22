@@ -38,12 +38,21 @@
 </script>
 
 <script>
+    
+   
     //layui 注册多个模块
     layui.use(['table', 'util', 'laydate'], function () {
         //实例化多个模块
         var table = layui.table
         var util = layui.util
         var laydate = layui.laydate;
+        //var now = new Date() - 86400000
+        //now = util.toDateString(now)
+        var date = new Date()
+        const year = date.getFullYear().toString().padStart(4, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        console.log(`${year}-${month}-${day}`)
         //1.渲染实例
         table.render({
             elem: '#demo'
@@ -65,22 +74,23 @@
             , toolbar: "#toolbarDemo"
             , cols: [[ //表头
                 { type: 'checkbox', fixed: 'left' }
-                , { field: 'name', title: '设备名称' }
-                , { field: 'location', title: '设备位置' }
-                , { field: 'ename', title: '执行人' }
-                , { field: 'task_name', title: '任务名称' }
+                , { field: 'name', title: '设备名称', width: 220}
+                , { field: 'location', title: '设备位置', width: 130 }
+                , { field: 'ename', title: '执行人',width:75}
+                , {
+                    field: 'task_name', title: '任务名称',width:125}
                 , {
                     field: 'upkeep_time', title: '保养生成时间', templet: function (d) {
-                        return util.toDateString(d.upkeep_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
-                    }
+                        return util.toDateString(d.upkeep_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss")
+                    }, width: 170
                 }
                 , {
                     field: 'interval', title: '保养间隔', templet: function (d) {
                         return d.interval + "天"
                     }
                 }
-                , { field: 'task_info', title: '任务详情' }
-                , { field: 'upkeep_feedback_info', title: '反馈信息' }
+                , { field: 'task_info', title: '任务详情', width: 175   }
+                , { field: 'upkeep_feedback_info', title: '反馈信息', width: 200 }
                
             ]]
         });

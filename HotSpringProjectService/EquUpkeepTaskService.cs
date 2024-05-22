@@ -83,8 +83,9 @@ namespace HotSpringProjectService
             {
                 foreach(var i in equplanid)
                 {
-                    _upkeepTaskRepository.execBySql($@"update Equ_Upkeep_Task set exec_id={data[0].emp_Id} where equ_id={item} and equ_plan_id={i} 
-                    and upkeep_time>={now} and upkeep_time<{now.AddDays(1)}");
+                    int falg= _upkeepTaskRepository.execBySql($@"update Equ_Upkeep_Task set exec_id={data[0].emp_Id} where equ_id={item} and equ_plan_id={i} 
+                    and upkeep_time>='{now}' and upkeep_time<'{now.AddDays(1)}'");
+                    
                 }
             }
             foreach (var item in equid)
