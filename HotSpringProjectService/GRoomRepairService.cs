@@ -117,10 +117,23 @@ namespace HotSpringProjectService
             return list==null?ResMessage.Fail(): ResMessage.Success(list);
         }
 
-        public ResMessage GetListById(int id)
+        public ResMessage GetListById(string yyyy_MM,int id,int page,int limit)
         {
-            IEnumerable<RepairVO> list = _gRoomRepairRepository.QueryBySql<RepairVO>($@"SELECT GRoom_Repair.*, Employ_Emp.name FROM GRoom_Repair JOIN Employ_Emp ON GRoom_Repair.reporter_id = Employ_Emp.id where GRoom_Repair.reporter_id={id}");
-            return list == null ? ResMessage.Fail() : ResMessage.Success(list);
+            IEnumerable<RepairVO> list = _gRoomRepairRepository.QueryBySql<RepairVO>($@"SELECT g.*, e.name,p.repair_up_money FROM GRoom_Repair g
+                                                                                     JOIN Employ_Emp e ON g.reporter_id = e.id
+                                                                                     JOIN Employ_Perform p ON p.repair_id=g.id
+                                                                                     where g.reporter_id={id}");
+            if (page!=0&&limit!=0) 
+            {
+                if (!string.IsNullOrEmpty(yyyy_MM))
+                {
+                    list = list.Where(x => x.create_time.ToString("yyyy-MM") == yyyy_MM);
+                }
+                int count =list.Count();
+                List<RepairVO> result = list.OrderBy(x=>x.create_time).Skip((page-1)*limit).Take(limit).ToList();
+                return result == null ? ResMessage.Fail() : ResMessage.Success(result,count);
+            }
+            return ResMessage.Fail();
         }
 
         public ResMessage GetListId(int id)
