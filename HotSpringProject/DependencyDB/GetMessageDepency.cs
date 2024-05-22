@@ -21,8 +21,8 @@ namespace HotSpringProject.DependencyDB
         public List<EmployMessageVO> GetMessage()
         {
 
-            string query = $"SELECT sender_id,part,link,recipients_id,send_time FROM dbo.Employ_Message where recipients_id={_userId}";
-            string sql = $"SELECT sender.name AS sender_name, recipients.name AS recipients_name,m.part,m.link,m.recipients_id,m.sender_id,m.send_time" +
+            string query = $"SELECT state,sender_id,part,link,recipients_id,send_time FROM dbo.Employ_Message where recipients_id={_userId}";
+            string sql = $"SELECT m.state,sender.name AS sender_name, recipients.name AS recipients_name,m.part,m.link,m.recipients_id,m.sender_id,m.send_time" +
                 $" FROM dbo.Employ_Message AS m   JOIN dbo.Employ_Emp AS sender ON m.sender_id = sender.id" +
                 $"    JOIN dbo.Employ_Emp AS recipients ON m.recipients_id = recipients.id" +
                 $"  WHERE m.recipients_id ={_userId}";
@@ -52,7 +52,7 @@ namespace HotSpringProject.DependencyDB
                         m.part = (string)queryReader["part"];
                         m.sender_id = Convert.ToInt32(queryReader["sender_id"]);
                         m.recipients_id = Convert.ToInt32(queryReader["recipients_id"]);
-
+                        m.state= Convert.ToInt32(queryReader["state"]);
                         queryList.Add(m);
                     }
                     queryReader.Close();
@@ -75,7 +75,7 @@ namespace HotSpringProject.DependencyDB
                         // 获取发送者和接收者的名称，并赋值给属性
                         m.sender_name = (string)sqlReader["sender_name"];
                         m.recipients_name = (string)sqlReader["recipients_name"];
-
+                        m.state = Convert.ToInt32(sqlReader["state"]);
                         sqlList.Add(m);
                     }
 
