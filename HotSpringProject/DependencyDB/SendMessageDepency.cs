@@ -50,6 +50,7 @@ namespace HotSpringProject.DependencyDB
                         EmployMessageVO m = new EmployMessageVO();
                         m.send_time = (DateTime?)queryReader["send_time"];
                         m.part = (string)queryReader["part"];
+                        m.link = (string)queryReader["link"];
                         m.sender_id = Convert.ToInt32(queryReader["sender_id"]);
                         m.recipients_id = Convert.ToInt32(queryReader["recipients_id"]);
                         m.state = Convert.ToInt32(queryReader["state"]);
@@ -68,6 +69,7 @@ namespace HotSpringProject.DependencyDB
                         EmployMessageVO m = new EmployMessageVO();
                         m.send_time = (DateTime?)sqlReader["send_time"];
                         m.part = (string)sqlReader["part"];
+                        m.link = (string)sqlReader["link"];
                         m.sender_id = Convert.ToInt32(sqlReader["sender_id"]);
                         m.recipients_id = Convert.ToInt32(sqlReader["recipients_id"]);
 
