@@ -47,6 +47,14 @@ namespace HotSpringProjectRepository
         {
             return _db.EmployMessage.Find(id);
         }
+        public bool Update(EmployMessage employMessage)
+        {
+            _db.Entry(employMessage).State = System.Data.Entity.EntityState.Modified;
+            int flag = _db.SaveChanges();
+            if (flag > 0)
+                return true;
+            return false;
+        }
     }
 }
 

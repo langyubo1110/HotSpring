@@ -67,7 +67,7 @@
                             <th>内容</th>
                             <th>链接</th>
                             <th>发送时间</th>
-                            <th>操作</th>
+                            
                         </tr>
                     </thead>
                     <tbody id="tb">
@@ -92,7 +92,7 @@
 
             $("#tb").empty();
             for (var item of list) {
-                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${item.send_time}</td></tr>`);
+                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${formatDate(item.send_time)}</td></tr>`);
             }
         }
         $.connection.hub.start();

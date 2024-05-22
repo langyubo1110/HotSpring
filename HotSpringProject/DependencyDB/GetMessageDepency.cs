@@ -21,8 +21,8 @@ namespace HotSpringProject.DependencyDB
         public List<EmployMessageVO> GetMessage()
         {
 
-            string query = $"SELECT state,sender_id,part,link,recipients_id,send_time FROM dbo.Employ_Message where recipients_id={_userId}";
-            string sql = $"SELECT m.state,sender.name AS sender_name, recipients.name AS recipients_name,m.part,m.link,m.recipients_id,m.sender_id,m.send_time" +
+            string query = $"SELECT id,state,sender_id,part,link,recipients_id,send_time FROM dbo.Employ_Message where recipients_id={_userId}";
+            string sql = $"SELECT m.id,m.state,sender.name AS sender_name, recipients.name AS recipients_name,m.part,m.link,m.recipients_id,m.sender_id,m.send_time" +
                 $" FROM dbo.Employ_Message AS m   JOIN dbo.Employ_Emp AS sender ON m.sender_id = sender.id" +
                 $"    JOIN dbo.Employ_Emp AS recipients ON m.recipients_id = recipients.id" +
                 $"  WHERE m.recipients_id ={_userId}";
@@ -47,6 +47,7 @@ namespace HotSpringProject.DependencyDB
                     while (queryReader.Read())
                     {
                         EmployMessageVO m = new EmployMessageVO();
+                        m.id=Convert.ToInt32(queryReader["id"]);
                         m.send_time = (DateTime?)queryReader["send_time"];
                         m.link = Convert.ToString(queryReader["link"]);
                         m.part = (string)queryReader["part"];
@@ -66,6 +67,7 @@ namespace HotSpringProject.DependencyDB
                     while (sqlReader.Read())
                     {
                         EmployMessageVO m = new EmployMessageVO();
+                        m.id = Convert.ToInt32(sqlReader["id"]);
                         m.send_time = (DateTime?)sqlReader["send_time"];
                         m.link = Convert.ToString(sqlReader["link"]);
                         m.part = (string)sqlReader["part"];

@@ -85,5 +85,12 @@ namespace HotSpringProjectService
         {
             return _EmployMessageRepository.GetModel(id);
         }
+        public ResMessage Read(int id)
+        {
+            EmployMessage msg=_EmployMessageRepository.GetModel(id);
+            msg.state = 1;
+            bool res=_EmployMessageRepository.Update(msg);
+            return res==true?ResMessage.Success():ResMessage.Fail();
+        }
     }
 }
