@@ -15,5 +15,6 @@ namespace HotSpringProjectService.Interface
         ResMessage Add(EmployMessageVO employMessagevo);
         ResMessage AddWithRoleId(int roleId);
         EmployMessage GetModel(int id);
+        ResMessage Read(int id);
     }
 }

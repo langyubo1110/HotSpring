@@ -78,5 +78,10 @@ namespace HotSpringProject.Controllers
             ResMessage res = _employMessage.Add(employMessagevo);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult Read(int id)
+        {
+            ResMessage res = _employMessage.Read(id);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
     }
 }
