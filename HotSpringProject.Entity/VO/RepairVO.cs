@@ -17,5 +17,6 @@ namespace HotSpringProject.Entity
         public string work_context { get; set; }
         public DateTime create_time { get; set; }
         public string name { get; set; }
+        public decimal repair_up_money { get; set; }
     }
 }

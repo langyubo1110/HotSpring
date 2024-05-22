@@ -22,8 +22,7 @@
                     <p style="font-weight:bold">请签到：</p>
                     <br />
                     <form class="layui-form" id="checkInForm">
-                        <div class="layui-form-item well">
-                            <label class="layui-form-label" style="width:100px">班次类型:</label>
+                        <div class="layui-form-item">
                             <div class="layui-inline">
                                 <select name="shiftType" id="dropList" lay-verify="required">
                                     <option value="">请选择班次类型</option>
@@ -44,7 +43,7 @@
                             else
                             {
                                 <!-- 否则，隐藏按钮 -->
-                                <button id="checkInBtn" class="layui-btn" style="margin-left:20px; " lay-submit lay-filter="checkIn">上班签到</button>
+                                <button id="checkInBtn" class="layui-btn" style="margin-left:20px;" lay-submit lay-filter="checkIn">上班签到</button>
                             }
                         </div>
                     </form>
@@ -82,18 +81,6 @@
         <div class="col-sm-8">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5 style="font-weight:bold">个人维修任务</h5>
-                </div>
-                <div class="ibox-content">
-                    <div class="layui-card-body">
-
-                        <table id="demo" lay-filter="test"></table>
-
-                    </div>
-                </div>
-            </div>
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
                     <h5 style="font-weight:bold">今日保养任务</h5>
                 </div>
                 <div class="ibox-content">
@@ -112,6 +99,18 @@
                     <div class="layui-card-body">
 
                         <table id="demo1" lay-filter="test1"></table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5 style="font-weight:bold">个人维修任务</h5>&emsp;&emsp;&emsp;<a id="btn_cur_mon" class="layui-btn layui-btn-xs">当月</a>&emsp;&emsp;&emsp;<a id="btn_history" class="layui-btn layui-btn-xs">历史</a>
+                </div>
+                <div class="ibox-content">
+                    <div class="layui-card-body">
+
+                        <table id="demo" lay-filter="test"></table>
 
                     </div>
                 </div>
@@ -147,12 +146,13 @@
         table.render({
             elem: '#demo'
             , url: '/EmployTasks/Repair'
+            , page: true
             , cols: [[
-                { field: 'name', title: '上报人' }
+                { field: 'name', title: '上报人',width:100 }
                 , {
                     field: 'location', title: '维修地点'
                 }
-                , { field: 'confirmer', title: '确认人' }
+                , { field: 'confirmer', title: '确认人', width: 100 }
                 , {
                     field: 'start_time', title: '开始时间', templet: function (d) {
                         return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss")
@@ -163,6 +163,7 @@
                         return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss")
                     }
                 }
+                , { field: 'repair_up_money', title: '提成金额',width:100 ,templet: function (d) { return formatNumber(d.repair_up_money); } }
                 , {
                     field: 'create_time', title: '上报时间'
                     , templet: function (d) {
@@ -192,6 +193,22 @@
                 });
             }
         });
+        $("#btn_cur_mon").click(function () {
+            var time = Date.now()
+            var yyyy_MM = util.toDateString(time, "yyyy-MM")
+            console.log(yyyy_MM)
+            table.reload('demo', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                },
+                where: {
+                    yyyy_MM: yyyy_MM
+                }
+            })
+        })
+        $("#btn_history").click(function () {
+            table.reload('demo')
+        })
         //今日保养任务表格
         table.render({
             elem: '#demo2'

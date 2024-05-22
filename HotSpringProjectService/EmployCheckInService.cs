@@ -44,7 +44,6 @@ namespace HotSpringProjectService
             //获取上月天数
             int month = dtNow.Month;
             int year = dtNow.Year;
-
             decimal days = DateTime.DaysInMonth(year, month);
             // 获取上个月的第一天和最后一天
             DateTime firstDayOfLastMonth = new DateTime(dtNow.Year, dtNow.Month, 1);
