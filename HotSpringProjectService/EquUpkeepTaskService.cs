@@ -92,6 +92,7 @@ namespace HotSpringProjectService
                 EmployMessage message = new EmployMessage
                 {
                     sender_id = empid,
+                    state = 0,
                     link = "/employtasks/upkeeptasks",
                     recipients_id = data[0].emp_Id,
                     send_time = DateTime.Now,
