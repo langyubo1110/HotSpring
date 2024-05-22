@@ -100,8 +100,10 @@ namespace HotSpringProject.DependencyDB
             if (e.Type == SqlNotificationType.Change)
             {
                 var list = GetMessage();
+                var list1 = GetMessage().Where(s => s.state == 0).ToList();
                 //调用广播将学生总人数推送
-                EmpMessageHub.Show(list.Count());
+                //调用广播将学生总人数推送
+                EmpMessageHub.Show(list1.Count());
                 EmpMessageHub.List(list);
             }
         }

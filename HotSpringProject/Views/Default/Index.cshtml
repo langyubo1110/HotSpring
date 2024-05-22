@@ -68,17 +68,16 @@
         <!--左侧导航结束-->
         <!--右侧部分开始-->
         <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="row border-bottom">
-                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0;">
+            @*<div class="row border-bottom">
+                    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0;">
 
-                    <ul class="nav navbar-top-links navbar-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#"> <i class="fa fa-envelope"></i> <span class="label label-warning">16</span> </a>
-
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#"> <i class="fa fa-envelope"></i> <span class="label label-warning" id="sp_number"></span> </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>*@
             <div class="row content-tabs">
                 <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i></button>
                 <nav class="page-tabs J_menuTabs">
@@ -102,10 +101,17 @@
             </div>
         </div>
     </div>
-
+    <div id="small-chat">
+        <span class="badge badge-warning pull-right" id="chat"></span>
+        <a class="open-small-chat">
+            <i class="fa fa-comments"></i>
+        </a>
+    </div>
     <!-- 全局js -->
     <script src="/assets/hplus/js/jquery.min.js"></script>
     <script src="/assets/hplus/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.0.min.js"></script>
+    <script src="/signalr/hubs" type="text/javascript"></script>
     <script src="/assets/hplus/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="/assets/hplus/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="/assets/hplus/js/plugins/contextMenu/jquery.contextMenu.min.js"></script>
@@ -116,4 +122,19 @@
     <script src="/assets/hplus/js/plugins/pace/pace.min.js"></script>
 </body>
 </html>
+<script>
+    $(function () {
+        getNumber();
+        var proxy = $.connection.EmpMessageService;
+        proxy.client.getNumber = function (number) {
+            $("#chat").html(number);
+        }
+        $.connection.hub.start();
+    });
+    function getNumber() {
+        $.get("/employmessage/GetNumber", function (res) {
+            $("#chat").html(res);
+        })
+    }
+</script>
 

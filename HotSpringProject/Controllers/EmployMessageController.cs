@@ -47,11 +47,15 @@ namespace HotSpringProject.Controllers
         {
             return View();
         }
-        //public ActionResult GetNumber()
-        //{
-
-        //    return Content(GetMessage().Count().ToString());
-        //}
+        public ActionResult GetNumber()
+        {
+            EmployEmp user = (EmployEmp)HttpContext.Session["User"];
+            userId = user.id;
+            var messageService = new GetMessageDepency(userId);
+            List<EmployMessageVO> messageList = messageService.GetMessage();
+            var list1 = messageList.Where(s => s.state == 0).ToList();
+            return Content(list1.Count().ToString());
+        }
         public JsonResult GetList()
         {
             EmployEmp user = (EmployEmp)HttpContext.Session["User"];

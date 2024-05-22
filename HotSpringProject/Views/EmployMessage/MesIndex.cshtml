@@ -27,8 +27,7 @@
                         <ul class="folder-list m-b-md" style="padding: 0">
                             <li>
                                 <a href="/employmessage/mesindex">
-                                    <i class="fa fa-inbox"></i> 收件箱  <span id="badge" class="layui-badge"></span>
-                                   
+                                    <i class="fa fa-inbox"></i> 收件箱
                                 </a>
                             </li>
                             <li>
@@ -115,29 +114,11 @@
             console.log(data);
             $("#tb").empty();
             for (var item of list) {
-                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.sender_name}</td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${item.send_time}</td><td>${item.state === 0 ? '未读' : '已读'}</td><td><a></a></td></tr>`);
+                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.sender_name}</td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${formatDate(item.send_time)}</td><td>${item.state === 0 ? '未读' : '已读'}</td><td><a></a></td></tr>`);
             }
-            layui.use('layer', function () {
-                var layer = layui.layer;
-                layer.msg('您有新消息！', { icon: 7, time: 5000 });
-            });
         }
         $.connection.hub.start();
     })
-
-    $.ajax({
-        url: '/employmessage/GetList',
-        type: 'GET',
-        success: function (data) {
-            // 获取到最新的信息列表data
-            var totalCount = data.length; // 更新的条数，根据实际情况进行计算
-            if (totalCount > 0) {
-                $('#badge').text(totalCount);
-            } else {
-                $('#badge').text('');
-            }
-        }
-    });
     //function getNumber() {
     //    $.get("/StudentInfo/GetNumber", function (res) {
     //        $("#spNumber").html(res);
@@ -148,7 +129,7 @@
         $.get("/employmessage/GetList", function (res) {
             console.log(res);
             for (var item of res) {
-                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.sender_name}</td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${item.send_time}</td><td>${item.state === 0 ? '未读' : '已读'}</td><td><a></a></td></tr>`);
+                $("#tb").append(`<tr><td><input class='cbx' type='checkbox'/></td><td>${item.sender_name}</td><td>${item.recipients_name}</td><td>${item.part}</td><td>${item.link}</td><td>${formatDate(item.send_time)}</td><td>${item.state === 0 ? '未读' : '已读'}</td><td><a></a></td></tr>`);
             }
         })
     }
