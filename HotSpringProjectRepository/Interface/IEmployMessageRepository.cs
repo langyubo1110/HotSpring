@@ -13,5 +13,6 @@ namespace HotSpringProjectRepository.Interface
         int Add(EmployMessage employMessage);
         IEnumerable<T> QueryBySql<T>(string sql);
         int AddRange(List<EmployMessage> messages);
+        EmployMessage GetModel(int id);
     }
 }
