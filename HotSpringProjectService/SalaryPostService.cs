@@ -20,11 +20,13 @@ namespace HotSpringProjectService
     {
         private readonly IEmployCheckInService _employCheckInService;
         private readonly IEmployAllsalaryRepository _employAllsalaryRepository;
+        private readonly IEmployEmpRepository _employEmpRepository;
 
-        public SalaryPostService(IEmployAllsalaryRepository employAllsalaryRepository, IEmployCheckInService employCheckInService)
+        public SalaryPostService(IEmployAllsalaryRepository employAllsalaryRepository, IEmployCheckInService employCheckInService,IEmployEmpRepository employEmpRepository)
         {
             _employCheckInService = employCheckInService;
             _employAllsalaryRepository = employAllsalaryRepository;
+            _employEmpRepository = employEmpRepository;
         }
         public Task Execute()
         {
@@ -36,6 +38,8 @@ namespace HotSpringProjectService
                                           inner join Employ_Role r on r.id=e.role_id ").ToList();
 
             List<EmployPerform> plist = _employAllsalaryRepository.QueryBySql<EmployPerform>($@"select * from Employ_Perform").ToList();
+            List<EmployEmp> elist = _employEmpRepository.GetList().ToList();
+
             foreach (var item in list)
             {
                 //计算每个员工的当月底薪，去签到表确认出勤
@@ -43,7 +47,7 @@ namespace HotSpringProjectService
                 double rate = _employCheckInService.GetWorkRate(item.emp_id);
                 //获取当月第一天和最后一天
                 DateTime dtNow = item.create_time.AddHours(-1);
-                DateTime firstDayOfLastMonth = new DateTime(dtNow.Year, dtNow.Month, 1);
+                DateTime firstDayOfLastMonth = new DateTime(dtNow.Year, dtNow.Month+1, 1);
                 DateTime lastDayOfLastMonth = firstDayOfLastMonth.AddMonths(1).AddDays(-1);
                 item.salary = 0;
                 List<EmployAllsalaryVO> slist1 = slist.Where(s => s.emp_id == item.emp_id && s.pay_month == item.pay_month).ToList();
@@ -57,11 +61,15 @@ namespace HotSpringProjectService
                     item.perform_money += money.repair_up_money;
                 }
                 _employAllsalaryRepository.Update(item);
+            }
+            //插入新数据
+            foreach (var emp in elist)
+            {
                 EmployAllsalary employ = new EmployAllsalary();
-                employ.emp_id = item.emp_id;
+                employ.emp_id = emp.id;
                 DateTime time1 = DateTime.Now;
                 employ.pay_month = time1.Month;
-                employ.pay_time = time1.AddMonths(1).AddDays(15);
+                employ.pay_time = time1.AddDays(45);
                 employ.post_status = 0;
                 employ.salary = (decimal)0.00;
                 employ.perform_money = (decimal)0.00;

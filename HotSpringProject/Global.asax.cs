@@ -30,12 +30,14 @@ namespace HotSpringProject
 
             //容器注册
             AutofacRegister();
+
             GlobalFilters.Filters.Add(new AuthorizationFilter());//拦截器
+
             AutoMapperConfig.Config();
 
-            BackUpDataBase.Initialize();
             //备份数据库
-
+            BackUpDataBase.Initialize();
+            
             //定时调度薪资发放
             SalaryPost.Initialize();
             
