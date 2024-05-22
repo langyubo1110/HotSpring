@@ -47,11 +47,11 @@ namespace HotSpringProject.Controllers
         {
             return View();
         }
-        public JsonResult Repair()
+        public JsonResult Repair(string yyyy_MM,int page=0,int limit = 0)
         {
             EmployEmp employEmp = (EmployEmp)Session["User"];
             int id = employEmp.id;
-            ResMessage res = _db.GetListById(id);
+            ResMessage res = _db.GetListById( yyyy_MM, id, page, limit);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
         public JsonResult RepairByID(int id=0)

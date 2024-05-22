@@ -70,7 +70,9 @@ namespace HotSpringProject.Controllers
         //更新保养任务表数据
         public JsonResult upkeepdistribute(List<EmployCheckInVO> data, int[] equid, int[] equplanid)
         {
-            return Json(_equUpkeepTaskService.upkeepdeit(data, equid,equplanid), JsonRequestBehavior.AllowGet);
+            EmployEmp emp = (EmployEmp)Session["User"];
+            int empid=emp.id;
+            return Json(_equUpkeepTaskService.upkeepdeit(data, equid,equplanid,empid), JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

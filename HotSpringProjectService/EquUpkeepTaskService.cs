@@ -75,7 +75,7 @@ namespace HotSpringProjectService
             return flag;
         }
 
-        public ResMessage upkeepdeit(List<EmployCheckInVO> data, int[] equid, int[] equplanid)
+        public ResMessage upkeepdeit(List<EmployCheckInVO> data, int[] equid, int[] equplanid,int empid)
         {
             List<EmployMessage> list = new List<EmployMessage>();
             DateTime now= DateTime.Now.Date;
@@ -92,7 +92,7 @@ namespace HotSpringProjectService
             {
                 EmployMessage message = new EmployMessage
                 {
-                    sender_id = 49,
+                    sender_id = empid,
                     link = "/employtasks/upkeeptasks",
                     recipients_id = data[0].emp_Id,
                     send_time = DateTime.Now,
