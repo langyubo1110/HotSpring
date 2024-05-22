@@ -22,9 +22,9 @@
                     <p style="font-weight:bold">请签到：</p>
                     <br />
                     <form class="layui-form" id="checkInForm">
-                        <div class="layui-form-item well">
-                            <label class="layui-form-label" style="width:100px">班次类型:</label>
-                            <div class="layui-inline">
+                        <div class="layui-form-item well" style="height:83px">
+                            <span>班次类型：</span>
+                            <div class="layui-inline" style="width:190px">
                                 <select name="shiftType" id="dropList" lay-verify="required">
                                     <option value="">请选择班次类型</option>
                                     <option value="0">早班</option>
@@ -44,7 +44,7 @@
                             else
                             {
                                 <!-- 否则，隐藏按钮 -->
-                                <button id="checkInBtn" class="layui-btn" style="margin-left:20px; " lay-submit lay-filter="checkIn">上班签到</button>
+                                <button id="checkInBtn" class="layui-btn" style="margin-left:20px;" lay-submit lay-filter="checkIn">上班签到</button>
                             }
                         </div>
                     </form>
