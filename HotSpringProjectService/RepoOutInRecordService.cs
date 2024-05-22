@@ -40,26 +40,31 @@ namespace HotSpringProjectService
         public ResMessage Add(RepoGoodsStockDTO repoGoodsStockDTO, int userId)
         {
             if (repoGoodsStockDTO.type == 1)//出库时阈值判断
-            {
+            {//最终数量                             当前数量                    出库数量
                 int endNumber = repoGoodsStockDTO.goods_number - repoGoodsStockDTO.oi_number;
-                if (Convert.ToInt32(repoGoodsStockDTO.threshold) >= endNumber)
+                if (endNumber >= 0)
                 {
-                    List<EmployMessage> msgList = new List<EmployMessage>();
-                    List<EmployEmp> people = _employEmpRepository.GetList().Where(x => x.role_id == 30).ToList();
-                    string goods_name = _repoGoodsStockRepository.GetModel(repoGoodsStockDTO.id).goods_name;
-                    foreach (EmployEmp employEmp in people)
+                    if (Convert.ToInt32(repoGoodsStockDTO.threshold) >= endNumber)
                     {
-                        EmployMessage message = new EmployMessage();
-                        message.part = $"{goods_name}数量低于阈值";
-                        message.send_time = DateTime.Now;
-                        message.create_time = DateTime.Now;
-                        message.sender_id = userId;
-                        message.link = "abcde";
-                        message.recipients_id = employEmp.id;
-                        msgList.Add(message);
+                        List<EmployMessage> msgList = new List<EmployMessage>();
+                        List<EmployEmp> people = _employEmpRepository.GetList().Where(x => x.role_id == 30).ToList();
+                        string goods_name = _repoGoodsStockRepository.GetModel(repoGoodsStockDTO.id).goods_name;
+                        foreach (EmployEmp employEmp in people)
+                        {
+                            EmployMessage message = new EmployMessage();
+                            message.part = $"{goods_name}数量低于阈值";
+                            message.send_time = DateTime.Now;
+                            message.create_time = DateTime.Now;
+                            message.sender_id = userId;
+                            message.state = 0;
+                            message.link = "/repogoodsstock/goodsstock";
+                            message.recipients_id = employEmp.id;
+                            msgList.Add(message);
+                        }
+                        int flag = _employMessageRepository.AddRange(msgList);
                     }
-                    int flag = _employMessageRepository.AddRange(msgList);
                 }
+               
             }
             //使用EF事务，保证原子性
             _repoOutInRecordRepository.TransBegin();
