@@ -43,6 +43,10 @@ namespace HotSpringProjectRepository
             return flag;
         }
 
+        public EmployMessage GetModel(int id)
+        {
+            return _db.EmployMessage.Find(id);
+        }
     }
 }
 
