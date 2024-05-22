@@ -14,6 +14,7 @@ namespace HotSpringProject.Entity.VO
         public int equ_id { get; set; }
         public int equ_plan_id { get; set; }
         public int interval { get; set; }
+        public int status { get; set; }
         public int? task_id{ get; set; }
         public string title { get; set; }
         public string task_name { get; set; }

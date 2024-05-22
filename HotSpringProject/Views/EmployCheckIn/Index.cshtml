@@ -5,13 +5,15 @@
 }
 <div class="wrapper wrapper-content">
     <div class="row">
+        <div style="background-color:white;padding:20px;width:1650px;margin-left:18px">
+            <marquee>
+                &nbsp;&nbsp;&nbsp;您好，尊敬的<span style="color:mediumpurple;font-weight:bold;font-size:20px"> @ViewBag.name</span> 先生，
+                欢迎使用本OA自动化办公系统,期待您有一个良好的体验
+            </marquee>
+        </div>
+        <br /><br />
         <div class="col-sm-4">
-            <div style="background-color:yellow;border-radius:30px;padding:20px">
-                <h3 style="color:black">
-                    &nbsp;&nbsp;&nbsp;您好,尊敬的 @ViewBag.name 先生
-                    <br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;欢迎使用本OA自动化办公系统,期待您有一个良好的体验
-                </h3>
-            </div>
+
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5 style="font-weight:bold">勤劳签到卡</h5>
@@ -53,6 +55,29 @@
                     </div>
                 </div>
             </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5 style="font-weight:bold">消息</h5>
+                </div>
+                <div class="ibox-content ibox-heading">
+                    <h3><i class="fa fa-envelope-o"></i> 新消息</h3>
+                    <small><i class="fa fa-tim"></i> 您有22条未读消息</small>
+                </div>
+                <div class="ibox-content">
+                    <div class="feed-activity-list">
+
+                        <div class="feed-element">
+                            <div>
+                                <small class="pull-right text-navy">1月前</small>
+                                <strong>井幽幽</strong>
+                                <div>有人说：“一辈子很长，要跟一个有趣的人在一起”。我想关注我的人，应该是那种喜欢找乐子也乐意分享乐趣的人，你们一定挺优秀的。所以单身的应该在这条留言，互相勾搭一下。特别有钱人又帅可以直接私信我！</div>
+                                <small class="text-muted">4月11日 00:00</small>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-sm-8">
             <div class="ibox float-e-margins">
@@ -67,11 +92,38 @@
                     </div>
                 </div>
             </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5 style="font-weight:bold">今日保养任务</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="layui-card-body">
+
+                        <table id="demo2" lay-filter="test2"></table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5 style="font-weight:bold">历史保养任务</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="layui-card-body">
+
+                        <table id="demo1" lay-filter="test1"></table>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">二维码</a>
+</script>
 <script>
-    layui.use(['table', 'util', "layer","form"], function () {
+    layui.use(['table', 'util', "layer", "form"], function () {
         var form = layui.form;
         var table = layui.table;
         var util = layui.util;
@@ -91,16 +143,10 @@
             });
             return false;
         });
+        //个人维修任务表格
         table.render({
             elem: '#demo'
             , url: '/EmployTasks/Repair'
-            , response: {
-                statusName: 'code' //规定数据状态的字段名称，默认：code
-                , statusCode: 200 //规定成功的状态码，默认：0
-                , msgName: 'msg' //规定状态信息的字段名称，默认：msg
-                , countName: 'count' //规定数据总数的字段名称，默认：count
-                , dataName: 'data' //规定数据列表的字段名称，默认：data
-            }
             , cols: [[
                 { field: 'name', title: '上报人' }
                 , {
@@ -109,21 +155,29 @@
                 , { field: 'confirmer', title: '确认人' }
                 , {
                     field: 'start_time', title: '开始时间', templet: function (d) {
-                        return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                        return util.toDateString(d.start_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss")
                     }
                 }
                 , {
                     field: 'end_time', title: '结束时间', templet: function (d) {
-                        return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                        return util.toDateString(d.end_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss")
                     }
                 }
                 , {
                     field: 'create_time', title: '上报时间'
                     , templet: function (d) {
-                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                        return util.toDateString(d.create_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss")
                     }
                 }
             ]]
+            , parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
         });
         table.on('tool(test)', function (obj) {
             var data = obj.data;
@@ -138,6 +192,90 @@
                 });
             }
         });
-    });
+        //今日保养任务表格
+        table.render({
+            elem: '#demo2'
+            , url: '/EmployTasks/UpKeep'
+            , cols: [[
+                { field: 'people_name', title: '执行人姓名' }
+                , { field: 'name', title: '设备名称' }
+                , {
+                    field: 'importance', title: '重要性', templet: function (d) {
+                        return d.importance === 0 ? '重要' : '超级重要';
+                    }
+                }
+                , {
+                    field: 'upkeep_time', title: '保养生成时间', templet: function (d) {
+                        return util.toDateString(d.upkeep_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    }
+                }
+                , { field: 'task_name', title: '保养任务名称' }
+                , { field: 'task_info', title: '保养任务细节' }
+                , {
+                    field: 'status', title: '任务状态', templet: function (d) {
+                        return d.status === 1 ? '已完成' : '未完成';
+                    }
+                }
+                , { title: '操作', toolbar: "#barDemo" }
+            ]]
+            , parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
+        });
+        table.on('tool(test2)', function (obj) {
+            var data = obj.data;
+            var id = data.equ_plan_id;
+            var equid = data.equ_id;
+            console.log(data)
+            if (obj.event === 'edit') {
+                // 显示弹出层
+                layer.open({
+                    type: 2,
+                    title: '详细信息',
+                    content: `/EmployTasks/QRimg?planid=${id}&&equid=${equid}`,
+                    area: ['480px', '500px']
+                });
+            }
+        });
+        //历史保养任务表格
+        table.render({
+            elem: '#demo1'
+            , url: '/EmployTasks/UpKeepHistory'
+            , cols: [[
+                { field: 'people_name', title: '执行人姓名' }
+                , { field: 'name', title: '设备名称' }
+                , {
+                    field: 'importance', title: '重要性', templet: function (d) {
+                        return d.importance === 0 ? '重要' : '超级重要';
+                    }
+                }
+                , {
+                    field: 'upkeep_time', title: '保养生成时间', templet: function (d) {
+                        return util.toDateString(d.upkeep_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd")
+                    }
+                }
+                , { field: 'task_name', title: '保养任务名称' }
+                , { field: 'task_info', title: '保养任务细节' }
+                , {
+                    field: 'status', title: '任务状态', templet: function (d) {
+                        return d.status === 1 ? '已完成' : '未完成';
+                    }
+                }
+            ]]
+            , parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                };
+            }
+        });
+    })
 </script>
 
