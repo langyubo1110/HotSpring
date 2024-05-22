@@ -27,7 +27,7 @@ namespace HotSpringProjectService
         public ResMessage GetList(EquUpkeepTaskFilter filter)
         {
             IEnumerable<EquUpkeepTaskVO> list = _upkeepTaskRepository.QueryBySql<EquUpkeepTaskVO>($@"select s.*,p.task_name,p.start_time,p.end_time,p.interval,p.task_info,e.name,e.location,e.power,o.name as ename
-            from Equ_Upkeep_Task s inner join Equ_Equipment e on e.id=s.equ_id inner join Equ_Upkeep_Plan p on p.id=s.equ_plan_id inner join Employ_Emp o on o.id=s.exec_id");
+            from Equ_Upkeep_Task s inner join Equ_Equipment e on e.id=s.equ_id inner join Equ_Upkeep_Plan p on p.id=s.equ_plan_id left join Employ_Emp o on o.id=s.exec_id");
 
             List<EquUpkeepTaskVO> list1 = list.ToList();
             int count = 0;
@@ -71,7 +71,7 @@ namespace HotSpringProjectService
 
         public int insert(int id, DateTime time, string img, int equ_id)
         {
-            int flag = _upkeepTaskRepository.execBySql($"insert into Equ_Upkeep_Task(equ_plan_id,upkeep_time,QRimg,equ_id,exec_id)values({id},'{time}','{img}',{equ_id},49)");
+            int flag = _upkeepTaskRepository.execBySql($"insert into Equ_Upkeep_Task(equ_plan_id,upkeep_time,QRimg,equ_id)values({id},'{time}','{img}',{equ_id})");
             return flag;
         }
 
