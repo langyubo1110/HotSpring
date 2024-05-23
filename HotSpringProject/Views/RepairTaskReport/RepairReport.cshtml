@@ -1,8 +1,10 @@
 ﻿
 @{
-    ViewBag.Title = "GRoomRepair";
+    ViewBag.Title = "RepairReport";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h2>维修上报</h2>
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="layui-form" action="" lay-filter="example">
@@ -12,7 +14,7 @@
                     <!--上报人autocomplete-->
                     <select name="reporter_id" id="ddlid" disabled lay-search="" lay-filter="aihao">
 
-                        <option value="@ViewBag.id">@ViewBag.name</option>
+                        @*<option value="@ViewBag.id">@ViewBag.name</option>*@
 
                     </select>
                 </div>
@@ -29,14 +31,6 @@
                     <input type="text" name="confirmer" placeholder="请输入确认人姓名" class="layui-input">
                 </div>
             </div>
-            <input type="hidden" name="fault_app_id" value="@ViewBag.fault_app_id" />
-            <input type="hidden" name="equip_id" value="@ViewBag.equip_id" />
-            <div class="layui-form-item">
-                <label class="layui-form-label">手机号</label>
-                <div class="layui-input-block">
-                    <input type="text" name="repair_phone" placeholder="请输入上报人手机号" class="layui-input">
-                </div>
-            </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">开始时间</label>
                 <div class="layui-input-block">
@@ -49,16 +43,19 @@
                     <input type="text" name="end_time" class="layui-input" id="test6" placeholder="yyyy-MM-dd HH:mm:ss">
                 </div>
             </div>
+
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">维修内容</label>
                 <div class="layui-input-block">
                     <textarea placeholder="请输入维修内容" class="layui-textarea" name="work_context"></textarea>
                 </div>
             </div>
-            <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">维修花费</label>
-                <div class="layui-input-block">
-                    <input placeholder="请输入维修花费" class="layui-input" name="repair_spend">
+            <div class="layui-form-item">
+                &emsp;&emsp;&nbsp;备件使用&emsp;&nbsp;
+                <button type="button" id="selbtn" class="layui-btn layui-btn-sm layui-btn-normal">选择备件</button><br /><br />
+                &emsp;&emsp;<span>已选备件</span>
+                <div style="margin-left:25px">
+                    <table class="layui-hide" id="demo" lay-filter="test"></table>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -70,40 +67,8 @@
         </form>
     </div>
 </div>
-<script>
-    layui.use(['form', 'laydate', 'util','layer'], function () {
-        var form = layui.form;
-        var laydate = layui.laydate;
-        var util = layui.util;
-        var layer = layui.layer;
-        laydate.render({
-            elem: '#test5'
-            , type: 'datetime'
-        });
-        laydate.render({
-            elem: '#test6'
-            , type: 'datetime'
-        });
-        laydate.render({
-            elem: '#time', // 指定元素
-            value: new Date() // 使用 new Date() 来获取当前时间作为初始值
-        });
-        form.on('submit(demo1)', function (data) {
-            let obj = data.field;
-          
-                $.post("/repairtaskreport/add", { repairTaskReportVO: obj }, function (res) {
-                    if (res.code == 200) {
-                       
-                        var index = parent.layer.getFrameIndex(window.name);
-                        parent.layui.table.reload("demo");
-                        parent.layer.msg('上报成功');
-                        parent.layer.close(index);
-                    }
-                })
-            
-            return false;
-        });
-
-
-    })
-</script>
+<style>
+    .layui-form-label {
+        width: 100px;
+    }
+</style>

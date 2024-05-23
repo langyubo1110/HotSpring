@@ -15,5 +15,6 @@ namespace HotSpringProject.Entity.VO
         public int final_scheme {  get; set; }  
         public string analyse_name {  get; set; }
         public string auditor {  get; set; }  
+        public int vote {  get; set; }
     }
 }

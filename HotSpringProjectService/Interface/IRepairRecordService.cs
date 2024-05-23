@@ -10,7 +10,7 @@ namespace HotSpringProjectService.Interface
 {
     public interface IRepairRecordService
     {
-        ResMessage GetList(int page, int limit);
+        ResMessage GetList(int id);
         bool Delete(int id);
         ResMessage UpDate(RepairRecord repairRecord);
 

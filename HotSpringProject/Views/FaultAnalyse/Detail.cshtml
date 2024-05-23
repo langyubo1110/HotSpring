@@ -34,7 +34,7 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">故障分析</label>
                 <div class="layui-input-block">
-                    <textarea id="demo" name="contents" placeholder="请输入"  class="layui-textarea"></textarea>
+                    <textarea id="demo" name="contents" placeholder="请输入"   class="layui-textarea"></textarea>
                 </div>
             </div>
 
@@ -48,8 +48,7 @@
     </div>
 </div>
         <script>
-            //var deviceName = "name";
-            //document.getElementById("deviceName").value = deviceName;
+            
             layui.use(['form', 'layedit', 'layer'], function (res) {
                 var form = layui.form
                 var layedit = layui.layedit
@@ -66,8 +65,10 @@
                     var index = parent.layer.getFrameIndex(window.name);
                     data.field.contents = layedit.getContent(1);
                     data.field.fault_app_id = AppId;
-                    console.log(data.field);
-
+                    if (data.field.contents == '') {
+                        layer.msg('故障分析内容不能为空');
+                        return false;
+                    }
                     //更改设备状态
                     $.post("/faultapp/StopAndAdd", { eid: data.field.equ_id, FaultAnalyse :data.field}, function (res) {
                         if (res.code == 200) {
@@ -78,6 +79,8 @@
                             parent.layer.close(index);
                         }
                     });
+                 document.cookie = "faultAnalyse=true; expires=" + new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toUTCString();  
+
                     return false;
                 });
 

@@ -10,12 +10,8 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-
-
                     <div class="table-responsive">
-
                         <table id="demo" lay-filter="test"></table>
-
                     </div>
                 </div>
             </div>
@@ -23,7 +19,6 @@
     </div>
 </div>
 <script>
-   
 </script>
 <script>
     layui.use(['form','table'], function () {
@@ -37,8 +32,9 @@
             , url: '/FaultAnalyse/GetRecord/'+id //数据接口
             , page: false//开启分页
             , cols: [[ //表头
-                { field: 'auditor', title: '审核人' }
-                , { field: 'analyse_name', title: '分析人' }
+                 { type: 'checkbox' } 
+                ,{ field: 'auditor', title: '审核人',width:80 }
+                , { field: 'analyse_name', title: '分析人', width: 80 }
                 , { field: 'contents', title: '分析内容' }
             ]]
             , parseData: function (res) { //res 即为原始返回的数据

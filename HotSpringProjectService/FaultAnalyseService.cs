@@ -29,7 +29,28 @@ namespace HotSpringProjectService
             return ResMessage.Success();
            
         }
-
+        public ResMessage VoteCheck(int id)
+        {
+            IEnumerable<FaultAnalyse> list = _faultAnalyseRepository.GetList().Where(x => x.fault_app_id == id);
+       
+            List<FaultAnalyseVO> result = list.Join(_employEmpRepository.GetList(), x => x.analyse_id, y => y.id, (x, y) => new FaultAnalyseVO
+            {
+                analyse_name=y.name,
+                contents=x.contents,
+            }).ToList();
+            foreach(var item in result)
+            {
+                if (item.contents == null||item.contents=="")
+                {
+                    item.vote = 0;
+                }
+                else
+                {
+                    item.vote = 1;
+                }
+            }
+            return result == null ? ResMessage.Fail() : ResMessage.Success(result);
+        }
         public ResMessage Delete(int id)
         {
             throw new NotImplementedException();
@@ -68,7 +89,7 @@ namespace HotSpringProjectService
         {
             //接收的id为申报id
             IEnumerable<FaultAnalyse> ilist = _faultAnalyseRepository.GetList().Where(x => x.fault_app_id==id & x.final_scheme==1);
-            List<FaultAnalyseVO> list = ilist.Join(_employEmpRepository.GetList(),x=>x.fault_app_id,y=>y.id,(x,y)=>new FaultAnalyseVO
+            List<FaultAnalyseVO> list = ilist.Join(_employEmpRepository.GetList(),x=>x.analyse_id,y=>y.id,(x,y)=>new FaultAnalyseVO
             {
                 auditor= x.auditor,
                 analyse_name=y.name,

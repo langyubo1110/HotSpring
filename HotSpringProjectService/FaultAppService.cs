@@ -18,14 +18,16 @@ namespace HotSpringProjectService
         private readonly IFaultAppRepository _faultAppRepository;
         private readonly IFaultAnalyseRepository _faultAnalyseRepository;
         private readonly IEmployRoleRepository _employRoleRepository;
+        private readonly IRepairRecordRepository _repairRecordRepository;
 
-        public FaultAppService(IFaultAppRepository faultAppRepository,IEquipmentRepository equipmentRepository,IEmployEmpRepository employEmpRepository,IFaultAnalyseRepository faultAnalyseRepository,IEmployRoleRepository employRoleRepository)
+        public FaultAppService(IFaultAppRepository faultAppRepository,IEquipmentRepository equipmentRepository,IEmployEmpRepository employEmpRepository,IFaultAnalyseRepository faultAnalyseRepository,IEmployRoleRepository employRoleRepository,IRepairRecordRepository repairRecordRepository)
         {
             _employEmpRepository= employEmpRepository;
             _equipmentRepository =equipmentRepository;
             _faultAppRepository =faultAppRepository;
             _faultAnalyseRepository=faultAnalyseRepository;
             _employRoleRepository=employRoleRepository;
+            _repairRecordRepository=repairRecordRepository;
         }
         public ResMessage Add(FaultApp faultApp)
         {
@@ -136,6 +138,8 @@ namespace HotSpringProjectService
                 //已审批数量
                 vo.auditcount = faultAnalyses.Where(x => x.contents != "" && x.contents != null && x.fault_app_id==item.id).ToList().Count;
                 vo.end_count = end_count;//最终解决方案数量
+                int record_count=_repairRecordRepository.GetList().Where(x=>x.fault_app_id==item.id).ToList().Count;
+                vo.record_count = record_count;
                 if (vo.count == vo.auditcount)
                 {
                     //隐藏按钮
