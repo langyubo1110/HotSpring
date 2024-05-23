@@ -9,7 +9,7 @@
             @foreach (var m in ViewBag.Roles)
             {
                 <li class="layui-nav-item">
-                    <a href="/SystemEmpPagesAdd/index?role=@m.is_leader">@m.role_name</a>
+                    <a href="/SystemEmpPagesAdd/index?role=@m.id">@m.role_name</a>
                 </li>
             }
         </ul>
