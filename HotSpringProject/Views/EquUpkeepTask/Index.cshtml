@@ -73,12 +73,13 @@
             }//开启分页
             , toolbar: "#toolbarDemo"
             , cols: [[ //表头
-                { type: 'checkbox', fixed: 'left' }
+                {
+                    type: 'checkbox', fixed: 'left'}
                 , { field: 'name', title: '设备名称', width: 220}
                 , { field: 'location', title: '设备位置', width: 130 }
                 , { field: 'ename', title: '执行人',width:75}
                 , {
-                    field: 'task_name', title: '任务名称',width:125}
+                    field: 'task_name', title: '任务名称',width:125 }
                 , {
                     field: 'upkeep_time', title: '保养生成时间', templet: function (d) {
                         return util.toDateString(d.upkeep_time.replace("/Date(", "").replace(")/", ""), "yyyy-MM-dd HH:mm:ss")

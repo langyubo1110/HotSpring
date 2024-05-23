@@ -45,15 +45,29 @@ namespace HotSpringProject.Controllers
                 ViewBag.id=employEmp.id;
                 ViewBag.UserName = employEmp.name;
             }
+
             ViewBag.emList = (List<EmployEmp>)_repairTaskReportService.GetListByRole().data;
             ResMessage resMessage = _repairTaskReportService.GetEquipmentList();
             ViewBag.equipmentNames = resMessage.data;
+            return View();
+
+        }
+        //投票详情页
+        public ActionResult Check(int id=0)
+        {
+            if (id > 0)
+            {
+                ViewBag.app_id = id;
+            }
             return View();
         }
         #endregion
         //接口
         #region
-        
+        public JsonResult VoteCheck(int id=0)
+        {
+            return Json(_faultAnalyseService.VoteCheck(id), JsonRequestBehavior.AllowGet);
+        }
         public JsonResult Add(FaultAnalyse  faultAnalyse)
         {
             return Json(_faultAnalyseService.Add(faultAnalyse), JsonRequestBehavior.AllowGet);

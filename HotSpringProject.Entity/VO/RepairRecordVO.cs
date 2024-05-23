@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HotSpringProject.Entity
+namespace HotSpringProject.Entity.VO
 {
-    [Table("Rep_Repair_Record")]
-    public class RepairRecord
+    public class RepairRecordVO
     {
-        [Key]
         public int Id { get; set; }
         public int fault_app_id { get; set; }
         public string repair_spend { get; set; }
         public int repair_people_id { get; set; }
         public string repair_phone { get; set; }
         public DateTime create_time { get; set; }
-
+        public string repair_people {  get; set; }
     }
 }

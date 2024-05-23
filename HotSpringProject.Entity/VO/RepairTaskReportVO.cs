@@ -16,8 +16,9 @@ namespace HotSpringProject.Entity.VO
         public string location { get; set; }
         public string work_context { get; set; }
         public DateTime create_time { get; set; }
-        public int audited {  get; set; }
-        public int AllAudited { get; set; }
-
+        public string repair_phone { get; set; }
+        public string repair_spend { get; set; }
+        public int fault_app_id { get; set; }
+        public int equip_id { get; set; }
     }
 }

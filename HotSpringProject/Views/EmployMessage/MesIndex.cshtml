@@ -121,12 +121,6 @@ $(function () {
         }
         $.connection.hub.start();
     })
-    //function getNumber() {
-    //    $.get("/StudentInfo/GetNumber", function (res) {
-    //        $("#spNumber").html(res);
-
-    //    })
-    //}
     function init() {
         $.get("/employmessage/GetList", function (res) {
             console.log(res);

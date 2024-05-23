@@ -3,120 +3,123 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@*这是维修上报页*@
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="layui-form" action="" lay-filter="example">
+            <div class="layui-form-item">
+                <label class="layui-form-label">上报人</label>
+                <div class="layui-input-block">
+                    <!--上报人autocomplete-->
+                    <select name="reporter_id" id="ddlid" disabled lay-search="" lay-filter="aihao">
 
-<form class="layui-form" action="" lay-filter="SystemLogForm">
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <input type="hidden" name="id" value="0" />
-            <label class="layui-form-label">上报人ID</label>
-            <div class="layui-input-inline">
-                <input type="text" name="reporter_id" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+                        <option value="@ViewBag.id">@ViewBag.Username</option>
+
+                    </select>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">开始时间</label>
-            <div class="layui-input-inline">
-                <input type="text" name="start_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            <div class="layui-form-item">
+                <label class="layui-form-label">维修地点</label>
+                <div class="layui-input-block">
+                    <input type="text" name="location" placeholder="请输入维修地点" class="layui-input">
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">结束时间</label>
-            <div class="layui-input-inline">
-                <input type="text" name="end_time" id="input_time" lay-verify="required|date" autocomplete="off" class="layui-input demo-phone">
+            <div class="layui-form-item">
+                <label class="layui-form-label">确认人</label>
+                <div class="layui-input-block">
+                    <input type="text" name="confirmer" placeholder="请输入确认人姓名" class="layui-input">
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">确认人</label>
-            <div class="layui-input-inline">
-                <input type="text" name="confirmer" id="input_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            <div class="layui-form-item">
+                <label class="layui-form-label">开始时间</label>
+                <div class="layui-input-block">
+                    <input type="text" name="start_time" class="layui-input" id="test5" placeholder="yyyy-MM-dd HH:mm:ss">
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">维修地点</label>
-            <div class="layui-input-inline">
-                <input type="text" name="location" id="input_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            <div class="layui-form-item">
+                <label class="layui-form-label">结束时间</label>
+                <div class="layui-input-block">
+                    <input type="text" name="end_time" class="layui-input" id="test6" placeholder="yyyy-MM-dd HH:mm:ss">
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">工作内容</label>
-            <div class="layui-input-inline">
-                <input type="text" name="work_context" id="input_time" lay-verify="required" autocomplete="off" class="layui-input demo-phone">
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">维修内容</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入维修内容" class="layui-textarea" name="work_context"></textarea>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">创建时间</label>
-            <div class="layui-input-inline">
-                <input type="text" name="create_time" id="time" lay-verify="required|date" autocomplete="off" class="layui-input demo-phone">
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">维修花费</label>
+                <div class="layui-input-block">
+                    <input placeholder="请输入维修花费" class="layui-textarea" name="repair_spend">
+                </div>
             </div>
-        </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                    <button type="reset" id="rebtn" class="layui-btn">重置</button>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-        </div>
-    </div>
-</form>
+</div>
 <script>
     layui.use(['form', 'laydate', 'util','layer'], function () {
         var form = layui.form;
         var laydate = layui.laydate;
         var util = layui.util;
         var layer = layui.layer;
-        var id =@ViewBag.Id;      
+        var id =@ViewBag.Id;  
+        laydate.render({
+            elem: '#test5'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#test6'
+            , type: 'datetime'
+        });
         laydate.render({
             elem: '#time', // 指定元素
             value: new Date() // 使用 new Date() 来获取当前时间作为初始值
         });
-        $.post("/repairtaskreport/getmodel", { id: id }, function (res) {
-            if (res.code == 200) {
+        //$.post("/repairtaskreport/getmodel", { id: id }, function (res) {
+        //    if (res.code == 200) {
 
-                res.data.start_time = util.toDateString(formatDateString(res.data, "start_time"), "yyyy-MM-dd");
-                res.data.end_time = util.toDateString(formatDateString(res.data, "end_time"), "yyyy-MM-dd");
-                res.data.create_time = util.toDateString(formatDateString(res.data, "create_time"), "yyyy-MM-dd");
-                form.val('SystemLogForm', res.data);
+        //        res.data.start_time = util.toDateString(formatDateString(res.data, "start_time"), "yyyy-MM-dd");
+        //        res.data.end_time = util.toDateString(formatDateString(res.data, "end_time"), "yyyy-MM-dd");
+        //        res.data.create_time = util.toDateString(formatDateString(res.data, "create_time"), "yyyy-MM-dd");
+        //        form.val('SystemLogForm', res.data);
 
-            }
-        })
-        form.on('submit(demo1)', function (data) {
-            let obj = data.field;
-            
-            if (id == 0) {
-                $.post("/repairtaskreport/add", { repaieTaskReport: obj }, function (res) {
-                    if (res.code == 200) {
-                        //找到父页面的自己  拿到index 让父页面关掉自己
-                        var index = parent.layer.getFrameIndex(window.name);
-                        parent.layui.table.reload('demo');//子窗体让父窗体table重载
-                        parent.layer.close(index);
-                    }
-                    else alert(res.msg)
-                })
-            }
-            else {
-                $.post("/repairtaskreport/update", { repaieTaskReport: obj }, function (res) {
-                    if (res.code == 200) {
-                        //找到父页面的自己  拿到index 让父页面关掉自己 
-                        var index = parent.layer.getFrameIndex(window.name);
-                        parent.layui.table.reload('demo');//子窗体让父窗体table重载
-                        parent.layer.close(index);
-                    }
-                    else alert(res.msg)
-                })
-            }
-            return false;
-        });
+        //    }
+        //})
+        //form.on('submit(demo1)', function (data) {
+        //    let obj = data.field;
+
+        //    if (id == 0) {
+        //        $.post("/repairtaskreport/add", { repaieTaskReport: obj }, function (res) {
+        //            if (res.code == 200) {
+        //                //找到父页面的自己  拿到index 让父页面关掉自己
+        //                var index = parent.layer.getFrameIndex(window.name);
+        //                parent.layui.table.reload('demo');//子窗体让父窗体table重载
+        //                parent.layer.close(index);
+        //            }
+        //            else alert(res.msg)
+        //        })
+        //    }
+        //    else {
+        //        $.post("/repairtaskreport/update", { repaieTaskReport: obj }, function (res) {
+        //            if (res.code == 200) {
+        //                //找到父页面的自己  拿到index 让父页面关掉自己
+        //                var index = parent.layer.getFrameIndex(window.name);
+        //                parent.layui.table.reload('demo');//子窗体让父窗体table重载
+        //                parent.layer.close(index);
+        //            }
+        //            else alert(res.msg)
+        //        })
+        //    }
+        //    return false;
+        //});
+
        
     })
 </script>

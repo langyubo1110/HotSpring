@@ -21,19 +21,41 @@ namespace HotSpringProjectService
         private readonly IFaultAnalyseRepository _faultAnalyseRepository;
         private readonly IEmployEmpRepository _employEmpRepository;
         private readonly IEmployRoleRepository _employRoleRepository;
+        private readonly IRepairRecordRepository _repairRecordRepository;
 
-        public RepairTaskReportService(IRepairTaskReportRepository repairTaskReportRepository, IEquipmentRepository equipmentRepository, IFaultAnalyseRepository faultAnalyseRepository,IEmployEmpRepository  employEmpRepository,IEmployRoleRepository employRoleRepository)
+        public RepairTaskReportService(IRepairTaskReportRepository repairTaskReportRepository, IEquipmentRepository equipmentRepository, IFaultAnalyseRepository faultAnalyseRepository,IEmployEmpRepository  employEmpRepository,IEmployRoleRepository employRoleRepository,IRepairRecordRepository repairRecordRepository)
         {
             _repairTaskReportRepository = repairTaskReportRepository;
             _equipmentRepository = equipmentRepository;
             _faultAnalyseRepository = faultAnalyseRepository;
             _employEmpRepository=employEmpRepository;
             _employRoleRepository=employRoleRepository;
+            _repairRecordRepository=repairRecordRepository;
         }
 
-        public ResMessage Add(RepaieTaskReport repaieTaskReport)
+        public ResMessage Add(RepairTaskReportVO repairTaskReportVO)
         {
-            return _repairTaskReportRepository.Add(repaieTaskReport) > 0 ? ResMessage.Success() : ResMessage.Fail();
+            RepaieTaskReport repaieTaskReport=new RepaieTaskReport();
+            repaieTaskReport.create_time = DateTime.Now;
+            repaieTaskReport.end_time = repairTaskReportVO.end_time;
+            repaieTaskReport.start_time=repairTaskReportVO.start_time;
+            repaieTaskReport.location = repairTaskReportVO.location;
+            repaieTaskReport.confirmer = repairTaskReportVO.confirmer;
+            repaieTaskReport.reporter_id=repairTaskReportVO.reporter_id;
+            repaieTaskReport.work_context=repairTaskReportVO.work_context;
+            int flag1= _repairTaskReportRepository.Add(repaieTaskReport); 
+            RepairRecord repairRecord=new RepairRecord();
+            repairRecord.repair_spend=repairTaskReportVO.repair_spend;
+            repairRecord.repair_phone=repairTaskReportVO.repair_phone;
+            repairRecord.create_time=DateTime.Now;
+            repairRecord.repair_people_id = repairTaskReportVO.reporter_id;
+            repairRecord.fault_app_id=repairTaskReportVO.fault_app_id;
+             int flag2=_repairRecordRepository.Add(repairRecord);
+            Equipment equipment = _equipmentRepository.GetModel(repairTaskReportVO.equip_id);
+            equipment.status = 1;
+            _equipmentRepository.Update(equipment);
+
+            return flag1 > 0 && flag2 > 0 ? ResMessage.Success() : ResMessage.Fail();
         }
 
         public bool Delete(int id)

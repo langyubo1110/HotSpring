@@ -83,15 +83,6 @@ namespace HotSpringProject.DependencyDB
 
                     sqlReader.Close();
                 }
-                //foreach (EmployMessageVO queryItem in queryList)
-                //{
-                //    EmployMessageVO sqlItem = sqlList.FirstOrDefault(item => item.sender_id == queryItem.sender_id && item.recipients_id == queryItem.recipients_id);
-                //    if (sqlItem != null)
-                //    {
-                //        sqlItem.sender_name = queryItem.sender_name;
-                //        sqlItem.recipients_name = queryItem.recipients_name;
-                //    }
-                //}
                 return sqlList;
             }
 

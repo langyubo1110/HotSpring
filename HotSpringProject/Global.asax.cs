@@ -42,7 +42,7 @@ namespace HotSpringProject
             SalaryPost.Initialize();
             
             // 设备保养生成调度器
-            EquipUpKeep.Initialize();
+            //EquipUpKeep.Initialize();
 
         }
 

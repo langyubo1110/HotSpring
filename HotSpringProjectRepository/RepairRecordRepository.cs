@@ -26,17 +26,22 @@ namespace HotSpringProjectRepository
 
         public int Delete(int id)
         {
-            throw new NotImplementedException();
+            RepaieTaskReport repaieTaskReport = _Db.RepaieTaskReport.Find(id);
+            _Db.Entry<RepaieTaskReport>(repaieTaskReport).State = System.Data.Entity.EntityState.Deleted;
+            int flag = _Db.SaveChanges();
+           return (flag);
         }
 
         public IQueryable<RepairRecord> GetList()
         {
-            throw new NotImplementedException();
+            IQueryable<RepairRecord> list = _Db.RepairRecord;
+            return list;
         }
 
         public RepairRecord GetModel(int id)
         {
-            throw new NotImplementedException();
+
+            return _Db.RepairRecord.Find(id);
         }
 
         public int UpDate(RepairRecord repairRecord)
