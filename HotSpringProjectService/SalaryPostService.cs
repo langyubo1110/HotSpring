@@ -30,7 +30,11 @@ namespace HotSpringProjectService
         }
         public Task Execute()
         {
-            List<EmployAllsalary> list = _employAllsalaryRepository.GetList().ToList();
+            //查询上个月表
+            DateTime lastmonth= DateTime.Now.AddHours(-1);
+            DateTime firstDayOfLastMonth1 = new DateTime(lastmonth.Year, lastmonth.Month, 1);
+            DateTime lastDayOfLastMonth1 = firstDayOfLastMonth1.AddMonths(1).AddDays(-1);
+            List<EmployAllsalary> list = _employAllsalaryRepository.GetList().Where(x => x.create_time > firstDayOfLastMonth1 && x.create_time < lastDayOfLastMonth1).ToList();
 
             List<EmployAllsalaryVO> slist = _employAllsalaryRepository.QueryBySql<EmployAllsalaryVO>($@"select e.id,e.name,s.emp_id,s.pay_month,
                                           s.pay_time,s.post_status,s.perform_money,r.create_time,r.salary 
