@@ -22,12 +22,14 @@
     </div>
 </script>
 <script>
+    var responseData = localStorage.getItem('responseData');
+    var dataObject = JSON.parse(responseData);
     layui.use(['form', 'laydate', 'util', 'layedit', 'layer'], function () {
             var form = layui.form;
             var laydate = layui.laydate;
             var util = layui.util;
             var table = layui.table;
-            var id =@ViewBag.Id;
+            var id =@ViewBag.Id;//调研表id
         table.render({
             elem: '#demo'
             //分页
@@ -53,7 +55,7 @@
                 }
                 , { title: '操作', toolbar: "#barDemo", minWidth: 200 }
             ]]
-            , url: '/regresearch/getfile/' + id
+            , url: '/regresearch/getfile/' + id//调研表id
             , skin: 'line' //表格风格
         });
         table.on('toolbar(test)', function (obj) {

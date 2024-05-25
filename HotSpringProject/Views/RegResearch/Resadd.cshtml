@@ -18,15 +18,15 @@
             </div>
             <div class="form-group layui-inline">
                 <label>厂家</label>
-                <input type="text" name="fac_name" placeholder="请输入原因" class="form-control">
+                <input type="text" name="fac_name" placeholder="请输入厂家" class="form-control">
             </div>
             <div class="form-group layui-inline">
                 <label>厂家联系方式</label>
-                <input type="text" name="fac_phone" placeholder="请输入原因" class="form-control">
+                <input type="text" name="fac_phone" placeholder="请输入联系方式" class="form-control">
             </div>
             <div class="form-group layui-inline">
                 <label>厂家地址</label>
-                <input type="text" name="fac_address" placeholder="请输入原因" class="form-control">
+                <input type="text" name="fac_address" placeholder="请输入厂家地址" class="form-control">
             </div>
 
             @*隐藏控件id*@
@@ -92,7 +92,9 @@
 
 
 <script>
-
+    var responseData = localStorage.getItem('responseData');
+    var dataObject = JSON.parse(responseData);
+    
 
     layui.use(['upload', 'element', 'layer'], function () {
         var $ = layui.jquery,
@@ -113,7 +115,7 @@
         var uploadListIns = upload.render({
             elem: '#testList'
             , elemList: $('#demoList') //列表元素对象
-            , url: '/regresearch/fileimg/'+id // 采购表id
+            , url: '/regresearch/fileimg/' + dataObject // 采购表idg改了 现在用的是调研表的id
             , accept: 'file'
             , multiple: true
             , number: 4
@@ -178,18 +180,20 @@
             }
         });
 
-        //向对应的采购表下插入调研表
+        //向对应的采购表下 gengxin 调研表
         form.on('submit(demo2)', function (data) {
             layedit.getContent(1);
             let obj = data.field;
-            console.log(obj);
+            //console.log(obj);
             obj.basic_info = layedit.getContent(1);
             //console.log(obj.basic_info);
             if (id != 0) {
-                
-                $.post("/regresearch/insert", { regEquipRes: obj }, function (res) {
+                //console.log(dataObject);
+                obj.id = dataObject;
+                $.post("/regresearch/updateres", { regEquipRes: obj }, function (res) {
                     if (res.code == 200) {
                         console.log(res);
+                        console.log(1);
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                         //方案2  当关闭后让父页面的table重载

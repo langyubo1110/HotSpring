@@ -26,12 +26,12 @@ namespace HotSpringProjectService
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
             
         }
-        public ResMessage AddWithId(int buyid,string filepath)
+        public ResMessage AddWithId(int resid,string filepath)
         {
             RegFile regFile = new RegFile();
             regFile.create_time = DateTime.Now;
             regFile.type = 0;
-            regFile.reg_buy_id = buyid;
+            regFile.res_id = resid;
             regFile.file_path = filepath;
             int flag = _regFileRepository.Add(regFile);
             return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
@@ -57,9 +57,9 @@ namespace HotSpringProjectService
             List<RegFile> result = _regFileRepository.GetList().ToList();
             return result == null ? ResMessage.Fail() : ResMessage.Success(result, 0);
         }
-        public ResMessage GetListForFile(int id)
+        public ResMessage GetListForFile(int id)//调研表id
         {
-            List<RegFileVO> result = _regFileRepository.QueryBySql<RegFileVO>($@"select * from Reg_Files where reg_buy_id={id}").ToList();
+            List<RegFileVO> result = _regFileRepository.QueryBySql<RegFileVO>($@"select * from Reg_Files where res_id={id}").ToList();
             foreach(var regFile in result)
             {
                 regFile.file_path_name = regFile.file_path.Substring(regFile.file_path.LastIndexOf('/') + 1);

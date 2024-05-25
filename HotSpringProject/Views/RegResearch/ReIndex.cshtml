@@ -19,16 +19,16 @@
                 </div>
                 @*<div class="layui-inline">
 
-            <div class="layui-input-inline">
-                <select name="apply_id" lay-verify="required" lay-search="" lay-filter="ddltest">
-                    <option value="">选择立案申请人</option>
-                    @foreach (var item in ViewBag.list)
-                    {
-                        <option value="@item.id">@item.name</option>
-                    }
-                </select>
-            </div>
-        </div>*@
+                        <div class="layui-input-inline">
+                            <select name="apply_id" lay-verify="required" lay-search="" lay-filter="ddltest">
+                                <option value="">选择立案申请人</option>
+                                @foreach (var item in ViewBag.list)
+                                {
+                                    <option value="@item.id">@item.name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>*@
                 <div class="form-group layui-inline">
                     <label>设备名称</label>
                     <input type="text" name="equip_name" placeholder="请输入设备" class="form-control">
@@ -67,7 +67,7 @@
         </form>
     </div>
 </div>
-<div id="result" style="margin-left:30px" >
+<div id="result" style="margin-left:30px">
 
 </div>
 
@@ -77,7 +77,7 @@
 <!--表头工具栏-->
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+        <button class="layui-btn layui-btn-sm" id="resBtn" lay-event="add">添加</button>
     </div>
 </script>
 <script type="text/html" id="barDemo">
@@ -99,9 +99,10 @@
         var laydate = layui.laydate;
         var util = layui.util;
         var table = layui.table;
-        var id =@ViewBag.Id;
+        var id =@ViewBag.Id;//采购表id
         var userName = '@ViewBag.userName';
         var userId = @ViewBag.userId;
+        
         var layer = layui.layer;
         getVOdata();
         table.render({
@@ -152,7 +153,7 @@
         //单元格监听事件
         table.on('tool(test)', function (obj) { // 双击 toolDouble
             var data = obj.data;
-            //console.log(obj)
+            
             if (obj.event === 'agree') {
                 //console.log(data);
                 //向后台发接口，向数据库更改投票意见
@@ -166,9 +167,10 @@
                 })
             }
             else if (obj.event === 'download') {
+                //console.log(data);
                 layer.open({
                     type: 2,
-                    content: "/regresearch/resfile/" + id,//采购表id
+                    content: "/regresearch/resfile/" + data.id,//调研表id
                     area: ['800px', '500px'],
                 })
             }
@@ -184,68 +186,32 @@
 
             }
         });
-        //写一个去VO查询数据的方法，页面打开调用，按钮点击调用
-        //function getVOdata() {
-        //    $.post("/regresearch/getdata", { id: id }, function (res) {
-
-        //        if (res.code == 200) {
-        //            console.log(res.data.lessList);
-        //            // 假设 res.data.lessList 是一个包含 ResLessVO 对象的数组
-        //            var lessList = res.data.lessList;
-        //            // 获取 id 为 test 的大 div 元素
-        //            var resultDiv = document.getElementById('result');
-                    
-        //            while (resultDiv.firstChild) {
-        //                resultDiv.removeChild(resultDiv.firstChild);
-        //            }
-        //            // 遍历 lessList 中的每个对象
-        //            lessList.forEach(function (item) {
-        //               // 清空 id 为 test 的大 div 元素的内容
-        //                //testDiv.innerHTML = '';
-        //                // 创建一个新的 div 元素
-        //                var div = document.createElement('div');
-        //                // 设置 div 的内容为 ResLessVO 对象的某些属性，假设 name 和 fac_name 是 ResLessVO 的属性
-        //                div.textContent = '设备名称: ' + item.prod_name + ' 已通过用户: ' + item.name;
-        //                // 将创建的 div 插入到 id 为 test 的大 div 下
-        //                resultDiv.appendChild(div);
-        //            });
-        //        }
-        //    })
-        //}
+        
         function getVOdata() {
             $.post("/regresearch/getdata", { id: id }, function (res) {
                 if (res.code == 200) {
-                    console.log(res.data.lessList);
-                    // 假设 res.data.lessList 是一个包含 ResLessVO 对象的数组
                     var lessList = res.data.lessList;
-                    // 获取 id 为 test 的大 div 元素
                     var resultDiv = document.getElementById('result');
                     while (resultDiv.firstChild) {
                         resultDiv.removeChild(resultDiv.firstChild);
                     }
-
-                    // 对 lessList 进行预处理，按照厂商名字进行分组
                     var groupedData = {};
                     lessList.forEach(function (item) {
-                        if (!groupedData[item.prod_name]) {
-                            groupedData[item.prod_name] = [];
+                        if (!groupedData[item.resId]) {
+                            groupedData[item.resId] = [];
                         }
-                        groupedData[item.prod_name].push(item);
+                        groupedData[item.resId].push(item);
                     });
 
-                    // 遍历分组后的数据
-                    for (var prod_name in groupedData) {
-                        var users = groupedData[prod_name];
-                        // 创建一个新的 div 元素来显示厂商名字
-                        var prodDiv = document.createElement('div');
-                        prodDiv.textContent = '设备名称: ' + prod_name;
-                        resultDiv.appendChild(prodDiv);
+                    for (var resId in groupedData) {
+                        var users = groupedData[resId];
+                        var resDiv = document.createElement('div');
+                        resDiv.textContent = '设备ID: ' + resId;
+                        resultDiv.appendChild(resDiv);
 
-                        // 遍历同一厂商的用户
                         users.forEach(function (user) {
-                            // 创建一个新的 div 元素来显示用户信息
                             var userDiv = document.createElement('div');
-                            userDiv.textContent = '已通过用户: ' + user.name;
+                            userDiv.textContent = '设备名称: ' + user.prod_name + ', 已通过用户: ' + user.name;
                             resultDiv.appendChild(userDiv);
                         });
                     }
@@ -264,8 +230,16 @@
                     content: "/regresearch/resadd/" + id,//采购表id
                     area: ['800px', '500px'],
                 })
+                $.get("/regresearch/resinsert", { }, function (res) {
+                    if (res.code == 200) {
+                        //获得当前插入调研表的id给子页面使用
+                        localStorage.setItem('responseData', JSON.stringify(res.data));
+                    }
+
+                })
             }
         });
+       
         //提交事件 上方采购表得到内容  正确
         $.post("/regbuy/getmodel", { id: id }, function (res) {
             if (res.code == 200) {

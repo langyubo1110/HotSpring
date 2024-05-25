@@ -20,7 +20,7 @@ namespace HotSpringProjectRepository
         {
             _db.Entry(regEquipRes).State = System.Data.Entity.EntityState.Added;
             int flag = _db.SaveChanges();
-            return flag;
+            return flag > 0 ? regEquipRes.id : 0;
         }
 
         public bool Delete(int id)

@@ -26,8 +26,8 @@ namespace HotSpringProjectService
         public ResMessage Add(RegEquipRes regEquipRes)
         {
             regEquipRes.is_buy = 0;
-            int flag = _regEquipResRepositpry.Add(regEquipRes);
-            return flag > 0 ? ResMessage.Success() : ResMessage.Fail();
+            int resId = _regEquipResRepositpry.Add(regEquipRes);
+            return resId > 0 ? ResMessage.Success(data:resId) : ResMessage.Fail();
         }
         public ResMessage AddWithEquip(int resId)
         {
@@ -62,7 +62,7 @@ namespace HotSpringProjectService
         public ResMessage GetListById(int id,int userId)
         {//查出一个对应采购id下的调研表全表数据
 
-            List<RegResVO> regResList = _regEquipResRepositpry.QueryBySql<RegResVO>($@"select * from Reg_Equip_Research rr where rr.reg_buy_id={id}").ToList();
+            List<RegResVO> regResList = _regEquipResRepositpry.QueryBySql<RegResVO>($@"select * from Reg_Equip_Research  where reg_buy_id={id}").ToList();
             foreach(var item in regResList)//处理投票表的字段，以及对应采购id，立案id，投票人id的按钮展示
             {//item 是 RegResVO
                 
@@ -106,7 +106,7 @@ namespace HotSpringProjectService
         public ResMessage GetListForBind(int id)
         {
             RegResVO regResVO = new RegResVO();
-            List<ResLessVO> lessList = _regEquipResRepositpry.QueryBySql<ResLessVO>($@"select rr.fac_name,rr.prod_name,ee.name,rb.id from Reg_Equip_Research rr left join Reg_Research_Vote_Record v on rr.id=v.equip_research_id
+            List<ResLessVO> lessList = _regEquipResRepositpry.QueryBySql<ResLessVO>($@"select rr.fac_name,rr.prod_name,ee.name,rb.id,rr.id as resId from Reg_Equip_Research rr left join Reg_Research_Vote_Record v on rr.id=v.equip_research_id
                                     inner join Employ_Emp ee on ee.id=v.vote_id
                                     inner join Reg_Buy rb on rr.reg_buy_id=rb.id
                                     where rr.reg_buy_id={id}").ToList();
@@ -122,7 +122,8 @@ namespace HotSpringProjectService
 
         public ResMessage Update(RegEquipRes regEquipRes)
         {
-            throw new NotImplementedException();
+            bool flag= _regEquipResRepositpry.Update(regEquipRes);
+            return flag ? ResMessage.Success() : ResMessage.Fail();
         }
     }
 }

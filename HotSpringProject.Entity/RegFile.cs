@@ -11,7 +11,7 @@ namespace HotSpringProject.Entity
     public class RegFile
     {
         public int id { get; set; }
-        public int reg_buy_id { get; set; }
+        public int res_id { get; set; }
         public int equ_id { get; set; }
         public int type { get; set; }
         public string file_path { get; set; }
