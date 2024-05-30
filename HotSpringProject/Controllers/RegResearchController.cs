@@ -80,7 +80,7 @@ namespace HotSpringProject.Controllers
             return Json(res, JsonRequestBehavior.AllowGet);
         }
         //查对应文件全表
-        public ActionResult GetFile(int id = 0)//采购表id
+        public ActionResult GetFile(int id = 0)//调研表id
         {
             ResMessage res = _regFileService.GetListForFile(id);
             return Json(res, JsonRequestBehavior.AllowGet);
@@ -172,7 +172,7 @@ namespace HotSpringProject.Controllers
 
 
         //文件批量上传
-        public ActionResult Fileimg(int id)//采购表id
+        public ActionResult Fileimg(int id)//调研表id
         {
             HttpPostedFileBase file = Request.Files[0];
             try
@@ -205,8 +205,15 @@ namespace HotSpringProject.Controllers
         }
         //resadd插入调研表
         [ValidateInput(false)]//关键代码 关闭验证
-        public ActionResult Insert(RegEquipRes regEquipRes)
+        public ActionResult UpdateRes(RegEquipRes regEquipRes)
         {
+            ResMessage res = _regEquipResService.Update(regEquipRes);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+        //当点击添加就插入调研表，弹出层提交时去更新调研表，插入成功返回调研id
+        public ActionResult ResInsert()
+        {
+            RegEquipRes regEquipRes=new RegEquipRes();
             ResMessage res = _regEquipResService.Add(regEquipRes);
             return Json(res, JsonRequestBehavior.AllowGet);
         }

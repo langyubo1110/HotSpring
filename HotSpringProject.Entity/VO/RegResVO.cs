@@ -13,7 +13,7 @@ namespace HotSpringProject.Entity.VO
         
         public string prod_name { get; set; }
         public string fac_name { get; set; }
-        public decimal price { get; set; }
+        public decimal? price { get; set; }
         public string batch_number { get; set; }
         public string basic_info { get; set; }
         public string fac_phone { get; set; }
@@ -23,12 +23,12 @@ namespace HotSpringProject.Entity.VO
         //public int? vote_status { get; set; }
         //public int? vote_id { get; set; }
         public string name { get; set; }
-        public int Is_show { get; set; }
+        public int? Is_show { get; set; }
         public List<ResLessVO> lessList { get; set; }
-        public int voteCount { get; set; }
+        public int? voteCount { get; set; }
         //public int allCount { get; set; }
-        public int buy_is_show { get; set; }
+        public int? buy_is_show { get; set; }
         
-        public int is_buy { get; set; }
+        public int? is_buy { get; set; }
     }
 }

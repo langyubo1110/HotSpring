@@ -12,5 +12,6 @@ namespace HotSpringProject.Entity.VO
         public string prod_name { get; set; }
         public string name { get; set; }
         public int? id { get; set; }
+        public int? resId { get; set; }
     }
 }
