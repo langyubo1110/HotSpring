@@ -55,8 +55,6 @@ namespace HotSpringProjectService
         {
             //查类型表
             List<EquipType> list = _equipTypeRepository.GetList();
-            //查状态分组
-            //List<Equipment> list = _equipmentRepository.QueryBySql<Equipment>("select e.status  from Equ_Equipment e group by  e.status").ToList();
             return list;
         }
         //查设备表状态分组

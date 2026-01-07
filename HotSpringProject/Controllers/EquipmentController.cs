@@ -219,7 +219,6 @@ namespace HotSpringProject.Controllers
                 writer.WriteLine($"投入使用时间:{data.usedtime}");
                 writer.WriteLine($"设备类型:{data.typename}");
             }
-
         }
 
         //启停用
